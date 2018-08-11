@@ -30,12 +30,14 @@ done
 
 # In the event of a fresh MySQL container, wait a few seconds for the server to restart
 # This can be removed once https://github.com/docker-library/mysql/issues/245 is resolved.
-sleep 20
+sleep 10
 
 echo -e "MySQL ready"
 
 echo -e "${GREEN}Creating databases and users...${NC}"
+# this correspond to edxlocal role
 docker exec -i edx.devstack.mysql mysql -uroot mysql < provision.sql
+# this is covered in role mongo
 docker exec -i edx.devstack.mongo mongo < mongo-provision.js
 
 ./provision-lms.sh

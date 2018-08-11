@@ -17,34 +17,34 @@ else
     exit 1
 fi
 
-repos=(
-    "https://github.com/Learningtribes/course-discovery.git"
-    "https://github.com/Learningtribes/credentials.git"
-    "https://github.com/Learningtribes/cs_comments_service.git"
-    "https://github.com/Learningtribes/ecommerce.git"
-    "https://github.com/Learningtribes/edx-e2e-tests.git"
-    "https://github.com/Learningtribes/edx-notes-api.git"
-    "https://github.com/Learningtribes/platform.git"
-    "https://github.com/Learningtribes/xqueue.git"
-    "https://github.com/Learningtribes/edx-analytics-pipeline.git"
+edx_repos=(
+    "https://github.com/edx/course-discovery.git"
+    "https://github.com/edx/credentials.git"
+    "https://github.com/edx/cs_comments_service.git"
+    "https://github.com/edx/ecommerce.git"
+    "https://github.com/edx/edx-notes-api.git"
+    "https://github.com/edx/xqueue.git"
+    "https://github.com/edx/edx-analytics-pipeline.git"
 )
+
+lt_repos=(
+    "https://github.com/Learningtribes/edx-e2e-tests.git"
+    "https://github.com/Learningtribes/platform.git"
+)
+
+repos=( "${edx_repos[@]}" "${lt_repos[@]}" )
 
 private_repos=(
     # Needed to run whitelabel tests.
     "https://github.com/edx/edx-themes.git"
 )
 
-name_pattern=".*Learningtribes/(.*).git"
+name_pattern=".*/(.*).git"
 
 _checkout ()
 {
+    branch="$1"; shift
     repos_to_checkout=("$@")
-
-    if [ -z "$OPENEDX_RELEASE" ]; then
-        branch="master"
-    else
-        branch="open-release/${OPENEDX_RELEASE}"
-    fi
     for repo in "${repos_to_checkout[@]}"
     do
         # Use Bash's regex match operator to capture the name of the repo.
@@ -56,7 +56,7 @@ _checkout ()
         if [ -d "$name" -a -n "$(ls -A "$name" 2>/dev/null)" ]; then
             cd $name
             echo "Checking out branch $branch of $name"
-            git pull
+            git pull || true
             git checkout "$branch"
             cd ..
         fi
@@ -65,12 +65,18 @@ _checkout ()
 
 checkout ()
 {
-    _checkout "${repos[@]}"
+    if [ ! -z "$OPENEDX_RELEASE" ]; then
+        _checkout "$OPENEDX_RELEASE" "${edx_repos[@]}"
+    fi
+    if [ ! -z "$LT_VERSION" ]; then
+        _checkout "$LT_VERSION" "${lt_repos[@]}"
+    fi
 }
 
 _clone ()
 {
     # for repo in ${repos[*]}
+    branch="$1"; shift
     repos_to_clone=("$@")
 
     for repo in "${repos_to_clone[@]}"
@@ -89,19 +95,22 @@ _clone ()
             else
                 git clone $repo
             fi
-            if [ -n "${OPENEDX_RELEASE}" ]; then
-                cd $name
-                git checkout open-release/${OPENEDX_RELEASE}
-                cd ..
-            fi
+            cd $name
+            git checkout ${branch}
+            cd ..
         fi
     done
-    cd - &> /dev/null
 }
 
 clone ()
 {
-    _clone "${repos[@]}"
+
+    if [ ! -z "$OPENEDX_RELEASE" ]; then
+        _clone "$OPENEDX_RELEASE" "${edx_repos[@]}"
+    fi
+    if [ ! -z "$LT_VERSION" ]; then
+        _clone "$LT_VERSION" "${lt_repos[@]}"
+    fi
 }
 
 clone_private ()
