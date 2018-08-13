@@ -1,4 +1,4 @@
-Open edX Devstack |Build Status|
+Open edX Devstack
 ================================
 
 Get up and running quickly with Open edX services.
@@ -12,8 +12,7 @@ beta testing phase.
 Support
 -------
 
-Tickets or issues should be filed in Jira under the platform project:
-https://openedx.atlassian.net/projects/PLAT/issues
+Make issue request directly in this repo
 
 FYI
 ---
@@ -59,7 +58,7 @@ below, run the following sequence of commands if you want to use the most up-to-
 
     make down
     make pull
-    make dev.up
+    make dev.provision
 
 This will stop any running devstack containers, pull the latest images, and then start all of the devstack containers.
 
@@ -349,9 +348,9 @@ https://openedx.atlassian.net/wiki/display/OpenDev/Marketing+Site.
 How do I build images?
 ----------------------
 
-There are `Docker CI Jenkins jobs`_ on tools-edx-jenkins that build and push new
-Docker images to DockerHub on code changes to either the configuration repository or the IDA's codebase. These images
-are tagged according to the branch from which they were built (see NOTES below).
+Usually you don't need to build images by hand, make a PR to docker branch, once it accepted, your image will be
+built by docker cloud automatically.
+
 If you want to build the images on your own, the Dockerfiles are available in the ``Learningtribes/configuration`` repo.
 
 NOTES:
@@ -391,18 +390,15 @@ E-Commerce Service, you would modify ``ECOMMERCE_VERSION`` in
 How do I run the images for a named Open edX release?
 -----------------------------------------------------
 
-1. Set the ``OPENEDX_RELEASE`` environment variable to the appropriate image
-   tag; "hawthorn.master", "zebrawood.rc1", etc.  Note that unlike a server
-   install, ``OPENEDX_RELEASE`` should not have the "open-release/" prefix.
-2. Use ``make dev.checkout`` to check out the correct branch in the local
-   checkout of each service repository once you've set the ``OPENEDX_RELEASE``
-   environment variable above.
+1. Set the ``OPENEDX_RELEASE`` and ``LT_VERSION`` environment variable to the
+   appropriate image tag; "open-release/hawthorn.master" etc.
+
+2. Use ``make dev.checkout`` to check out the correct branch in the local.
+
 3. ``make pull`` to get the correct images.
 
 All ``make`` target and ``docker-compose`` calls should now use the correct
-images until you change or unset ``OPENEDX_RELEASE`` again.  To work on the
-master branches and ``latest`` images, unset ``OPENEDX_RELEASE`` or set it to
-an empty string.
+images until you change or unset ``OPENEDX_RELEASE`` and ``LT_VERSION`` again.
 
 How do I create database dumps?
 -------------------------------
