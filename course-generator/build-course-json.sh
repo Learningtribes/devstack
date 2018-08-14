@@ -1,6 +1,7 @@
 # Script to build course configurations in proper json format that can be passed into create-courses.sh
 # See test-course.json for a master list of course configurations
 # TODO: Link documentation for course-generator-tool
+# TODO better replace with python
 # USAGE: ./build-course-json.sh [course-config-file]
 
 if [ "$#" -ne 1 ]; then

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# TODO better replace with python
 # Script that provisions studio, ecommerce, marketing with courses
 # USAGE: ./create-courses [--studio] [--ecommerce] [--marketing] course-config.json
 studio=false
