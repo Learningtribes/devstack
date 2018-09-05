@@ -22,14 +22,14 @@ edx_repos=(
     "https://github.com/edx/credentials.git"
     "https://github.com/edx/cs_comments_service.git"
     "https://github.com/edx/ecommerce.git"
-    "https://github.com/edx/edx-notes-api.git"
     "https://github.com/edx/xqueue.git"
     "https://github.com/edx/edx-analytics-pipeline.git"
 )
 
 lt_repos=(
-    "https://github.com/Learningtribes/edx-e2e-tests.git"
-    "https://github.com/Learningtribes/platform.git"
+    "git@github.com:Learningtribes/edx-notes-api.git"
+    "git@github.com:Learningtribes/edx-e2e-tests.git"
+    "git@github.com:Learningtribes/platform.git"
 )
 
 repos=( "${edx_repos[@]}" "${lt_repos[@]}" )
