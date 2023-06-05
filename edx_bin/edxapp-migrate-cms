@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Error out when any command fails.  For the migration scripts migrating multiple
+# databases this ensure migration errors for any database will be seen by Ansible.
+set -euo pipefail
+
+cd /edx/app/edxapp/edx-platform
+source /edx/app/edxapp/edxapp_env
+
+# The default settings set in edxapp_env can be overridden
+# using the var $EDX_PLATFORM_SETTINGS_OVERRIDE
+
+if [[ -n "${EDX_PLATFORM_SETTINGS_OVERRIDE:-}" ]]; then
+    export EDX_PLATFORM_SETTINGS="$EDX_PLATFORM_SETTINGS_OVERRIDE"
+fi
+if [[ -z "${NO_EDXAPP_SUDO:-}" ]]; then
+    SUDO='sudo -E -u edxapp env "PATH=$PATH"'
+fi
+
+remove_unwanted_args () {
+  ARGS=("")
+  args_to_remove="(--list|--noinput)"
+  for var in "$@"; do
+    # Ignore known unneeded arguments
+    if [[ "$var" =~ $args_to_remove ]]; then
+      continue
+    fi
+    ARGS+=("$var")
+  done
+}
+
+if [[ $@ =~ .*--list.* ]]; then
+  remove_unwanted_args $@
+  ${SUDO:-} /edx/app/edxapp/venvs/edxapp/bin/python manage.py cms showmigrations --database default --settings $EDX_PLATFORM_SETTINGS ${ARGS[@]}
+else
+  ${SUDO:-} /edx/app/edxapp/venvs/edxapp/bin/python manage.py cms migrate --database default --noinput --settings $EDX_PLATFORM_SETTINGS $@
+fi
+  if [[ $@ =~ .*--list.* ]]; then
+  remove_unwanted_args $@
+  ${SUDO:-} /edx/app/edxapp/venvs/edxapp/bin/python manage.py cms showmigrations --database student_module_history --settings $EDX_PLATFORM_SETTINGS ${ARGS[@]}
+else
+  ${SUDO:-} /edx/app/edxapp/venvs/edxapp/bin/python manage.py cms migrate --database student_module_history --noinput --settings $EDX_PLATFORM_SETTINGS $@
+fi
+  

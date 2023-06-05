@@ -18,7 +18,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 # Bring the databases online.
-docker-compose up -d mysql mongo
+docker-compose up -d mysql
 
 # Ensure the MySQL server is online and usable
 echo "Waiting for MySQL"
@@ -38,7 +38,7 @@ echo -e "${GREEN}Creating databases and users...${NC}"
 # this correspond to edxlocal role
 docker exec -i edx.devstack.mysql mysql -uroot mysql < provision.sql
 # this is covered in role mongo
-docker exec -i edx.devstack.mongo mongo < mongo-provision.js
+#docker exec -i edx.devstack.mongo mongosh < mongo-provision.js
 
 ./provision-lms.sh
 
