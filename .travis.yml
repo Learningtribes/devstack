@@ -32,5 +32,15 @@ before_install:
   - if [[ $DEVSTACK == 'lms' ]]; then make pull; fi
   - if [[ $DEVSTACK == 'analytics_pipeline' ]]; then make dev.up.analytics_pipeline; fi
 
+install:
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+  - export NVM_DIR="$HOME/.nvm"
+  - [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # 这行加载 nvm
+  - nvm install v16.20.2
+  - nvm use v16.20.2
+  - node -v
+  - npm -v
+  - npm install
+
 script:
   - "./.travis/run.sh"
