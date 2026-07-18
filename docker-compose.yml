@@ -25,6 +25,7 @@ services:
   elasticsearch:
     container_name: edx.devstack.elasticsearch
     image: edxops/elasticsearch:devstack
+    platform: linux/amd64
     # TODO: What to do about these forwarded ports? They'll conflict with ports forwarded by the Vagrant VM.
     ports:
       - "9200:9200"
@@ -45,7 +46,8 @@ services:
 
   memcached:
     container_name: edx.devstack.memcached
-    image: memcached:1.4.24
+    image: memcached:1.5.4
+    platform: linux/amd64
     # ports:
     #   - "11211:11211"
 
@@ -56,6 +58,7 @@ services:
     command: mongod --smallfiles --nojournal --storageEngine wiredTiger
     container_name: edx.devstack.mongo
     image: mongo:3.2.16
+    platform: linux/amd64
     ports:
      - "27017:27017"
     volumes:
@@ -68,6 +71,7 @@ services:
       MYSQL_ROOT_PASSWORD: ""
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     image: mysql:5.6
+    platform: linux/amd64
     ports:
       - "3306:3306"
     volumes:
@@ -106,6 +110,7 @@ services:
       TEST_ELASTICSEARCH_URL: "http://edx.devstack.elasticsearch:9200"
       ENABLE_DJANGO_TOOLBAR: 1
     image: ltdps/discovery:latest
+    platform: linux/amd64
     ports:
       - "18381:18381"
     volumes:
@@ -123,6 +128,7 @@ services:
     environment:
       ENABLE_DJANGO_TOOLBAR: 0
     image: ltdps/ecommerce:latest
+    platform: linux/amd64
     ports:
       - "18130:18130"
 
@@ -144,6 +150,7 @@ services:
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
     image: ltdps/edxapp:latest
+    platform: linux/amd64
     ports:
       - "18000:18000"
       - "19876:19876" # JS test debugging
@@ -191,6 +198,7 @@ services:
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
     image: ltdps/edxapp:latest
+    platform: linux/amd64
     ports:
       - "18010:18010"
       - "19877:19877" # JS test debugging
@@ -207,12 +215,14 @@ services:
       - memcached
       - elasticsearch
     image: ltdps/forum:latest
+    platform: linux/amd64
     ports:
       - "44567:4567"
 
   devpi:
     container_name: edx.devstack.devpi
     image: ltdps/devpi:latest
+    platform: linux/amd64
     ports:
       - "3141:3141"
     volumes:
