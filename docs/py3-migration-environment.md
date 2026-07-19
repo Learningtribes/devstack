@@ -1,7 +1,8 @@
 # Python 3 Migration — Devstack Strategy
 
 > Date: 2026-07-19  
-> Reference: `platform-migration_discussion/docs/migration_discussion/03-runtime-environment.md`
+> Reference: `platform-migration_discussion/docs/migration_discussion/03-runtime-environment.md`  
+> **⚠️ Design note:** The migration discussion docs (01–07) focus on code-level migration strategy (which packages to upgrade, in what order). There is no existing plan for a parallel Py2/Py3 devstack environment. This document is an original design, reasoning from first principles: Py3 cannot provision; sharing validated data reduces confounding variables; the only hard incompatibility is memcached pickle format.
 
 ---
 
