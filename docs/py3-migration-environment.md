@@ -23,16 +23,18 @@ Volumes: devstack_*            Volumes: py3devstack_*
 
 ## 2. Isolation Strategy
 
+**Key decision: share data services where possible.** Py3 cannot complete `provision`, and sharing the existing validated data makes it easier to distinguish Py3 code bugs from data/config issues.
+
 | Resource | Strategy | Reason |
 |----------|----------|--------|
 | Containers | Different project name (`py3devstack`) | No name conflicts |
 | Ports | +100 offset (18100/18110/...) | No port conflicts |
-| MySQL | Separate database (`edxapp_py3`) | Py3 migrations incompatible with Py2 |
-| MongoDB | Shared or separate (`edxapp_py3`) | pymongo bridge compatible both ways |
-| Elasticsearch | Separate indices (`*_py3`) | Mapping may diverge |
-| Memcached | Separate instance | Pickle format incompatible Py2↔Py3 |
-| Source code | Shared mount OR separate worktree | Mount read-only for Py3; edits done on Py2 side |
-| Devpi | Shared (read-only) | pip cache is py-version-agnostic |
+| MySQL | **Shared** — same `edxapp` database, read-write | mysqlclient 1.4.6 supports both Py2 & Py3 on MySQL 5.6 |
+| MongoDB | **Shared** — same `edxapp` database | pymongo 3.12 works with MongoDB 2.6–5.0 |
+| Elasticsearch | **Shared** — same indices | elasticsearch-py 1.9.0 is pure Python; optional `*_py3` alias if mapping needs diverge |
+| Memcached | **Separate** instance (port 11212) | **Pickle format incompatible Py2↔Py3** — MUST isolate |
+| Source code | Shared mount (read-only from Py3 side) | Edits on Py2; Py3 sees same code |
+| Devpi | Shared (read-only) | pip cache agnostic |
 
 ---
 
@@ -70,82 +72,79 @@ Each LT-fork XBlock tested in isolation in Py3 container.
 ### 4.1 Prerequisites
 
 ```bash
-# Separate database
-docker exec -i edx.devstack.mysql mysql -uroot -e "CREATE DATABASE IF NOT EXISTS edxapp_py3"
-
-# Project-specific compose
+# Py3 only needs its own memcached — MySQL/Mongo/ES/devpi are shared
 cd /Users/noahwang/workspace/hawthorn/devstack
 ```
 
 ### 4.2 Docker Compose Override
 
-Create `docker-compose-py3.yml` that overrides key settings:
+Py3 environment only needs LMS + Studio + Discovery + its own memcached. Data services (MySQL/Mongo/ES/Devpi) are shared from the Py2 environment.
 
 ```yaml
+# docker-compose-py3.yml
 version: '2.1'
 
 services:
-  mysql:
-    environment:
-      MYSQL_DATABASE: edxapp_py3
-    ports:
-      - "13306:3306"
-
-  mongo:
-    ports:
-      - "27018:27017"
-
-  elasticsearch:
-    ports:
-      - "19200:9200"
-
   memcached:
     ports:
       - "11212:11211"
 
   lms:
-    image: ltdps/edxapp:py3-dev  # future Py3 image
+    image: ltdps/edxapp:latest  # eventually py3-dev image
     ports:
       - "18100:18000"
-    environment:
-      EDXAPP_MYSQL_DB_NAME: edxapp_py3
+    platform: linux/amd64
 
   studio:
-    image: ltdps/edxapp:py3-dev
+    image: ltdps/edxapp:latest
     ports:
       - "18110:18010"
-    environment:
-      EDXAPP_MYSQL_DB_NAME: edxapp_py3
+    platform: linux/amd64
 
   discovery:
-    image: ltdps/discovery:py3-dev
+    image: ltdps/discovery:latest
     ports:
       - "18382:18381"
+    platform: linux/amd64
 ```
 
 ### 4.3 Start Py3 Environment
 
 ```bash
-# Py2 (unchanged)
+# Py2 (unchanged) — runs MySQL/Mongo/ES/Memcached/Devpi
 DEVSTACK_WORKSPACE=$HOME/workspace/hawthorn \
   docker compose -f docker-compose.yml -f docker-compose-host.yml up -d
 
-# Py3 (separate project)
+# Py3 (only app containers + its own memcached)
 COMPOSE_PROJECT_NAME=py3devstack \
   DEVSTACK_WORKSPACE=$HOME/workspace/hawthorn \
-  docker compose -f docker-compose.yml -f docker-compose-host.yml -f docker-compose-py3.yml up -d
+  docker compose -f docker-compose.yml -f docker-compose-py3.yml up -d lms studio discovery memcached
 
-# Verify isolation
-docker compose ps                    # 10 containers, ports 18000+
-COMPOSE_PROJECT_NAME=py3devstack \
-  docker compose ps                   # 10 containers, ports 18100+
-```
+# Verify
+docker compose ps                              # Py2: 10 containers
+COMPOSE_PROJECT_NAME=py3devstack docker compose ps  # Py3: 3 containers
 
 ---
 
-## 5. Testing Workflow
+## 5. Caveats — Shared Data Risks
 
-### 5.1 Run a Single Test in Py3
+When Py3 pip library upgrades could break old-database compatibility:
+
+| Upgrade | Risk to Shared Data | Mitigation |
+|---------|:-------------------:|------------|
+| mysqlclient 2.x | Drops Py2 support, may need MySQL features 5.6 doesn't have | **Stay on 1.4.6** until both Py2 dropped AND MySQL upgraded |
+| pymongo 4.x | Requires MongoDB ≥3.6 | **Stay on 3.12** until MongoDB upgraded (independent track) |
+| elasticsearch-py 7.x | Requires ES ≥6.x | **Stay on 1.9.x** until ES replaced |
+| Django ORM migration | Schema changes write to shared DB | Run migrations on Py2 first; Py3 reads same schema |
+| Session serialization | Py2 sessions in DB may not deserialize in Py3 | Use `SESSION_SERIALIZER='django.contrib.sessions.serializers.JSONSerializer'` (already set) |
+
+**Rule: any upgrade that changes database schema or wire protocol must first be verified against the existing Py2 data.**
+
+---
+
+## 6. Testing Workflow
+
+### 6.1 Run a Single Test in Py3
 
 ```bash
 COMPOSE_PROJECT_NAME=py3devstack \
@@ -157,7 +156,7 @@ COMPOSE_PROJECT_NAME=py3devstack \
   '
 ```
 
-### 5.2 Compare Py2 vs Py3
+### 6.2 Compare Py2 vs Py3
 
 ```bash
 # Py2
@@ -172,7 +171,7 @@ diff /tmp/py2.out /tmp/py3.out
 
 ---
 
-## 6. Risk Items
+## 7. Risk Items
 
 | Item | Risk | Mitigation |
 |------|:----:|------------|
@@ -185,7 +184,7 @@ diff /tmp/py2.out /tmp/py3.out
 
 ---
 
-## 7. When to Create the Py3 Environment
+## 8. When to Create the Py3 Environment
 
 | Milestone | Action |
 |-----------|--------|
