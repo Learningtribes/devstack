@@ -1,196 +1,190 @@
-# Python 3 Migration — Devstack Strategy
+# Python 3 Migration — Devstack Environment Strategy
 
 > Date: 2026-07-19  
-> Reference: `platform-migration_discussion/docs/migration_discussion/03-runtime-environment.md`  
-> **⚠️ Design note:** The migration discussion docs (01–07) focus on code-level migration strategy (which packages to upgrade, in what order). There is no existing plan for a parallel Py2/Py3 devstack environment. This document is an original design, reasoning from first principles: Py3 cannot provision; sharing validated data reduces confounding variables; the only hard incompatibility is memcached pickle format.
+> Reference: `platform/.claude/skills/python3-migration/` + `CLAUDE.md § Python 3.8 Testing`  
+> **⚠️ Corrected:** The migration project already defines a Py3 testing strategy — a lightweight test container, NOT a parallel devstack. This document replaces the earlier original-design speculation with the established project approach.
 
 ---
 
-## 1. Core Principle
+## 1. Established Strategy (from CLAUDE.md + python3-migration skill)
 
-The existing Py2 devstack must remain intact and working. Py3 testing runs in a **parallel environment** using Docker Compose project isolation.
+The migration project uses a minimal Python 3.8 Docker container for targeted test runs. It does NOT attempt to run a full LMS/Studio devstack under Py3.
+
+### Architecture
 
 ```
-Py2 (prod-equivalent)          Py3 (migration target)
-─────────────────────          ─────────────────────
-Project: devstack              Project: py3devstack
-Ports:   18000/18010/...       Ports:   18100/18110/...
-DB:      edxapp (MySQL)        DB:      edxapp_py3 (MySQL)
-ES:      courseware_index      ES:      courseware_index_py3
-Volumes: devstack_*            Volumes: py3devstack_*
+Host (macOS)
+├── Devstack (Py2)              Python 3.8 Test Container
+│   ├── MySQL :3306             ├── docker run --network host
+│   ├── MongoDB :27017          ├── -v "$PWD:/work" (source mount)
+│   ├── ES :9200                ├── python:3.8-bullseye
+│   └── LMS/Studio :18000/10    ├── /work/.venv (persisted on host)
+│                                └── paver test_system -t <module>
 ```
 
----
+### Key Design Decisions
 
-## 2. Isolation Strategy
+| Decision | Rationale |
+|----------|-----------|
+| **Network host mode** (`--network host`) | Access existing devstack's MySQL/Mongo/ES when needed |
+| **Source bind-mount** | Code changes visible instantly; no rebuild |
+| **`.venv` on host** | Persists across container restarts; no repeated pip install |
+| **No services** | `paver test_system` uses test databases (auto-created by Django test runner) |
+| **No data sharing** | Test runner creates/destroys test databases; no conflict with Py2 devstack |
 
-**Key decision: share data services where possible.** Py3 cannot complete `provision`, and sharing the existing validated data makes it easier to distinguish Py3 code bugs from data/config issues.
+### Why NOT a Parallel Devstack
 
-| Resource | Strategy | Reason |
-|----------|----------|--------|
-| Containers | Different project name (`py3devstack`) | No name conflicts |
-| Ports | +100 offset (18100/18110/...) | No port conflicts |
-| MySQL | **Shared** — same `edxapp` database, read-write | mysqlclient 1.4.6 supports both Py2 & Py3 on MySQL 5.6 |
-| MongoDB | **Shared** — same `edxapp` database | pymongo 3.12 works with MongoDB 2.6–5.0 |
-| Elasticsearch | **Shared** — same indices | elasticsearch-py 1.9.0 is pure Python; optional `*_py3` alias if mapping needs diverge |
-| Memcached | **Separate** instance (port 11212) | **Pickle format incompatible Py2↔Py3** — MUST isolate |
-| Source code | Shared mount (read-only from Py3 side) | Edits on Py2; Py3 sees same code |
-| Devpi | Shared (read-only) | pip cache agnostic |
-
----
-
-## 3. Migration Phases & Required Environment Changes
-
-### Phase A — Driver Bridge (Batch 1)
-
-Change: pymongo 3.12 / mysqlclient 1.4.6 / python-memcached 1.59
-
-**Testing:** Run on existing Py2 devstack FIRST. These are Py2/3 dual-compatible.
-No separate Py3 environment needed yet. Full LMS regression.
-
-### Phase B — Celery Upgrade (celery 3.1 → 4.4)
-
-Change: celery + kombu + django-celery-beat/results
-
-**Testing:** Run on existing Py2 devstack FIRST. Then start Py3 env with upgraded packages.
-
-### Phase C — Django 1.11.29 + Py3.8 Smoke
-
-**Here the Py3 environment becomes essential.**
-
-Change: Switch runtime to Python 3.8, all pip packages rebuilt.
-
-**Testing:** New Py3 container + separated data services.
-
-### Phase D — XBlock Py3 Assessment
-
-Each LT-fork XBlock tested in isolation in Py3 container.
+1. Py3 provisioning is not feasible (same reason Py2 provisioning is manual)
+2. Test runner creates its own databases — doesn't need a running LMS/Studio
+3. The goal is per-module syntax+test verification, not full app functionality
+4. Keeping it lightweight avoids hours of setup per session
 
 ---
 
-## 4. Setup Plan
+## 2. Setup
 
-### 4.1 Prerequisites
+### 2.1 Build the Test Container
 
 ```bash
-# Py3 only needs its own memcached — MySQL/Mongo/ES/devpi are shared
-cd /Users/noahwang/workspace/hawthorn/devstack
+cd /Users/noahwang/workspace/hawthorn/platform
+
+# Start container (one-time)
+docker run -it --network host \
+  --name py38-tool-container \
+  --platform linux/amd64 \
+  -v "$PWD:/work" \
+  -w /work \
+  python:3.8-bullseye /bin/bash
+
+# Inside container: one-shot setup (creates /work/.venv)
+./.claude/skills/python3-migration/scripts/setup-py38-container.sh
 ```
 
-### 4.2 Docker Compose Override
+After setup, exit the container. `.venv` is persisted at `/work/.venv` on host.
 
-Py3 environment only needs LMS + Studio + Discovery + its own memcached. Data services (MySQL/Mongo/ES/Devpi) are shared from the Py2 environment.
-
-```yaml
-# docker-compose-py3.yml
-version: '2.1'
-
-services:
-  memcached:
-    ports:
-      - "11212:11211"
-
-  lms:
-    image: ltdps/edxapp:latest  # eventually py3-dev image
-    ports:
-      - "18100:18000"
-    platform: linux/amd64
-
-  studio:
-    image: ltdps/edxapp:latest
-    ports:
-      - "18110:18010"
-    platform: linux/amd64
-
-  discovery:
-    image: ltdps/discovery:latest
-    ports:
-      - "18382:18381"
-    platform: linux/amd64
-```
-
-### 4.3 Start Py3 Environment
+### 2.2 Quick Start
 
 ```bash
-# Py2 (unchanged) — runs MySQL/Mongo/ES/Memcached/Devpi
-DEVSTACK_WORKSPACE=$HOME/workspace/hawthorn \
-  docker compose -f docker-compose.yml -f docker-compose-host.yml up -d
+# Re-enter container
+docker start -ai py38-tool-container
 
-# Py3 (only app containers + its own memcached)
-COMPOSE_PROJECT_NAME=py3devstack \
-  DEVSTACK_WORKSPACE=$HOME/workspace/hawthorn \
-  docker compose -f docker-compose.yml -f docker-compose-py3.yml up -d lms studio discovery memcached
+# OR fresh container (reuses existing .venv):
+docker run -it --network host --platform linux/amd64 \
+  -v "$PWD:/work" -w /work \
+  python:3.8-bullseye /bin/bash
 
-# Verify
-docker compose ps                              # Py2: 10 containers
-COMPOSE_PROJECT_NAME=py3devstack docker compose ps  # Py3: 3 containers
-
----
-
-## 5. Caveats — Shared Data Risks
-
-When Py3 pip library upgrades could break old-database compatibility:
-
-| Upgrade | Risk to Shared Data | Mitigation |
-|---------|:-------------------:|------------|
-| mysqlclient 2.x | Drops Py2 support, may need MySQL features 5.6 doesn't have | **Stay on 1.4.6** until both Py2 dropped AND MySQL upgraded |
-| pymongo 4.x | Requires MongoDB ≥3.6 | **Stay on 3.12** until MongoDB upgraded (independent track) |
-| elasticsearch-py 7.x | Requires ES ≥6.x | **Stay on 1.9.x** until ES replaced |
-| Django ORM migration | Schema changes write to shared DB | Run migrations on Py2 first; Py3 reads same schema |
-| Session serialization | Py2 sessions in DB may not deserialize in Py3 | Use `SESSION_SERIALIZER='django.contrib.sessions.serializers.JSONSerializer'` (already set) |
-
-**Rule: any upgrade that changes database schema or wire protocol must first be verified against the existing Py2 data.**
-
----
-
-## 6. Testing Workflow
-
-### 6.1 Run a Single Test in Py3
-
-```bash
-COMPOSE_PROJECT_NAME=py3devstack \
-  docker exec -it py3devstack-lms-1 bash -c '
-    source /edx/app/edxapp/edxapp_env &&
-    cd /edx/app/edxapp/edx-platform &&
-    python -m pytest common/djangoapps/student/tests/test_login.py \
-      --ds=cms.envs.test
-  '
-```
-
-### 6.2 Compare Py2 vs Py3
-
-```bash
-# Py2
-docker exec edx.devstack.lms python -m pytest path/to/test.py > /tmp/py2.out
-
-# Py3
-COMPOSE_PROJECT_NAME=py3devstack \
-  docker exec py3devstack-lms-1 python -m pytest path/to/test.py > /tmp/py3.out
-
-diff /tmp/py2.out /tmp/py3.out
+# Activate and test
+source /work/.venv/bin/activate
+SKIP_NPM_INSTALL=True paver test_lib -C --fasttest
 ```
 
 ---
 
-## 7. Risk Items
+## 3. Testing Workflow
 
-| Item | Risk | Mitigation |
-|------|:----:|------------|
-| Django 1.11 on Py3.8 (unofficial) | 🟡 | Spy smoke-test first; be ready to target Py3.7 |
-| Celery 3.1→4.4 API changes | 🔴 | Test on Py2 first; update all `@task` decorators |
-| Memcached pickle cross-Py | 🔴 | Separate memcached instance; use KEY_PREFIX |
-| Shared source mount edits | 🟡 | Use separate worktree or mount read-only for Py3 |
-| LT-fork XBlock Py3 compat | 🔴 | Test each XBlock individually; may need upstream forks |
-| pymongo 3.12 API changes | 🟡 | `count()` → `count_documents()` etc. |
+### 3.1 Per-Module Test
+
+```bash
+# Inside container
+cd /work && source .venv/bin/activate
+
+# Run a specific module test
+paver test_system -s lms -t lms/djangoapps/grades/tests/test_models.py
+
+# With fast options
+paver test_system -s lms -t lms/djangoapps/grades \
+  --disable-migrations --fail-fast
+```
+
+### 3.2 Syntax Verification
+
+```bash
+# Verify a module compiles under Py3
+python -m compileall -q lms/djangoapps/<module>/
+# Exclude migrations
+find lms/djangoapps/<module> -name "*.py" ! -path "*/migrations/*" \
+  -exec python -m py_compile {} \;
+```
+
+### 3.3 Full Suite
+
+```bash
+SKIP_NPM_INSTALL=True paver test_system -s lms
+SKIP_NPM_INSTALL=True paver test_system -s cms
+SKIP_NPM_INSTALL=True paver test_lib -C --fasttest
+```
 
 ---
 
-## 8. When to Create the Py3 Environment
+## 4. Comparison: Test Container vs Parallel Devstack
 
-| Milestone | Action |
-|-----------|--------|
-| Now | Create `docker-compose-py3.yml`, document strategy |
-| Phase A (driver bridge) | Test on Py2 only; no Py3 env needed |
-| Phase B (celery) | Test on Py2 first; spin up Py3 env after Py2 passes |
-| Phase C (Django+Py3.8) | Py3 env required; full data separation |
-| Phase D (XBlock) | Py3 env used for per-XBlock isolation tests |
+| Aspect | Py38 Test Container (established) | Parallel Devstack (speculative) |
+|--------|----------------------------------|--------------------------------|
+| Setup time | ~10 min (one-time) | Hours (provision equivalent) |
+| Data | Test runner auto-creates clean DB | Needs shared MySQL/Mongo |
+| Memcached | Not used in tests | Must be separate (pickle issue) |
+| LMS/Studio UI | Not available | Available at different ports |
+| Purpose | Syntax+unit test verification | Full integration testing |
+| Complexity | `docker run` + `paver test` | Full compose project |
+
+---
+
+## 5. Integration with Local Devstack
+
+The Py2 devstack provides the "expected behavior" baseline. The Py38 test container verifies code correctness. They complement each other:
+
+```
+1. Make changes in platform/ (host)
+2. Run targeted tests in Py38 container → verify syntax + logic
+3. Run targeted tests in Py2 devstack → verify behavior unchanged
+4. Compare results
+```
+
+### Running Same Test in Both Environments
+
+```bash
+# Py2 devstack
+docker exec edx.devstack.lms bash -c '
+  source /edx/app/edxapp/edxapp_env &&
+  cd /edx/app/edxapp/edx-platform &&
+  paver test_system -s lms -t path/to/test.py
+'
+
+# Py38 container
+docker exec py38-tool-container bash -c '
+  cd /work && source .venv/bin/activate &&
+  paver test_system -s lms -t path/to/test.py
+'
+```
+
+---
+
+## 6. When You Might Need More
+
+The lightweight container approach is sufficient for Phase 0–4 (per-module syntax and unit testing). Later phases may need:
+
+| Phase | Need | Solution |
+|-------|------|----------|
+| Phase 5 (Integration) | Cross-module integration tests | Same container; paver test_system handles this |
+| Phase 6 (Production) | Full LMS smoke test | May need a real LMS running under Py3; revisit then |
+| XBlock testing | Some XBlocks need browser | Use Playwright on host pointing at devstack |
+
+---
+
+## 7. Quick Reference
+
+```bash
+# Start container
+docker start -ai py38-tool-container
+
+# Rebuild venv (if reqs changed)
+cd /work && rm -rf .venv && ./.claude/skills/python3-migration/scripts/setup-py38-container.sh
+
+# Run tests
+cd /work && source .venv/bin/activate
+SKIP_NPM_INSTALL=True paver test_system -s lms -t <module>
+SKIP_NPM_INSTALL=True paver test_lib -C --fasttest
+
+# Verify syntax only
+python -m compileall -q <module_path>
+```
