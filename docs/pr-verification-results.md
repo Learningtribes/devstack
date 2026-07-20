@@ -8,7 +8,7 @@
 > **Run 1:** 4/9. **Run 2:** 5/8. **Run 3:** master baseline, surface 1 discriminator.  
 > **Run 4:** 6/8 (surface 3 retarget + admin 404 — but admin false positive, §6.8).  
 > **Run 5:** Master baseline with corrected `/triboo-guanli/` URL — **2 discriminators proven (surfaces 1 + 9).**  
-> **Run 6:** badges-rm final — surface 2 deleted (flaky+vacuous), 5/7 passed. Themes mount fix applied.  
+> **Run 6:** badges-rm final — surface 2 deleted (flaky+vacuous), 5/7 passed. `/edx/src` mount fix (§6.12).  
 > Checklist: 7 surfaces. 2 discriminators. 2 Studio blocked (CMS auth §6.1). 1 gate candidate (surface 3).
 
 ---
@@ -22,7 +22,8 @@ git checkout -- lms/envs/devstack_docker.py cms/envs/devstack_docker.py
 bash scripts/enable_devstack.sh
 bash scripts/provision-fixtures.sh
 # Registration + superuser for edx
-# Note: docker-compose-pr.yml requires themes mount (added Run 6)
+# Note: docker-compose-pr.yml mounts ${DEVSTACK_WORKSPACE}/src:/edx/src (themes ship under it
+#       at /edx/src/themes — no separate themes mount needed; see §6.12)
 BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run checklist
 ```
 
@@ -63,7 +64,7 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 3 | master | Baseline (old surface 3/9) | 1 discriminator |
 | 4 | badges-rm | Surface 3 retarget + admin URL | 6/8 |
 | 5 | master | Corrected `/triboo-guanli/` URL | 2 discriminators |
-| 6 | badges-rm | Surface 2 deleted + themes fix | 5/7 (stable) |
+| 6 | badges-rm | Surface 2 deleted + `/edx/src` mount fix | 5/7 (stable) |
 
 ---
 
@@ -98,8 +99,8 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 8 | Studio 302 — not "cross-port cookie" | CMS distinct `SESSION_COOKIE_NAME`. Fix: auto_auth on `:18010` |
 | 9 | Admin at wrong URL | **FIXED:** `/triboo-guanli/badges/badgeclass/` ✅ |
 | 10 | Surface 3 gate, not discriminator | Upgrade to value assertion (§6.5) |
-| 11 | `docker-compose-pr.yml` OSError on theme dir after worktree switch | **Real fix = the `${DEVSTACK_WORKSPACE}/src:/edx/src` mount** (themes live under it at `/edx/src/themes`; canonical `docker-compose-host.yml` mounts only `/edx/src`, no separate themes line). The extra `src/themes:/edx/src/themes` line added in Run 6 is a **redundant no-op** (same host subpath, target nested inside `/edx/src`) → **misattribution; remove it** (§6.12). |
-| 12 | Surface 2 flaky + vacuous | **DELETED Run 6.** No BadgeAssertion fixture + page timeout on master. |
+| 11 | `docker-compose-pr.yml` OSError on theme dir after worktree switch | **Real fix = the `${DEVSTACK_WORKSPACE}/src:/edx/src` mount** (themes live under it at `/edx/src/themes`; canonical `docker-compose-host.yml` mounts only `/edx/src`, no separate themes line). The `src/themes:/edx/src/themes` line briefly added in Run 6 was a **redundant no-op** (same host subpath, target nested inside `/edx/src`). ✅ **Resolved:** redundant line removed; only `/edx/src` remains (§6.12). |
+| 12 | Surface 2 flaky + vacuous | **DELETED.** No BadgeAssertion fixture + page timeout on master. (Note: the Run-6 delete commit only removed a comment; the `/u/{username}` surface was actually removed from `checklists/pr-2323.yml` in the skill afterwards → checklist now truly 7 surfaces, matching this log.) |
 
 ---
 
@@ -108,13 +109,12 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 1. ✅ All env corrections — surfaces 1, 4, 5 green on badges-rm.
 2. ✅ Master baseline — surfaces 1 + 9 double-proven.
 3. ✅ Surface 2 deleted (flaky+vacuous).
-4. ✅ Themes mount fix (`docker-compose-pr.yml`).
+4. ✅ `docker-compose-pr.yml` mount fix — added `/edx/src`, removed the redundant `src/themes` overlay (§6.12).
 5. ⚠️ Surface 3: upgrade gate to value assertion + re-baseline both branches.
 6. 🔒 CMS auto_auth (§6.1) → surface 8.
 7. §6.10 — gate surface 9 on `ENABLE_DJANGO_ADMIN_SITE`.
 8. §6.6 — split surface 5 OpenBadges half.
-9. §6.12 — drop the redundant `src/themes` mount from `docker-compose-pr.yml` (keep only `/edx/src`).
-10. Apply to PRs #2322/#2324/#2348.
+9. Apply to PRs #2322/#2324/#2348.
 
 ---
 
@@ -141,13 +141,14 @@ Admin routed only when `settings.DEBUG or FEATURES['ENABLE_DJANGO_ADMIN_SITE']`.
 ### 6.11 Run 5 verdict — accepted
 Surface 9's 302→404 is auth-independent route-existence flip. **2 discriminators proven.**
 
-### 6.12 `docker-compose-pr.yml` themes mount is redundant
+### 6.12 `docker-compose-pr.yml` themes mount was redundant — RESOLVED
 Canonical `docker-compose-host.yml` mounts only `${DEVSTACK_WORKSPACE}/src:/edx/src:cached`;
 themes are served under it at `/edx/src/themes`. The Run-6 line
-`${DEVSTACK_WORKSPACE}/src/themes:/edx/src/themes:cached` targets a path **nested inside**
-`/edx/src` and points to the **same host subpath** → a no-op overlay. The OSError was actually
-caused by a missing `/edx/src` mount, not a missing themes mount. **Action:** remove the
-`src/themes` line from both `lms` and `studio` (keep `/edx/src`), matching host.yml.
+`${DEVSTACK_WORKSPACE}/src/themes:/edx/src/themes:cached` targeted a path **nested inside**
+`/edx/src` pointing to the **same host subpath** → a no-op overlay. The OSError was actually
+caused by a missing `/edx/src` mount, not a missing themes mount. ✅ **Resolved:** the
+`src/themes` line was removed from both `lms` and `studio`; only `/edx/src` remains (matches
+host.yml).
 
 ### 6.7 Priority order
 1. ✅ Surface 1 + 9 double-proven.
