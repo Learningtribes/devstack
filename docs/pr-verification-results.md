@@ -67,14 +67,23 @@ bash scripts/provision-fixtures.sh
 
 ---
 
-## 3. Proven Discriminators
+## 3. Discriminators
+
+### Proven (measured on both branches)
 
 | # | Surface | Layer | Master | badges-rm | Status |
 |---|---------|-------|:---:|:---:|--------|
 | 1 | `/api/badges/v1/assertions/user/{user}/` | URL routing | 200 | 404 | ✅ **proven** |
-| 9 | `/triboo-guanli/badges/badgeclass/` | Admin routing | 302 | 404 | ✅ **proven** |
-| 3 | `accomplishments_shared` value flip | serializer | `true` | `false` | ⚠️ gate — upgrade to value assertion pending (§6.5) |
-| 8 | Studio `issue_badges` toggle | CMS settings | present | absent | 🔒 blocked by CMS auth (§6.1) |
+| 9 | `/triboo-guanli/badges/badgeclass/` | Admin routing | 302 | 404 | ✅ **proven** — but see §6.10 (env-dependent; gate on `ENABLE_DJANGO_ADMIN_SITE`) |
+
+### Candidate / Pending (NOT yet proven — expected values are from the diff, not measured)
+
+| # | Surface | Layer | Master (expected) | badges-rm (expected) | Blocker |
+|---|---------|-------|:---:|:---:|--------|
+| 3 | `accomplishments_shared` **value** | serializer | `true` | `false` | current assertion only checks field **presence** (gate, passes both). Upgrade to value assertion + re-baseline (§6.5). Needs auto_auth. |
+| 8 | Studio `issue_badges` toggle | CMS settings | present | absent | CMS auth (§6.1) — surface never executed. |
+
+**Proven discriminator count: 2 (surfaces 1 + 9). Surfaces 3 and 8 are candidates, not proof.**
 
 ---
 
@@ -99,8 +108,11 @@ bash scripts/provision-fixtures.sh
 3. ⚠️ Surface 3: upgrade gate to value assertion (`"accomplishments_shared": false` vs `true`) + re-baseline both branches.
 4. 🔒 Fix CMS auto_auth (§6.1) → unlock surface 8 (Studio issue_badges — highest remaining discriminator).
 5. §6.6 — split surface 5: keep share-button gate; mark OpenBadges half vacuous.
-6. Surface 2: vacuous without fixture. Label "covered by unit tests" or provision BadgeAssertion.
-7. Apply pattern to PRs #2322/#2324/#2348.
+6. Surface 2: vacuous **and** flaky (timed out on the Run-5 master baseline). Drop it, or label
+   "covered by unit tests" / provision a real BadgeAssertion. Don't keep a vacuous+flaky case.
+7. §6.10 — gate surface 9 on `ENABLE_DJANGO_ADMIN_SITE` so it degrades loudly (not to a silent
+   404-on-both) if admin is disabled in another environment.
+8. Apply pattern to PRs #2322/#2324/#2348.
 
 ---
 
@@ -120,6 +132,19 @@ Triboo fork moves admin to `/triboo-guanli/`. Original `/admin/` URL was 404 on 
 
 ### 6.9 Process rule
 Every retarget must be re-run on BOTH master and badges-rm. Single-branch "proven" claims are void.
+
+### 6.10 Surface 9 is env-dependent — gate it on `ENABLE_DJANGO_ADMIN_SITE`
+Admin is routed only when `settings.DEBUG or FEATURES['ENABLE_DJANGO_ADMIN_SITE']` (see
+`lms/urls.py`). Run 5's 302-vs-404 flip only holds because admin is enabled in THIS devstack.
+In an environment where admin is off, `/triboo-guanli/...` is 404 on **both** branches →
+surface 9 silently becomes vacuous again (same failure class as §6.8). Add the flag as a
+precondition (skip/xfail the surface when off) so it fails loudly instead of passing vacuously.
+
+### 6.11 Run 5 verdict — accepted
+Surface 9's 302→404 is a legitimate route-existence flip and is **auth-independent** (any
+non-404 on master vs 404 on badges-rm discriminates). Combined with surface 1, **2 real
+discriminators are proven.** Residual cleanups only: §6.10 (gate), §3 reclassification
+(3/8 are candidates, not proven), and surface 2 (drop/relabel).
 
 ### 6.7 Priority order
 1. ✅ Surface 1 + 9 double-proven (Run 5).
