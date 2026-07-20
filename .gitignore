@@ -101,3 +101,6 @@ ENV/
 local.mk
 
 .autoenv*
+
+# Chinese-language docs are kept local-only (English is the authoritative version)
+docs/*-cn.md

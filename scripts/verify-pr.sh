@@ -4,7 +4,10 @@
 # Example: ./verify-pr.sh 2335 lms/djangoapps/grades
 #          ./verify-pr.sh 2322 common/djangoapps/embargo --smoke
 
-set -euo pipefail
+# NOTE: intentionally NOT using `set -e`. Test steps are expected to return
+# non-zero on test failures, and we want to capture those exit codes and keep
+# going rather than abort the whole pipeline mid-way.
+set -uo pipefail
 
 PR_NUM="${1:?Usage: $0 <PR_NUM> <MODULE_PATH> [--smoke]}"
 MODULE="${2:?Usage: $0 <PR_NUM> <MODULE_PATH> [--smoke]}"
@@ -13,11 +16,30 @@ if [ "${3:-}" = "--smoke" ]; then
   SMOKE=true
 fi
 
-# Determine PR type from branch name
-BRANCH=$(cd /Users/noahwang/workspace/hawthorn/platform && git rev-parse --abbrev-ref HEAD)
-PR_TYPE="py3"
-if echo "$BRANCH" | grep -q "removal\|badges\|embargo\|support.*zendesk\|entitlement\|external_auth"; then
-  PR_TYPE="dcc"
+# Resolve the platform repo relative to this script (…/devstack/scripts → …/platform),
+# with an env override. Avoids a hardcoded absolute path.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLATFORM_DIR="${PLATFORM_DIR:-$(cd "${SCRIPT_DIR}/../../platform" 2>/dev/null && pwd || true)}"
+if [ -z "${PLATFORM_DIR}" ] || [ ! -d "${PLATFORM_DIR}/.git" ]; then
+  echo "Error: platform repo not found. Set PLATFORM_DIR=/path/to/platform." >&2
+  exit 1
+fi
+
+# Determine PR type. Prefer an explicit override; otherwise infer from the
+# actual diff against master (deleted files ⇒ DCC removal), falling back to the
+# branch name. Branch-name grep alone misclassifies (e.g. a Py3 branch that
+# merely touches entitlements).
+BRANCH=$(cd "${PLATFORM_DIR}" && git rev-parse --abbrev-ref HEAD)
+PR_TYPE="${PR_TYPE:-}"
+if [ -z "${PR_TYPE}" ]; then
+  DELETED_COUNT=$(cd "${PLATFORM_DIR}" && git diff master...HEAD --diff-filter=D --name-only 2>/dev/null | grep -c '\.py$' || true)
+  if [ "${DELETED_COUNT:-0}" -gt 5 ]; then
+    PR_TYPE="dcc"
+  elif echo "$BRANCH" | grep -qE "removal|badges|embargo|support.*zendesk|entitlement|external_auth"; then
+    PR_TYPE="dcc"
+  else
+    PR_TYPE="py3"
+  fi
 fi
 
 echo "=== verify-pr.sh ==="
@@ -62,6 +84,10 @@ fi
 echo ""
 
 # ── Step 3: Py3 Test ──
+# CAVEAT: full `test_system -s lms` under Py3.8 cannot boot until the celery 4.4 +
+# driver Batch-1 bridge lands (see docs/py3-migration-environment.md §1). Until then
+# this step is only meaningful for already-migrated pure-Python targets / test_lib;
+# expect import/boot failures for un-migrated LMS modules (they are NOT a PR regression).
 echo "── Step 3: Py3 test ──"
 if docker ps --format '{{.Names}}' | grep -q py38-tool-container; then
   docker exec py38-tool-container bash -c "
@@ -93,7 +119,7 @@ echo ""
 # ── Step 5: Removal Residual Scan (DCC only) ──
 if [ "${PR_TYPE}" = "dcc" ]; then
   echo "── Step 5: Removal residual scan ──"
-  cd /Users/noahwang/workspace/hawthorn/platform
+  cd "${PLATFORM_DIR}"
   echo "Deleted files:"
   git diff master...HEAD --diff-filter=D --name-only 2>/dev/null | head -10 || echo "(no deletions)"
   echo "Installed apps changes:"
@@ -104,7 +130,7 @@ fi
 # ── Step 6: Browser Smoke ──
 if [ "${SMOKE}" = true ]; then
   echo "── Step 6: Browser smoke ──"
-  cd /Users/noahwang/workspace/hawthorn/devstack
+  cd "${SCRIPT_DIR}/.."
   python3 scripts/create_test_courses.py --dry-run 2>&1 | tail -3 || echo "(Playwright unavailable)"
 fi
 

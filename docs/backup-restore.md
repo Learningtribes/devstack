@@ -21,29 +21,26 @@
 
 ## 2. Environment (Container) Backup
 
-Rebuilding LMS/Studio from the base `ltdps/edxapp:latest` image takes 1-2 hours. Save the modified container as a new image:
+Rebuilding LMS/Studio from the base `ltdps/edxapp:latest` image takes 1-2 hours. Save the modified containers as new images.
+
+**⚠️ LMS and Studio are independent containers** — each got its own in-container fixes (nodeenv, .deb, site-packages, venv/src). Commit them to **separate tags** so neither loses state:
 
 ```bash
-# LMS and Studio share the same base image — commit either one
-docker commit edx.devstack.lms ltdps/edxapp:m5-fixed
+docker commit edx.devstack.lms    ltdps/edxapp:m5-fixed
+docker commit edx.devstack.studio ltdps/edxapp:m5-fixed-studio
 ```
 
 Verification:
 ```bash
 docker images ltdps/edxapp --format "{{.Repository}}:{{.Tag}}  {{.Size}}"
-# ltdps/edxapp:latest   4.05GB
-# ltdps/edxapp:m5-fixed  5.8GB
+# ltdps/edxapp:latest          4.05GB
+# ltdps/edxapp:m5-fixed        5.8GB   (lms)
+# ltdps/edxapp:m5-fixed-studio 5.58GB  (studio)
 ```
 
-To use the committed image on rebuild, update docker-compose.yml:
-```yaml
-  lms:
-    image: ltdps/edxapp:m5-fixed
-  studio:
-    image: ltdps/edxapp:m5-fixed
-```
+**✅ Already wired (2026-07-20):** `docker-compose.yml` + `docker-compose-watchers.yml` now point `lms`→`m5-fixed` and `studio`→`m5-fixed-studio`. A `docker compose down -v` no longer loses the fixes — the next `up` recreates from these images. (Running containers keep `:latest` until recreated.)
 
-**Note:** Re-commit after any in-container modification (new pip packages, system packages, nodeenv changes).
+**Note:** Re-commit (overwrite the tag) after any in-container modification (new pip packages, system packages, nodeenv changes), so the image stays current with the running container.
 
 ---
 
@@ -122,15 +119,15 @@ echo "Restore done from: $BACKUP_DIR"
 
 ```bash
 # Backup everything
-docker commit edx.devstack.lms ltdps/edxapp:m5-fixed
+docker commit edx.devstack.lms    ltdps/edxapp:m5-fixed
+docker commit edx.devstack.studio ltdps/edxapp:m5-fixed-studio
 mkdir -p ~/workspace/hawthorn/backups/$(date +%Y%m%d)
 docker exec edx.devstack.mysql mysqldump -uroot --databases edxapp edxapp_csmh | gzip > ~/workspace/hawthorn/backups/$(date +%Y%m%d)/mysql.sql.gz
 
-# Restore from image
-docker compose down
-docker pull ltdps/edxapp:m5-fixed
-# Then update docker-compose.yml image tags and docker compose up -d
+# Recreate from the fixed images (compose already points at them)
+export DEVSTACK_WORKSPACE=/Users/noahwang/workspace/hawthorn
+docker compose -f docker-compose.yml -f docker-compose-host.yml up -d lms studio
 
-# Verify image exists
-docker images ltdps/edxapp:m5-fixed
+# Verify images exist
+docker images ltdps/edxapp --format "{{.Repository}}:{{.Tag}}  {{.Size}}"
 ```

@@ -149,7 +149,7 @@ services:
       BOK_CHOY_CMS_PORT: 18031
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: ltdps/edxapp:latest
+    image: ltdps/edxapp:m5-fixed
     platform: linux/amd64
     ports:
       - "18000:18000"
@@ -197,7 +197,7 @@ services:
       BOK_CHOY_CMS_PORT: 18131
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
-    image: ltdps/edxapp:latest
+    image: ltdps/edxapp:m5-fixed-studio
     platform: linux/amd64
     ports:
       - "18010:18010"

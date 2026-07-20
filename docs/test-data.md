@@ -66,8 +66,8 @@ python manage.py cms --settings=devstack_docker generate_course <org> <number> <
 ## Container Backup After Changes
 
 ```bash
-docker commit edx.devstack.lms ltdps/edxapp:m5-fixed
-docker commit edx.devstack.studio ltdps/edxapp:m5-fixed
+docker commit edx.devstack.lms    ltdps/edxapp:m5-fixed
+docker commit edx.devstack.studio ltdps/edxapp:m5-fixed-studio
 ```
 
 ## MySQL Backup After Changes

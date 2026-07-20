@@ -94,6 +94,6 @@ No output = identical.
 After any XBlock change:
 
 ```bash
-docker commit edx.devstack.lms ltdps/edxapp:m5-fixed
-docker commit edx.devstack.studio ltdps/edxapp:m5-fixed
+docker commit edx.devstack.lms    ltdps/edxapp:m5-fixed
+docker commit edx.devstack.studio ltdps/edxapp:m5-fixed-studio
 ```

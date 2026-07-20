@@ -679,6 +679,7 @@ docker compose -f docker-compose.yml -f docker-compose-host.yml down -v
 |-------------|--------|
 | All 10 services | Added `platform: linux/amd64` |
 | memcached | Image `1.4.24` → `1.5.4` |
+| lms / studio image | `ltdps/edxapp:latest` → `m5-fixed` (lms) / `m5-fixed-studio` (studio) — persists in-container fixes across `down -v` (also in `docker-compose-watchers.yml`) |
 
 ### In-Container Modifications (non-persistent, redo on container rebuild)
 

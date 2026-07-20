@@ -57,27 +57,61 @@ def create_course(page, name, number, run):
     
     # Check if navigated to course outline (URL has course+org+number+run)
     if 'course-v1' in page.url:
-        print(f"OK -> {page.url.split('/')[-1]}")
-        
-        # Enable all advanced modules for the course
-        page.goto(page.url + "/settings/advanced", timeout=5000)
-        page.wait_for_timeout(1000)
-        # Add advanced modules via JS
-        advanced_modules = [
-            "poll", "survey", "scormxblock", "pdf", "ilt",
-            "drag-and-drop-v2", "google-document", "google-calendar",
-            "done", "lbmdonexblock", "iframe", "externality",
-            "openassessment", "word_cloud", "audio", "animation",
-        ]
-        page.evaluate("""
-            var modules = arguments[0];
-            var el = document.querySelector('#advance-module-keys');
-            if (el) { el.value = JSON.stringify(modules); }
-        """, advanced_modules)
+        course_key = page.url.split('/')[-1]
+        print(f"OK -> {course_key}", end=" ", flush=True)
+        if enable_advanced_modules(page, course_key):
+            print("[advanced modules saved]")
+        else:
+            print("[WARN: advanced modules NOT saved]")
         return True
     else:
         print(f"FAIL (url)")
         return False
+
+
+ADVANCED_MODULES = [
+    "poll", "survey", "scormxblock", "pdf", "ilt",
+    "drag-and-drop-v2", "google-document", "google-calendar",
+    "done", "lbmdonexblock", "iframe", "externality",
+    "openassessment", "word_cloud", "audio", "animation",
+]
+
+
+def enable_advanced_modules(page, course_key):
+    """Persist the advanced-modules list via Studio's REST API.
+
+    Setting the CodeMirror textarea value alone does NOT save — Studio persists
+    advanced settings through a POST to the model endpoint. We drive that endpoint
+    directly (with the page's CSRF token) so the change is actually stored.
+    """
+    settings_url = "{}/settings/advanced/{}".format(BASE, course_key)
+    page.goto(settings_url, timeout=8000)
+    page.wait_for_timeout(1500)
+
+    result = page.evaluate(
+        """async ([url, modules]) => {
+            const tokenEl = document.querySelector('[name=csrfmiddlewaretoken]');
+            const token = tokenEl ? tokenEl.value
+                : (document.cookie.match(/csrftoken=([^;]+)/) || [])[1];
+            if (!token) return {ok: false, error: 'no csrf token'};
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRFToken': token,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    advanced_modules: {value: modules},
+                }),
+            });
+            return {ok: resp.ok, status: resp.status};
+        }""",
+        [settings_url, ADVANCED_MODULES],
+    )
+    return bool(result and result.get("ok"))
 
 
 def main():
