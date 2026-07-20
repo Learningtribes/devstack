@@ -6,7 +6,8 @@
 > Tool: Playwright Test/TS + checklist-as-code runner
 >
 > **Run 1 (initial):** 4/9 passed. **Run 2 (corrected):** 5/8 passed.  
-> Studio ×3 + admin blocked by cross-port auth, not PR regressions.
+> Studio ×2 (302) blocked by CMS auth; admin ×1 (404) is an LMS route gap — see §6 review.
+> **⚠ Not yet PR-proven — baseline control on master still pending (§5.4). Only surface 1 is a proven discriminator.**
 
 ---
 
@@ -107,8 +108,8 @@ checks or provision a real BadgeAssertion.
 | 5 | LMS restart takes 15-30s per switch | Factor into pipeline timing |
 | 6 | `npm run --silent` still noisy | Normal |
 | 7 | `devstack_docker.py` polluted with duplicate/empty harness blocks | `git checkout --` then `enable_devstack.sh` once |
-| 8 | Studio surfaces 302 — LMS session cookie doesn't cross ports | Runner limitation; Studio needs separate login flow |
-| 9 | `/admin/` 404 — admin module not enabled in this instance | Enable or route through Studio admin |
+| 8 | ~~Studio 302 — LMS session cookie doesn't cross ports~~ | **Wrong mechanism (see §6.1).** Cookies are NOT port-scoped (RFC 6265) — the `sessionid` set on :18000 IS sent to :18010. Real cause: CMS uses a distinct `SESSION_COOKIE_NAME` in `cms.env.json`, or no CMS session exists. Fix: auto_auth against `:18010/auto_auth`, not "accept cookies can't cross ports". |
+| 9 | `/admin/` 404 — LMS admin route absent | LMS-side (port 18000), **not** cross-port. Enable LMS `/admin/`, or retarget surface 9 to `/admin/badges/badgeassertion/` and assert `404` (isomorphic to surface 1). |
 
 ---
 
@@ -121,3 +122,62 @@ checks or provision a real BadgeAssertion.
 5. **Resolve cross-port auth**: extend runner to handle Studio login, or add `/admin/` routing, or accept LMS-only coverage for now.
 6. Document baseline-vs-PR diff once §5.4 is clean.
 7. Apply pattern to other migration PRs (embargo #2322, support #2324, M4.4-A #2348).
+
+---
+
+## 6. Review corrections (2026-07-20) — action items for the runner side
+
+Run 2's direction is right (no failure is a #2323 regression), but two diagnoses are
+inaccurate and one risk is understated. Fix these before claiming the checklist proves
+the removal.
+
+### 6.1 "Cross-port cookie" claim is wrong — fix the runner, not the story
+
+Cookies ignore port (RFC 6265): the `sessionid` set by `:18000/auto_auth` **is** sent to
+`:18010`. The Studio 302 is therefore **not** "cookie can't cross origin". Real cause is
+one of:
+
+- devstack's `cms.env.json` sets a **distinct `SESSION_COOKIE_NAME`** (platform default is
+  `sessionid` for both LMS and CMS, but env.json often overrides CMS), or
+- `auto_auth` only created an **LMS** session; CMS has no matching session row.
+
+**Action:** verify by printing the browser cookies after auto_auth + reading
+`SESSION_COOKIE_NAME` from `cms.env.json`. **Fix** = auto_auth against the CMS origin
+(`http://localhost:18010/auto_auth`, usually enabled in devstack) or perform a real Studio
+login. Do **not** encode "cookies can't cross ports" as a limitation.
+
+### 6.2 admin 404 is LMS-side, not cross-port
+
+Surface 9 targets `/admin/` with no host prefix → resolves to `:18000` (LMS). 404 means
+LMS has no Django admin route in this devstack — unrelated to Studio auth. The Run-2
+summary miscategorized it. **Action:** enable LMS `/admin/`, or retarget surface 9 to a
+badge-model admin page (`/admin/badges/badgeassertion/`) and assert `404` — same shape as
+surface 1, and it doubles as a removal proof.
+
+### 6.3 Vacuous-assertion risk is broader than §3 admits
+
+`provision-fixtures.sh` sets `course.issue_badges = False` (to avoid the missing-badge-image
+500). Consequence: on **master** the cert badge modal also does not render, so several
+"absent"/"text_absent" assertions pass on BOTH branches = vacuous:
+
+| Assertion | Discriminating? |
+|-----------|-----------------|
+| Surface 1 — badges API `404` | ✅ proven (route deleted) |
+| Cert page — `absent: ico-mozillaopenbadges` / `text_absent: OpenBadges` | ⚠️ likely vacuous (`issue_badges=False` → no modal on master either) |
+| Learner profile — `.badge-list-container` absent | ⚠️ vacuous risk (no BadgeAssertion fixture → absent on master too) |
+| User API — `text_absent: badges` | ⚠️ confirm master's accounts serializer actually emits `badges`, else vacuous |
+| Studio advanced settings — `text_absent: badges` (the `issue_badges` toggle) | ✅ real discriminator — but currently blocked by §6.1 auth |
+
+**Net:** today only **surface 1** is a proven discriminator; the second strong one (Studio
+`issue_badges` text) is gated on fixing §6.1. "5/5 LMS green" overstates confidence until
+the baseline control (§5.4) runs.
+
+### 6.4 Priority order
+
+1. **Baseline control on master (highest)** — run the same checklist on the master worktree.
+   Expect surface 1 → RED (200). **Any `absent`/`text_absent` surface that stays GREEN on
+   master is vacuous** → upgrade to route/structure-level checks or provision a real
+   `BadgeAssertion`.
+2. Fix §6.1 (CMS auto_auth) → unlocks the Studio `issue_badges` discriminator.
+3. Fix §6.2 (admin route or retarget surface 9 to `404`).
+4. Correct the §2 summary + §4 issue-8 wording (drop "cross-port cookie").
