@@ -98,7 +98,7 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 8 | Studio 302 — not "cross-port cookie" | CMS distinct `SESSION_COOKIE_NAME`. Fix: auto_auth on `:18010` |
 | 9 | Admin at wrong URL | **FIXED:** `/triboo-guanli/badges/badgeclass/` ✅ |
 | 10 | Surface 3 gate, not discriminator | Upgrade to value assertion (§6.5) |
-| 11 | `docker-compose-pr.yml` missing themes mount | **FIXED Run 6.** Added `${DEVSTACK_WORKSPACE}/src/themes:/edx/src/themes:cached` for both lms + studio. Without it, PR worktree switch → OSError on theme dir. |
+| 11 | `docker-compose-pr.yml` OSError on theme dir after worktree switch | **Real fix = the `${DEVSTACK_WORKSPACE}/src:/edx/src` mount** (themes live under it at `/edx/src/themes`; canonical `docker-compose-host.yml` mounts only `/edx/src`, no separate themes line). The extra `src/themes:/edx/src/themes` line added in Run 6 is a **redundant no-op** (same host subpath, target nested inside `/edx/src`) → **misattribution; remove it** (§6.12). |
 | 12 | Surface 2 flaky + vacuous | **DELETED Run 6.** No BadgeAssertion fixture + page timeout on master. |
 
 ---
@@ -113,7 +113,8 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 6. 🔒 CMS auto_auth (§6.1) → surface 8.
 7. §6.10 — gate surface 9 on `ENABLE_DJANGO_ADMIN_SITE`.
 8. §6.6 — split surface 5 OpenBadges half.
-9. Apply to PRs #2322/#2324/#2348.
+9. §6.12 — drop the redundant `src/themes` mount from `docker-compose-pr.yml` (keep only `/edx/src`).
+10. Apply to PRs #2322/#2324/#2348.
 
 ---
 
@@ -139,6 +140,14 @@ Admin routed only when `settings.DEBUG or FEATURES['ENABLE_DJANGO_ADMIN_SITE']`.
 
 ### 6.11 Run 5 verdict — accepted
 Surface 9's 302→404 is auth-independent route-existence flip. **2 discriminators proven.**
+
+### 6.12 `docker-compose-pr.yml` themes mount is redundant
+Canonical `docker-compose-host.yml` mounts only `${DEVSTACK_WORKSPACE}/src:/edx/src:cached`;
+themes are served under it at `/edx/src/themes`. The Run-6 line
+`${DEVSTACK_WORKSPACE}/src/themes:/edx/src/themes:cached` targets a path **nested inside**
+`/edx/src` and points to the **same host subpath** → a no-op overlay. The OSError was actually
+caused by a missing `/edx/src` mount, not a missing themes mount. **Action:** remove the
+`src/themes` line from both `lms` and `studio` (keep `/edx/src`), matching host.yml.
 
 ### 6.7 Priority order
 1. ✅ Surface 1 + 9 double-proven.

@@ -19,13 +19,11 @@ services:
       - ${PLATFORM_MOUNT:?set PLATFORM_MOUNT to a platform worktree path}:/edx/app/edxapp/edx-platform:cached
       - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
-      - ${DEVSTACK_WORKSPACE}/src/themes:/edx/src/themes:cached
   studio:
     volumes:
       - ${PLATFORM_MOUNT:?set PLATFORM_MOUNT to a platform worktree path}:/edx/app/edxapp/edx-platform:cached
       - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
-      - ${DEVSTACK_WORKSPACE}/src/themes:/edx/src/themes:cached
 
 # Reuse the existing named volume (devstack_edxapp_node_modules) so node_modules
 # survives the mount switch; declared here because host.yml (which normally
