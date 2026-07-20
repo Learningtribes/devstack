@@ -6,7 +6,9 @@
 > Tool: Playwright Test/TS + checklist-as-code runner
 >
 > **Run 1:** 4/9 (initial). **Run 2:** 5/8 (corrected). **Run 3:** master baseline, 1 discriminator found.  
-> **Run 4:** 6/8 (retargeted surface 3, admin 404). **2 discriminators proven** — surfaces 1 + 9.  
+> **Run 4:** 6/8 (retargeted surface 3, admin 404). **⚠ "2 discriminators" claim RETRACTED — see §6.8.**  
+> Only **surface 1** is proven. Surface 9 is a false positive (wrong admin URL); surface 3 is a gate, not a discriminator.  
+> **Process rule: every retarget must be re-run on BOTH master and badges-rm before claiming "proven".**  
 > Studio ×2 (302/403) blocked by CMS auth — see §6.1.
 
 ---
@@ -87,10 +89,13 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 \
 
 ## 3. Proven Discriminators
 
-| # | Surface | Layer | Master → badges-rm |
-|---|---------|-------|---------------------|
-| 1 | Badges API `/api/badges/v1/assertions/user/{user}/` | URL routing | 200 → 404 |
-| 9 | Admin `/admin/badges/badgeassertion/` | URL routing | 200 → 404 |
+| # | Surface | Layer | Master → badges-rm | Status |
+|---|---------|-------|---------------------|--------|
+| 1 | Badges API `/api/badges/v1/assertions/user/{user}/` | URL routing | 200 → 404 | ✅ **proven** (Run 3 baseline) |
+| 9 | Admin `/admin/badges/badgeassertion/` | URL routing | ~~200 → 404~~ | ❌ **RETRACTED — false positive (§6.8)**: admin lives at `/triboo-guanli/`, so `/admin/...` is 404 on **both** branches. Never re-baselined on master. |
+| 3 | User API `accomplishments_shared` | serializer | — | ⚠️ **gate only** (field retained on both). Assert the **value** (`false` vs `true`) to make it discriminate (§6.5). |
+
+**Net: only 1 discriminator is actually proven (surface 1).**
 
 ### Still blocked (Studio CMS auth — §6.1)
 
@@ -113,8 +118,9 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 \
 | 6 | `npm run --silent` still noisy | Normal |
 | 7 | `devstack_docker.py` polluted | `git checkout --` then `enable_devstack.sh` once |
 | 8 | ~~Studio 302 — LMS session cookie doesn't cross ports~~ | **Wrong mechanism (see §6.1).** Cookies ignore port (RFC 6265). Real cause: CMS uses distinct `SESSION_COOKIE_NAME`. Fix: auto_auth against `:18010/auto_auth`. |
-| 9 | `/admin/` 404 — LMS admin route absent | **FIXED in Run 4.** Retargeted to `/admin/badges/badgeassertion/` → 404 assertion passes. |
-| 10 | Surface 3 `text_absent: badges` was vacuous | **FIXED in Run 4.** Retargeted to `text_present: accomplishments_shared` — field exists, value flip (true→false) proven by diff. |
+| 9 | `/admin/` 404 — LMS admin route absent | **Run-4 "fix" was WRONG (see §6.8).** Admin is at `/triboo-guanli/`, not `/admin/`. `/admin/badges/badgeassertion/` is 404 on **both** branches → still vacuous. Retarget to `/triboo-guanli/badges/badgeassertion/`, gate on `ENABLE_DJANGO_ADMIN_SITE`, and re-baseline master. |
+| 10 | Surface 3 `text_absent: badges` was vacuous | **Run-4 change is a gate, not a discriminator.** `text_present: accomplishments_shared` passes on both (field retained). To discriminate, assert the **value**: `"accomplishments_shared": false` (badges-rm) vs `true` (master, with `ENABLE_OPENBADGES=True`). |
+| 11 | Retarget claimed "proven" without master re-run | **Process rule:** a removal assertion is proven only when it PASSES on badges-rm AND FAILS on master. Run 4 skipped the master half for surfaces 3 & 9 → both claims void. Always double-run. |
 
 ---
 
@@ -124,12 +130,15 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 \
 2. ✅ Elevate `edx` → is_staff=1, is_superuser=1.
 3. ✅ Delete surface 6 → removed.
 4. ✅ Master baseline → surface 1 proven. Surfaces 2/3 vacuous identified.
-5. ✅ §6.5 — retarget surface 3 to `accomplishments_shared` → done, Run 4 green.
-6. ✅ §6.2 — retarget surface 9 to `/admin/badges/badgeassertion/` 404 → done, discriminator proven.
+5. ⚠️ §6.5 — surface 3 retarget is a **gate**, not a discriminator. Upgrade to the **value**
+   assertion (`"accomplishments_shared": false` vs `true`) + re-baseline master.
+6. ❌ §6.2/§6.8 — surface 9 retarget was **wrong URL**. Fix to `/triboo-guanli/badges/badgeassertion/`,
+   gate on `ENABLE_DJANGO_ADMIN_SITE`, **re-baseline master** before claiming proven.
 7. **Fix CMS auto_auth (§6.1)** → unlock Studio surface 8 (issue_badges toggle — highest-value remaining discriminator).
 8. §6.6 — split surface 5: keep share-button gate; mark OpenBadges half as vacuous.
 9. Surface 2 (profile JS/template): non-vacuous only with BadgeAssertion fixture on master; label "covered by unit tests" or provision fixture.
-10. Apply pattern to other migration PRs (embargo #2322, support #2324, M4.4-A #2348).
+10. **Process rule (§6.8): every retarget must be re-run on BOTH branches before "proven".**
+11. Apply pattern to other migration PRs (embargo #2322, support #2324, M4.4-A #2348).
 
 ---
 
@@ -160,15 +169,46 @@ Baseline proved surfaces 2/3 vacuous. Surface 3 retargeted to `accomplishments_s
 
 Cert surface bundles: `visible: [share buttons]` (live gate) + `absent: ico-mozillaopenbadges`/`text_absent: OpenBadges`. `issue_badges=False` makes the OpenBadges half vacuous on both branches.
 
-### Honest coverage after Run 4
+### 6.8 Run 4 "2 discriminators" — RETRACTED (surface 9 false positive)
 
-**2 discriminators proven** (surfaces 1 + 9 — both route-level). Surface 3 covered as gate (field presence). Surface 8 (Studio issue_badges) is the highest-value remaining discriminator — blocked by CMS auth (§6.1). Surface 2 is vacuous without fixture.
+This LMS is a Triboo fork; the Django admin is **relocated**, not at `/admin/`:
+
+```lms/urls.py
+if settings.DEBUG or settings.FEATURES.get('ENABLE_DJANGO_ADMIN_SITE'):
+    ...
+    url(r'^triboo-guanli/', include(admin.site.urls)),
+```
+
+Therefore `/admin/badges/badgeassertion/` (Run 4's retarget) returns **404 on BOTH branches** —
+the prefix `/admin/` doesn't exist here. Run 4 only executed on badges-rm and never
+re-baselined the new URL on master, so the "200 → 404" flip was **assumed, not measured**.
+The 404 is from the wrong URL, not from badge-admin removal. This also explains why Run 3's
+`/admin/` was 404 on both branches (not a "route gap" — admin simply lives elsewhere).
+
+**Fix:**
+1. Retarget surface 9 → `/triboo-guanli/badges/badgeassertion/`.
+2. Gate the surface on `ENABLE_DJANGO_ADMIN_SITE` (or DEBUG) — admin is only routed then.
+3. **Re-run master + badges-rm.** Only a real 200 → 404 flip counts.
+
+### Honest coverage after Run 4 (corrected)
+
+**Only 1 discriminator is actually proven: surface 1 (badges API 404), from the Run 3
+baseline.** Surface 9 is a false positive (§6.8). Surface 3 is a gate (field retained) — a
+value assertion would make it real (§6.5). Surface 8 (Studio `issue_badges`) is the
+highest-value remaining discriminator — blocked by CMS auth (§6.1).
+
+### 6.9 Process rule — retargets must be double-run
+
+A "removal" assertion is **proven only when it PASSES on badges-rm AND FAILS on master**.
+Run 4 ran only badges-rm for the two retargeted surfaces, so both "proofs" were void:
+surface 3 also passes on master (gate), surface 9 also 404s on master (wrong URL). Never
+mark a retarget "proven" from a single-branch run.
 
 ### 6.7 Priority order
 
-1. ✅ Baseline + surface 1 discriminator.
-2. ✅ Surface 3 retargeted (Run 4).
-3. ✅ Surface 9 admin 404 discriminator (Run 4).
+1. ✅ Baseline + surface 1 discriminator (the only proven one).
+2. ❌→ **Surface 9: fix URL to `/triboo-guanli/...` + gate + re-baseline master** (§6.8).
+3. ⚠️→ **Surface 3: upgrade gate → value assertion** (`accomplishments_shared` false vs true) + re-baseline (§6.5).
 4. **§6.1 — CMS auto_auth → unlock surface 8** (highest remaining value).
 5. §6.6 — split surface 5; decide surface 2.
 6. Apply pattern to PRs #2322/#2324/#2348.
