@@ -1,0 +1,32 @@
+version: "2.1"
+
+# PR-under-test override.
+#
+# Serve a specific platform git worktree instead of the default
+# ${DEVSTACK_WORKSPACE}/platform, so browser-acceptance can target a PR branch
+# WITHOUT polluting the master checkout. Use this INSTEAD of
+# docker-compose-host.yml for lms/studio:
+#
+#   PLATFORM_MOUNT=/Users/you/workspace/hawthorn/platform-badges-removal \
+#     docker compose -f docker-compose.yml -f docker-compose-pr.yml up -d lms studio
+#
+# Recreating is cheap/safe because in-container fixes live in the m5-fixed images
+# (see docs/backup-restore.md). Switch back to master by re-running with
+# docker-compose-host.yml (or PLATFORM_MOUNT=${DEVSTACK_WORKSPACE}/platform).
+services:
+  lms:
+    volumes:
+      - ${PLATFORM_MOUNT:?set PLATFORM_MOUNT to a platform worktree path}:/edx/app/edxapp/edx-platform:cached
+      - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
+      - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
+  studio:
+    volumes:
+      - ${PLATFORM_MOUNT:?set PLATFORM_MOUNT to a platform worktree path}:/edx/app/edxapp/edx-platform:cached
+      - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
+      - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
+
+# Reuse the existing named volume (devstack_edxapp_node_modules) so node_modules
+# survives the mount switch; declared here because host.yml (which normally
+# declares it) is intentionally not loaded for PR runs.
+volumes:
+  edxapp_node_modules:

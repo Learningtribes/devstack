@@ -127,11 +127,34 @@ if [ "${PR_TYPE}" = "dcc" ]; then
   echo ""
 fi
 
-# ── Step 6: Browser Smoke ──
+# ── Step 6: Browser acceptance (opt-in) ──
+# Delegates to the platform `browser-acceptance` skill (Playwright Test/TS,
+# checklist-as-code) — the single source of truth for UI assertions. This script
+# only RUNS the per-PR checklist; the assertions live in the skill. Fixture prep
+# (courses/content) is the separate concern in scripts/create_test_courses.py.
 if [ "${SMOKE}" = true ]; then
-  echo "── Step 6: Browser smoke ──"
-  cd "${SCRIPT_DIR}/.."
-  python3 scripts/create_test_courses.py --dry-run 2>&1 | tail -3 || echo "(Playwright unavailable)"
+  echo "── Step 6: Browser acceptance (skill checklist) ──"
+  SKILL_DIR="${PLATFORM_DIR}/.claude/skills/browser-acceptance"
+  CHECKLIST="${SKILL_DIR}/checklists/pr-${PR_NUM}.yml"
+  BASE_URL="${BROWSER_ACCEPTANCE_BASE_URL:-http://localhost:18000}"
+  if [ ! -d "${SKILL_DIR}" ]; then
+    echo "⊗ browser-acceptance skill not found at ${SKILL_DIR} — skipping"
+  elif [ ! -f "${CHECKLIST}" ]; then
+    echo "⊗ no checklist pr-${PR_NUM}.yml — author one in ${SKILL_DIR}/checklists/ first (see its SKILL.md). Skipping."
+  elif ! command -v npm >/dev/null 2>&1; then
+    echo "⊗ npm not on PATH (need Node ≥18) — skipping"
+  else
+    echo "  (fixtures required: run the skill's enable_devstack.sh + provision-fixtures.sh once)"
+    (
+      cd "${SKILL_DIR}" &&
+      { [ -d node_modules ] || npm install >/dev/null 2>&1; } &&
+      BROWSER_ACCEPTANCE_BASE_URL="${BASE_URL}" CHECKLIST_PR="pr-${PR_NUM}" \
+        npm run --silent checklist
+    ) > "${OUTDIR}/browser.out" 2>&1
+    BROWSER_EXIT=$?
+    echo "Browser exit: ${BROWSER_EXIT}"
+    grep -E "[0-9]+ passed|[0-9]+ failed|✓|✘|✗" "${OUTDIR}/browser.out" | tail -6 || echo "(no summary — see ${OUTDIR}/browser.out)"
+  fi
 fi
 
 echo "Done. Output: ${OUTDIR}/"

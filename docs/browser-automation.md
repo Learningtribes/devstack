@@ -1,7 +1,25 @@
-# Browser Automation (Playwright) Guide
+# Browser Automation — Fixture Preparation (Studio)
 
-> Mac M5 + OrbStack + Hawthorn devstack  
-> Date: 2026-07-19
+> Mac M5 + OrbStack + Hawthorn devstack
+> Date: 2026-07-20
+
+> **Scope: this doc is FIXTURE PREPARATION only** — driving Studio in a real
+> browser to create test courses/content on the devstack.
+>
+> **For acceptance / PR verification (assertions, "did this PR change the UI",
+> run-to-green/red), do NOT add assertions here.** Use the platform
+> **`browser-acceptance`** skill (Playwright Test/TS, checklist-as-code):
+> `../platform/.claude/skills/browser-acceptance/` — see its `SKILL.md`.
+> Assumes the sibling checkout layout `~/workspace/hawthorn/{platform,devstack}`.
+
+| Task | Use |
+|------|-----|
+| Create test courses / content (fixtures) | **this doc** + `scripts/create_test_courses.py` |
+| Assert rendered UI, verify a PR, per-PR checklist | **`browser-acceptance` skill** (`npm run checklist`) |
+| Point the devstack at a PR worktree | `docker-compose-pr.yml` (`PLATFORM_MOUNT`) — see below / skill `SKILL.md` |
+
+The two are complementary: prepare fixtures here, then run the skill's checklist
+against the same devstack. Keep the assertion logic in ONE place (the skill).
 
 ---
 
