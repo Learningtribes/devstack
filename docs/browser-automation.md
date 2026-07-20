@@ -202,3 +202,5 @@ See `docs/test-data.md` for full user list.
 | `SyntaxError: Illegal return statement` in evaluate | Wrap async code in `(async () => { ... })()` |
 | Page stuck loading | Use shorter timeout; many Ajax calls never "complete" |
 | Backbone.js elements not interactive | Use `page.press()` or `page.evaluate()` instead of `.click()` |
+| Checklist "absent" assertion passes vacuously | Run baseline control against master first — prove the surface EXISTS there |
+| Studio surfaces need auth but `qacert` isn't staff | Use `auth: edx` in checklist YAML (multi-user runner supported) |
