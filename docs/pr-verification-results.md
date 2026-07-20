@@ -117,10 +117,16 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 \
 2. ✅ Elevate `edx` → is_staff=1, is_superuser=1.
 3. ✅ Delete surface 6 → removed.
 4. ✅ **Master baseline → surface 1 is the only discriminator. Surfaces 2/3 are vacuous — upgrade to route-level checks or provision BadgeAssertion fixture.**
-5. Fix CMS auto_auth (§6.1) → unlock Studio surface 8 (issue_badges toggle — likely second discriminator).
-6. Fix admin route (§6.2) → retarget surface 9 to 404 assertion.
-7. Upgrade vacuous surfaces 2/3 → route-level checks (e.g. `GET /api/badges/v1/...` on each) or provision a real BadgeAssertion on master.
-8. Apply pattern to other migration PRs (embargo #2322, support #2324, M4.4-A #2348).
+5. **Retarget surface 3 to the `accomplishments_shared` value flip (§6.5)** — cheapest new
+   real discriminator, no fixture needed. Do NOT "upgrade 2/3 to `GET /api/badges/...`":
+   that only re-tests surface 1 and covers neither the serializer nor the JS layer.
+6. Fix CMS auto_auth (§6.1) → unlock Studio surface 8 (issue_badges toggle — second discriminator).
+7. Fix admin route (§6.2) → retarget surface 9 to 404 assertion.
+8. Split surface 5 (§6.6): keep the share-button `visible` as a gate; mark the OpenBadges
+   `absent`/`text_absent` part as **vacuous** under `issue_badges=False`.
+9. Surface 2 (profile JS/template): non-vacuous only with a real `BadgeAssertion` fixture on
+   master; if not worth the cost, label it "covered by unit tests", don't keep it vacuous.
+10. Apply pattern to other migration PRs (embargo #2322, support #2324, M4.4-A #2348).
 
 ---
 
@@ -150,10 +156,52 @@ Surface 9 `/admin/` → `:18000` (LMS). 404 means LMS has no Django admin in thi
 | Surface 3 — user API badges absent | ✅ | ✅ | ❌ vacuous |
 | Surface 8 — Studio issue_badges toggle (blocked by §6.1) | — | — | 🔒 likely discriminator |
 
-### 6.4 Priority order
+### 6.5 Surface 3 tests the wrong thing — retarget to `accomplishments_shared` (diff-verified)
 
-1. ✅ **Master baseline — done.** Surface 1 proven. Surfaces 2/3 vacuous → upgrade.
-2. Fix §6.1 (CMS auto_auth) → unlock surface 8 discriminator.
-3. Fix §6.2 (admin route → 404 assertion) → add second route-level removal proof.
-4. Upgrade surfaces 2/3 to route-level or fixture-backed checks.
-5. Apply pattern to PRs #2322/#2324/#2348.
+#2323 did **not** remove a `badges` field from the accounts API. The actual change in
+`openedx/core/djangoapps/user_api/accounts/serializers.py`:
+
+```diff
+-        accomplishments_shared = badges_enabled()
++        accomplishments_shared = False
+```
+
+and `views.py` explicitly keeps the field: *"accomplishments_shared: Always false. Retained
+in the API contract for backward compatibility."* So:
+
+- The JSON key is `accomplishments_shared`, never the literal `badges` → `text_absent: badges`
+  passes on both branches = **vacuous** (baseline confirmed).
+- The real, testable behavior change is the **value flip**. With `ENABLE_OPENBADGES=True`
+  (set by `enable_devstack.sh`):
+  - master → `"accomplishments_shared": true`  (`badges_enabled()` returns True)
+  - badges-rm → `"accomplishments_shared": false`  (hardcoded)
+
+**Action:** replace surface 3's `text_absent: badges` with an assertion on
+`"accomplishments_shared": false` (present on badges-rm, `true` on master). This covers the
+**serializer layer** — a genuine second discriminator, no fixture required. A `GET
+/api/badges/...` route check would NOT cover this layer.
+
+### 6.6 Surface 5 has a hidden vacuous half
+
+The cert surface bundles two assertion groups: `visible: [share buttons]` (a live gate) and
+`absent: ico-mozillaopenbadges` / `text_absent: OpenBadges`. Because `provision-fixtures.sh`
+sets `course.issue_badges = False`, the badge modal never renders on master either → the
+OpenBadges half is **also vacuous** (only 2/3 were flagged before). Keep the share-button
+gate; don't count the OpenBadges half as removal proof.
+
+### Honest coverage after Run 3
+
+Only **surface 1 (API route 404)** is a proven discriminator. Everything else "removal"-shaped
+is vacuous (2, 3, 5-OpenBadges-half) or blocked (7/8/9). The checklist currently
+**under-verifies #2323** — §6.5 (serializer) and §6.1→§6.4 (Studio `issue_badges`) are the
+two cheapest ways to add real layer coverage.
+
+### 6.7 Priority order
+
+1. ✅ **Master baseline — done.** Surface 1 proven; surfaces 2/3 vacuous.
+2. **§6.5 — retarget surface 3 to `accomplishments_shared` value flip** (cheapest real
+   discriminator, no fixture).
+3. §6.1 (CMS auto_auth) → unlock surface 8 (Studio `issue_badges`) discriminator.
+4. §6.2 (admin route → `/admin/badges/badgeassertion/` 404) → third route-level proof.
+5. §6.6 — split surface 5; §6.3/6.4 — decide surface 2 (fixture or drop).
+6. Apply pattern to PRs #2322/#2324/#2348.
