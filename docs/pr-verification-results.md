@@ -9,8 +9,9 @@
 > **Run 4:** 6/8 (surface 3 retarget + admin 404 — but admin false positive, §6.8).  
 > **Run 5:** Master baseline with corrected `/triboo-guanli/` URL — **2 discriminators proven (surfaces 1 + 9).**  
 > **Run 6:** badges-rm final — surface 2 deleted (flaky+vacuous), 5/7 passed. `/edx/src` mount fix (§6.12).  
-> **Run 7:** studioAuth form-login attempt — framework built, form interaction needs debugging (§4 issue 13). 3/3 qacert pass, edx blocked by `waitForNavigation` timeout.  
-> Checklist: 7 surfaces. 2 discriminators. 2 Studio blocked (CMS auth §6.1 — studioAuth framework in place, see §6.13). 1 gate candidate (surface 3).  
+> **Run 7:** studioAuth form-login attempt — WRONG root cause, reverted (§6.13).  
+> **Run 8:** Studio auth fixed at the root — `autoAuth` now passes staff/superuser; shared LMS↔CMS session ⇒ **7/7 green incl. both Studio surfaces**.  
+> Checklist: 7 surfaces, all executing. 2 route-level discriminators proven (1 + 9). Studio `issue_badges` now runs (master baseline pending to confirm it discriminates). 1 gate (surface 3).  
 > **Canonical final state + reusable lessons: see §7 and the skill's `SKILL.md` ("Hard-won rules").**
 > Historical run tables below use the original 9-surface numbering; §7 maps it to the committed 7-surface checklist.
 
@@ -68,7 +69,8 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 4 | badges-rm | Surface 3 retarget + admin URL | 6/8 |
 | 5 | master | Corrected `/triboo-guanli/` URL | 2 discriminators |
 | 6 | badges-rm | Surface 2 deleted + `/edx/src` mount fix | 5/7 (stable) |
-| 7 | badges-rm | studioAuth form-login attempt | 3/3 qacert, edx blocked |
+| 7 | badges-rm | studioAuth form-login attempt (wrong root cause) | reverted |
+| 8 | badges-rm | autoAuth staff/superuser + shared session | **7/7 (Studio green)** |
 
 ---
 
@@ -86,7 +88,7 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | # | Surface | Layer | Master | badges-rm | Blocker |
 |---|---------|-------|:---:|:---:|--------|
 | 3 | `accomplishments_shared` value | serializer | `true` | `false` | current assertion is gate only. Upgrade to value + re-baseline (§6.5) |
-| 8 | Studio `issue_badges` toggle | CMS settings | present | absent | CMS auth (§6.1) |
+| 8 | Studio `issue_badges` toggle | CMS settings | present | absent | **now EXECUTES & passes on badges-rm (Run 8)** — master baseline pending to confirm it discriminates (double-run rule) |
 
 **Proven count: 2 (surfaces 1 + 9).**
 
@@ -100,12 +102,12 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 2 | `SOCIAL_SHARING_SETTINGS` misdiagnosis | Var IS defined; polluted `devstack_docker.py`. Clean + re-enable. |
 | 3 | Worktree flags | `enable_devstack.sh` after each switch |
 | 7 | `devstack_docker.py` polluted | `git checkout --` then `enable_devstack.sh` once |
-| 8 | Studio 302 — not "cross-port cookie" | CMS distinct `SESSION_COOKIE_NAME`. Fix: auto_auth on `:18010` |
+| 8 | Studio 302 | **Root cause (verified): NOT a cookie problem.** LMS & CMS both use `SESSION_COOKIE_NAME='sessionid'` + shared session store (proven: LMS `/auto_auth` cookie jar → `:18010/home/` = 200). The runner's `autoAuth` never passed `staff`/`superuser`, so each edx login demoted the user → Studio 302. **Fixed:** `autoAuth` forwards staff/superuser; no CMS login needed. |
 | 9 | Admin at wrong URL | **FIXED:** `/triboo-guanli/badges/badgeclass/` ✅ |
 | 10 | Surface 3 gate, not discriminator | Upgrade to value assertion (§6.5) |
 | 11 | `docker-compose-pr.yml` OSError on theme dir after worktree switch | **Real fix = the `${DEVSTACK_WORKSPACE}/src:/edx/src` mount** (themes live under it at `/edx/src/themes`; canonical `docker-compose-host.yml` mounts only `/edx/src`, no separate themes line). The `src/themes:/edx/src/themes` line briefly added in Run 6 was a **redundant no-op** (same host subpath, target nested inside `/edx/src`). ✅ **Resolved:** redundant line removed; only `/edx/src` remains (§6.12). |
-|| 12 | Surface 2 flaky + vacuous | **DELETED.** No BadgeAssertion fixture + page timeout on master. (Note: the Run-6 delete commit only removed a comment; the `/u/{username}` surface was actually removed from `checklists/pr-2323.yml` in the skill afterwards → checklist now truly 7 surfaces, matching this log.) |
-|| 13 | Studio auth — form-login `waitForNavigation` timeout | `lib/auth.ts` now has a `studioAuth()` function that fills the `/signin` form (email + password → click submit). It works up to the submit step, but `Promise.all([page.waitForNavigation(), page.click('button')])` times out — the browser context may close before the redirect completes, or Studio's form submission uses a JS redirect that `waitForNavigation` doesn't capture. **Framework is in place** (`autoAuth` for LMS + `studioAuth` for CMS); remaining work is debugging the form interaction. See §6.13. |
+| 12 | Surface 2 flaky + vacuous | **DELETED.** No BadgeAssertion fixture + page timeout on master. (Note: the Run-6 delete commit only removed a comment; the `/u/{username}` surface was actually removed from `checklists/pr-2323.yml` in the skill afterwards → checklist now truly 7 surfaces, matching this log.) |
+| 13 | ~~Studio auth — form-login `waitForNavigation` timeout~~ | **Obsolete — studioAuth REVERTED (§6.13).** It chased a non-existent problem (form login on an unverified cookie theory). Real fix was one line in `autoAuth` (pass staff/superuser). Shared LMS↔CMS session then authenticates Studio directly. |
 
 ---
 
@@ -116,7 +118,7 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 3. ✅ Surface 2 deleted (flaky+vacuous).
 4. ✅ `docker-compose-pr.yml` mount fix — added `/edx/src`, removed the redundant `src/themes` overlay (§6.12).
 5. ⚠️ Surface 3: upgrade gate to value assertion + re-baseline both branches.
-6. 🔒 CMS auto_auth (§6.1) → surface 8. **studioAuth framework BUILT** (§6.13); remaining: debug form submission redirect (`waitForNavigation` timeout → try `waitForURL`).
+6. ✅ Studio auth fixed at root (§6.1/§6.13) — `autoAuth` staff/superuser + shared session → both Studio surfaces green (Run 8). Remaining: run the **master baseline** to confirm surface 6 (`issue_badges`) discriminates (per the double-run rule).
 7. §6.10 — gate surface 9 on `ENABLE_DJANGO_ADMIN_SITE`.
 8. §6.6 — split surface 5 OpenBadges half.
 9. Apply to PRs #2322/#2324/#2348.
@@ -125,8 +127,15 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 
 ## 6. Review corrections
 
-### 6.1 Studio 302 — not cross-port cookie
-CMS uses distinct `SESSION_COOKIE_NAME`. Fix: auto_auth against `http://localhost:18010/auto_auth`.
+### 6.1 Studio 302 — root cause (verified on live devstack)
+**Not a cookie problem, and NOT "distinct CMS cookie" (that earlier claim was wrong).**
+Verified: LMS and CMS both use `SESSION_COOKIE_NAME='sessionid'` and the same session
+store; reusing an LMS `/auto_auth` cookie jar on `http://localhost:18010/home/` returns
+**200**. CMS has no `/auto_auth` route (and `AUTOMATIC_AUTH_FOR_TESTING` is False there),
+so a CMS auto_auth was never the answer either. The real bug: the runner's `autoAuth`
+omitted `staff`/`superuser`, so every edx login demoted the user → Studio 302. **Fix:**
+`USERS.edx` carries `staff`/`superuser` and `autoAuth` forwards them; the shared session
+then authenticates Studio with no extra login. (Run 8: 7/7 green.)
 
 ### 6.5 Surface 3 — upgrade to value assertion
 Diff: `accomplishments_shared = badges_enabled()` → `= False`. Current assertion `text_present: accomplishments_shared` is gate (passes both). Assert VALUE: `"accomplishments_shared": false` vs `true`.
@@ -155,20 +164,18 @@ caused by a missing `/edx/src` mount, not a missing themes mount. ✅ **Resolved
 `src/themes` line was removed from both `lms` and `studio`; only `/edx/src` remains (matches
 host.yml).
 
-### 6.13 studioAuth framework — BUILT, needs form-interaction debug (Run 7)
+### 6.13 studioAuth — REVERTED (Run 8); Studio auth fixed at the root
 
-`lib/auth.ts` now exports both `autoAuth()` (LMS `/auto_auth` on :18000) and `studioAuth()`
-(CMS form login on :18010/signin). The runner (`checklist.spec.ts`) detects Studio surfaces
-by `:18010` in the URL and calls `studioAuth` before them. Run 7 confirmed:
+Run 7's `studioAuth` (CMS `/signin` form login) was built on the disproven §6.1 cookie
+theory and is **removed** (`lib/auth.ts` back to a single `autoAuth`). It was also fragile
+on its own terms: hardcoded password, deprecated `waitForNavigation`, and logistration
+(React/Backbone) selectors that a classic `input[name=...]`/`button[type=submit]` form fill
+does not reliably match.
 
-- `autoAuth` works for both `qacert` (3/3 surfaces pass) and `edx` (LMS home/auth surfaces)
-- `studioAuth` fills the form correctly but hits `page.waitForNavigation` timeout after
-  submit — either the browser context closes prematurely or Studio's form uses a JS
-  redirect that `waitForNavigation` doesn't capture.
-
-**To finish:** replace `Promise.all([page.waitForNavigation(), page.click()])` with a post-submit
-URL change check (`page.waitForURL`) or a simple `page.waitForTimeout(3000)` + verify
-the page URL no longer contains `/signin`. The form interaction itself is confirmed working.
+Root fix instead (Run 8): `autoAuth` now forwards `staff`/`superuser` for `edx`, and the
+shared LMS↔CMS `sessionid` session covers Studio — **7/7 green, both Studio surfaces
+included**. Lesson (now in `SKILL.md`): verify the root cause with a 2-minute cookie-jar
+probe before building a login subsystem.
 
 ### 6.7 Priority order
 1. ✅ Surface 1 + 9 double-proven.
@@ -194,8 +201,8 @@ annotations are now **self-contained** — they no longer cross-reference this l
 | 2 | user API `accomplishments_shared` | ⚠️ gate | field retained; value flip is the real discriminator (§6.5) |
 | 3 | LMS homepage 200 | gate | no import error |
 | 4 | cert page + share controls | gate | share buttons live; badge markers dropped (were vacuous) |
-| 5 | Studio home | 🔒 blocked | CMS auth (§6.1) |
-| 6 | Studio advanced settings | 🔒 blocked | would be a discriminator once auth works (§6.1) |
+| 5 | Studio home | gate | ✅ executes (Run 8, shared session) |
+| 6 | Studio advanced settings | ⚠️ candidate | ✅ executes & passes on badges-rm (Run 8); master baseline pending to confirm `issue_badges` discriminates |
 | 7 | admin `/triboo-guanli/badges/badgeclass/` | ✅ **discriminator** | env-gated on `ENABLE_DJANGO_ADMIN_SITE` (§6.10); non-404→404 |
 
 **Reusable lessons** (discriminator-vs-gate, double-run every retarget, fork-relocated
@@ -207,6 +214,6 @@ removal PRs. This log stays as the #2323-specific run evidence.
 
 | Artifact | Repo / branch | Carries |
 |----------|---------------|---------|
-| `SKILL.md` + `checklists/pr-2323.yml` | platform / `browser-acceptance-harness` (commit `0fb459e91c8`, not pushed) | assertions + reusable rules |
+| `SKILL.md`, `checklists/pr-2323.yml`, `lib/auth.ts` | platform / `browser-acceptance-harness` (HEAD `540e34505cd`, not pushed) | assertions + auth + reusable rules |
 | `docker-compose-pr.yml`, `verify-pr.sh`, this log | devstack / `noah-py2-m-chip-master` (commit `c44320c`, not pushed) | infra + run evidence |
 | PR under test | platform / `badges-removal` | #2323 |
