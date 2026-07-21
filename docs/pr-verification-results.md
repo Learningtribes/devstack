@@ -11,15 +11,11 @@
 > **Run 6:** badges-rm final — surface 2 deleted, 5/7 passed.  
 > **Run 7:** studioAuth form-login attempt — WRONG root cause, reverted (§6.13).  
 > **Run 8:** Studio auth fixed at root — 7/7 green incl. both Studio surfaces.  
-> **Run 9:** Master baseline — surface 6 passed on master too. **This "gate" verdict is a FALSE
->   artifact (§6.14):** the `text_absent: badges` assertion reads Studio advanced-settings HTML that
->   is CodeMirror + async-Backbone rendered, so `innerText` is empty at assert time → passes on both
->   branches trivially. The CMS-settings layer IS discriminating (badges-rm moves `issue_badges` into
->   `course_metadata.py`'s always-filtered list) — retarget surface 6 to the **JSON** endpoint for a
->   potential 3rd discriminator. Master half measured (present, `ENABLE_OPENBADGES=True`); badges-rm
->   re-measure pending.  
-> Checklist: 7 surfaces. **2 discriminators proven (1 + 9);** surface 6 = 3rd candidate via JSON retarget (§6.14).  
-> **Canonical final state + reusable lessons: see §7 and the skill's `SKILL.md` ("Hard-won rules").**
+> **Run 9:** Master baseline (old HTML assertion) — surface 6 false gate, CodeMirror artifact (§6.14).  
+> **Run 10:** badges-rm — surface 6 retargeted to JSON (`issue_badges` absent), **7/7 green (8.0s).**  
+> Checklist: 7 surfaces. **2 discriminators proven (1 + 9). Surface 6 = 3rd candidate, master half still needs JSON re-measure.**
+> **⚠ Next agent: see §5 handoff — switch to master, re-run JSON-assertion checklist, confirm surface 6 discriminates.**
+> **Canonical final state + reusable lessons: see §7 and the skill's SKILL.md.**
 > Historical run tables below use the original 9-surface numbering; §7 maps it to the committed 7-surface checklist.
 
 ---
@@ -78,7 +74,8 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 6 | badges-rm | Surface 2 deleted + `/edx/src` mount fix | 5/7 (stable) |
 | 7 | badges-rm | studioAuth form-login attempt (wrong root cause) | reverted |
 | 8 | badges-rm | autoAuth staff/superuser + shared session | **7/7 (Studio green)** |
-| 9 | master | Baseline — surface 6 confirmation | 5/7 pass, surface 6 = gate |
+| 9 | master | Baseline — surface 6 false gate (HTML artifact) | §6.14 |
+| 10 | badges-rm | Surface 6 JSON retarget (issue_badges absent) | 7/7 green |
 
 ---
 
