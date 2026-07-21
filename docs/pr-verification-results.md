@@ -8,10 +8,11 @@
 > **Run 1:** 4/9. **Run 2:** 5/8. **Run 3:** master baseline, surface 1 discriminator.  
 > **Run 4:** 6/8 (surface 3 retarget + admin 404 — but admin false positive, §6.8).  
 > **Run 5:** Master baseline with corrected `/triboo-guanli/` URL — **2 discriminators proven (surfaces 1 + 9).**  
-> **Run 6:** badges-rm final — surface 2 deleted (flaky+vacuous), 5/7 passed. `/edx/src` mount fix (§6.12).  
+> **Run 6:** badges-rm final — surface 2 deleted, 5/7 passed.  
 > **Run 7:** studioAuth form-login attempt — WRONG root cause, reverted (§6.13).  
-> **Run 8:** Studio auth fixed at the root — `autoAuth` now passes staff/superuser; shared LMS↔CMS session ⇒ **7/7 green incl. both Studio surfaces**.  
-> Checklist: 7 surfaces, all executing. 2 route-level discriminators proven (1 + 9). Studio `issue_badges` now runs (master baseline pending to confirm it discriminates). 1 gate (surface 3).  
+> **Run 8:** Studio auth fixed at root — 7/7 green incl. both Studio surfaces.  
+> **Run 9:** Master baseline — surface 6 confirmed as gate (passes on master too).  
+> Checklist: 7 surfaces. **2 discriminators proven (1 + 9).** Surface 6 = gate, not discriminator.  
 > **Canonical final state + reusable lessons: see §7 and the skill's `SKILL.md` ("Hard-won rules").**
 > Historical run tables below use the original 9-surface numbering; §7 maps it to the committed 7-surface checklist.
 
@@ -71,6 +72,7 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 6 | badges-rm | Surface 2 deleted + `/edx/src` mount fix | 5/7 (stable) |
 | 7 | badges-rm | studioAuth form-login attempt (wrong root cause) | reverted |
 | 8 | badges-rm | autoAuth staff/superuser + shared session | **7/7 (Studio green)** |
+| 9 | master | Baseline — surface 6 confirmation | 5/7 pass, surface 6 = gate |
 
 ---
 
