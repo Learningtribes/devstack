@@ -12,9 +12,9 @@
 > **Run 7:** studioAuth form-login attempt — WRONG root cause, reverted (§6.13).  
 > **Run 8:** Studio auth fixed at root — 7/7 green incl. both Studio surfaces.  
 > **Run 9:** Master baseline (old HTML assertion) — surface 6 false gate, CodeMirror artifact (§6.14).  
-> **Run 10:** badges-rm — surface 6 retargeted to JSON (`issue_badges` absent), **7/7 green (8.0s).**  
-> Checklist: 7 surfaces. **2 discriminators proven (1 + 9). Surface 6 = 3rd candidate, master half still needs JSON re-measure.**
-> **⚠ Next agent: see §5 handoff — switch to master, re-run JSON-assertion checklist, confirm surface 6 discriminates.**
+> **Run 10:** badges-rm — surface 6 retargeted to JSON, 7/7 green (8.0s).  
+> **Run 11:** Master baseline (JSON assertion) — surface 6 passes on master too, **JSON also not discriminating.**  
+> Checklist: 7 surfaces. **2 discriminators proven (1 + 9).** Surface 6 = gate on both layers. **Final.**
 > **Canonical final state + reusable lessons: see §7 and the skill's SKILL.md.**
 > Historical run tables below use the original 9-surface numbering; §7 maps it to the committed 7-surface checklist.
 
@@ -76,6 +76,7 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 8 | badges-rm | autoAuth staff/superuser + shared session | **7/7 (Studio green)** |
 | 9 | master | Baseline — surface 6 false gate (HTML artifact) | §6.14 |
 | 10 | badges-rm | Surface 6 JSON retarget (issue_badges absent) | 7/7 green |
+| 11 | master | Surface 6 JSON baseline — passes too | 5/7, surface 6 = gate |
 
 ---
 
