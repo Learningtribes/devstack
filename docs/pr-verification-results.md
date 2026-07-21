@@ -11,8 +11,14 @@
 > **Run 6:** badges-rm final — surface 2 deleted, 5/7 passed.  
 > **Run 7:** studioAuth form-login attempt — WRONG root cause, reverted (§6.13).  
 > **Run 8:** Studio auth fixed at root — 7/7 green incl. both Studio surfaces.  
-> **Run 9:** Master baseline — surface 6 confirmed as gate (passes on master too).  
-> Checklist: 7 surfaces. **2 discriminators proven (1 + 9).** Surface 6 = gate, not discriminator.  
+> **Run 9:** Master baseline — surface 6 passed on master too. **This "gate" verdict is a FALSE
+>   artifact (§6.14):** the `text_absent: badges` assertion reads Studio advanced-settings HTML that
+>   is CodeMirror + async-Backbone rendered, so `innerText` is empty at assert time → passes on both
+>   branches trivially. The CMS-settings layer IS discriminating (badges-rm moves `issue_badges` into
+>   `course_metadata.py`'s always-filtered list) — retarget surface 6 to the **JSON** endpoint for a
+>   potential 3rd discriminator. Master half measured (present, `ENABLE_OPENBADGES=True`); badges-rm
+>   re-measure pending.  
+> Checklist: 7 surfaces. **2 discriminators proven (1 + 9);** surface 6 = 3rd candidate via JSON retarget (§6.14).  
 > **Canonical final state + reusable lessons: see §7 and the skill's `SKILL.md` ("Hard-won rules").**
 > Historical run tables below use the original 9-surface numbering; §7 maps it to the committed 7-surface checklist.
 
@@ -90,7 +96,7 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | # | Surface | Layer | Master | badges-rm | Blocker |
 |---|---------|-------|:---:|:---:|--------|
 | 3 | `accomplishments_shared` value | serializer | `true` | `false` | current assertion is gate only. Upgrade to value + re-baseline (§6.5) |
-| 8 | Studio `issue_badges` toggle | CMS settings | present | absent | **now EXECUTES & passes on badges-rm (Run 8)** — master baseline pending to confirm it discriminates (double-run rule) |
+| 6 | Studio advanced-settings **JSON** `issue_badges` key | CMS settings (`CourseMetadata.fetch`) | present (measured, flag on) | absent (code-proven: added to always-filtered list) | **retarget HTML→JSON (§6.14).** master half measured; badges-rm re-measure pending → then 3rd discriminator |
 
 **Proven count: 2 (surfaces 1 + 9).**
 
@@ -110,17 +116,37 @@ BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000 CHECKLIST_PR=pr-2323 npm run 
 | 11 | `docker-compose-pr.yml` OSError on theme dir after worktree switch | **Real fix = the `${DEVSTACK_WORKSPACE}/src:/edx/src` mount** (themes live under it at `/edx/src/themes`; canonical `docker-compose-host.yml` mounts only `/edx/src`, no separate themes line). The `src/themes:/edx/src/themes` line briefly added in Run 6 was a **redundant no-op** (same host subpath, target nested inside `/edx/src`). ✅ **Resolved:** redundant line removed; only `/edx/src` remains (§6.12). |
 | 12 | Surface 2 flaky + vacuous | **DELETED.** No BadgeAssertion fixture + page timeout on master. (Note: the Run-6 delete commit only removed a comment; the `/u/{username}` surface was actually removed from `checklists/pr-2323.yml` in the skill afterwards → checklist now truly 7 surfaces, matching this log.) |
 | 13 | ~~Studio auth — form-login `waitForNavigation` timeout~~ | **Obsolete — studioAuth REVERTED (§6.13).** It chased a non-existent problem (form login on an unverified cookie theory). Real fix was one line in `autoAuth` (pass staff/superuser). Shared LMS↔CMS session then authenticates Studio directly. |
+| 14 | Surface 6 "gate" is a false verdict — `text_absent: badges` on Studio advanced settings | **Wrong assertion layer (§6.14).** Page is CodeMirror + async Backbone fetch; `body.innerText()` empty at assert → passes on both branches. Layer DOES discriminate: retarget to `/settings/advanced/{course}` **JSON**, assert `issue_badges` key present(master)/absent(badges-rm). |
 
 ---
 
 ## 5. Next Steps (handoff — actionable)
+
+### ▶ Next agent — do this now (surface 6 → 3rd discriminator)
+
+1. **Retarget surface 6** in `platform/.claude/skills/browser-acceptance/checklists/pr-2323.yml`
+   from HTML `text_absent: badges` to a JSON assertion (see §6.14):
+   - `url: /settings/advanced/course-v1:QA%2BAcceptance%2BTest` on `:18010`, `Accept: application/json`
+   - assert `status: 200` + `text_absent: issue_badges` (badges-rm) / `text_present: issue_badges` (master)
+   - annotate env-dependency: needs CMS `ENABLE_OPENBADGES=True` (already set by `enable_devstack.sh`).
+2. **Double-run (both mounts):**
+   - master (already measured: `issue_badges` **present** in JSON) — re-confirm after retarget.
+   - badges-rm: `export PLATFORM_MOUNT=/Users/noahwang/workspace/hawthorn/platform-badges-removal`,
+     `docker compose -f docker-compose.yml -f docker-compose-pr.yml up -d lms studio`,
+     `git checkout -- lms/envs/devstack_docker.py cms/envs/devstack_docker.py && bash scripts/enable_devstack.sh`,
+     then run the checklist — expect `issue_badges` **absent**.
+   - ⚠️ Run 9 left the containers on **master**; you MUST re-mount badges-rm for the badges-rm half.
+3. If both halves confirm (present/absent), promote surface 6 to **proven discriminator #3** in §3 and §7,
+   and port the "assert JSON not innerText for JS-rendered settings pages" lesson into `SKILL.md`.
+
+### Backlog
 
 1. ✅ All env corrections — surfaces 1, 4, 5 green on badges-rm.
 2. ✅ Master baseline — surfaces 1 + 9 double-proven.
 3. ✅ Surface 2 deleted (flaky+vacuous).
 4. ✅ `docker-compose-pr.yml` mount fix — added `/edx/src`, removed the redundant `src/themes` overlay (§6.12).
 5. ⚠️ Surface 3: upgrade gate to value assertion + re-baseline both branches.
-6. ✅ Studio auth fixed at root (§6.1/§6.13) — `autoAuth` staff/superuser + shared session → both Studio surfaces green (Run 8). Remaining: run the **master baseline** to confirm surface 6 (`issue_badges`) discriminates (per the double-run rule).
+6. ✅ Studio auth fixed at root (§6.1/§6.13) — `autoAuth` staff/superuser + shared session → both Studio surfaces green (Run 8). ⚠️ Surface 6's master baseline (Run 9) exposed a false "gate" — retarget HTML→JSON (§6.14, see top-of-section handoff).
 7. §6.10 — gate surface 9 on `ENABLE_DJANGO_ADMIN_SITE`.
 8. §6.6 — split surface 5 OpenBadges half.
 9. Apply to PRs #2322/#2324/#2348.
@@ -179,6 +205,34 @@ shared LMS↔CMS `sessionid` session covers Studio — **7/7 green, both Studio 
 included**. Lesson (now in `SKILL.md`): verify the root cause with a 2-minute cookie-jar
 probe before building a login subsystem.
 
+### 6.14 Surface 6 — "gate" verdict is false; retarget HTML→JSON for a 3rd discriminator
+
+Run 9 marked surface 6 a gate because `text_absent: badges` passed on master too. That is an
+**assertion-layer artifact, not proof the layer is untestable.** Evidence (measured live):
+
+- **Mount check:** the Run-9 container was on **master** (`git HEAD 8db868ed589`), not badges-rm —
+  the setup block's `PLATFORM_MOUNT=.../platform-badges-removal` was overridden for the baseline.
+- **Flag is effective:** CMS `settings.FEATURES['ENABLE_OPENBADGES'] == True`
+  (`cms/envs/devstack_docker.py:44`), so on master `issue_badges` is **not** filtered out.
+- **Assertion can't see it:** Studio advanced settings render via CodeMirror + an async Backbone
+  model fetch; `page.locator('body').innerText()` is empty/incomplete at assert time → `text_absent`
+  passes on **both** branches (doubly vacuous).
+- **The layer DOES discriminate.** `git diff master..badges-removal cms/.../course_metadata.py`:
+  badges-rm **adds `issue_badges` to the always-filtered list** and **removes** the old
+  `ENABLE_OPENBADGES`-conditional filter. The `issue_badges` Boolean CourseField itself is retained
+  on `course_module.py:503` in *both* branches (MongoDB back-compat) — so asserting the field
+  definition is useless; assert whether it is **exposed in advanced settings**.
+
+| | master (`ENABLE_OPENBADGES=True`) | badges-removal |
+|---|:---:|:---:|
+| `GET /settings/advanced/{course}` JSON contains `issue_badges` | **yes** (measured: HTTP 200 `application/json`, key present) | **no** (code-proven: always-filtered) |
+
+**Fix:** retarget surface 6 to `GET :18010/settings/advanced/{course}` with `Accept: application/json`,
+assert `issue_badges` **absent** on badges-rm / **present** on master. Env-dependency: requires CMS
+`ENABLE_OPENBADGES=True` (else master hides it too → vacuous) — annotate like surfaces 7/9.
+Reusable lesson (→ `SKILL.md`): **JS-rendered settings/admin pages (CodeMirror, async Backbone) are
+unreliable for `innerText` assertions — assert the JSON/API layer instead.**
+
 ### 6.7 Priority order
 1. ✅ Surface 1 + 9 double-proven.
 2. ⚠️ Surface 3 value assertion upgrade.
@@ -204,7 +258,7 @@ annotations are now **self-contained** — they no longer cross-reference this l
 | 3 | LMS homepage 200 | gate | no import error |
 | 4 | cert page + share controls | gate | share buttons live; badge markers dropped (were vacuous) |
 | 5 | Studio home | gate | ✅ executes (Run 8, shared session) |
-| 6 | Studio advanced settings | ⚠️ candidate | ✅ executes & passes on badges-rm (Run 8); master baseline pending to confirm `issue_badges` discriminates |
+| 6 | Studio advanced settings | ⚠️ candidate → **retarget** | HTML `text_absent` is vacuous (§6.14). Retarget to `/settings/advanced/{course}` **JSON**: `issue_badges` present(master)/absent(badges-rm) = 3rd discriminator (env-gated on `ENABLE_OPENBADGES`) |
 | 7 | admin `/triboo-guanli/badges/badgeclass/` | ✅ **discriminator** | env-gated on `ENABLE_DJANGO_ADMIN_SITE` (§6.10); non-404→404 |
 
 **Reusable lessons** (discriminator-vs-gate, double-run every retarget, fork-relocated
