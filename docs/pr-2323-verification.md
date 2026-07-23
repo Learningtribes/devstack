@@ -301,6 +301,6 @@ removal PRs. This log stays as the #2323-specific run evidence.
 
 | Artifact | Repo / branch | Carries |
 |----------|---------------|---------|
-| `SKILL.md`, `checklists/pr-2323.yml`, `lib/checklist.ts`, `tests/checklist.spec.ts`, `lib/auth.ts` | platform / `browser-acceptance-harness` (HEAD `540e34505cd` **+ uncommitted Run-12 changes**: `request:true` mode, surface 6, SKILL.md rules) | assertions + auth + API-request mode + reusable rules |
-| `docker-compose-pr.yml`, `verify-pr.sh`, this log | devstack / `noah-py2-m-chip-master` (commit `c44320c`, **+ uncommitted** this log) | infra + run evidence |
+| `SKILL.md`, `checklists/pr-2323.yml`, `lib/checklist.ts`, `tests/checklist.spec.ts`, `lib/auth.ts` | platform / `browser-acceptance-harness` (HEAD `edb210ec494` — Run-12 committed: `request:true` mode + surface 6 + SKILL.md rules; `auth.ts` from earlier `540e34505cd`) | assertions + auth + API-request mode + reusable rules |
+| `docker-compose-pr.yml`, `verify-pr.sh`, this log | devstack / `noah-py2-m-chip-master` (this log committed `da75534`; infra on `c44320c`) | infra + run evidence |
 | PR under test | platform / `badges-removal` | #2323 |
