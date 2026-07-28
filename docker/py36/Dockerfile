@@ -39,7 +39,7 @@ RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
 # dependencies are resolved through the same complete constraints set.
 # xblock-utils requires future, not the stale Python 2-only futures package;
 # future==1.0.0 is installed from py36-base.txt under these constraints.
-RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
+RUN pip install --no-cache-dir --force-reinstall --constraint /tmp/py36-constraints.txt \
     -r /tmp/py36-git-requirements.txt
 
 # Verify. uv is retained in the image, but no released uv runner can execute
