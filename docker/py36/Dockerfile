@@ -28,35 +28,19 @@ RUN echo "afb7039f033546d55730dae38a106dd56b358117a565a42bf3ebda9c48db53c6  /tmp
     && uv --version
 
 # 1. PyPI packages
-COPY py36-base.txt /tmp/
-RUN pip install --no-cache-dir "pip==20.3.4" "setuptools==44.1.1" "wheel==0.34.2" \
-    && pip install --no-cache-dir -r /tmp/py36-base.txt
+COPY py36-base.txt py36-constraints.txt py36-git-requirements.txt /tmp/
+RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
+        "pip==20.3.4" "setuptools==44.1.1" "wheel==0.34.2" \
+    && pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
+        -r /tmp/py36-base.txt
 
-# 2. Git-only packages (edX forks not on PyPI)
-RUN pip install --no-cache-dir \
-    git+https://github.com/edx/django-celery.git@756cb57aad765cb2b0d37372c1855b8f5f37e6b0 \
-    git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb \
-    git+https://github.com/edx/django-wiki.git@b66428e06ba551b6c827b30607d0e7baa5895617 \
-    git+https://github.com/edx/codejail.git@a320d43ce6b9c93b17636b2491f724d9e433be47 \
-    git+https://github.com/edx/django-oauth-plus.git@01ec2a161dfc3465f9d35b9211ae790177418316 \
-    git+https://github.com/edx/django-openid-auth.git@7398beacd3265b93f68084b03f88732dfcc86cef \
-    git+https://github.com/edx/django-rest-framework-oauth.git@0a43e8525f1e3048efe4bc70c03de308a277197c \
-    git+https://github.com/edx/MongoDBProxy.git@25b99097615bda06bd7cdfe5669ed80dc2a7fed0 \
-    git+https://github.com/Learningtribes/djangosaml2idp.git@da3798ea6be76ce392f3d3f26aa75d0fdccbf7fe \
-    git+https://github.com/appliedsec/pygeoip.git@95e69341cebf5a6a9fbf7c4f5439d458898bdc3b \
-    git+https://github.com/dgrtwo/ParsePy.git@7949b9f754d1445eff8e8f20d0e967b9a6420639 \
-    git+https://github.com/Learningtribes/edx-ora2@4fcfa2343ab0297da30e4cc6f812ab2e2cc7da92#egg=ora2 \
-    git+https://github.com/Learningtribes/xblock-done.git@25acf600d5d639a96c3556e3d26fbd14f99d1b85#egg=lbmdone-xblock \
-    git+https://github.com/edx/xblock-lti-consumer.git@af68c7cff38441abe00be725a504e77caf6ba282
-
-# 3. LT vendored XBlocks (from src/)
-# xblock-utils needs futures fix: install separately
-RUN pip install --no-cache-dir \
-    git+https://github.com/Learningtribes/edx_xblock_scorm@841e1630bf468c724ca0690f619569342afc70de \
-    git+https://github.com/Learningtribes/xblock-drag-and-drop-v2@9f0b43da2ed8e8691604c5b1a08185a7874ff9b9
-
-# 4. importlib_resources backport (3.6 needs this, stdlib in 3.7+)
-RUN pip install --no-cache-dir importlib-resources
+# 2. Git-only packages and LT vendored XBlocks
+# All exact source identities are maintained in the requirements file; their
+# dependencies are resolved through the same complete constraints set.
+# xblock-utils requires future, not the stale Python 2-only futures package;
+# future==1.0.0 is installed from py36-base.txt under these constraints.
+RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
+    -r /tmp/py36-git-requirements.txt
 
 # Verify. uv is retained in the image, but no released uv runner can execute
 # Python 3.6; use the image interpreter directly for this smoke check.
