@@ -1,12 +1,14 @@
 # Py3.6 Migration — Progress Report & Handoff
 
-> **Canonical snapshot:** 2026-07-28 · Container: `ltdps/edxapp:py36` / `py36-build` · Branch: `py36-boot-fixes` · HEAD: `fcac4469cf7`
+> **Superseded current-status notice:** this file is retained as the historical R27 handoff. The active execution plan and measured runtime state now live in [`platform/docs/plans`](../../platform/docs/plans/README.md). Do not append another canonical override here.
+>
+> **Historical snapshot:** 2026-07-28 · Container: `ltdps/edxapp:py36` / `py36-build` · Branch: `py36-boot-fixes` · HEAD: `fcac4469cf7`
 >
 > Git status at snapshot: `origin/py36-boot-fixes...HEAD = 0/0`; the branch is pushed and is 25 commits ahead of `origin/master`. The 55-file Py3 batch is committed in `9e1bd6f86a3`; the follow-up compatibility batch is committed in `fcac4469cf7`; the platform worktree contains only one unrelated deleted CSV, which must not be staged.
 
-## Review status (2026-07-28)
+## Historical review status (2026-07-28)
 
-**SYNCED for continued execution.** The older `721/1446/586`, `11 commits/unpushed`, and `637/827/626` figures are historical checkpoints, not stable current-state claims. Commit `9e1bd6f86a3` only records the 55-file working-tree state used for the current baseline; it does not change the measured code state. Use the current HEAD snapshot and the observed variance below for all next actions.
+**Historical R27 state; not current execution status.** The older `721/1446/586`, `11 commits/unpushed`, and `637/827/626` figures are historical checkpoints, not stable current-state claims. Commit `9e1bd6f86a3` only records the 55-file working-tree state used for that baseline; it does not change the measured code state.
 
 The follow-up commit `fcac4469cf7` contains the next 41-file Py3 compatibility batch. It was pushed after targeted verification. No new full-suite total is claimed for this commit: the canonical full run reached 80% and was stopped after 21 minutes without progress in the xmodule/contentstore region. Keep the historical baseline unchanged until a complete run finishes.
 

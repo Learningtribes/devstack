@@ -1,5 +1,7 @@
 # Py3.6 Image Build & Run Guide
 
+> **Superseded as a reproducible build contract:** this guide describes the original probe bootstrap. The running container has drifted from these inputs. Use the active [integration plan](../../../platform/docs/plans/py36-integration-probe-plan-20260728.md) and [runtime evidence](../../../platform/docs/plans/py36-integration-evidence.md). Do not treat a successful interactive bootstrap as a locked image.
+
 ## Build
 
 ```bash

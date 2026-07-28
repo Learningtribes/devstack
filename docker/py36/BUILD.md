@@ -1,5 +1,7 @@
 # Py3.6 Image Build + Django Boot — Complete Script
 
+> **Historical only — do not execute as the current build procedure.** This script performs manual in-container edits and `docker commit`, so it cannot produce the reproducible dependency evidence required by the active [integration plan](../../../platform/docs/plans/py36-integration-probe-plan-20260728.md).
+>
 > Date: 2026-07-23 · Image: ltdps/edxapp:py36
 
 ## Build

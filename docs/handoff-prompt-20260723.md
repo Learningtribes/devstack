@@ -1,10 +1,12 @@
 ## Py3.6 Migration — Current Handoff
 
-> Snapshot: 2026-07-28 · canonical status: `progress-plan-20260724.md` · HEAD: `fcac4469cf7`
+> **Superseded current-status notice:** use [`platform/docs/plans`](../../platform/docs/plans/README.md) for the active integration plan and runtime evidence. This file remains historical and must not be used as the current agent prompt.
 >
-> This filename is historical, but the contents below are the current handoff. Do not use the older R20 numbers or the old “push 6 commits” instructions.
+> Historical snapshot: 2026-07-28 · former canonical status: `progress-plan-20260724.md` · HEAD: `fcac4469cf7`
+>
+> This filename and its contents are historical evidence. Do not use the older R20 numbers, the old “push 6 commits” instructions, or the R27 next-action section as the current execution prompt.
 
-### One-line status
+### Historical one-line status
 
 **720–722 failed / 1445–1447 passed / 84 skipped / 586 errors** on Py3.6. Latest canonical `--tb=line`: **720 failed / 1447 passed**. The canonical collection-only run is **12464 collected / 81 errors**. This is a 52.5% pass rate and **+626 passed tests vs R18**. Django booted; broad boot blockers are addressed, but repository-wide Py2 residue remains. The 55-file batch used for this measurement is committed as `9e1bd6f86a3`; the 41-file follow-up is committed and pushed as `fcac4469cf7`. No new full-suite totals are claimed for the follow-up because its full run stopped at 80% after 21 minutes without progress.
 
