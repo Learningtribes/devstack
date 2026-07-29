@@ -11,6 +11,7 @@ amqp==1.4.9
 analytics-python==1.1.0
 anyjson==0.3.3
 appdirs==1.4.4
+beautifulsoup4==4.9.3
 billiard==3.3.0.23
 bleach==1.4
 boto3==1.23.10
@@ -124,6 +125,7 @@ shortuuid==0.5.0
 six==1.17.0
 slumber==0.7.1
 sortedcontainers==2.4.0
+soupsieve==2.3.2.post1
 sqlparse==0.4.4
 stevedore==1.32.0
 sympy==1.9

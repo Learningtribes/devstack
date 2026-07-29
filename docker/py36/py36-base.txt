@@ -83,6 +83,7 @@ Markdown==3.3.7
 MarkupSafe==2.0.1
 Mako==1.1.6
 bleach==1.4
+beautifulsoup4==4.9.3
 html5lib==0.999
 sqlparse==0.4.4
 stevedore==1.32.0
