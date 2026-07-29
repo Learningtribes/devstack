@@ -57,7 +57,7 @@ edx-opaque-keys==0.4.4
 edx-django-utils==8.0.1
 edx-submissions==2.1.1
 edx-i18n-tools==0.4.5
-edx-milestones==0.1.13
+edx-milestones==0.2.5
 edx-proctoring==1.5.7
 edx-rest-api-client==1.9.2
 XBlock==1.2.9
