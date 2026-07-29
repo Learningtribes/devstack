@@ -44,6 +44,7 @@ pysaml2==7.3.1
 python-ldap==3.4.4
 
 # === edX core ===
+event-tracking==0.3.2
 edx-opaque-keys==0.4.4
 edx-django-utils==8.0.1
 edx-submissions==2.1.1
