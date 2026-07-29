@@ -27,6 +27,14 @@ RUN echo "afb7039f033546d55730dae38a106dd56b358117a565a42bf3ebda9c48db53c6  /tmp
     && rm -rf /tmp/uv.tar.gz /tmp/uv-aarch64-unknown-linux-gnu \
     && uv --version
 
+# The published 1.5.3 wheel has an incorrect unconditional futures dependency.
+# Install the verified official sdist so its Python 3.6 metadata is used.
+ADD https://files.pythonhosted.org/packages/55/b0/64dca0c66160f3a2e5ded33e12fd57beb5e6bc1e67cd3b2d24c6506e0155/django-pipeline-1.5.3.tar.gz /tmp/django-pipeline-1.5.3.tar.gz
+RUN echo "48e71c8b1781533adee64561cca20c9f17d40136211c2b32531e70ffe7fb0ced  /tmp/django-pipeline-1.5.3.tar.gz" | sha256sum -c - \
+    && pip install --no-cache-dir --no-index --find-links=/tmp --no-deps \
+        "django-pipeline==1.5.3" \
+    && rm -f /tmp/django-pipeline-1.5.3.tar.gz
+
 # 1. PyPI packages
 COPY py36-base.txt py36-constraints.txt py36-git-requirements.txt /tmp/
 RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
