@@ -120,6 +120,7 @@ chardet==3.0.4
 simplejson==3.20.2
 slumber==0.7.1
 python-dateutil==2.9.0.post0
+python-Levenshtein==0.12.1
 python-swiftclient==3.13.1
 sailthru-client==2.2.3
 pycountry==1.20
