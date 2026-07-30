@@ -69,6 +69,9 @@ RUN pip install --no-cache-dir --no-deps /tmp/platform-metadata \
     && pip install --no-cache-dir --no-deps /tmp/capa-metadata \
     && pip install --no-cache-dir --no-deps /tmp/xmodule-metadata \
     && python -c "import pkg_resources; assert list(pkg_resources.iter_entry_points('xmodule.v1', 'course')); assert list(pkg_resources.iter_entry_points('xmodule.v1', 'hidden')); print('XModule entry points OK')" \
+    && rm -f /usr/local/lib/python3.6/site-packages/Open_edX-0.11.dist-info/direct_url.json \
+        /usr/local/lib/python3.6/site-packages/capa-0.1.dist-info/direct_url.json \
+        /usr/local/lib/python3.6/site-packages/XModule-0.1.1.dist-info/direct_url.json \
     && rm -rf /tmp/platform-metadata /tmp/capa-metadata /tmp/xmodule-metadata
 
 # Verify. uv is retained in the image, but no released uv runner can execute
