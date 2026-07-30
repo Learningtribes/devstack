@@ -74,6 +74,7 @@ edx-i18n-tools==0.4.5
 edx-milestones==0.2.5
 edx-opaque-keys==0.4.4
 edx-oauth2-provider==1.3.1
+edx-organizations==0.4.10
 edx-proctoring==1.5.7
 edx-rest-api-client==1.9.2
 edx-submissions==2.1.1
