@@ -57,12 +57,13 @@ shortuuid==0.5.0
 # === edX core ===
 event-tracking==0.3.2
 edx-opaque-keys==0.4.4
-edx-django-utils==8.0.1
+edx-django-utils==3.2.2
 edx-submissions==2.1.1
 edx-i18n-tools==0.4.5
 edx-milestones==0.2.5
 edx-proctoring==1.5.7
 edx-rest-api-client==1.9.2
+newrelic==5.12.1.141
 XBlock==1.2.9
 
 # === Utils ===
