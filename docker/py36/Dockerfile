@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     default-libmysqlclient-dev \
     libgeos-dev libgeos-c1v5 \
     libldap2-dev libsasl2-dev \
-    libxml2-dev libxslt-dev libjpeg-dev zlib1g-dev \
+    libxml2-dev libxslt-dev libxmlsec1-dev pkg-config libjpeg-dev zlib1g-dev \
     libgraphviz-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
