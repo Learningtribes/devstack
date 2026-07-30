@@ -120,6 +120,7 @@ slumber==0.7.1
 python-dateutil==2.9.0.post0
 python-swiftclient==3.13.1
 sailthru-client==2.2.3
+pycountry==1.20
 pytz==2026.2
 defusedxml==0.7.1
 Markdown==3.3.7
@@ -128,6 +129,7 @@ Mako==1.1.6
 bleach==1.4
 beautifulsoup4==4.9.3
 html5lib==0.999
+help-tokens==1.0.3
 sqlparse==0.4.4
 stevedore==1.32.0
 
