@@ -3,7 +3,7 @@
 # py36-constraints.txt; keep source identity controlled here.
 git+https://github.com/edx/django-celery.git@756cb57aad765cb2b0d37372c1855b8f5f37e6b0
 git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb
-git+https://github.com/edx/django-wiki.git@b66428e06ba551b6c827b30607d0e7baa5895617
+git+https://github.com/edx/django-wiki.git@4ceac471dab2d629a2b978646fb91e4d855b1e89
 git+https://github.com/edx/codejail.git@4127fc4bd5775cc72aee8d7f0a70e31405e22439
 git+https://github.com/edx/django-oauth-plus.git@01ec2a161dfc3465f9d35b9211ae790177418316
 git+https://github.com/edx/django-openid-auth.git@7398beacd3265b93f68084b03f88732dfcc86cef
