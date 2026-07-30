@@ -54,15 +54,22 @@ RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
 RUN pip install --no-cache-dir --force-reinstall --constraint /tmp/py36-constraints.txt \
     -r /tmp/py36-git-requirements.txt
 
-# Platform-owned Django apps are registered through setup.py entry points.
-# Install only the package metadata and top-level package markers from the
-# separately supplied, read-only Platform build context.
+# Platform-owned Django apps and XModule descriptors are registered through
+# separate setup.py entry points. Install only their package metadata and
+# top-level package markers from the read-only Platform build context.
 COPY --from=platform /setup.py /tmp/platform-metadata/setup.py
 COPY --from=platform /cms/__init__.py /tmp/platform-metadata/cms/__init__.py
 COPY --from=platform /lms/__init__.py /tmp/platform-metadata/lms/__init__.py
 COPY --from=platform /openedx/__init__.py /tmp/platform-metadata/openedx/__init__.py
+COPY --from=platform /common/lib/capa/setup.py /tmp/capa-metadata/setup.py
+COPY --from=platform /common/lib/capa/capa/__init__.py /tmp/capa-metadata/capa/__init__.py
+COPY --from=platform /common/lib/xmodule/setup.py /tmp/xmodule-metadata/setup.py
+COPY --from=platform /common/lib/xmodule/xmodule/__init__.py /tmp/xmodule-metadata/xmodule/__init__.py
 RUN pip install --no-cache-dir --no-deps /tmp/platform-metadata \
-    && rm -rf /tmp/platform-metadata
+    && pip install --no-cache-dir --no-deps /tmp/capa-metadata \
+    && pip install --no-cache-dir --no-deps /tmp/xmodule-metadata \
+    && python -c "import pkg_resources; assert list(pkg_resources.iter_entry_points('xmodule.v1', 'course')); assert list(pkg_resources.iter_entry_points('xmodule.v1', 'hidden')); print('XModule entry points OK')" \
+    && rm -rf /tmp/platform-metadata /tmp/capa-metadata /tmp/xmodule-metadata
 
 # Verify. uv is retained in the image, but no released uv runner can execute
 # Python 3.6; use the image interpreter directly for this smoke check.
