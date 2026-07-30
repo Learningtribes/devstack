@@ -83,6 +83,7 @@ edx-django-sites-extensions==2.3.1
 edx-opaque-keys==0.4.4
 edx-django-utils==3.2.2
 edx-submissions==2.1.1
+edx-user-state-client==1.1.0
 edx-i18n-tools==0.4.5
 edx-milestones==0.2.5
 edx-proctoring==1.5.7
