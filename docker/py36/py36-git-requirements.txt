@@ -18,3 +18,4 @@ git+https://github.com/Learningtribes/xblock-done.git@25acf600d5d639a96c3556e3d2
 git+https://github.com/edx/xblock-lti-consumer.git@af68c7cff38441abe00be725a504e77caf6ba282
 git+https://github.com/Learningtribes/edx_xblock_scorm@841e1630bf468c724ca0690f619569342afc70de
 git+https://github.com/Learningtribes/xblock-drag-and-drop-v2@9f0b43da2ed8e8691604c5b1a08185a7874ff9b9
+-e git+https://github.com/Learningtribes/edx-search.git@c770553be3c90ab2250bffd1afa3556fd660af11#egg=edx-search
