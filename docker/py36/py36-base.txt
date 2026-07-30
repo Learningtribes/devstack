@@ -92,6 +92,7 @@ newrelic==5.12.1.141
 XBlock==1.2.9
 
 # === Utils ===
+Babel==1.3
 six==1.17.0
 lxml==3.8.0
 Pillow==8.4.0
