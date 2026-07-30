@@ -14,6 +14,7 @@ git+https://github.com/appliedsec/pygeoip.git@95e69341cebf5a6a9fbf7c4f5439d45889
 git+https://github.com/dgrtwo/ParsePy.git@7949b9f754d1445eff8e8f20d0e967b9a6420639
 git+https://github.com/jazkarta/edx-jsme.git@690dbf75441fa91c7c4899df0b83d77f7deb5458#egg=edx-jsme
 git+https://github.com/Learningtribes/edx-ora2@50e044b5e2c70990d69c9195ec70c6fc0fd41629#egg=ora2
+git+https://github.com/Learningtribes/xblock-utils.git@8e5e856859f5b006d7f55e98b0fc867e465e3105#egg=xblock-utils
 git+https://github.com/Learningtribes/xblock-done.git@25acf600d5d639a96c3556e3d26fbd14f99d1b85#egg=lbmdone-xblock
 git+https://github.com/edx/xblock-lti-consumer.git@af68c7cff38441abe00be725a504e77caf6ba282
 git+https://github.com/Learningtribes/edx_xblock_scorm@841e1630bf468c724ca0690f619569342afc70de
