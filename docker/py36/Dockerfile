@@ -54,6 +54,16 @@ RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
 RUN pip install --no-cache-dir --force-reinstall --constraint /tmp/py36-constraints.txt \
     -r /tmp/py36-git-requirements.txt
 
+# Platform-owned Django apps are registered through setup.py entry points.
+# Install only the package metadata and top-level package markers from the
+# separately supplied, read-only Platform build context.
+COPY --from=platform /setup.py /tmp/platform-metadata/setup.py
+COPY --from=platform /cms/__init__.py /tmp/platform-metadata/cms/__init__.py
+COPY --from=platform /lms/__init__.py /tmp/platform-metadata/lms/__init__.py
+COPY --from=platform /openedx/__init__.py /tmp/platform-metadata/openedx/__init__.py
+RUN pip install --no-cache-dir --no-deps /tmp/platform-metadata \
+    && rm -rf /tmp/platform-metadata
+
 # Verify. uv is retained in the image, but no released uv runner can execute
 # Python 3.6; use the image interpreter directly for this smoke check.
 RUN uv --version \
