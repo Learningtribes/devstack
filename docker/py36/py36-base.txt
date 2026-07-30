@@ -49,6 +49,7 @@ django-js-asset==1.2.3
 django-method-override==0.1.0
 django-mysql==2.3.1
 django-oauth-toolkit==1.1.3
+rfc6266-parser==0.0.6
 rules==1.3
 sorl-thumbnail==12.3
 jsonfield==2.1.1
@@ -133,6 +134,7 @@ bleach==1.4
 beautifulsoup4==4.9.3
 html5lib==0.999
 help-tokens==1.0.3
+LEPL==5.1.3
 sqlparse==0.4.4
 stevedore==1.32.0
 
