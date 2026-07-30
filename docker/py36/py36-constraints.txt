@@ -153,6 +153,7 @@ pytz==2026.2
 PyYAML==6.0.1
 redis==2.10.6
 regex==2023.8.8
+reportlab==3.6.8
 requests==2.27.1
 rfc6266-parser==0.0.6
 rules==1.3

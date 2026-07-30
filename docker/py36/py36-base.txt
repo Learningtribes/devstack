@@ -108,6 +108,7 @@ Babel==1.3
 six==1.17.0
 lxml==3.8.0
 Pillow==8.4.0
+reportlab==3.6.8
 PyYAML==6.0.1
 boto==2.49.0
 boto3==1.23.10
