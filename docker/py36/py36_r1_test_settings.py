@@ -11,6 +11,19 @@ from six import string_types
 from lms.envs.test import *  # noqa: F401,F403
 
 
+# The m5-fixed Python 2 base carries edx-proctoring 1.4 without the plugin
+# metadata used by the current Python 3 runtime. Keep the runner settings
+# equivalent by registering the installed app when the entry point cannot do
+# it for us.
+try:
+    import edx_proctoring  # noqa: F401
+except ImportError:
+    pass
+else:
+    if not any(app.startswith('edx_proctoring') for app in INSTALLED_APPS):
+        INSTALLED_APPS.append('edx_proctoring')
+
+
 RUNNER_NAMESPACE = os.environ.get('PY36_R1_TEST_NAMESPACE', 'py36-r1-p0b')
 RUNNER_MONGO_DB_PREFIX = os.environ.get('PY36_R1_MONGO_DB_PREFIX', RUNNER_NAMESPACE)
 RUNNER_TEST_ROOT = os.environ.get('PY36_R1_TEST_ROOT', '/runner/test_root')

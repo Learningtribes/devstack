@@ -7,15 +7,15 @@ RUNNER_TARGET="${2:-identity}"
 
 case "${RUNNER_KIND}" in
     py36)
-        RUNNER_IMAGE="${PY36_R1_PY36_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p0b-py36-runner-20260731}"
-        RUNNER_NAMESPACE="py36-r1-p0b-py36"
+        RUNNER_IMAGE="${PY36_R1_PY36_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p0c-py36-runner-nose2-20260731}"
+        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p0c-py36}"
         ;;
     py27)
-        RUNNER_IMAGE="${PY36_R1_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p0b-py27-runner-20260731}"
-        RUNNER_NAMESPACE="py36-r1-p0b-py27"
+        RUNNER_IMAGE="${PY36_R1_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p0c-py27-runner-wiki3-20260731}"
+        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p0c-py27}"
         ;;
     *)
-        echo "usage: $0 {py36|py27} {identity|lms|xmodule|all}" >&2
+        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused|all}" >&2
         exit 2
         ;;
 esac

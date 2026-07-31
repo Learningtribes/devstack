@@ -2,3 +2,7 @@
 # that runtime input inside the derived runner without mounting another host
 # worktree.
 git+https://github.com/Learningtribes/edx-search.git@c770553be3c90ab2250bffd1afa3556fd660af11#egg=edx-search
+
+# The current Platform URL contract requires the accepted R1 django-wiki API.
+# m5-fixed exposes an older egg-link (0.0.18) that returns a legacy 3-tuple.
+git+https://github.com/edx/django-wiki.git@4ceac471dab2d629a2b978646fb91e4d855b1e89#egg=django-wiki

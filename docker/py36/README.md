@@ -62,7 +62,7 @@ services:
 - Network must be `devstack_default` to reach MySQL/Mongo
 - Shared DB safety: use separate py3 schema for migrations
 
-## P0-B isolated test runners
+## P0-B/P0-C isolated test runners
 
 The R1 runtime image remains unchanged and does not receive pytest. The two
 runner images are disposable derivatives with separate test-tool freezes:
@@ -76,11 +76,11 @@ cd /Users/noahwang/workspace/hawthorn/devstack-py36-integration-r1/docker/py36
 
 DOCKER_BUILDKIT=0 docker build --no-cache \
   -f Dockerfile.py36-test-runner \
-  -t ltdps/edxapp:py36-r1-p0b-py36-runner-20260731 .
+  -t ltdps/edxapp:py36-r1-p0c-py36-runner-nose2-20260731 .
 
 DOCKER_BUILDKIT=0 docker build --no-cache --platform linux/amd64 \
   -f Dockerfile.py27-test-runner \
-  -t ltdps/edxapp:py36-r1-p0b-py27-runner-20260731 .
+  -t ltdps/edxapp:py36-r1-p0c-py27-runner-wiki3-20260731 .
 ```
 
 Run identity or collection through the guarded wrapper. It refuses to mount
@@ -95,8 +95,19 @@ and runner-specific Mongo and queue names.
 ./run-test-runner.sh py27 identity
 ./run-test-runner.sh py27 lms
 ./run-test-runner.sh py27 xmodule
+./run-test-runner.sh py36 focused
+./run-test-runner.sh py27 focused
 ```
 
 The selected dual-runtime collection targets are
 `lms/djangoapps/static_template_view/tests/test_views.py` and
 `common/lib/xmodule/xmodule/tests/test_raw_module.py`.
+
+The `focused` target runs the eight post-`43d2b8f` regression files selected by
+the R1 next-gates plan with explicit pytest-django loading and isolated SQLite,
+Mongo, cache, and Celery settings. The runtime image and its freeze are never
+modified by either runner build.
+
+The Py3 runner's test-only freeze also includes the Platform testing pins
+`factory_boy==2.8.1` and `Faker==0.8.16`; these are not admitted to the R1
+runtime image.
