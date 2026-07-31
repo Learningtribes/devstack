@@ -111,3 +111,14 @@ modified by either runner build.
 The Py3 runner's test-only freeze also includes the Platform testing pins
 `factory_boy==2.8.1` and `Faker==0.8.16`; these are not admitted to the R1
 runtime image.
+
+P0-C was accepted on 2026-07-31 at Devstack commit
+`c097be389b4b32ffe068cd9b05afb69599a6add7`: both runtimes executed the same
+118 focused nodes successfully (Py3.6: 118 passed, 82 warnings; Py2.7: 118
+passed, 9 warnings). The final local runner images are
+`ltdps/edxapp:py36-r1-p0c-py36-runner-nose2-20260731` and
+`ltdps/edxapp:py36-r1-p0c-py27-runner-wiki3-20260731`. The accepted runtime
+image remains `ltdps/edxapp:py36-r1-locked@sha256:7c5a37e...`; the Py2
+runner's two `pip check` conflicts are inherited from `m5-fixed` and are
+recorded in the Platform evidence. The next gate is P1-A Celery worker/task
+isolation.
