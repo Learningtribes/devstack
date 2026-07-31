@@ -1,0 +1,4 @@
+# m5-fixed leaves the normal Devstack edx-search mount point empty. Recreate
+# that runtime input inside the derived runner without mounting another host
+# worktree.
+git+https://github.com/Learningtribes/edx-search.git@c770553be3c90ab2250bffd1afa3556fd660af11#egg=edx-search

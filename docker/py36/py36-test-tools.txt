@@ -1,0 +1,12 @@
+# Test-only additions to the accepted Python 3.6 runtime image.
+# Keep the complete pytest 3.6 dependency closure explicit.
+atomicwrites==1.4.1
+attrs==17.4.0
+ddt==0.8.0
+more-itertools==8.14.0
+mock==1.0.1
+pluggy==0.7.1
+py==1.11.0
+pytest==3.6.4
+pytest-django==3.1.2
+six==1.17.0

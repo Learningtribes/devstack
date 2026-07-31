@@ -61,3 +61,42 @@ services:
 - Platform source is volume-mounted, not baked into image
 - Network must be `devstack_default` to reach MySQL/Mongo
 - Shared DB safety: use separate py3 schema for migrations
+
+## P0-B isolated test runners
+
+The R1 runtime image remains unchanged and does not receive pytest. The two
+runner images are disposable derivatives with separate test-tool freezes:
+
+The Py2 runner also installs the fixed `edx-search` source that normal
+Devstack supplies through a separate mount; the accepted `m5-fixed` image has
+only the empty mount point.
+
+```bash
+cd /Users/noahwang/workspace/hawthorn/devstack-py36-integration-r1/docker/py36
+
+DOCKER_BUILDKIT=0 docker build --no-cache \
+  -f Dockerfile.py36-test-runner \
+  -t ltdps/edxapp:py36-r1-p0b-py36-runner-20260731 .
+
+DOCKER_BUILDKIT=0 docker build --no-cache --platform linux/amd64 \
+  -f Dockerfile.py27-test-runner \
+  -t ltdps/edxapp:py36-r1-p0b-py27-runner-20260731 .
+```
+
+Run identity or collection through the guarded wrapper. It refuses to mount
+the protected Platform checkout and mounts only `platform-py3-integration` as
+read-only. The test settings use disposable SQLite/locmem/eager-Celery state
+and runner-specific Mongo and queue names.
+
+```bash
+./run-test-runner.sh py36 identity
+./run-test-runner.sh py36 lms
+./run-test-runner.sh py36 xmodule
+./run-test-runner.sh py27 identity
+./run-test-runner.sh py27 lms
+./run-test-runner.sh py27 xmodule
+```
+
+The selected dual-runtime collection targets are
+`lms/djangoapps/static_template_view/tests/test_views.py` and
+`common/lib/xmodule/xmodule/tests/test_raw_module.py`.

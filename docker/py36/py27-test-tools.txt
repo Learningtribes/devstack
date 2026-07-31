@@ -1,0 +1,11 @@
+# Test tools already present in the accepted m5-fixed edxapp virtualenv.
+# This file is an assertion/freeze document; the Py2 runner installs nothing.
+atomicwrites==1.1.5
+attrs==17.4.0
+ddt==0.8.0
+mock==1.0.1
+more-itertools==4.2.0
+pluggy==0.6.0
+py==1.5.4
+pytest==3.6.2
+pytest-django==3.1.2
