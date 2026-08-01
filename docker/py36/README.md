@@ -118,7 +118,18 @@ P0-C was accepted on 2026-07-31 at Devstack commit
 passed, 9 warnings). The final local runner images are
 `ltdps/edxapp:py36-r1-p0c-py36-runner-nose2-20260731` and
 `ltdps/edxapp:py36-r1-p0c-py27-runner-wiki3-20260731`. The accepted runtime
-image remains `ltdps/edxapp:py36-r1-locked@sha256:7c5a37e...`; the Py2
+image at that checkpoint was
+`ltdps/edxapp:py36-r1-locked@sha256:7c5a37e...`; the Py2
 runner's two `pip check` conflicts are inherited from `m5-fixed` and are
-recorded in the Platform evidence. The next gate is P1-A Celery worker/task
-isolation.
+recorded in the Platform evidence.
+
+P1-A was accepted on 2026-08-02 from Devstack commit
+`dfd571d61f7b1f885166a5c92d8d64c112c15e58`, tree
+`c069178bd4016e69e0ba63c837a5027fddd3452d`. The no-cache build pins
+xblock-poll at merged SHA `e8eed047d79ce424b0f9c980b43d48fdeb92517c`
+and used the parameterized Tsinghua HTTPS Debian mirrors. The accepted local
+runtime is `ltdps/edxapp:py36-r1-locked` at
+`sha256:08d4d0452a3fde20f557ddca5c77aac7e1eb78c7fb4dee6e9b855b96d872152f`.
+The 226-line freeze and complete service/Celery admission evidence are in the
+Platform integration docs. No image registry push was issued. The next gate
+is P1-B focused workflows and broad subsystem burn-down.
