@@ -6,8 +6,15 @@ FROM python:3.6-slim@sha256:ac11ce85a603a835533b2ec608246fef2fea4a4b4790df97a20d
 LABEL description="Open edX Hawthorn Py3.6 migration image — Django 1.11 + celery 3.1"
 LABEL maintainer="Learning Tribes"
 
+ARG DEBIAN_MIRROR=http://deb.debian.org/debian
+ARG DEBIAN_SECURITY_MIRROR=http://security.debian.org/debian-security
+
 # System dependencies (apt works via devstack_default network)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN sed -i \
+        -e "s|http://deb.debian.org/debian|${DEBIAN_MIRROR}|g" \
+        -e "s|http://security.debian.org/debian-security|${DEBIAN_SECURITY_MIRROR}|g" \
+        /etc/apt/sources.list \
+    && apt-get update && apt-get install -y --no-install-recommends \
     git gcc g++ make \
     default-libmysqlclient-dev \
     libgeos-dev libgeos-c1v5 \
