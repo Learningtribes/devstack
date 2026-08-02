@@ -141,5 +141,12 @@ and used the parameterized Tsinghua HTTPS Debian mirrors. The accepted local
 runtime is `ltdps/edxapp:py36-r1-locked` at
 `sha256:08d4d0452a3fde20f557ddca5c77aac7e1eb78c7fb4dee6e9b855b96d872152f`.
 The 226-line freeze and complete service/Celery admission evidence are in the
-Platform integration docs. No image registry push was issued. The next gate
-is P1-B focused workflows and broad subsystem burn-down.
+Platform integration docs. No image registry push was issued.
+
+P1-B Batch 2 review remediation was accepted on 2026-08-02 with Platform
+source `430dc13caf787b899ddc16ae900ca569e121af62` and Devstack runner/wrapper
+input `0c83125d75ee45f532178bc44134dd3f1b259035`. Both runtimes passed the same
+38-node Batch 2 selection, repeated execution, and the 118-node P0-C
+regression. The accepted runtime and runner images were unchanged. The next
+gate is the separately isolated LMS dashboard/browser workflow; broad
+subsystem burn-down remains later P1-B work.
