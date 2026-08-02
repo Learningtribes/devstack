@@ -149,6 +149,53 @@ run_batch2() {
         "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_recent_enrollment_filter.py"
 }
 
+run_dashboard_remediation() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_dashboard_remediation {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/edxmako/tests.py::UserMetadataTemplateTests" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/tests.py::AnonymousLookupTable" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_models.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_utils.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/lms_xblock/test/test_runtime.py::TestHandlerUrl" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_models.py::BlockRecordListTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_models.py::VisibleBlocksTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_transformer.py::GradesTransformerTestCase::test_grading_policy_collected" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_course_grade.py::TestCourseGrade" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/lib/tests/test_graph_traversals.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_graders.py::GraderTest::test_assignment_format_grader" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_graders.py::GraderTest::test_assignment_format_grader_on_single_section_entry" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/features/course_experience/tests/test_course_tools.py"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -198,13 +245,19 @@ case "${1:-identity}" in
     p1b-batch2)
         run_batch2 execute
         ;;
+    p1b-dashboard-remediation-collect)
+        run_dashboard_remediation collect
+        ;;
+    p1b-dashboard-remediation)
+        run_dashboard_remediation execute
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|all}" >&2
         exit 2
         ;;
 esac

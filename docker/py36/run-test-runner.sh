@@ -15,7 +15,7 @@ case "${RUNNER_KIND}" in
         RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py27}"
         ;;
     *)
-        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|all}" >&2
+        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|all}" >&2
         exit 2
         ;;
 esac
