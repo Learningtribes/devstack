@@ -196,6 +196,30 @@ run_dashboard_remediation() {
         "${RUNNER_PLATFORM_ROOT}/openedx/features/course_experience/tests/test_course_tools.py"
 }
 
+run_enrollment_view_targeted() {
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_vertical.py::XModuleDescriptorHashTest" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_vertical.py::VerticalBlockBookmarkIdTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_courses.py::CoursesTest::test_xqa_interface_template_renders_course_key" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_models.py"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -251,13 +275,16 @@ case "${1:-identity}" in
     p1b-dashboard-remediation)
         run_dashboard_remediation execute
         ;;
+    p1b-enrollment-view-targeted)
+        run_enrollment_view_targeted
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-enrollment-view-targeted|all}" >&2
         exit 2
         ;;
 esac
