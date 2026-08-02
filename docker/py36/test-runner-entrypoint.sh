@@ -29,7 +29,7 @@ export PY36_R1_TEST_NAMESPACE="${RUNNER_NAMESPACE}"
 export PY36_R1_TEST_ROOT="${PY36_R1_TEST_ROOT:-/runner/test_root}"
 
 mkdir -p "${PY36_R1_TEST_ROOT}/db" "${PY36_R1_TEST_ROOT}/data" "${PY36_R1_TEST_ROOT}/uploads"
-mkdir -p /edx/var/log/cms
+mkdir -p /edx/var/log/cms /edx/var/log/lms
 cd /runner
 
 print_identity() {
@@ -112,6 +112,43 @@ run_batch1() {
         "${RUNNER_PLATFORM_ROOT}/lms/lib/comment_client/tests/test_utils.py"
 }
 
+run_batch2() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_batch2 {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_enrollment.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_recent_enrollments.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_recent_enrollment_filter.py"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -155,13 +192,19 @@ case "${1:-identity}" in
     p1b-batch1)
         run_batch1 execute
         ;;
+    p1b-batch2-collect)
+        run_batch2 collect
+        ;;
+    p1b-batch2)
+        run_batch2 execute
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|all}" >&2
         exit 2
         ;;
 esac

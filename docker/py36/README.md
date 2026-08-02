@@ -97,6 +97,10 @@ and runner-specific Mongo and queue names.
 ./run-test-runner.sh py27 xmodule
 ./run-test-runner.sh py36 focused
 ./run-test-runner.sh py27 focused
+./run-test-runner.sh py36 p1b-batch2-collect
+./run-test-runner.sh py27 p1b-batch2-collect
+./run-test-runner.sh py36 p1b-batch2
+./run-test-runner.sh py27 p1b-batch2
 ```
 
 The selected dual-runtime collection targets are
@@ -107,6 +111,11 @@ The `focused` target runs the eight post-`43d2b8f` regression files selected by
 the R1 next-gates plan with explicit pytest-django loading and isolated SQLite,
 Mongo, cache, and Celery settings. The runtime image and its freeze are never
 modified by either runner build.
+
+The `p1b-batch2-collect` and `p1b-batch2` targets run the isolated enrollment,
+recent-enrollment, and recent-enrollment-filter checkpoint. Set the runner
+image and namespace environment variables explicitly when reproducing a
+recorded checkpoint.
 
 The Py3 runner's test-only freeze also includes the Platform testing pins
 `factory_boy==2.8.1` and `Faker==0.8.16`; these are not admitted to the R1
