@@ -1,18 +1,21 @@
 # Derive the test runner from the accepted runtime image. The digest is the
 # R1 runtime identity and must not be replaced by a floating tag.
-FROM ltdps/edxapp@sha256:7c5a37e007c4771370f16cca21e2f23616a0037143e0f19e344e99019c83c072
+FROM ltdps/edxapp@sha256:08d4d0452a3fde20f557ddca5c77aac7e1eb78c7fb4dee6e9b855b96d872152f
 
 LABEL description="Open edX Hawthorn Python 3.6 R1 isolated test runner"
-LABEL runtime_image="ltdps/edxapp@sha256:7c5a37e007c4771370f16cca21e2f23616a0037143e0f19e344e99019c83c072"
+LABEL runtime_image="ltdps/edxapp@sha256:08d4d0452a3fde20f557ddca5c77aac7e1eb78c7fb4dee6e9b855b96d872152f"
 
 ENV RUNNER_PYTHON=/usr/local/bin/python \
     RUNNER_PLATFORM_ROOT=/edx/app/edxapp/edx-platform \
+    PY36_R1_GENERATE_SOURCE_METADATA=1 \
+    PY36_R1_METADATA_ROOT=/runner/source-metadata \
     PYTHONUNBUFFERED=1
 
 WORKDIR /runner
 
 COPY py36-test-tools.txt /opt/runner/py36-test-tools.txt
 COPY py36_r1_test_settings.py /opt/runner/py36_r1_test_settings.py
+COPY py27_source_metadata.py /opt/runner/py27_source_metadata.py
 COPY test-runner-entrypoint.sh /opt/runner/test-runner-entrypoint.sh
 
 # The runtime image is immutable for this gate. Test-only packages are added

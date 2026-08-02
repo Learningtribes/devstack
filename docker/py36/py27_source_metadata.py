@@ -73,7 +73,7 @@ def _parse_setup(path):
         if keyword.arg in ("name", "version", "entry_points", "install_requires"):
             values[keyword.arg] = _evaluate(keyword.value, assignments)
 
-    missing = set(("name", "version", "entry_points")) - set(values)
+    missing = set(("name", "version")) - set(values)
     if missing:
         raise MetadataError("missing setup values in %s: %s" % (path, sorted(missing)))
     return values
@@ -103,7 +103,7 @@ def _write_distribution(metadata_root, setup_values):
         "Metadata-Version: 1.0\nName: %s\nVersion: %s\n" % (name, version),
     )
 
-    entry_points = setup_values["entry_points"]
+    entry_points = setup_values.get("entry_points", {}) or {}
     entry_point_text = []
     for group in sorted(entry_points):
         entry_point_text.append("[%s]" % group)

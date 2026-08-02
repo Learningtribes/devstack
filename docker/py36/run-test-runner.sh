@@ -11,7 +11,7 @@ case "${RUNNER_KIND}" in
         RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p0c-py36}"
         ;;
     py27)
-        RUNNER_IMAGE="${PY36_R1_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p0c-py27-runner-wiki3-20260731}"
+        RUNNER_IMAGE="${PY36_R1_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p1b-py27-runner-wiki3-20260802}"
         RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p0c-py27}"
         ;;
     *)
@@ -34,6 +34,7 @@ exec docker run --rm \
     --read-only \
     --tmpfs /runner:rw,exec,size=1g \
     --tmpfs /tmp:rw,exec,size=1g \
+    --tmpfs /edx/var/log:rw,exec,size=64m \
     --mount "type=bind,src=${SOURCE_ROOT},dst=/edx/app/edxapp/edx-platform,readonly" \
     --env "PY36_R1_TEST_NAMESPACE=${RUNNER_NAMESPACE}" \
     --env "PY36_R1_MONGO_DB_PREFIX=${RUNNER_NAMESPACE}" \

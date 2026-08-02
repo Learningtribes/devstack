@@ -15,7 +15,8 @@ if [ "${PY36_R1_GENERATE_SOURCE_METADATA:-0}" = "1" ]; then
     "${RUNNER_PYTHON}" /opt/runner/py27_source_metadata.py \
         "${RUNNER_METADATA_ROOT}" \
         "${RUNNER_PLATFORM_ROOT}/setup.py" \
-        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/setup.py"
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/setup.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/capa/setup.py"
 fi
 
 export PYTHONPATH="/opt/runner:${RUNNER_METADATA_ROOT}:${RUNNER_PLATFORM_ROOT}:${RUNNER_PLATFORM_ROOT}/common/lib/xmodule:${RUNNER_PLATFORM_ROOT}/common/lib/capa:${RUNNER_PLATFORM_ROOT}/common/lib/calc:${RUNNER_PLATFORM_ROOT}/common/lib/safe_lxml:${RUNNER_PLATFORM_ROOT}/common/lib/symmath:${RUNNER_PLATFORM_ROOT}/common/lib/chem:${RUNNER_PLATFORM_ROOT}/common/lib/dogstats${PYTHONPATH:+:${PYTHONPATH}}"
@@ -28,6 +29,7 @@ export PY36_R1_TEST_NAMESPACE="${RUNNER_NAMESPACE}"
 export PY36_R1_TEST_ROOT="${PY36_R1_TEST_ROOT:-/runner/test_root}"
 
 mkdir -p "${PY36_R1_TEST_ROOT}/db" "${PY36_R1_TEST_ROOT}/data" "${PY36_R1_TEST_ROOT}/uploads"
+mkdir -p /edx/var/log/cms
 cd /runner
 
 print_identity() {
@@ -67,6 +69,49 @@ collect_target() {
         "${RUNNER_PLATFORM_ROOT}/${target}"
 }
 
+run_batch1() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_batch1 {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/request_cache/tests.py" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/lib/tests/test_cache_utils.py" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_utils.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_cookie_names.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_cookies.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/metrics/tests/test_metrics.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/lib/comment_client/tests/test_utils.py"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -104,13 +149,19 @@ case "${1:-identity}" in
             "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py" \
             "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py"
         ;;
+    p1b-batch1-collect)
+        run_batch1 collect
+        ;;
+    p1b-batch1)
+        run_batch1 execute
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|all}" >&2
         exit 2
         ;;
 esac
