@@ -113,9 +113,10 @@ Mongo, cache, and Celery settings. The runtime image and its freeze are never
 modified by either runner build.
 
 The `p1b-batch2-collect` and `p1b-batch2` targets run the isolated enrollment,
-recent-enrollment, and recent-enrollment-filter checkpoint. Set the runner
-image and namespace environment variables explicitly when reproducing a
-recorded checkpoint.
+recent-enrollment, and recent-enrollment-filter checkpoint. The wrapper
+defaults to the final Batch 2 r2 runner images and dedicated Batch 2
+namespaces. Override the runner image and namespace environment variables only
+when reproducing a different recorded checkpoint.
 
 The Py3 runner's test-only freeze also includes the Platform testing pins
 `factory_boy==2.8.1` and `Faker==0.8.16`; these are not admitted to the R1

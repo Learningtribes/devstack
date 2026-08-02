@@ -7,12 +7,12 @@ RUNNER_TARGET="${2:-identity}"
 
 case "${RUNNER_KIND}" in
     py36)
-        RUNNER_IMAGE="${PY36_R1_PY36_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p0c-py36-runner-nose2-20260731}"
-        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p0c-py36}"
+        RUNNER_IMAGE="${PY36_R1_PY36_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p1b-py36-runner-batch2-r2-20260802}"
+        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py36}"
         ;;
     py27)
-        RUNNER_IMAGE="${PY36_R1_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p1b-py27-runner-wiki3-20260802}"
-        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p0c-py27}"
+        RUNNER_IMAGE="${PY36_R1_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p1b-py27-runner-batch2-r2-20260802}"
+        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py27}"
         ;;
     *)
         echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|all}" >&2
