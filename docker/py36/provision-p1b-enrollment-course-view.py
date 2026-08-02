@@ -27,7 +27,13 @@ from lms.djangoapps.grades.models import PersistentCourseGrade, PersistentCourse
 from openedx.core.djangoapps.content.block_structure.api import clear_course_from_cache  # noqa: E402
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview  # noqa: E402
 from openedx.core.djangoapps.site_configuration.models import SiteConfiguration  # noqa: E402
-from student.models import CourseEnrollment, EnrollmentOrigin, Registration, UserProfile  # noqa: E402
+from student.models import (  # noqa: E402
+    CourseAccessRole,
+    CourseEnrollment,
+    EnrollmentOrigin,
+    Registration,
+    UserProfile,
+)
 from xmodule.contentstore.content import StaticContent  # noqa: E402
 from xmodule.contentstore.django import contentstore  # noqa: E402
 from xmodule.course_module import COURSE_RELEASED_STATUS  # noqa: E402
@@ -48,24 +54,24 @@ BLOCKS = (
 )
 RUNTIME_FIXTURES = {
     'py36': {
-        'username': 'qaenroll_py36',
-        'email': 'qaenroll_py36@example.com',
-        'author': 'qaenroll_author_py36',
-        'author_email': 'qaenroll_author_py36@example.com',
-        'course_key': 'course-v1:QA+EnrollmentView+Py36',
-        'namespace': 'py36_r1_p1b_enrollment_view_py36',
-        'site_domain': 'localhost:18133',
-        'image_name': 'p1b_enrollment_view_py36.jpg',
+        'username': 'qaenroll_r15_py36',
+        'email': 'qaenroll_r15_py36@example.com',
+        'author': 'qaenroll_author_r15_py36',
+        'author_email': 'qaenroll_author_r15_py36@example.com',
+        'course_key': 'course-v1:QA+EnrollmentView+Py36R15',
+        'namespace': 'py36_r1_p1b_enrollment_view_py36_r15',
+        'site_domain': 'localhost:18135',
+        'image_name': 'p1b_enrollment_view_py36_r15.jpg',
     },
     'py27': {
-        'username': 'qaenroll_py27',
-        'email': 'qaenroll_py27@example.com',
-        'author': 'qaenroll_author_py27',
-        'author_email': 'qaenroll_author_py27@example.com',
-        'course_key': 'course-v1:QA+EnrollmentView+Py27',
-        'namespace': 'py36_r1_p1b_enrollment_view_py27',
-        'site_domain': 'localhost:18134',
-        'image_name': 'p1b_enrollment_view_py27.jpg',
+        'username': 'qaenroll_r16_py27',
+        'email': 'qaenroll_r16_py27@example.com',
+        'author': 'qaenroll_author_r16_py27',
+        'author_email': 'qaenroll_author_r16_py27@example.com',
+        'course_key': 'course-v1:QA+EnrollmentView+Py27R16',
+        'namespace': 'py36_r1_p1b_enrollment_view_py27_r16',
+        'site_domain': 'localhost:18136',
+        'image_name': 'p1b_enrollment_view_py27_r16.jpg',
     },
 }
 
@@ -285,6 +291,9 @@ def reset_and_preflight(fixture):
     learner.is_active = True
     learner.save()
 
+    CourseAccessRole.objects.filter(user=learner, org=course_key.org).delete()
+    course_access_roles = list(CourseAccessRole.objects.filter(user=learner, org=course_key.org))
+
     enrollment = CourseEnrollment.objects.filter(user=learner, course_id=course_key).first()
     if enrollment is not None and enrollment.is_active:
         CourseEnrollment.unenroll(learner, course_key)
@@ -300,6 +309,8 @@ def reset_and_preflight(fixture):
 
     if CourseEnrollment.is_enrolled(learner, course_key):
         raise RuntimeError('learner is still enrolled after exact reset')
+    if course_access_roles:
+        raise RuntimeError('learner retains course access roles after exact reset: {!r}'.format(course_access_roles))
     if enrollment is not None and enrollment.is_active:
         raise RuntimeError('retained enrollment row is still active after exact reset')
     if enrollment is not None and enrollment.completion_date is not None:
@@ -327,6 +338,9 @@ def reset_and_preflight(fixture):
         'course_key': text_type(course_key),
         'published_usage_keys': [text_type(block.location) for block in published_blocks],
         'is_enrolled': False,
+        'is_staff': learner.is_staff,
+        'is_superuser': learner.is_superuser,
+        'course_access_roles': [],
         'retained_row_active': enrollment.is_active if enrollment is not None else None,
         'completion_date': enrollment.completion_date if enrollment is not None else None,
         'courseware_state_count': 0,
@@ -345,6 +359,13 @@ def postflight(fixture):
         raise RuntimeError('active audit enrollment is missing')
     if enrollment.origin != EnrollmentOrigin.SELF:
         raise RuntimeError('enrollment origin is not SELF: {!r}'.format(enrollment.origin))
+    course_access_roles = list(CourseAccessRole.objects.filter(user=learner, org=course_key.org))
+    if learner.is_staff or learner.is_superuser or course_access_roles:
+        raise RuntimeError('learner gained administrative access: staff={!r}, superuser={!r}, roles={!r}'.format(
+            learner.is_staff,
+            learner.is_superuser,
+            course_access_roles,
+        ))
     published_course, published_blocks = _published_fixture(modulestore(), fixture)
     accessible = get_course_with_access(learner, 'load', course_key)
     if accessible.id != published_course.id:
@@ -356,6 +377,9 @@ def postflight(fixture):
         'username': learner.username,
         'course_key': text_type(course_key),
         'is_active': enrollment.is_active,
+        'is_staff': learner.is_staff,
+        'is_superuser': learner.is_superuser,
+        'course_access_roles': [],
         'mode': enrollment.mode,
         'origin': enrollment.origin,
         'published_unit': text_type(published_blocks[2].location),

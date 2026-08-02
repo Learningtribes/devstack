@@ -7,22 +7,22 @@ RUNTIME=${1:-}
 case "${RUNTIME}" in
     py36)
         IMAGE=ltdps/edxapp:py36-r1-locked
-        CONTAINER=py36-r1-p1b-enrollment-view-lms-20260802-r13
-        PORT=18133
-        NAMESPACE=py36_r1_p1b_enrollment_view_py36
-        USERNAME=qaenroll_py36
-        EMAIL=qaenroll_py36@example.com
-        COURSE_KEY=course-v1:QA+EnrollmentView+Py36
+        CONTAINER=py36-r1-p1b-enrollment-view-lms-20260802-r15
+        PORT=18135
+        NAMESPACE=py36_r1_p1b_enrollment_view_py36_r15
+        USERNAME=qaenroll_r15_py36
+        EMAIL=qaenroll_r15_py36@example.com
+        COURSE_KEY=course-v1:QA+EnrollmentView+Py36R15
         PYTHON=python
         ;;
     py27)
         IMAGE=ltdps/edxapp:py36-r1-p1b-dashboard-remediation-reviewfix-py27-20260802
-        CONTAINER=py27-r1-p1b-enrollment-view-lms-20260802-r14
-        PORT=18134
-        NAMESPACE=py36_r1_p1b_enrollment_view_py27
-        USERNAME=qaenroll_py27
-        EMAIL=qaenroll_py27@example.com
-        COURSE_KEY=course-v1:QA+EnrollmentView+Py27
+        CONTAINER=py27-r1-p1b-enrollment-view-lms-20260802-r16
+        PORT=18136
+        NAMESPACE=py36_r1_p1b_enrollment_view_py27_r16
+        USERNAME=qaenroll_r16_py27
+        EMAIL=qaenroll_r16_py27@example.com
+        COURSE_KEY=course-v1:QA+EnrollmentView+Py27R16
         PYTHON=/edx/app/edxapp/venvs/edxapp/bin/python
         ;;
     *)

@@ -214,9 +214,11 @@ run_enrollment_view_targeted() {
         --rootdir="${RUNNER_PLATFORM_ROOT}" \
         --tb=short \
         -q \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_access_response.py" \
         "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_vertical.py::XModuleDescriptorHashTest" \
         "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_vertical.py::VerticalBlockBookmarkIdTest" \
         "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_courses.py::CoursesTest::test_xqa_interface_template_renders_course_key" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/lib/tests/test_xblock_utils.py::TestXblockUtils::test_wrap_xblock_html_title_is_text" \
         "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_models.py"
 }
 
