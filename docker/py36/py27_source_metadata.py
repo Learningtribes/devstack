@@ -80,7 +80,10 @@ def _parse_setup(path):
 
 
 def _safe_name(name):
-    return re.sub(r"[^A-Za-z0-9.]+", "-", name)
+    # Egg-info directory names use setuptools' filename form. Leaving a dash
+    # here makes pkg_resources parse ``xblock-discussion-0.1.egg-info`` as a
+    # distribution named ``xblock`` and shadows the real XBlock package.
+    return re.sub(r"[^A-Za-z0-9.]+", "_", name)
 
 
 def _write(path, contents):

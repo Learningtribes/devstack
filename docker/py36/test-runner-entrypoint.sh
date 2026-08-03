@@ -16,10 +16,11 @@ if [ "${PY36_R1_GENERATE_SOURCE_METADATA:-0}" = "1" ]; then
         "${RUNNER_METADATA_ROOT}" \
         "${RUNNER_PLATFORM_ROOT}/setup.py" \
         "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/setup.py" \
-        "${RUNNER_PLATFORM_ROOT}/common/lib/capa/setup.py"
+        "${RUNNER_PLATFORM_ROOT}/common/lib/capa/setup.py" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/lib/xblock_builtin/xblock_discussion/setup.py"
 fi
 
-export PYTHONPATH="/opt/runner:${RUNNER_METADATA_ROOT}:${RUNNER_PLATFORM_ROOT}:${RUNNER_PLATFORM_ROOT}/common/lib/xmodule:${RUNNER_PLATFORM_ROOT}/common/lib/capa:${RUNNER_PLATFORM_ROOT}/common/lib/calc:${RUNNER_PLATFORM_ROOT}/common/lib/safe_lxml:${RUNNER_PLATFORM_ROOT}/common/lib/symmath:${RUNNER_PLATFORM_ROOT}/common/lib/chem:${RUNNER_PLATFORM_ROOT}/common/lib/dogstats${PYTHONPATH:+:${PYTHONPATH}}"
+export PYTHONPATH="/opt/runner:${RUNNER_METADATA_ROOT}:${RUNNER_PLATFORM_ROOT}:${RUNNER_PLATFORM_ROOT}/common/lib/xmodule:${RUNNER_PLATFORM_ROOT}/common/lib/capa:${RUNNER_PLATFORM_ROOT}/openedx/core/lib/xblock_builtin/xblock_discussion:${RUNNER_PLATFORM_ROOT}/common/lib/calc:${RUNNER_PLATFORM_ROOT}/common/lib/safe_lxml:${RUNNER_PLATFORM_ROOT}/common/lib/symmath:${RUNNER_PLATFORM_ROOT}/common/lib/chem:${RUNNER_PLATFORM_ROOT}/common/lib/dogstats${PYTHONPATH:+:${PYTHONPATH}}"
 export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
 export DISABLE_MIGRATIONS="${DISABLE_MIGRATIONS:-1}"
 export EDXAPP_TEST_MONGO_HOST="${EDXAPP_TEST_MONGO_HOST:-edx.devstack.mongo}"
@@ -222,6 +223,72 @@ run_enrollment_view_targeted() {
         "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_models.py"
 }
 
+run_discussion_read_write() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_discussion_read_write {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    discussion_deps=/runner/discussion-test-deps
+    if ! "${RUNNER_PYTHON}" -c 'import httpretty' >/dev/null 2>&1; then
+        "${RUNNER_PYTHON}" -m pip install \
+            --disable-pip-version-check \
+            --no-deps \
+            --target "${discussion_deps}" \
+            'httpretty==0.9.5'
+        export PYTHONPATH="${discussion_deps}:${PYTHONPATH}"
+    fi
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion/tests/test_views.py::DiscussionPython3CompatibilityTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion/tests/test_views.py::ForumFormDiscussionUnicodeTestCase::test_page_render_uses_text_course_id" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion/tests/test_views.py::SingleThreadTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion/tests/test_views.py::DiscussionBoardFragmentViewAccessTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion/tests/test_views.py::ThreadViewedEventTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/tests/test_utils.py::DictionaryTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/tests/test_utils.py::JsonResponseTestCase::test_json_error_accepts_text" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/tests/test_utils.py::BankcardTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::ViewsTestCase::test_create_thread" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::ViewsTestCase::test_create_comment" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::ViewsTestCase::test_create_thread_no_title" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::ViewsTestCase::test_create_thread_no_body" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::ViewsTestCase::test_create_comment_no_body" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::ViewPermissionsTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::CreateCommentUnicodeTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::CreateSubCommentUnicodeTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion_api/tests/test_api.py::GetThreadListTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion_api/tests/test_api.py::CreateThreadTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion_api/tests/test_api.py::CreateCommentTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion_api/tests/test_api.py::RetrieveThreadTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/django_comment_client/base/tests.py::ForumThreadViewedEventTransformerTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/lib/comment_client/tests/test_utils.py::CommentClientUtilsTests"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -280,13 +347,19 @@ case "${1:-identity}" in
     p1b-enrollment-view-targeted)
         run_enrollment_view_targeted
         ;;
+    p1b-discussion-read-write-collect)
+        run_discussion_read_write collect
+        ;;
+    p1b-discussion-read-write|discussion-read-write)
+        run_discussion_read_write execute
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-enrollment-view-targeted|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|all}" >&2
         exit 2
         ;;
 esac
