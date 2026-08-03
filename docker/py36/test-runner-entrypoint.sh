@@ -197,6 +197,55 @@ run_dashboard_remediation() {
         "${RUNNER_PLATFORM_ROOT}/openedx/features/course_experience/tests/test_course_tools.py"
 }
 
+run_grading_mutation() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_grading_mutation {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/track/views/tests/test_views.py::TestTrackViews::test_get_request_header_handles_python_2_and_python_3_values" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/capa/capa/tests/test_correctmap.py::CorrectMapTest::test_set_dict_supports_current_and_legacy_state" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/capa/capa/tests/test_inputtypes.py::OptionInputTest" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/capa/capa/tests/test_util.py::UtilTest::test_contextualize_text_replaces_longer_names_first" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_capa_module.py::CapaModuleTest::test_submit_problem_incorrect" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_capa_module.py::CapaModuleTest::test_answer_notifications_support_mapping_views" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_submitting_problems.py::TestSubmittingProblems" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_signals.py::ScoreChangedSignalRelayTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_tasks.py::RecalculateSubsectionGradeTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_models.py::PersistentSubsectionGradeTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_models.py::PersistentCourseGradesTest" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_course_grade_factory.py::TestCourseGradeFactory" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/tests/completion_integration/test_handlers.py::ScorableCompletionHandlerTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_course_grade_completion.py::HandleCourseGradeChangedTests" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_enrollment_behavior.py::CourseEnrollmentTest"
+}
+
 run_enrollment_view_targeted() {
     export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
     "${RUNNER_PYTHON}" -m pytest \
@@ -344,6 +393,12 @@ case "${1:-identity}" in
     p1b-dashboard-remediation)
         run_dashboard_remediation execute
         ;;
+    p1b-grading-mutation-collect)
+        run_grading_mutation collect
+        ;;
+    p1b-grading-mutation)
+        run_grading_mutation execute
+        ;;
     p1b-enrollment-view-targeted)
         run_enrollment_view_targeted
         ;;
@@ -359,7 +414,7 @@ case "${1:-identity}" in
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|all}" >&2
         exit 2
         ;;
 esac
