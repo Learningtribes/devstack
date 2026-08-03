@@ -70,10 +70,11 @@ SQL_HISTORY_DATABASE=${NAMESPACE}_csmh
 MONGO_MODULESTORE_DATABASE=${NAMESPACE}_edxapp
 MONGO_CONTENTSTORE_DATABASE=${NAMESPACE}_xcontent
 VOLUME_DATA=${NAMESPACE}_edxapp_data
+RABBIT_VOLUME=${NAMESPACE}_rabbit_data
 RABBIT_IMAGE=rabbitmq@sha256:4206c16c09a58d0a604668e91227c32f4a222368e796bfb7bf2e0d0d160ef97a
 CACHE_IMAGE=memcached@sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226
 
-case "${NAMESPACE}${SQL_DATABASE}${SQL_HISTORY_DATABASE}${MONGO_MODULESTORE_DATABASE}${MONGO_CONTENTSTORE_DATABASE}${SQL_USER}${MONGO_USER}${RABBIT_USER}" in
+case "${NAMESPACE}${SQL_DATABASE}${SQL_HISTORY_DATABASE}${MONGO_MODULESTORE_DATABASE}${MONGO_CONTENTSTORE_DATABASE}${SQL_USER}${MONGO_USER}${RABBIT_USER}${VOLUME_DATA}${RABBIT_VOLUME}" in
     *[!A-Za-z0-9_]* )
         echo "gate identifiers contain unsupported characters" >&2
         exit 2
@@ -120,10 +121,12 @@ cleanup_resources() {
         fi
     done
 
-    if docker volume inspect "${VOLUME_DATA}" >/dev/null 2>&1; then
-        docker volume inspect "${VOLUME_DATA}" >"${cleanup_root}/${VOLUME_DATA}.inspect.json" 2>&1 || cleanup_failed=1
-        docker volume rm "${VOLUME_DATA}" >>"${cleanup_root}/removed-volumes.log" 2>&1 || cleanup_failed=1
-    fi
+    for cleanup_volume in "${VOLUME_DATA}" "${RABBIT_VOLUME}"; do
+        if docker volume inspect "${cleanup_volume}" >/dev/null 2>&1; then
+            docker volume inspect "${cleanup_volume}" >"${cleanup_root}/${cleanup_volume}.inspect.json" 2>&1 || cleanup_failed=1
+            docker volume rm "${cleanup_volume}" >>"${cleanup_root}/removed-volumes.log" 2>&1 || cleanup_failed=1
+        fi
+    done
 
     if container_exists "${MONGO_HOST_CONTAINER}"; then
         for mongo_database in "${MONGO_MODULESTORE_DATABASE}" "${MONGO_CONTENTSTORE_DATABASE}"; do
@@ -177,6 +180,13 @@ if [ "${ACTION}" = "status" ]; then
             echo "absent name=${status_container}"
         fi
     done
+    for status_volume in "${VOLUME_DATA}" "${RABBIT_VOLUME}"; do
+        if docker volume inspect "${status_volume}" >/dev/null 2>&1; then
+            echo "present volume=${status_volume}"
+        else
+            echo "absent volume=${status_volume}"
+        fi
+    done
     exit 0
 fi
 
@@ -212,6 +222,12 @@ if [ "${ACTION}" = "start" ]; then
         echo "refusing to overwrite existing evidence root: ${LOG_ROOT}" >&2
         exit 2
     fi
+    for candidate_volume in "${VOLUME_DATA}" "${RABBIT_VOLUME}"; do
+        if docker volume inspect "${candidate_volume}" >/dev/null 2>&1; then
+            echo "refusing to reuse existing candidate volume: ${candidate_volume}" >&2
+            exit 2
+        fi
+    done
     mkdir -p "${LOG_ROOT}/grading-evidence" "${LOG_ROOT}/cms" "${LOG_ROOT}/lms"
     RESOURCE_LEDGER="${LOG_ROOT}/resource-ledger.txt"
 
@@ -272,7 +288,8 @@ if [ "${ACTION}" = "start" ]; then
     done
 
     docker volume create "${VOLUME_DATA}" >/dev/null
-    printf '%s\n' "volume=${VOLUME_DATA}" >>"${RESOURCE_LEDGER}"
+    docker volume create "${RABBIT_VOLUME}" >/dev/null
+    printf '%s\n' "volume=${VOLUME_DATA}" "volume=${RABBIT_VOLUME}" >>"${RESOURCE_LEDGER}"
 
     docker run -d \
         --name "${RABBIT_CONTAINER}" \
@@ -281,6 +298,7 @@ if [ "${ACTION}" = "start" ]; then
         --label io.openedx.py36-r1.gate=p1b-grading-mutation \
         --label "io.openedx.py36-r1.runtime=${RUNTIME}" \
         --label "io.openedx.py36-r1.namespace=${NAMESPACE}" \
+        --mount "type=volume,src=${RABBIT_VOLUME},dst=/var/lib/rabbitmq" \
         --env RABBITMQ_DEFAULT_USER="${RABBIT_USER}" \
         --env RABBITMQ_DEFAULT_PASS="${RABBIT_PASSWORD}" \
         --env RABBITMQ_DEFAULT_VHOST="${NAMESPACE}" \
