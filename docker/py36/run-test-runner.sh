@@ -15,7 +15,7 @@ case "${RUNNER_KIND}" in
         RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py27}"
         ;;
     *)
-        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|all}" >&2
+        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|all}" >&2
         exit 2
         ;;
 esac
@@ -37,6 +37,7 @@ exec docker run --rm \
     --tmpfs /edx/var/log:rw,exec,size=64m \
     --mount "type=bind,src=${SOURCE_ROOT},dst=/edx/app/edxapp/edx-platform,readonly" \
     --mount "type=bind,src=${SCRIPT_DIR}/test-runner-entrypoint.sh,dst=/opt/runner/test-runner-entrypoint.sh,readonly" \
+    --mount "type=bind,src=${SCRIPT_DIR}/py36_r1_test_settings.py,dst=/opt/runner/py36_r1_test_settings.py,readonly" \
     --env "PY36_R1_TEST_NAMESPACE=${RUNNER_NAMESPACE}" \
     --env "PY36_R1_MONGO_DB_PREFIX=${RUNNER_NAMESPACE}" \
     --env EDXAPP_TEST_MONGO_HOST=edx.devstack.mongo \

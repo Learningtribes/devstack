@@ -8,7 +8,10 @@ import os
 from path import Path as path
 from six import string_types
 
-from lms.envs.test import *  # noqa: F401,F403
+if os.environ.get('PY36_R1_TEST_SERVICE') == 'cms':
+    from cms.envs.test import *  # noqa: F401,F403
+else:
+    from lms.envs.test import *  # noqa: F401,F403
 
 
 # The m5-fixed Python 2 base carries edx-proctoring 1.4 without the plugin
@@ -22,6 +25,12 @@ except ImportError:
 else:
     if not any(app.startswith('edx_proctoring') for app in INSTALLED_APPS):
         INSTALLED_APPS.append('edx_proctoring')
+
+# CMS contentstore tests import xblock_config models directly. The LMS test
+# settings do not normally install this CMS-only app, so register its exact
+# AppConfig for the shared runner overlay.
+if not any(app.startswith('xblock_config') for app in INSTALLED_APPS):
+    INSTALLED_APPS.append('xblock_config.apps.XBlockConfig')
 
 
 RUNNER_NAMESPACE = os.environ.get('PY36_R1_TEST_NAMESPACE', 'py36-r1-p0b')

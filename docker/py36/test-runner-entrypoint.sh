@@ -338,6 +338,48 @@ run_discussion_read_write() {
         "${RUNNER_PLATFORM_ROOT}/lms/lib/comment_client/tests/test_utils.py::CommentClientUtilsTests"
 }
 
+run_studio_cms() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_studio_cms {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export PY36_R1_TEST_SERVICE="cms"
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/views/tests/test_item.py::TestEditItem::test_make_public" \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/views/tests/test_item.py::TestEditItem::test_make_public_with_update" \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/views/tests/test_item.py::TestEditItem::test_published_and_draft_contents_with_update" \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/views/tests/test_item.py::TestXBlockPublishingInfo" \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/views/tests/test_container_page.py::ContainerPageTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/views/tests/test_course_index.py::TestCourseIndex::test_course_staff_access" \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/tests/test_permissions.py::TestCourseAccess"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -408,13 +450,19 @@ case "${1:-identity}" in
     p1b-discussion-read-write|discussion-read-write)
         run_discussion_read_write execute
         ;;
+    p1b-studio-cms-collect)
+        run_studio_cms collect
+        ;;
+    p1b-studio-cms)
+        run_studio_cms execute
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|all}" >&2
         exit 2
         ;;
 esac
