@@ -137,22 +137,23 @@ cleanup_resources() {
         if container_exists "${cleanup_container}"; then
             docker inspect "${cleanup_container}" >"${cleanup_root}/${cleanup_container}.inspect.json" 2>&1 || cleanup_failed=1
             docker logs "${cleanup_container}" >"${cleanup_root}/${cleanup_container}.log" 2>&1 || cleanup_failed=1
-            docker inspect "${cleanup_container}" --format '{{range .Mounts}}{{if eq .Type "volume"}}{{.Name}}{{"\\n"}}{{end}}{{end}}' >>"${captured_volumes}" || cleanup_failed=1
+            docker inspect "${cleanup_container}" --format '{{range .Mounts}}{{if eq .Type "volume"}}{{.Name}}{{"\n"}}{{end}}{{end}}' >>"${captured_volumes}" || cleanup_failed=1
             docker rm -f "${cleanup_container}" >>"${cleanup_root}/removed-containers.log" 2>&1 || cleanup_failed=1
         fi
     done
     sort -u "${captured_volumes}" -o "${captured_volumes}"
     while IFS= read -r cleanup_volume; do
         [ -n "${cleanup_volume}" ] || continue
-        case "${cleanup_volume}" in
-            "${DATA_VOLUME}"|${NAMESPACE}_*)
-                if docker volume inspect "${cleanup_volume}" >/dev/null 2>&1; then
-                    docker volume inspect "${cleanup_volume}" >"${cleanup_root}/${cleanup_volume}.inspect.json" 2>&1 || cleanup_failed=1
-                    docker volume rm "${cleanup_volume}" >>"${cleanup_root}/removed-volumes.log" 2>&1 || cleanup_failed=1
-                fi
-                ;;
-            *) echo "unexpected gate volume left by service: ${cleanup_volume}" >>"${cleanup_root}/unexpected-volumes.log"; cleanup_failed=1 ;;
-        esac
+        if docker volume inspect "${cleanup_volume}" >/dev/null 2>&1; then
+            attached_containers=$(docker ps -a --filter "volume=${cleanup_volume}" -q)
+            if [ -n "${attached_containers}" ]; then
+                printf '%s\n' "volume still attached: ${cleanup_volume} containers=${attached_containers}" >>"${cleanup_root}/attached-volumes.log"
+                cleanup_failed=1
+                continue
+            fi
+            docker volume inspect "${cleanup_volume}" >"${cleanup_root}/${cleanup_volume}.inspect.json" 2>&1 || cleanup_failed=1
+            docker volume rm "${cleanup_volume}" >>"${cleanup_root}/removed-volumes.log" 2>&1 || cleanup_failed=1
+        fi
     done <"${captured_volumes}"
     if container_exists "${MONGO_CONTAINER}"; then
         for mongo_database in "${MONGO_MODULESTORE_DATABASE}" "${MONGO_CONTENTSTORE_DATABASE}"; do
