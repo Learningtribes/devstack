@@ -192,6 +192,75 @@ run_batch2() {
         "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_recent_enrollment_filter.py"
 }
 
+run_learning_path() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_learning_path {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    learning_path_lms_root="${PY36_R1_TEST_ROOT}/learning-path-lms"
+    learning_path_cms_root="${PY36_R1_TEST_ROOT}/learning-path-cms"
+    mkdir -p "${learning_path_lms_root}/db" "${learning_path_lms_root}/data" "${learning_path_lms_root}/uploads"
+    mkdir -p "${learning_path_cms_root}/db" "${learning_path_cms_root}/data" "${learning_path_cms_root}/uploads"
+
+    export PY36_R1_TEST_SERVICE="lms"
+    export PY36_R1_TEST_ROOT="${learning_path_lms_root}"
+    export PY36_R1_MONGO_DB_PREFIX="${RUNNER_NAMESPACE}-lpl"
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_python3_compatibility.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_models.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_about.py::AboutTestCase::test_anonymous_user"
+
+    export PY36_R1_TEST_SERVICE="cms"
+    export PY36_R1_TEST_ROOT="${learning_path_cms_root}"
+    export PY36_R1_MONGO_DB_PREFIX="${RUNNER_NAMESPACE}-lpc"
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/tests/test_course_settings.py::CheckVisibilityOfProgramsLinkedWithCourseTest" \
+        "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/tests/test_course_listing.py::TestCourseListing::test_get_course_list"
+}
+
 run_dashboard_remediation() {
     collection_flag=""
     case "$1" in
@@ -543,6 +612,12 @@ case "${1:-identity}" in
     p1b-batch2)
         run_batch2 execute
         ;;
+    p1b-learning-path-collect)
+        run_learning_path collect
+        ;;
+    p1b-learning-path)
+        run_learning_path execute
+        ;;
     p1b-dashboard-remediation-collect)
         run_dashboard_remediation collect
         ;;
@@ -588,7 +663,7 @@ case "${1:-identity}" in
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
         exit 2
         ;;
 esac

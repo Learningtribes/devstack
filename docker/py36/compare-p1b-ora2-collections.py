@@ -9,7 +9,7 @@ from collections import Counter
 
 
 PARAMETER_SUFFIX = re.compile(r'(::test_[^:]+?)_[0-9]+_.+$')
-NODE_PREFIXES = ('test_', 'common/', 'lms/', 'openedx/')
+NODE_PREFIXES = ('test_', 'common/', 'lms/', 'cms/', 'openedx/')
 
 
 def collection_nodes(path):
