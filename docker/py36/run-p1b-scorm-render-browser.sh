@@ -109,7 +109,15 @@ fi
 jq -e \
     --arg runtime "${RUNTIME}" \
     --arg attempt "${ATTEMPT}" \
-    '.status == "BROWSER_SCORM_OK" and .runtime == $runtime and (.attempt | tostring) == $attempt and .api.initialized == "true" and .transport.pingCount == 1' \
+    '.status == "BROWSER_SCORM_OK" and
+     .runtime == $runtime and
+     (.attempt | tostring) == $attempt and
+     .auth.courseId == null and
+     (.auth.url | contains("course_id=") | not) and
+     .api.initialized == "true" and
+     .transport.pingCount == 1 and
+     .transport.syncCount == 1 and
+     (.diagnostics | all(length == 0))' \
     "${STATE_FILE}" >/dev/null
 
 printf '%s\n' \

@@ -502,8 +502,12 @@ def postflight(fixture):
     course_key = fixture['course_key_object']
     learner = User.objects.get(username=fixture['username'], email=fixture['email'])
     enrollment = CourseEnrollment.objects.get(user=learner, course_id=course_key)
-    if not enrollment.is_active or enrollment.mode != CourseMode.AUDIT:
-        raise RuntimeError('active audit enrollment is missing')
+    if (
+            not enrollment.is_active or
+            enrollment.mode != CourseMode.AUDIT or
+            enrollment.origin != EnrollmentOrigin.BATCH
+    ):
+        raise RuntimeError('active audit/batch enrollment is missing')
     roles = list(CourseAccessRole.objects.filter(user=learner, org=course_key.org))
     if learner.is_staff or learner.is_superuser or roles:
         raise RuntimeError('learner gained administrative access: {!r}'.format(roles))
@@ -521,6 +525,10 @@ def postflight(fixture):
     if accessible.id != published_course.id:
         raise RuntimeError('enrolled learner cannot read the published SCORM course')
     state_count = StudentModule.objects.filter(student=learner, course_id=course_key).count()
+    if state_count != 3:
+        raise RuntimeError(
+            'expected exactly three SCORM render/runtime StudentModule rows, got {}'.format(state_count)
+        )
 
     print('POSTCONDITION_OK {}'.format(json.dumps({
         'runtime': fixture['runtime'],
