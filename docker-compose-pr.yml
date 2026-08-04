@@ -14,6 +14,17 @@ version: "2.1"
 # (see docs/backup-restore.md). Switch back to master by re-running with
 # docker-compose-host.yml (or PLATFORM_MOUNT=${DEVSTACK_WORKSPACE}/platform).
 services:
+  # Keep the Learningtribes Discovery fork mounted when this override is used
+  # without docker-compose-host.yml. Its program models match the shared DB.
+  discovery:
+    command: >
+      bash -c 'source /edx/app/discovery/discovery_env &&
+      (python -c "import rest_framework_nested" || pip install drf-nested-routers==0.91) &&
+      while true; do python /edx/app/discovery/discovery/manage.py runserver 0.0.0.0:18381; sleep 2; done'
+    volumes:
+      - ${DEVSTACK_WORKSPACE}/course-discovery:/edx/app/discovery/discovery:cached
+      - discovery_node_modules:/edx/app/discovery/discovery/node_modules
+      - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
   lms:
     volumes:
       - ${PLATFORM_MOUNT:?set PLATFORM_MOUNT to a platform worktree path}:/edx/app/edxapp/edx-platform:cached
@@ -29,4 +40,5 @@ services:
 # survives the mount switch; declared here because host.yml (which normally
 # declares it) is intentionally not loaded for PR runs.
 volumes:
+  discovery_node_modules:
   edxapp_node_modules:
