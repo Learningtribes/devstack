@@ -1,0 +1,26 @@
+FROM ltdps/edxapp@sha256:cbeaca65ae3b7ec1a10d2438088d442af9fdedabf392b12a308f53c2acfa55cb
+
+LABEL description="Open edX Hawthorn Python 2.7 R1 SCORM render runtime"
+LABEL base_runtime="ltdps/edxapp@sha256:cbeaca65ae3b7ec1a10d2438088d442af9fdedabf392b12a308f53c2acfa55cb"
+LABEL scorm_source_commit="8a6c07d562217500fa8236f555343c9921ef4907"
+LABEL scorm_source_tree="595e291da2d3a7983a290fdc433e1471805b2525"
+
+RUN cd /edx/app/edxapp/venvs/edxapp/src/scormxblock-xblock \
+    && test -z "$(git status --short)" \
+    && git fetch --depth=1 origin 8a6c07d562217500fa8236f555343c9921ef4907 \
+    && git checkout --detach 8a6c07d562217500fa8236f555343c9921ef4907 \
+    && test "$(git rev-parse HEAD)" = "8a6c07d562217500fa8236f555343c9921ef4907" \
+    && test "$(git rev-parse HEAD^{tree})" = "595e291da2d3a7983a290fdc433e1471805b2525" \
+    && /edx/app/edxapp/venvs/edxapp/bin/pip install --no-cache-dir --no-deps -e . \
+    && echo "0b3b9304ecf20fb63009e8ba0b33857bbea3e868c25d9f087fb55d91438511b6  scormxblock/scormxblock.py" | sha256sum -c - \
+    && echo "675ed5821f9d193ae46024e1d3d8d01efba0b1b37b254640460e97d5740bc772  scormxblock/static/js/src/scormxblock.js" | sha256sum -c - \
+    && /edx/app/edxapp/venvs/edxapp/bin/python -m compileall -q scormxblock \
+    && /edx/app/edxapp/venvs/edxapp/bin/python -c "import os, pkg_resources; dist = pkg_resources.get_distribution('scormxblock-xblock'); assert dist.version == '0.2'; assert os.path.realpath(dist.location) == '/edx/app/edxapp/venvs/edxapp/src/scormxblock-xblock'; print('SCORM source OK', os.path.realpath(dist.location))" \
+    && { PIP_DISABLE_PIP_VERSION_CHECK=1 /edx/app/edxapp/venvs/edxapp/bin/pip check > /tmp/p1b-scorm-py27-runtime-pip-check.txt 2>&1; test "$?" -eq 1; } \
+    && sort /tmp/p1b-scorm-py27-runtime-pip-check.txt > /tmp/p1b-scorm-py27-runtime-pip-check.sorted \
+    && printf '%s\n' \
+        'fs-s3fs 0.1.9 has requirement fs~=2.0.18, but you have fs 2.4.16.' \
+        'slackclient 1.3.2 has requirement requests<3.0a0,>=2.11, but you have requests 2.9.1.' \
+        | sort | diff -u - /tmp/p1b-scorm-py27-runtime-pip-check.sorted
+
+CMD ["/edx/app/edxapp/venvs/edxapp/bin/python"]

@@ -152,3 +152,55 @@ input `0c83125d75ee45f532178bc44134dd3f1b259035`. Both runtimes passed the same
 regression. The accepted runtime and runner images were unchanged. The next
 gate is the separately isolated LMS dashboard/browser workflow; broad
 subsystem burn-down remains later P1-B work.
+
+## P1-B SCORM render gate
+
+The SCORM profile validates the locked `scormxblock-xblock` source at commit
+`8a6c07d562217500fa8236f555343c9921ef4907` and tree
+`595e291da2d3a7983a290fdc433e1471805b2525` against a frozen, read-only
+Platform tree. It creates runtime-owned SQL, Mongo, data, and SCORM-package
+storage, publishes a real SCORM 1.2 component, and verifies its iframe,
+package assets, runtime API, ping, and state synchronization in Chromium.
+
+Build the runtime derivatives only when the locked images are absent:
+
+```bash
+docker build -f Dockerfile.p1b-scorm-runtime \
+  -t ltdps/edxapp:py36-r1-p1b-scorm-runtime-20260804-r1 .
+docker build --platform linux/amd64 -f Dockerfile.p1b-scorm-py27-runtime \
+  -t ltdps/edxapp:py36-r1-p1b-scorm-py27-runtime-20260804-r1 .
+```
+
+Run each runtime serially. The browser wrapper resets the gate-owned learner
+state before every attempt and requires the external postcondition afterward:
+
+```bash
+./run-p1b-scorm-render-service.sh py36 start
+./run-p1b-scorm-render-service.sh py36 identity
+./run-p1b-scorm-render-service.sh py36 provision
+./run-p1b-scorm-render-browser.sh py36 1
+./run-p1b-scorm-render-browser.sh py36 2
+./run-p1b-scorm-render-service.sh py36 cleanup
+
+./run-p1b-scorm-render-service.sh py27 start
+./run-p1b-scorm-render-service.sh py27 identity
+./run-p1b-scorm-render-service.sh py27 provision
+./run-p1b-scorm-render-browser.sh py27 1
+./run-p1b-scorm-render-browser.sh py27 2
+./run-p1b-scorm-render-service.sh py27 cleanup
+```
+
+The focused source regression is also exposed through the guarded dual-runtime
+test runners:
+
+```bash
+./run-test-runner.sh py36 p1b-scorm-render-collect
+./run-test-runner.sh py36 p1b-scorm-render
+./run-test-runner.sh py27 p1b-scorm-render-collect
+./run-test-runner.sh py27 p1b-scorm-render
+```
+
+Do not pass `course_id` to `/auto_auth` for this profile. Hawthorn's helper
+reenrolls an existing user with its default mode and `SELF` origin, which would
+overwrite the fixture-owned audit/batch enrollment. The provisioner owns
+enrollment; browser authentication only establishes the session.

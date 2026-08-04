@@ -1,0 +1,14 @@
+FROM ltdps/edxapp@sha256:08d4d0452a3fde20f557ddca5c77aac7e1eb78c7fb4dee6e9b855b96d872152f
+
+LABEL description="Open edX Hawthorn Python 3.6 R1 SCORM render runtime"
+LABEL base_runtime="ltdps/edxapp@sha256:08d4d0452a3fde20f557ddca5c77aac7e1eb78c7fb4dee6e9b855b96d872152f"
+LABEL scorm_source_commit="8a6c07d562217500fa8236f555343c9921ef4907"
+LABEL scorm_source_tree="595e291da2d3a7983a290fdc433e1471805b2525"
+
+RUN python -c "import glob, json, pkg_resources; dist = pkg_resources.get_distribution('scormxblock-xblock'); paths = glob.glob(dist.location + '/scormxblock_xblock-*.dist-info/direct_url.json'); assert dist.version == '0.2'; assert len(paths) == 1; direct_url = json.load(open(paths[0])); assert direct_url['vcs_info']['commit_id'] == '8a6c07d562217500fa8236f555343c9921ef4907'; print('SCORM source OK', direct_url)" \
+    && echo "0b3b9304ecf20fb63009e8ba0b33857bbea3e868c25d9f087fb55d91438511b6  /usr/local/lib/python3.6/site-packages/scormxblock/scormxblock.py" | sha256sum -c - \
+    && echo "675ed5821f9d193ae46024e1d3d8d01efba0b1b37b254640460e97d5740bc772  /usr/local/lib/python3.6/site-packages/scormxblock/static/js/src/scormxblock.js" | sha256sum -c - \
+    && python -m compileall -q /usr/local/lib/python3.6/site-packages/scormxblock \
+    && pip check
+
+CMD ["python3"]

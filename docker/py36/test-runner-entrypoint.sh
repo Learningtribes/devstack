@@ -480,6 +480,41 @@ run_ora2_assessment() {
         "${RUNNER_PLATFORM_ROOT}/openedx/tests/completion_integration/test_handlers.py::ScorableCompletionHandlerTestCase"
 }
 
+run_scorm_render_compatibility() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_scorm_render_compatibility {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/static_replace/test/test_python3_compat.py"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -541,13 +576,19 @@ case "${1:-identity}" in
     p1b-ora2-assessment)
         run_ora2_assessment execute
         ;;
+    p1b-scorm-render-collect)
+        run_scorm_render_compatibility collect
+        ;;
+    p1b-scorm-render)
+        run_scorm_render_compatibility execute
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
         exit 2
         ;;
 esac

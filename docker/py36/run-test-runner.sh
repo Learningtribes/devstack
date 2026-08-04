@@ -15,7 +15,7 @@ case "${RUNNER_KIND}" in
         RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py27}"
         ;;
     *)
-        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|all}" >&2
+        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
         exit 2
         ;;
 esac
@@ -25,8 +25,8 @@ SOURCE_ROOT=$(CDPATH= cd -- "${SOURCE_INPUT}" && pwd -P)
 ORA2_SOURCE_INPUT="${ORA2_INTEGRATION_ROOT:-${SCRIPT_DIR}/../../../edx-ora2}"
 ORA2_SOURCE_ROOT=$(CDPATH= cd -- "${ORA2_SOURCE_INPUT}" && pwd -P)
 PROTECTED_ROOT=/Users/noahwang/workspace/hawthorn/platform
-EXPECTED_PLATFORM_COMMIT=7644241bb598ac20e20e70dd7abf2e5110f5b7bd
-EXPECTED_PLATFORM_TREE=7c5e963e767bb1eaa16c9e64222694698b7727a3
+EXPECTED_PLATFORM_COMMIT=ebb74746ecb0d771d4aa546475e88ee5c8f68a08
+EXPECTED_PLATFORM_TREE=4ef0ecd352f79558d3339f0623de5223b3d6ff8d
 
 if [ "${SOURCE_ROOT}" = "${PROTECTED_ROOT}" ]; then
     echo "refusing protected Platform source: ${SOURCE_ROOT}" >&2
