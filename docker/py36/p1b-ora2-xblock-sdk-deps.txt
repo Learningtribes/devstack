@@ -1,0 +1,11 @@
+# Complete the xblock-sdk v0.1.4 runtime requirements with frozen sdists.
+--no-binary=:all:
+
+binaryornot==0.4.4 \
+    --hash=sha256:359501dfc9d40632edc9fac890e19542db1a287bbcfa58175b66658392018061
+cookiecutter==0.9.0 \
+    --hash=sha256:f2304997bce4534b280915386fb947af22dd4124bf9155356a73593174591bee
+django-nose==1.4.7 \
+    --hash=sha256:a4885cd002d65fd2de96e2bb2563ef477c3fbe207009360c015fca5c3b5561b7
+pypng==0.0.18 \
+    --hash=sha256:985a1306319e3187e2cb3dabec95a7a0f0f281ae2e1fec04289bed520fecd932

@@ -1,0 +1,41 @@
+diff --git a/workbench/runtime.py b/workbench/runtime.py
+--- a/workbench/runtime.py
++++ b/workbench/runtime.py
+@@ -8,5 +8,7 @@ import itertools
+ import importlib
+ import logging
++
++import six
+ from xblock.core import XBlockAside
+ 
+ try:
+@@ -228,8 +230,8 @@ class ScenarioIdManager(IdReader, IdGenerator):
+     def last_created_usage_id(self):
+         """Sometimes you create a usage for testing and just want to grab it
+         back. This gives an easy hook to do that.
+         """
+-        return self._usages.keys()[-1] if self._usages else None
++        return list(self._usages.keys())[-1] if self._usages else None
+ 
+ 
+ class WorkbenchRuntime(Runtime):
+@@ -253,8 +255,8 @@ class WorkbenchRuntime(Runtime):
+         # Load additional services defined by Django settings
+         # This is useful for instances of workbench used to develop
+         # XBlocks that require services that may be too specific
+         # to include in the default workbench configuration.
+-        for service_name, service_path in settings.WORKBENCH.get('services', {}).iteritems():
++        for service_name, service_path in six.iteritems(settings.WORKBENCH.get('services', {})):
+             service = self._load_service(service_path)
+             if service is not None:
+                 services[service_name] = service
+@@ -262,5 +264,9 @@ class WorkbenchRuntime(Runtime):
+         super(WorkbenchRuntime, self).__init__(ID_MANAGER, services=services)
+         self.id_generator = ID_MANAGER
+         self.user_id = user_id
++
++    def applicable_aside_types(self, block):
++        """Keep this legacy workbench runtime isolated from installed asides."""
++        return []
+ 
+     def render(self, block, view_name, context=None):  # pylint: disable=super-on-old-class

@@ -380,6 +380,63 @@ run_studio_cms() {
         "${RUNNER_PLATFORM_ROOT}/cms/djangoapps/contentstore/tests/test_permissions.py::TestCourseAccess"
 }
 
+run_ora2_assessment() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_ora2_assessment {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    frozen_ora2_root="${ORA2_TEST_SOURCE_ROOT:-/runner/edx-ora2-source}"
+    if [ ! -r "${frozen_ora2_root}/openassessment/workflow/test/test_api.py" ] || \
+            [ ! -r "${frozen_ora2_root}/openassessment/assessment/test/test_staff.py" ]; then
+        echo "frozen ORA2 test source is missing: ${frozen_ora2_root}" >&2
+        exit 2
+    fi
+
+    export PYTHONPATH="${frozen_ora2_root}:${PYTHONPATH}"
+    export PY36_R1_ORA2_TESTS=1
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${frozen_ora2_root}/openassessment/workflow/test/test_api.py" \
+        "${frozen_ora2_root}/openassessment/workflow/test/test_signals.py" \
+        "${frozen_ora2_root}/openassessment/assessment/test/test_staff.py" \
+        "${frozen_ora2_root}/openassessment/xblock/test/test_submission.py" \
+        "${frozen_ora2_root}/openassessment/xblock/test/test_staff.py" \
+        "${frozen_ora2_root}/openassessment/xblock/test/test_staff_area.py" \
+        "${frozen_ora2_root}/openassessment/xblock/test/test_grade.py" \
+        "${frozen_ora2_root}/openassessment/xblock/test/test_lms.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/capa/capa/tests/test_responsetypes.py::OptionResponseTest::test_variable_options" \
+        "${RUNNER_PLATFORM_ROOT}/lms/lib/xblock/test/test_mixin.py::OpenAssessmentBlockMixinTestCase" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_submitting_problems.py::TestCourseGrader::test_submissions_api_overrides_scores" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_submitting_problems.py::TestCourseGrader::test_submissions_api_anonymous_student_id" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/grades/tests/test_signals.py::ScoreChangedSignalRelayTest" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/tests/completion_integration/test_handlers.py::ScorableCompletionHandlerTestCase"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
@@ -456,13 +513,19 @@ case "${1:-identity}" in
     p1b-studio-cms)
         run_studio_cms execute
         ;;
+    p1b-ora2-assessment-collect)
+        run_ora2_assessment collect
+        ;;
+    p1b-ora2-assessment)
+        run_ora2_assessment execute
+        ;;
     all)
         print_identity
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|all}" >&2
         exit 2
         ;;
 esac

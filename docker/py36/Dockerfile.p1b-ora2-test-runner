@@ -1,0 +1,43 @@
+FROM ltdps/edxapp:py36-r1-p1b-ora2-runtime-20260804-r3
+
+LABEL description="Open edX Hawthorn Python 3.6 R1 ORA2 test runner"
+LABEL runtime_image_id="sha256:94cf8d7498e5c7d02c3bccf4d6d0b88111be1f016491f3629f0d229238f6a75a"
+
+ENV RUNNER_PYTHON=/usr/local/bin/python \
+    RUNNER_PLATFORM_ROOT=/edx/app/edxapp/edx-platform \
+    PY36_R1_GENERATE_SOURCE_METADATA=1 \
+    PY36_R1_METADATA_ROOT=/runner/source-metadata \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /runner
+
+COPY py36-test-tools.txt /opt/runner/py36-test-tools.txt
+COPY py36_r1_test_settings.py /opt/runner/py36_r1_test_settings.py
+COPY py27_source_metadata.py /opt/runner/py27_source_metadata.py
+COPY test-runner-entrypoint.sh /opt/runner/test-runner-entrypoint.sh
+COPY p1b-ora2-py36-test-deps.txt /opt/runner/p1b-ora2-py36-test-deps.txt
+COPY p1b-ora2-xblock-sdk-deps.txt /opt/runner/p1b-ora2-xblock-sdk-deps.txt
+COPY xblock-sdk-v0.1.4-workbench-py3.patch /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch
+
+ADD https://codeload.github.com/getmoto/moto/tar.gz/4eaf5d527ef5d619aedbc48c9e09d3364239b41d /opt/runner/moto-0.4.31-4eaf5d5.tar.gz
+ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+
+RUN pip install --no-cache-dir --no-deps -r /opt/runner/py36-test-tools.txt \
+    && pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-py36-test-deps.txt \
+    && pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt \
+    && echo "2732cf43018440d7caa1fe6fb77f7f990f26c857afba703e68d12a805c137cde  /opt/runner/moto-0.4.31-4eaf5d5.tar.gz" | sha256sum -c - \
+    && echo "6b6acf90398ac740add51daa4ba158499a8148763a481c905040f76df889b160  /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz" | sha256sum -c - \
+    && pip install --no-cache-dir --no-deps /opt/runner/moto-0.4.31-4eaf5d5.tar.gz \
+    && pip install --no-cache-dir --no-deps /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz \
+    && cd /usr/local/lib/python3.6/site-packages \
+    && echo "aa362758a66e8a39c4e743ce4f3bd86cdccdf198854c29868f8379ac3f7dfc9e  workbench/runtime.py" | sha256sum -c - \
+    && git apply --check /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch \
+    && git apply /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch \
+    && cd /runner \
+    && python -m compileall -q /usr/local/lib/python3.6/site-packages/workbench/runtime.py \
+    && chmod 0755 /opt/runner/test-runner-entrypoint.sh \
+    && pip check \
+    && python -c "import pkg_resources; expected = {'pytest': '3.6.4', 'pytest-django': '3.1.2', 'ddt': '0.8.0', 'mock': '1.0.1', 'nose': '1.3.7', 'factory-boy': '2.8.1', 'Faker': '0.8.16', 'freezegun': '0.3.10', 'cssselect': '1.0.3', 'pyquery': '1.4.0', 'edx-submissions': '2.1.1', 'moto': '0.4.31', 'httpretty': '0.8.10', 'xmltodict': '0.11.0', 'Werkzeug': '0.14.1', 'xblock-sdk': '0.1.4', 'cookiecutter': '0.9.0', 'binaryornot': '0.4.4', 'django-nose': '1.4.7', 'pypng': '0.0.18'}; actual = {name: pkg_resources.get_distribution(name).version for name in expected}; assert actual == expected, (expected, actual); print('Py3.6 ORA2 test tools OK', actual)"
+
+ENTRYPOINT ["/opt/runner/test-runner-entrypoint.sh"]
+CMD ["identity"]

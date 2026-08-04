@@ -32,6 +32,13 @@ else:
 if not any(app.startswith('xblock_config') for app in INSTALLED_APPS):
     INSTALLED_APPS.append('xblock_config.apps.XBlockConfig')
 
+# ORA2 handler tests use the xblock-sdk workbench runtime and its state model.
+# Keep this test-only app scoped to the ORA2 profile.
+if os.environ.get('PY36_R1_ORA2_TESTS') == '1':
+    if 'workbench' not in INSTALLED_APPS:
+        INSTALLED_APPS.append('workbench')
+    WORKBENCH = {'services': {}}
+
 
 RUNNER_NAMESPACE = os.environ.get('PY36_R1_TEST_NAMESPACE', 'py36-r1-p0b')
 RUNNER_MONGO_DB_PREFIX = os.environ.get('PY36_R1_MONGO_DB_PREFIX', RUNNER_NAMESPACE)

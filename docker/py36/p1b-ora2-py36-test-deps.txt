@@ -1,0 +1,7 @@
+# ORA2 2.0.0 test-only dependency closure absent from the accepted runtime.
+httpretty==0.8.10 \
+    --hash=sha256:474a72722d66841f0e59cee285d837e1c6263be5be7bf2f8e824fc849a99adda
+Werkzeug==0.14.1 \
+    --hash=sha256:d5da73735293558eb1651ee2fddc4d0dedcfa06538b8813a2e20011583c9e49b
+xmltodict==0.11.0 \
+    --hash=sha256:add07d92089ff611badec526912747cf87afd4f9447af6661aca074eeaf32615

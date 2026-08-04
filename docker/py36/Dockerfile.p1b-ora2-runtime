@@ -1,0 +1,30 @@
+# Install the dual-runtime ORA2 compatibility source and apply the minimal
+# edx-submissions Python 3 compatibility delta to the accepted R1 runtime.
+FROM ltdps/edxapp:py36-r1-locked
+
+LABEL description="Open edX Hawthorn Python 3.6 R1 ORA2 runtime"
+LABEL base_runtime="ltdps/edxapp@sha256:08d4d0452a3fde20f557ddca5c77aac7e1eb78c7fb4dee6e9b855b96d872152f"
+LABEL ora2_source_commit="d3f24a9c539528e960c8dcc9aef200cea0c49baf"
+LABEL edx_submissions_patch="upstream-equivalent-40cb956+497794b"
+
+COPY edx-submissions-2.1.1-py3.patch /opt/py36-r1/edx-submissions-2.1.1-py3.patch
+
+RUN pip install --no-cache-dir --no-deps --force-reinstall \
+        "git+https://github.com/Learningtribes/edx-ora2@d3f24a9c539528e960c8dcc9aef200cea0c49baf#egg=ora2" \
+    && python -c "import glob, json, pkg_resources; dist = pkg_resources.get_distribution('ora2'); paths = glob.glob(dist.location + '/ora2-*.dist-info/direct_url.json'); assert dist.version == '2.1.17'; assert len(paths) == 1; direct_url = json.load(open(paths[0])); assert direct_url['vcs_info']['commit_id'] == 'd3f24a9c539528e960c8dcc9aef200cea0c49baf'; print('ORA2 source OK', direct_url)" \
+    && cd /usr/local/lib/python3.6/site-packages \
+    && echo "7eed5f98f9db1ef05de9ad5706a6abc5f8c75134a131dcedd8438f1116b0c3d4  submissions/api.py" | sha256sum -c - \
+    && echo "484e83e31be3a44b084e8c2a976baf48620129ddd18467f805a7280e34fb1c75  submissions/models.py" | sha256sum -c - \
+    && git apply --unidiff-zero --check /opt/py36-r1/edx-submissions-2.1.1-py3.patch \
+    && git apply --unidiff-zero /opt/py36-r1/edx-submissions-2.1.1-py3.patch \
+    && cd / \
+    && python -m compileall -q \
+        /usr/local/lib/python3.6/site-packages/submissions/api.py \
+        /usr/local/lib/python3.6/site-packages/submissions/models.py \
+    && python -c "import pkg_resources; assert pkg_resources.get_distribution('edx-submissions').version == '2.1.1'" \
+    && ! grep -E 'basestring|unicode\(' \
+        /usr/local/lib/python3.6/site-packages/submissions/api.py \
+        /usr/local/lib/python3.6/site-packages/submissions/models.py \
+    && pip check
+
+CMD ["python3"]
