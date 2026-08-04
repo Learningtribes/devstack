@@ -15,7 +15,7 @@ case "${RUNNER_KIND}" in
         RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py27}"
         ;;
     *)
-        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|all}" >&2
+        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|all}" >&2
         exit 2
         ;;
 esac
@@ -25,9 +25,17 @@ SOURCE_ROOT=$(CDPATH= cd -- "${SOURCE_INPUT}" && pwd -P)
 ORA2_SOURCE_INPUT="${ORA2_INTEGRATION_ROOT:-${SCRIPT_DIR}/../../../edx-ora2}"
 ORA2_SOURCE_ROOT=$(CDPATH= cd -- "${ORA2_SOURCE_INPUT}" && pwd -P)
 PROTECTED_ROOT=/Users/noahwang/workspace/hawthorn/platform
+EXPECTED_PLATFORM_COMMIT=7644241bb598ac20e20e70dd7abf2e5110f5b7bd
+EXPECTED_PLATFORM_TREE=7c5e963e767bb1eaa16c9e64222694698b7727a3
 
-if [ "$(basename -- "${SOURCE_ROOT}")" != "platform-py3-integration" ] || [ "${SOURCE_ROOT}" = "${PROTECTED_ROOT}" ]; then
-    echo "refusing to mount a source other than platform-py3-integration: ${SOURCE_ROOT}" >&2
+if [ "${SOURCE_ROOT}" = "${PROTECTED_ROOT}" ]; then
+    echo "refusing protected Platform source: ${SOURCE_ROOT}" >&2
+    exit 2
+fi
+if [ "$(git -C "${SOURCE_ROOT}" rev-parse HEAD)" != "${EXPECTED_PLATFORM_COMMIT}" ] || \
+        [ "$(git -C "${SOURCE_ROOT}" rev-parse HEAD^{tree})" != "${EXPECTED_PLATFORM_TREE}" ] || \
+        [ -n "$(git -C "${SOURCE_ROOT}" status --porcelain=v1)" ]; then
+    echo "refusing non-frozen or dirty Platform source: ${SOURCE_ROOT}" >&2
     exit 2
 fi
 
@@ -37,6 +45,10 @@ if [ "$(basename -- "${ORA2_SOURCE_ROOT}")" != "edx-ora2" ]; then
 fi
 if [ "$(git -C "${ORA2_SOURCE_ROOT}" rev-parse HEAD)" != "d3f24a9c539528e960c8dcc9aef200cea0c49baf" ]; then
     echo "ORA2 test source is not the frozen accepted commit" >&2
+    exit 2
+fi
+if [ -n "$(git -C "${ORA2_SOURCE_ROOT}" status --porcelain=v1)" ]; then
+    echo "ORA2 test source is dirty" >&2
     exit 2
 fi
 

@@ -70,6 +70,48 @@ collect_target() {
         "${RUNNER_PLATFORM_ROOT}/${target}"
 }
 
+run_focused() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_focused {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_cookie_names.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_recent_enrollment_filter.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_fields.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_nested_contexts.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/metrics/tests/test_metrics.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/lib/comment_client/tests/test_utils.py" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py" \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py"
+}
+
 run_batch1() {
     collection_flag=""
     case "$1" in
@@ -287,14 +329,15 @@ run_discussion_read_write() {
     esac
 
     discussion_deps=/runner/discussion-test-deps
-    if ! "${RUNNER_PYTHON}" -c 'import httpretty' >/dev/null 2>&1; then
-        "${RUNNER_PYTHON}" -m pip install \
-            --disable-pip-version-check \
-            --no-deps \
-            --target "${discussion_deps}" \
-            'httpretty==0.9.5'
-        export PYTHONPATH="${discussion_deps}:${PYTHONPATH}"
-    fi
+    "${RUNNER_PYTHON}" -m pip install \
+        --disable-pip-version-check \
+        --no-cache-dir \
+        --no-deps \
+        --target "${discussion_deps}" \
+        'httpretty==0.9.5'
+    export PYTHONPATH="${discussion_deps}:${PYTHONPATH}"
+    "${RUNNER_PYTHON}" -c \
+        'import httpretty; assert httpretty.__version__ == "0.9.5", httpretty.__version__; print("discussion httpretty", httpretty.__version__, httpretty.__file__)'
 
     export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
     "${RUNNER_PYTHON}" -m pytest \
@@ -447,32 +490,11 @@ case "${1:-identity}" in
     xmodule)
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
+    focused-collect)
+        run_focused collect
+        ;;
     focused)
-        export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
-        "${RUNNER_PYTHON}" -m pytest \
-            -p no:django \
-            -p pytest_django.plugin \
-            -p no:xdist \
-            -p no:xdist.looponfail \
-            -p no:randomly \
-            -p no:pytest_forked \
-            -p no:pytest_cov \
-            -p no:attrib \
-            -p no:cacheprovider \
-            -o addopts= \
-            --nomigrations \
-            --reuse-db \
-            --rootdir="${RUNNER_PLATFORM_ROOT}" \
-            --tb=short \
-            -q \
-            "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_cookie_names.py" \
-            "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_recent_enrollment_filter.py" \
-            "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_fields.py" \
-            "${RUNNER_PLATFORM_ROOT}/common/lib/xmodule/xmodule/tests/test_nested_contexts.py" \
-            "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/metrics/tests/test_metrics.py" \
-            "${RUNNER_PLATFORM_ROOT}/lms/lib/comment_client/tests/test_utils.py" \
-            "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py" \
-            "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py"
+        run_focused execute
         ;;
     p1b-batch1-collect)
         run_batch1 collect
@@ -525,7 +547,7 @@ case "${1:-identity}" in
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|all}" >&2
+        echo "usage: $0 {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|all}" >&2
         exit 2
         ;;
 esac

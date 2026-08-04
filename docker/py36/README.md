@@ -95,6 +95,8 @@ and runner-specific Mongo and queue names.
 ./run-test-runner.sh py27 identity
 ./run-test-runner.sh py27 lms
 ./run-test-runner.sh py27 xmodule
+./run-test-runner.sh py36 focused-collect
+./run-test-runner.sh py27 focused-collect
 ./run-test-runner.sh py36 focused
 ./run-test-runner.sh py27 focused
 ./run-test-runner.sh py36 p1b-batch2-collect
