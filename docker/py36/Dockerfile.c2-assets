@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1.7
+
+ARG RUNTIME_IMAGE
+FROM --platform=linux/amd64 ${RUNTIME_IMAGE} AS c2_runtime
+FROM --platform=linux/amd64 ltdps/edxapp@sha256:50b4a73f4814dcc1d41b0da983346990ceb2e31f8c08b1db6093e751c2743b19 AS node_donor
+FROM c2_runtime
+
+ARG PLATFORM_COMMIT
+ARG PLATFORM_TREE
+ARG DEVSTACK_BUILD_COMMIT
+ARG DEVSTACK_BUILD_TREE
+
+LABEL c2.assets.platform.commit="${PLATFORM_COMMIT}"
+LABEL c2.assets.platform.tree="${PLATFORM_TREE}"
+LABEL c2.assets.devstack.commit="${DEVSTACK_BUILD_COMMIT}"
+LABEL c2.assets.devstack.tree="${DEVSTACK_BUILD_TREE}"
+LABEL c2.assets.node.donor="ltdps/edxapp@sha256:50b4a73f4814dcc1d41b0da983346990ceb2e31f8c08b1db6093e751c2743b19"
+LABEL c2.assets.node.sha256="8440cffda5a21bf7cfda43d2c396f79777585a4c5e03ed2801fe226953a7aa11"
+LABEL c2.assets.node.version="v16.20.2"
+LABEL c2.assets.npm.version="8.19.4"
+LABEL c2.assets.package_json.sha256="249e1029556cc02dade415340aac909d35a5f24eb0a45159e28b31ac63879d83"
+LABEL c2.assets.package_lock.sha256="daf428c10935bc35f299daba79159b325ba9118d8f96fa51185434001ff742d7"
+
+COPY --from=node_donor /edx/app/edxapp/nodeenvs/edxapp/bin/node /usr/local/bin/node
+COPY --from=node_donor /edx/app/edxapp/nodeenvs/edxapp/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node_donor /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
+COPY --from=node_donor /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
+COPY --from=node_donor /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu
+
+COPY c2-asset-builder-requirements.txt /tmp/c2-asset-builder-requirements.txt
+COPY c2_asset_lms_settings.py c2_asset_cms_settings.py /tmp/
+
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx \
+    && pip install --no-cache-dir --disable-pip-version-check --no-deps --require-hashes \
+        -r /tmp/c2-asset-builder-requirements.txt \
+    && python -m pip check \
+    && test "$(sha256sum /usr/local/bin/node | awk '{print $1}')" = "8440cffda5a21bf7cfda43d2c396f79777585a4c5e03ed2801fe226953a7aa11" \
+    && test "$(node --version)" = "v16.20.2" \
+    && test "$(npm --version)" = "8.19.4" \
+    && python -c "import paver, sass; print('asset builder Python tooling OK', paver.__file__, sass.__file__)"
+
+CMD ["python3"]
