@@ -1,6 +1,15 @@
 # Py3.6 Image Build & Run Guide
 
-> **Superseded as a reproducible build contract:** this guide describes the original probe bootstrap. The running container has drifted from these inputs. Use the active [integration plan](../../../platform/docs/plans/py36-integration-probe-plan-20260728.md) and [runtime evidence](../../../platform/docs/plans/py36-integration-evidence.md). Do not treat a successful interactive bootstrap as a locked image.
+> Status: HISTORICAL INTERACTIVE BOOTSTRAP
+>
+> Reproducible Python 3.6 identities are recorded in the
+> [integration ledger](https://github.com/Learningtribes/platform/blob/migration_discussion/docs/migration_discussion/13-python36-integration-ledger-20260731.md),
+> the branch-qualified
+> [integration plan](https://github.com/Learningtribes/platform/blob/py36-integration-r1/docs/plans/py36-integration-probe-plan-20260728.md),
+> and
+> [runtime evidence](https://github.com/Learningtribes/platform/blob/py36-integration-r1/docs/plans/py36-integration-evidence.md).
+> A locked image requires those exact source, dependency, freeze, and runtime
+> proofs; this guide preserves the original bootstrap only.
 
 ## Build
 

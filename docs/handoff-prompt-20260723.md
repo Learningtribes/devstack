@@ -1,10 +1,15 @@
 ## Py3.6 Migration — Current Handoff
 
-> **Superseded current-status notice:** use [`platform/docs/plans`](../../platform/docs/plans/README.md) for the active integration plan and runtime evidence. This file remains historical and must not be used as the current agent prompt.
+> Status: HISTORICAL HANDOFF
+>
+> Current cross-repository state and assignments live in the
+> [migration Hub](https://github.com/Learningtribes/platform/tree/migration_discussion/docs/migration_discussion).
+> This file preserves the R27 handoff observed at the identity below.
 >
 > Historical snapshot: 2026-07-28 · former canonical status: `progress-plan-20260724.md` · HEAD: `fcac4469cf7`
 >
-> This filename and its contents are historical evidence. Do not use the older R20 numbers, the old “push 6 commits” instructions, or the R27 next-action section as the current execution prompt.
+> Older R20 figures, “push 6 commits” instructions, and the R27 next-action
+> section are evidence of that session rather than current instructions.
 
 ### Historical one-line status
 

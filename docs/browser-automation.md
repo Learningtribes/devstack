@@ -6,11 +6,12 @@
 > **Scope: this doc is FIXTURE PREPARATION only** — driving Studio in a real
 > browser to create test courses/content on the devstack.
 >
-> **For acceptance / PR verification (assertions, "did this PR change the UI",
-> run-to-green/red), do NOT add assertions here.** Use the platform
+> Acceptance and PR verification assertions belong to the
 > **`browser-acceptance`** skill (Playwright Test/TS, checklist-as-code):
-> `../platform/.claude/skills/browser-acceptance/` — see its `SKILL.md`.
-> Assumes the sibling checkout layout `~/workspace/hawthorn/{platform,devstack}`.
+> https://github.com/Learningtribes/platform/tree/browser-acceptance-harness/.claude/skills/browser-acceptance
+>
+> This document owns fixture preparation. The harness owns assertions and
+> run-to-green/red behavior.
 
 | Task | Use |
 |------|-----|

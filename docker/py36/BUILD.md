@@ -1,6 +1,11 @@
 # Py3.6 Image Build + Django Boot — Complete Script
 
-> **Historical only — do not execute as the current build procedure.** This script performs manual in-container edits and `docker commit`, so it cannot produce the reproducible dependency evidence required by the active [integration plan](../../../platform/docs/plans/py36-integration-probe-plan-20260728.md).
+> Status: HISTORICAL MANUAL BUILD RECORD
+>
+> The reproducible build contract is the branch-qualified
+> [integration plan](https://github.com/Learningtribes/platform/blob/py36-integration-r1/docs/plans/py36-integration-probe-plan-20260728.md).
+> This script records manual in-container edits and `docker commit`; it is not
+> a reproducible image procedure.
 >
 > Date: 2026-07-23 · Image: ltdps/edxapp:py36
 

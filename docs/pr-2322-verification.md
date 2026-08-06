@@ -118,4 +118,4 @@ Gated on `FEATURES['EMBARGO']` (default `False` on master) â†’ not registered â†
 | PR worktree | `/Users/noahwang/workspace/hawthorn/platform-embargo-removal` |
 | Runner | `platform-browser-acceptance-harness/.claude/skills/browser-acceptance/tests/checklist.spec.ts` |
 | PR mount compose | `devstack/docker-compose-pr.yml` |
-| PR #2323 results | `devstack/docs/pr-verification-results.md` |
+| PR #2323 results | `devstack/docs/pr-2323-verification.md` |

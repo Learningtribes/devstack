@@ -1,6 +1,10 @@
 # Py3.6 Migration — Progress Report & Handoff
 
-> **Superseded current-status notice:** this file is retained as the historical R27 handoff. The active execution plan and measured runtime state now live in [`platform/docs/plans`](../../platform/docs/plans/README.md). Do not append another canonical override here.
+> Status: HISTORICAL R27 STATUS SNAPSHOT
+>
+> Current cross-repository state and assignments live in the
+> [migration Hub](https://github.com/Learningtribes/platform/tree/migration_discussion/docs/migration_discussion).
+> New volatile state is recorded there; this file preserves the R27 snapshot.
 >
 > **Historical snapshot:** 2026-07-28 · Container: `ltdps/edxapp:py36` / `py36-build` · Branch: `py36-boot-fixes` · HEAD: `fcac4469cf7`
 >
