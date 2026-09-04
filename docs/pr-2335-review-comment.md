@@ -1,33 +1,42 @@
-## Browser Acceptance Testing — ✅ Verified
+## Browser Acceptance Testing — grades v0 API gate added
 
-Ran 3-surface Playwright checklist against a live devstack with the `py3-m5-grades` worktree mounted. Double-run baseline on `master` confirms zero regressions.
+Follow-up to the 2026-07-21 3-surface run. Checklist now has **4 gates**. Ran against local devstack with `py3-m5-grades` mounted at HEAD `de00369e7e2`.
 
-### Results
+### Results (2026-09-03)
 
-| # | Surface | Master | py3-grades | Role |
-|---|---------|:---:|:---:|------|
-| 1 | LMS `/` | ✅ 200 | ✅ 200 | gate |
-| 2 | `/dashboard` | ✅ 200 | ✅ 200 | gate |
-| 3 | Studio `/home/` | ✅ 200 | ✅ 200 | gate |
+| # | Surface | py3-m5-grades | Role |
+|---|---------|:---:|------|
+| 1 | LMS `/` | ✅ 200 | gate |
+| 2 | `/dashboard` | ✅ 200 | gate |
+| 3 | Studio `/home/` | ✅ 200 | gate |
+| 4 | `GET /api/grades/v0/course_grade/{course_key}/users/?username=qacert` (`request: true`) | ✅ 200 | gate |
 
-**3/3 green on both branches — zero regressions.**
+**4/4 green (7.0s).** Surface 4 was 103ms.
 
-### Nature of This PR
+Surface 4 body:
 
-Py3 compatibility migration across the full grades stack (21 files: `course_grade.py`, `subsection_grade.py`, `events.py`, `scores.py`, `models.py`, `services.py`, `signals/handlers.py`, `tasks.py`, and tests). No modules removed — all surfaces are gates proving the syntax changes did not introduce import or rendering errors.
+```json
+[{"username":"qacert","letter_grade":null,"percent":0.0,"course_key":"course-v1:QA+Acceptance+Test","passed":false}]
+```
 
-### Why `/dashboard` over `/courses/{course_key}/progress`
+### Why the API surface
 
-The progress page (`/courses/course-v1:QA+Acceptance+Test/progress`) returns 404 for the `qacert` fixture user despite enrollment, because the QA course has no graded subsections — the `_progress` view raises `Http404` when there is nothing to display. Additionally, the `+` and `:` in the course key caused URL-encoding issues with `page.goto()`.
+The July dashboard gate only proves LMS HTML still renders. This PR's `text_type(course_id)` / `CourseGradeFactory` path is the grades stack, not the dashboard template.
 
-The dashboard page (`/dashboard`) serves as a reliable alternative: it renders enrolled course cards with grade summaries, exercising the `course_grade.py` and `scores.py` import paths without requiring graded content. Combined with LMS and Studio homepage gates, this provides sufficient confidence that the migration introduced no import errors.
+v0 `UserGradeView` is session-auth and allows a learner to read her own grade, so `/auto_auth` as `qacert` is enough. v1 needs JWT `grades:read` and was not used.
+
+`request: true` is required: `page.goto` drops `Accept` and would fetch HTML, making JSON field asserts vacuous.
+
+Progress HTML is still excluded — the QA fixture course has no graded subsections, so `_progress` returns Http404.
+
+This remains a **gate** (Py3 compat, no removal). Master was not re-run for surface 4; surfaces 1–3 already passed on both trees on 2026-07-21.
 
 ### Checklist
 
 ```yaml
 # platform-browser-acceptance-harness/.claude/skills/browser-acceptance/checklists/pr-2335.yml
 pr: 2335
-surfaces: 3 (all gates — Py3 migration, no removals)
+surfaces: 4 (all gates — Py3 migration, no removals)
 ```
 
 Full verification log: `devstack/docs/pr-2335-verification.md`

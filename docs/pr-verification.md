@@ -160,7 +160,7 @@ jobs:
 | #2323 badges | DCC | `lms/djangoapps/badges`, `openedx/features/badging` | ✅ | LMS → Profile |
 | #2324 support+zendesk | DCC | tests only (no production code) | ✅ | — |
 | #2334 triboo_analytics | Py3 | `openedx/features/triboo_analytics` | ❌ | LMS Dashboard |
-| #2335 grades | Py3 | `lms/djangoapps/grades` | ❌ | LMS Grades page |
+| #2335 grades | Py3 | `lms/djangoapps/grades` | ❌ | LMS dashboard + grades v0 API (`request:true`) |
 | #2347 ur-regex | Py3 | `importlib` import chain (5 files) | ❌ | LMS login |
 | #2348 M4.4-A | DCC | `common/djangoapps/entitlements`, `openedx/core/djangoapps/external_auth` | ✅ | Studio → Certificates |
 
