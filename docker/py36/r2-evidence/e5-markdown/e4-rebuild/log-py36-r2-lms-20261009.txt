@@ -1,0 +1,11 @@
+2026-10-09 09:18:07,131 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.001s]
+[09/Oct/2026 09:18:07] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-09 09:18:07,133 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.15', 42840), raddr=('192.168.148.14', 11211)>
+
+[09/Oct/2026 09:18:07] "GET /login HTTP/1.1" 200 72808
+2026-10-09 09:18:07,309 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.15', 42858), raddr=('192.168.148.14', 11211)>
+
+2026-10-09 09:18:07,329 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.002s]
+[09/Oct/2026 09:18:07] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-09 09:18:07,330 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.15', 42872), raddr=('192.168.148.14', 11211)>
+

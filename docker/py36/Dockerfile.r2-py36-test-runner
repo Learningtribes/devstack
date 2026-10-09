@@ -2,11 +2,11 @@
 # Test-only packages come from the reviewed py36-test-tools.txt freeze.
 # The runtime was never pushed, so BuildKit cannot resolve it by digest; the
 # local tag is used and r2-build-test-runners.sh verifies after the build that
-# the runner's rootfs layers start with every layer of sha256:4560a9c2b264.
+# the runner's rootfs layers start with every layer of sha256:8c2e7df2e03d.
 FROM ltdps/edxapp:py36-r2-20261009
 
 LABEL description="Open edX Hawthorn Python 3.6 R2-preview isolated test runner"
-LABEL runtime_image="ltdps/edxapp@sha256:4560a9c2b264ba25f5cf93bd49ee7e163eb2133e24d537811dbaf45c84d397ce"
+LABEL runtime_image="ltdps/edxapp@sha256:8c2e7df2e03d5155be22b6bb70d885a9f88987ff1f74f7ac6a2d1b31165d0355"
 
 ENV RUNNER_PYTHON=/usr/local/bin/python \
     RUNNER_PLATFORM_ROOT=/edx/app/edxapp/edx-platform \

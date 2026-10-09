@@ -1,0 +1,14 @@
+### lms (plain lms.envs.test, source read-only)
+edx_proctoring apps: ['edx_proctoring']
+course=CourseDescriptor;hidden=HiddenDescriptor
+xmodule.v1 entry points: 35 load failures: 0 []
+openedx.course_tool loaded: ['course_bookmarks=CourseBookmarksTool', 'course_reviews=CourseReviewsTool', 'course_updates=CourseUpdatesTool']
+markdown 2.6.11 render ok: True
+exit=0
+### cms (plain cms.envs.test, source read-only)
+edx_proctoring apps: ['edx_proctoring']
+course=CourseDescriptor;hidden=HiddenDescriptor
+xmodule.v1 entry points: 35 load failures: 0 []
+openedx.course_tool loaded: ['course_bookmarks=CourseBookmarksTool', 'course_reviews=CourseReviewsTool', 'course_updates=CourseUpdatesTool']
+markdown 2.6.11 render ok: True
+exit=0

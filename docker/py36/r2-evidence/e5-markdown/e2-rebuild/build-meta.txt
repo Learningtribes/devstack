@@ -1,0 +1,7 @@
+build start 2026-10-09 20:59:22 +0800
+devstack HEAD 51fe2d883c5a37d1a4f661d74987ca79270656b3 (lock = 51fe2d8, Markdown 2.6.11)
+platform context platform-r2-py36-src @ 0ac3bfa6d099916cc58fc258db17221801f49d48; metadata files identical to fd5e359ec1c
+previous image sha256:4560a9c2b264 retagged ltdps/edxapp:py36-r2-20261009-markdown337
+deviation from R1 build_command: DEBIAN_SECURITY_MIRROR=http://archive.debian.org/debian-security (as E2)
+build end 2026-10-09 21:15:01 +0800
+build exit=0

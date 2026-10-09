@@ -1,0 +1,16 @@
+HTTP/1.0 200 OK
+Date: Fri, 09 Oct 2026 13:18:07 GMT
+Server: WSGIServer/0.2 CPython/3.6.15
+Content-Type: application/json
+Vary: Cookie, Accept-Language
+x-content-type-options: nosniff
+X-Frame-Options: ALLOW
+Content-Language: en
+Content-Length: 45
+Set-Cookie:  edxloggedin=<redacted>; HttpOnly; Path=/
+Set-Cookie:  edx-user-info=<redacted>; HttpOnly; Path=/
+Set-Cookie:  csrftoken=<redacted>; expires=Fri, 08-Oct-2027 13:18:07 GMT; Max-Age=31449600; Path=/
+Set-Cookie:  openedx-language-preference=<redacted>; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+Set-Cookie:  change-openedx-language-preference=<redacted>; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+Set-Cookie:  sessionid=<redacted>; HttpOnly; Path=/
+

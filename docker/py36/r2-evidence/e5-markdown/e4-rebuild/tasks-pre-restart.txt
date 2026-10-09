@@ -1,0 +1,12 @@
+/usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+TASK step=heartbeat id=4b7f66dd-1a43-4c5d-be14-40f2d093b3b7 state=SUCCESS result=True traceback=none
+TASK step=success id=4e82bb5d-a1a7-4f7f-b003-72eb00d59b54 state=SUCCESS result={'status': 'ok', 'worker': 'py36-r2-worker-20261009'} traceback=none
+TASK step=controlled_failure id=fdb4a9c7-185d-421e-b49f-7dbacee38947 state=FAILURE result=RuntimeError('py36-r2-e4-controlled-failure',) traceback=present
+TASK step=success:post id=c188c52d-b123-4aa5-9040-350ce8d28af5 state=SUCCESS result={'status': 'ok', 'worker': 'py36-r2-worker-20261009'} traceback=none
+INSPECT active={'py36-r2-worker-20261009@ecd755664999': []}
+INSPECT reserved={'py36-r2-worker-20261009@ecd755664999': []}
+INSPECT scheduled={'py36-r2-worker-20261009@ecd755664999': []}
+INSPECT registered={'py36-r2-worker-20261009@ecd755664999': 45}
+INSPECT probe_tasks_registered=True
+exit=0
