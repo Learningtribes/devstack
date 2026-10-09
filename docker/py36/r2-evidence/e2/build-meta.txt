@@ -1,0 +1,6 @@
+build start 2026-10-09 17:42:03 +0800
+devstack HEAD 477c70f7335fa5c4d4476ba28dbc5b7502d76513 (lock = bd52bec)
+deviation from R1 build_command: DEBIAN_SECURITY_MIRROR=http://archive.debian.org/debian-security (see attempt1-tuna-security-404/diagnosis.txt)
+replaced attempt-2 image sha256:b62edad4a50d064c5c501799a30f0b36e2e1159505992ee5c30c88c687976e45 (built from 8e46948 lock)
+build end 2026-10-09 17:56:43 +0800
+build exit=0

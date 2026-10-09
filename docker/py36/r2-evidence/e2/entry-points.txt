@@ -1,0 +1,30 @@
+# E2 entry points - 2026-10-09 17:57:25 +0800  image sha256:4560a9c2b264ba25f5cf93bd49ee7e163eb2133e24d537811dbaf45c84d397ce
+## Handoff check (metadata only, no source)
+['course_bookmarks', 'course_reviews', 'course_updates']
+exit=0
+
+## openedx.course_tool full specs; verified_upgrade must be absent
+  course_bookmarks = openedx.features.course_bookmarks.plugins:CourseBookmarksTool
+  course_reviews = openedx.features.course_experience.plugins:CourseReviewsTool
+  course_updates = openedx.features.course_experience.plugins:CourseUpdatesTool
+verified_upgrade absent: OK
+exit=0
+
+## Open_edX dist entry_points.txt vs R2-preview setup.py (fd5e359ec1c)
+## Open_edX dist entry_points.txt: verified_upgrade absent
+0
+
+## Full load (R2-preview source read-only; e2/probe_dedup_settings.py over lms|cms.envs.test)
+## Plain lms|cms.envs.test cannot django.setup(): see finding-edx-proctoring-duplicate.txt
+### lms (probe_dedup_settings over lms.envs.test, source read-only)
+edx_proctoring app: EdxProctoringConfig
+course=CourseDescriptor;hidden=HiddenDescriptor
+xmodule.v1 entry points: 35 load failures: 0
+openedx.course_tool loaded: ['course_bookmarks=CourseBookmarksTool', 'course_reviews=CourseReviewsTool', 'course_updates=CourseUpdatesTool']
+exit=0
+### cms (probe_dedup_settings over cms.envs.test, source read-only)
+edx_proctoring app: EdxProctoringConfig
+course=CourseDescriptor;hidden=HiddenDescriptor
+xmodule.v1 entry points: 35 load failures: 0
+openedx.course_tool loaded: ['course_bookmarks=CourseBookmarksTool', 'course_reviews=CourseReviewsTool', 'course_updates=CourseUpdatesTool']
+exit=0

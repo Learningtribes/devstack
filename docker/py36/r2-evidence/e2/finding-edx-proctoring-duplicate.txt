@@ -1,0 +1,46 @@
+# E2 finding: duplicate edx_proctoring app label under the test settings
+Observed: 2026-10-09 ~18:05 +0800, image ltdps/edxapp:py36-r2-20261009
+(sha256:4560a9c2b264ba25f5cf93bd49ee7e163eb2133e24d537811dbaf45c84d397ce)
+
+## Symptom
+django.setup() under lms.envs.test or cms.envs.test (plain python -c and
+`manage.py lms shell --settings=test`) raises
+  django.core.exceptions.ImproperlyConfigured:
+  Application labels aren't unique, duplicates: edx_proctoring
+INSTALLED_APPS contains both 'edx_proctoring' and
+'edx_proctoring.apps.EdxProctoringConfig'.
+
+## Mechanism
+- edx-proctoring==1.5.7 (PyPI, R1 lock) declares
+  [lms.djangoapp] and [cms.djangoapp] edx_proctoring = edx_proctoring.apps:EdxProctoringConfig
+  and EdxProctoringConfig defines plugin_app, so plugin_apps.get_apps() appends
+  'edx_proctoring.apps.EdxProctoringConfig' (lms/envs/common.py:3151).
+- Platform also adds 'edx_proctoring' itself: LMS OPTIONAL_APPS
+  ('edx_proctoring', None) (lms/envs/common.py:2700), CMS INSTALLED_APPS
+  (cms/envs/common.py:1109). Same lines exist on master and R1.
+
+## Not introduced by R2-preview or by the E1 lock change
+Same image, same failure for every combination tried:
+- R2-preview source fd5e359ec1c, lms.envs.test and cms.envs.test
+- R1 source 33590b3ab47 (git archive to /tmp, protected worktree not mounted), lms.envs.test
+- R1 source + R1 runner overlay docker/py36/py36_r1_test_settings.py
+  (DJANGO_SETTINGS_MODULE=py36_r1_test_settings, workdir /runner)
+- R1 source + R1 runner overlay after reinstalling the five removed
+  enterprise-family distributions (--no-deps, R1 pins) in a throwaway container
+R1 settings-file diff vs R2-preview touches only enterprise/verify_student lines.
+
+## Open question
+R1 evidence records Python 3.6 runner passes (118/109/38) and an LMS `check`
+under devstack_docker with "two pre-existing edx_proctoring namespace
+warnings" on runtime sha256:08d4d0452a3f... That image no longer exists
+locally, so the R1 behavior cannot be re-observed. The installed distribution
+set equals the R1 P1-A freeze except the five enterprise removals and the
+ORA2 SHA. Resolve in E3 (devstack_docker LMS/CMS check is the canonical
+settings path) before changing any layer; candidate owners are Platform
+settings (skip the OPTIONAL_APPS/INSTALLED_APPS entry when the plugin entry
+point registers the app) or the runner overlay.
+
+## E2 handling
+Entry-point load was proven with e2/probe_dedup_settings.py, a probe-only
+module that removes the bare 'edx_proctoring' entry. It is not a fix and is
+not used by any later phase.

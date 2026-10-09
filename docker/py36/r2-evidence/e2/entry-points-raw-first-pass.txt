@@ -1,0 +1,23 @@
+# E2 entry points - 2026-10-09 17:57:25 +0800  image sha256:4560a9c2b264ba25f5cf93bd49ee7e163eb2133e24d537811dbaf45c84d397ce
+## Handoff check (metadata only, no source)
+['course_bookmarks', 'course_reviews', 'course_updates']
+exit=0
+
+## openedx.course_tool full specs; verified_upgrade must be absent
+  course_bookmarks = openedx.features.course_bookmarks.plugins:CourseBookmarksTool
+  course_reviews = openedx.features.course_experience.plugins:CourseReviewsTool
+  course_updates = openedx.features.course_experience.plugins:CourseUpdatesTool
+verified_upgrade absent: OK
+exit=0
+
+## Open_edX dist entry_points.txt vs R2-preview setup.py (fd5e359ec1c)
+entry lines: 51
+62:enrollment_track = openedx.core.djangoapps.verified_track_content.partition_scheme:EnrollmentTrackPartitionScheme
+
+## xmodule.v1 course/hidden load with R2-preview source mounted read-only (lms.envs.test, django.setup)
+  File "/edx/app/edxapp/edx-platform/openedx/core/lib/tempdir.py", line 11, in mkdtemp_clean
+    the_dir = tempfile.mkdtemp(suffix=suffix, prefix=prefix, dir=dir)
+  File "/usr/local/lib/python3.6/tempfile.py", line 370, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: Path('test_root/tmpvrmuysvw')
+exit=1

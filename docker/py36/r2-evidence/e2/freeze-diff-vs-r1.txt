@@ -1,0 +1,14 @@
+46d45
+< django-multi-email-field==0.5.1
+50d48
+< django-object-actions==0.10.0
+72d69
+< djangorestframework-xml==1.3.0
+86d82
+< edx-enterprise==0.70.3
+121d116
+< jsondiff==1.1.1
+149c144
+< ora2 @ git+https://github.com/Learningtribes/edx-ora2@0d89f917d189f76f8aaf0d47ad66ea4e7fcd941a
+---
+> ora2 @ git+https://github.com/Learningtribes/edx-ora2@d3f24a9c539528e960c8dcc9aef200cea0c49baf
