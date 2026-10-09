@@ -1,0 +1,461 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 5.57kB 0.0s done
+#1 DONE 0.0s
+
+#2 [context platform] load .dockerignore
+#2 transferring platform:
+#2 transferring platform: 2B done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.6-slim@sha256:ac11ce85a603a835533b2ec608246fef2fea4a4b4790df97a20d9cce7032faf6
+#3 DONE 2.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [context platform] load from client
+#5 DONE 0.0s
+
+#6 [context platform] load from client
+#6 DONE 0.0s
+
+#7 [context platform] load from client
+#7 DONE 0.0s
+
+#8 [context platform] load from client
+#8 DONE 0.0s
+
+#9 [context platform] load from client
+#9 DONE 0.0s
+
+#10 [context platform] load from client
+#10 DONE 0.0s
+
+#11 [context platform] load from client
+#11 DONE 0.0s
+
+#12 [context platform] load from client
+#12 DONE 0.0s
+
+#13 [internal] load build context
+#13 DONE 0.0s
+
+#14 [stage-0  1/21] FROM docker.io/library/python:3.6-slim@sha256:ac11ce85a603a835533b2ec608246fef2fea4a4b4790df97a20d9cce7032faf6
+#14 resolve docker.io/library/python:3.6-slim@sha256:ac11ce85a603a835533b2ec608246fef2fea4a4b4790df97a20d9cce7032faf6 done
+#14 DONE 0.1s
+
+#15 [stage-0  4/21] ADD https://github.com/astral-sh/uv/releases/download/0.1.44/uv-aarch64-unknown-linux-gnu.tar.gz /tmp/uv.tar.gz
+#15 ...
+
+#16 [stage-0  8/21] ADD https://files.pythonhosted.org/packages/55/b0/64dca0c66160f3a2e5ded33e12fd57beb5e6bc1e67cd3b2d24c6506e0155/django-pipeline-1.5.3.tar.gz /tmp/django-pipeline-1.5.3.tar.gz
+#16 DONE 1.0s
+
+#17 [stage-0  2/21] RUN sed -i         -e "s|http://deb.debian.org/debian|https://mirrors.tuna.tsinghua.edu.cn/debian|g"         -e "s|http://security.debian.org/debian-security|https://mirrors.tuna.tsinghua.edu.cn/debian-security|g"         /etc/apt/sources.list     && apt-get update && apt-get install -y --no-install-recommends     git gcc g++ make     default-libmysqlclient-dev     libgeos-dev libgeos-c1v5     libldap2-dev libsasl2-dev     libxml2-dev libxslt-dev libxmlsec1-dev xmlsec1 pkg-config libjpeg-dev zlib1g-dev     libgraphviz-dev     && apt-get clean && rm -rf /var/lib/apt/lists/*
+#17 0.422 Get:1 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye InRelease [75.1 kB]
+#17 0.702 Get:2 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security InRelease [27.1 kB]
+#17 0.795 Get:3 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye-updates InRelease [44.0 kB]
+#17 0.902 Get:4 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 Packages [7955 kB]
+#17 1.615 Get:5 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 Packages [471 kB]
+#17 1.689 Get:6 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye-updates/main arm64 Packages [16.3 kB]
+#17 2.131 Fetched 8589 kB in 2s (4400 kB/s)
+#17 2.131 Reading package lists...
+#17 2.354 Reading package lists...
+#17 2.623 Building dependency tree...
+#17 2.725 Reading state information...
+#17 2.814 The following additional packages will be installed:
+#17 2.814   adwaita-icon-theme binutils binutils-aarch64-linux-gnu binutils-common cpp
+#17 2.814   cpp-10 fontconfig fontconfig-config fonts-dejavu-core g++-10 gcc-10 git-man
+#17 2.814   gtk-update-icon-cache hicolor-icon-theme icu-devtools libasan6 libatk1.0-0
+#17 2.814   libatk1.0-data libatomic1 libavahi-client3 libavahi-common-data
+#17 2.814   libavahi-common3 libbinutils libbrotli1 libbsd0 libc-dev-bin libc6 libc6-dev
+#17 2.814   libcairo-gobject2 libcairo2 libcc1-0 libcdt5 libcgraph6 libcrypt-dev
+#17 2.814   libctf-nobfd0 libctf0 libcups2 libcurl3-gnutls libdatrie1 libdbus-1-3
+#17 2.814   libdeflate0 libdpkg-perl liberror-perl libevent-2.1-7 libfontconfig1
+#17 2.814   libfreetype6 libfribidi0 libgcc-10-dev libgcrypt20-dev libgd3
+#17 2.814   libgdbm-compat4 libgdk-pixbuf-2.0-0 libgdk-pixbuf2.0-common libgeos-3.9.0
+#17 2.814   libglib2.0-0 libgmp-dev libgmpxx4ldbl libgnutls-dane0 libgnutls-openssl27
+#17 2.814   libgnutls28-dev libgnutls30 libgnutlsxx28 libgomp1 libgpg-error-dev
+#17 2.814   libgraphite2-3 libgtk2.0-0 libgtk2.0-common libgts-0.7-5 libgvc6
+#17 2.814   libgvc6-plugins-gtk libgvpr2 libharfbuzz0b libicu-dev libicu67 libidn2-dev
+#17 2.814   libisl23 libitm1 libjbig0 libjpeg62-turbo libjpeg62-turbo-dev liblab-gamut1
+#17 2.814   libldap-2.4-2 liblsan0 libltdl7 libmariadb-dev libmariadb-dev-compat
+#17 2.814   libmariadb3 libmd0 libmpc3 libmpfr6 libnghttp2-14 libnsl-dev libnspr4
+#17 2.814   libnspr4-dev libnss3 libnss3-dev libp11-kit-dev libpango-1.0-0
+#17 2.814   libpangocairo-1.0-0 libpangoft2-1.0-0 libpathplan4 libperl5.32 libpixman-1-0
+#17 2.814   libpng16-16 libpsl5 librsvg2-2 librtmp1 libsasl2-2 libsasl2-modules-db
+#17 2.814   libssh2-1 libssl-dev libssl1.1 libstdc++-10-dev libtasn1-6 libtasn1-6-dev
+#17 2.814   libthai-data libthai0 libtiff5 libtirpc-common libtirpc-dev libtirpc3
+#17 2.814   libtsan0 libubsan1 libunbound8 libwebp6 libx11-6 libx11-data libxau6
+#17 2.814   libxcb-render0 libxcb-shm0 libxcb1 libxcomposite1 libxcursor1 libxdamage1
+#17 2.814   libxdmcp6 libxdot4 libxext6 libxfixes3 libxi6 libxinerama1 libxml2
+#17 2.814   libxmlsec1 libxmlsec1-gcrypt libxmlsec1-gnutls libxmlsec1-nss
+#17 2.814   libxmlsec1-openssl libxpm4 libxrandr2 libxrender1 libxslt1.1 linux-libc-dev
+#17 2.814   mariadb-common mysql-common nettle-dev perl perl-base perl-modules-5.32
+#17 2.814   sensible-utils shared-mime-info ucf zlib1g
+#17 2.814 Suggested packages:
+#17 2.814   binutils-doc cpp-doc gcc-10-locales gcc-10-doc gcc-multilib manpages-dev
+#17 2.814   autoconf automake libtool flex bison gdb gcc-doc gettext-base git-daemon-run
+#17 2.814   | git-daemon-sysvinit git-doc git-el git-email git-gui gitk gitweb git-cvs
+#17 2.814   git-mediawiki git-svn glibc-doc libc-l10n locales cups-common debian-keyring
+#17 2.814   gnupg patch bzr libgcrypt20-doc libgd-tools libgdal-doc gmp-doc libgmp10-doc
+#17 2.814   libmpfr-dev dns-root-data gnutls-bin gnutls-doc gvfs icu-doc librsvg2-bin
+#17 2.814   libssl-doc libstdc++-10-doc make-doc perl-doc libterm-readline-gnu-perl
+#17 2.814   | libterm-readline-perl-perl libtap-harness-archive-perl dpkg-dev
+#17 2.814 Recommended packages:
+#17 2.814   librsvg2-common patch less ssh-client manpages manpages-dev libc-devtools
+#17 2.814   libnss-nis libnss-nisplus dbus libfile-fcntllock-perl liblocale-gettext-perl
+#17 2.814   bzip2 xz-utils libgdk-pixbuf2.0-bin libglib2.0-data xdg-user-dirs
+#17 2.814   libgail-common libgtk2.0-bin libgts-bin libldap-common publicsuffix
+#17 2.814   libsasl2-modules libtasn1-doc
+#17 3.128 The following NEW packages will be installed:
+#17 3.128   adwaita-icon-theme binutils binutils-aarch64-linux-gnu binutils-common cpp
+#17 3.128   cpp-10 default-libmysqlclient-dev fontconfig fontconfig-config
+#17 3.128   fonts-dejavu-core g++ g++-10 gcc gcc-10 git git-man gtk-update-icon-cache
+#17 3.129   hicolor-icon-theme icu-devtools libasan6 libatk1.0-0 libatk1.0-data
+#17 3.129   libatomic1 libavahi-client3 libavahi-common-data libavahi-common3
+#17 3.129   libbinutils libbrotli1 libbsd0 libc-dev-bin libc6-dev libcairo-gobject2
+#17 3.129   libcairo2 libcc1-0 libcdt5 libcgraph6 libcrypt-dev libctf-nobfd0 libctf0
+#17 3.129   libcups2 libcurl3-gnutls libdatrie1 libdbus-1-3 libdeflate0 libdpkg-perl
+#17 3.129   liberror-perl libevent-2.1-7 libfontconfig1 libfreetype6 libfribidi0
+#17 3.129   libgcc-10-dev libgcrypt20-dev libgd3 libgdbm-compat4 libgdk-pixbuf-2.0-0
+#17 3.129   libgdk-pixbuf2.0-common libgeos-3.9.0 libgeos-c1v5 libgeos-dev libglib2.0-0
+#17 3.129   libgmp-dev libgmpxx4ldbl libgnutls-dane0 libgnutls-openssl27 libgnutls28-dev
+#17 3.129   libgnutlsxx28 libgomp1 libgpg-error-dev libgraphite2-3 libgraphviz-dev
+#17 3.129   libgtk2.0-0 libgtk2.0-common libgts-0.7-5 libgvc6 libgvc6-plugins-gtk
+#17 3.129   libgvpr2 libharfbuzz0b libicu-dev libicu67 libidn2-dev libisl23 libitm1
+#17 3.129   libjbig0 libjpeg-dev libjpeg62-turbo libjpeg62-turbo-dev liblab-gamut1
+#17 3.129   libldap-2.4-2 libldap2-dev liblsan0 libltdl7 libmariadb-dev
+#17 3.129   libmariadb-dev-compat libmariadb3 libmd0 libmpc3 libmpfr6 libnghttp2-14
+#17 3.129   libnsl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libp11-kit-dev
+#17 3.129   libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpathplan4
+#17 3.129   libperl5.32 libpixman-1-0 libpng16-16 libpsl5 librsvg2-2 librtmp1 libsasl2-2
+#17 3.129   libsasl2-dev libsasl2-modules-db libssh2-1 libssl-dev libstdc++-10-dev
+#17 3.129   libtasn1-6-dev libthai-data libthai0 libtiff5 libtirpc-dev libtsan0
+#17 3.129   libubsan1 libunbound8 libwebp6 libx11-6 libx11-data libxau6 libxcb-render0
+#17 3.129   libxcb-shm0 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxdmcp6
+#17 3.129   libxdot4 libxext6 libxfixes3 libxi6 libxinerama1 libxml2 libxml2-dev
+#17 3.129   libxmlsec1 libxmlsec1-dev libxmlsec1-gcrypt libxmlsec1-gnutls libxmlsec1-nss
+#17 3.129   libxmlsec1-openssl libxpm4 libxrandr2 libxrender1 libxslt1-dev libxslt1.1
+#17 3.129   linux-libc-dev make mariadb-common mysql-common nettle-dev perl
+#17 3.129   perl-modules-5.32 pkg-config sensible-utils shared-mime-info ucf xmlsec1
+#17 3.129   zlib1g-dev
+#17 3.129 The following packages will be upgraded:
+#17 3.129   libc6 libgnutls30 libssl1.1 libtasn1-6 libtirpc-common libtirpc3 perl-base
+#17 3.129   zlib1g
+#17 3.360 8 upgraded, 170 newly installed, 0 to remove and 47 not upgraded.
+#17 3.360 Need to get 142 MB of archives.
+#17 3.360 After this operation, 534 MB of additional disk space will be used.
+#17 3.360 Err:1 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 perl-base arm64 5.32.1-4+deb11u5
+#17 3.360   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.431 Err:2 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 perl-modules-5.32 all 5.32.1-4+deb11u5
+#17 3.431   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.436 Err:3 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libc6 arm64 2.31-13+deb11u14
+#17 3.436   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.458 Get:4 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgdbm-compat4 arm64 1.19-2 [44.6 kB]
+#17 3.558 Get:5 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 zlib1g arm64 1:1.2.11.dfsg-2+deb11u2 [88.2 kB]
+#17 3.686 Err:6 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libperl5.32 arm64 5.32.1-4+deb11u5
+#17 3.686   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.686 Err:7 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 perl arm64 5.32.1-4+deb11u5
+#17 3.686   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.686 Err:8 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libtasn1-6 arm64 4.16.0-2+deb11u2
+#17 3.686   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.686 Err:9 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgnutls30 arm64 3.7.1-5+deb11u10
+#17 3.686   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.686 Err:10 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libssl1.1 arm64 1.1.1w-0+deb11u8
+#17 3.686   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.686 Get:11 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libtirpc-common all 1.3.1-1+deb11u1 [13.5 kB]
+#17 3.686 Get:12 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libtirpc3 arm64 1.3.1-1+deb11u1 [80.2 kB]
+#17 3.763 Get:13 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 sensible-utils all 0.0.14 [14.8 kB]
+#17 3.764 Err:14 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 ucf all 3.0043+deb11u2
+#17 3.764   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.764 Get:15 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 hicolor-icon-theme all 0.17-2 [11.4 kB]
+#17 3.765 Err:16 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgdk-pixbuf2.0-common all 2.42.2+dfsg-1+deb11u5
+#17 3.765   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.765 Err:17 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libglib2.0-0 arm64 2.66.8-1+deb11u8
+#17 3.765   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.765 Err:18 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libicu67 arm64 67.1-7+deb11u1
+#17 3.765   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.765 Err:19 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libxml2 arm64 2.9.10+dfsg-6.7+deb11u10
+#17 3.765   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.773 Get:20 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 shared-mime-info arm64 2.0-1 [700 kB]
+#17 3.935 Get:21 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libjpeg62-turbo arm64 1:2.0.6-4 [133 kB]
+#17 3.956 Err:22 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libpng16-16 arm64 1.6.37-3+deb11u4
+#17 3.956   404  Not Found [IP: 0.250.250.254 7890]
+#17 3.956 Get:23 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libdeflate0 arm64 1.7-1 [47.7 kB]
+#17 3.961 Get:24 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libjbig0 arm64 2.1-3.1+b2 [27.8 kB]
+#17 3.962 Get:25 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libwebp6 arm64 0.6.1-2.1+deb11u2 [244 kB]
+#17 4.000 Err:26 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libtiff5 arm64 4.2.0-1+deb11u8
+#17 4.000   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.000 Err:27 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgdk-pixbuf-2.0-0 arm64 2.42.2+dfsg-1+deb11u5
+#17 4.000   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.001 Get:28 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 gtk-update-icon-cache arm64 3.24.24-4+deb11u4 [87.6 kB]
+#17 4.014 Get:29 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 adwaita-icon-theme all 3.38.0-1 [10.9 MB]
+#17 4.430 Get:30 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 binutils-common arm64 2.35.2-2 [2220 kB]
+#17 4.460 Get:31 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libbinutils arm64 2.35.2-2 [599 kB]
+#17 4.482 Get:32 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libctf-nobfd0 arm64 2.35.2-2 [108 kB]
+#17 4.486 Get:33 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libctf0 arm64 2.35.2-2 [51.0 kB]
+#17 4.487 Get:34 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 binutils-aarch64-linux-gnu arm64 2.35.2-2 [2472 kB]
+#17 4.535 Get:35 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 binutils arm64 2.35.2-2 [61.2 kB]
+#17 4.535 Get:36 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libisl23 arm64 0.23-1 [590 kB]
+#17 4.538 Get:37 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libmpfr6 arm64 4.1.0-3 [829 kB]
+#17 4.561 Get:38 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libmpc3 arm64 1.2.0-1 [43.2 kB]
+#17 4.562 Get:39 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 cpp-10 arm64 10.2.1-6 [7756 kB]
+#17 4.818 Get:40 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 cpp arm64 4:10.2.1-1 [19.7 kB]
+#17 4.821 Get:41 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 mysql-common all 5.8+1.0.7 [7464 B]
+#17 4.822 Err:42 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 mariadb-common all 1:10.5.29-0+deb11u1
+#17 4.822   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.822 Err:43 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libmariadb3 arm64 1:10.5.29-0+deb11u1
+#17 4.822   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.822 Err:44 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libssl-dev arm64 1.1.1w-0+deb11u8
+#17 4.822   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.822 Err:45 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libc-dev-bin arm64 2.31-13+deb11u14
+#17 4.822   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.824 Err:46 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 linux-libc-dev arm64 5.10.262-1
+#17 4.824   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.824 Get:47 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libcrypt-dev arm64 1:4.4.18-4 [108 kB]
+#17 4.824 Get:48 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libtirpc-dev arm64 1.3.1-1+deb11u1 [193 kB]
+#17 4.886 Get:49 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libnsl-dev arm64 1.3.0-2 [66.1 kB]
+#17 4.888 Err:50 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libc6-dev arm64 2.31-13+deb11u14
+#17 4.888   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.888 Get:51 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 zlib1g-dev arm64 1:1.2.11.dfsg-2+deb11u2 [189 kB]
+#17 4.892 Err:52 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libmariadb-dev arm64 1:10.5.29-0+deb11u1
+#17 4.892   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.892 Err:53 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libmariadb-dev-compat arm64 1:10.5.29-0+deb11u1
+#17 4.892   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.895 Get:54 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 default-libmysqlclient-dev arm64 1.0.7 [3936 B]
+#17 4.896 Get:55 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libbrotli1 arm64 1.0.9-2+b2 [267 kB]
+#17 4.898 Err:56 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libfreetype6 arm64 2.10.4+dfsg-1+deb11u2
+#17 4.898   404  Not Found [IP: 0.250.250.254 7890]
+#17 4.898 Get:57 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 fonts-dejavu-core all 2.37-2 [1069 kB]
+#17 4.912 Get:58 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 fontconfig-config all 2.13.1-4.2 [281 kB]
+#17 4.961 Get:59 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libfontconfig1 arm64 2.13.1-4.2 [344 kB]
+#17 4.965 Get:60 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 fontconfig arm64 2.13.1-4.2 [416 kB]
+#17 4.967 Get:61 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libcc1-0 arm64 10.2.1-6 [45.1 kB]
+#17 4.972 Get:62 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgomp1 arm64 10.2.1-6 [91.6 kB]
+#17 4.973 Get:63 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libitm1 arm64 10.2.1-6 [23.8 kB]
+#17 4.973 Get:64 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libatomic1 arm64 10.2.1-6 [9468 B]
+#17 4.973 Get:65 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libasan6 arm64 10.2.1-6 [2002 kB]
+#17 4.990 Get:66 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 liblsan0 arm64 10.2.1-6 [794 kB]
+#17 5.036 Get:67 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libtsan0 arm64 10.2.1-6 [1957 kB]
+#17 5.070 Get:68 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libubsan1 arm64 10.2.1-6 [759 kB]
+#17 5.070 Get:69 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgcc-10-dev arm64 10.2.1-6 [876 kB]
+#17 5.122 Get:70 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 gcc-10 arm64 10.2.1-6 [15.4 MB]
+#17 5.479 Get:71 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 gcc arm64 4:10.2.1-1 [5208 B]
+#17 5.480 Get:72 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libstdc++-10-dev arm64 10.2.1-6 [1704 kB]
+#17 5.523 Get:73 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 g++-10 arm64 10.2.1-6 [8557 kB]
+#17 5.795 Get:74 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 g++ arm64 4:10.2.1-1 [1628 B]
+#17 5.796 Get:75 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libsasl2-modules-db arm64 2.1.27+dfsg-2.1+deb11u1 [69.4 kB]
+#17 5.796 Get:76 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libsasl2-2 arm64 2.1.27+dfsg-2.1+deb11u1 [105 kB]
+#17 5.796 Get:77 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libldap-2.4-2 arm64 2.4.57+dfsg-3+deb11u1 [222 kB]
+#17 5.798 Err:78 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libnghttp2-14 arm64 1.43.0-1+deb11u3
+#17 5.798   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.798 Get:79 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libpsl5 arm64 0.21.0-1.2 [57.1 kB]
+#17 5.799 Get:80 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 librtmp1 arm64 2.4+20151223.gitfa8646d.1-2+b2 [59.4 kB]
+#17 5.799 Get:81 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libssh2-1 arm64 1.9.0-2+deb11u1 [150 kB]
+#17 5.800 Err:82 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libcurl3-gnutls arm64 7.74.0-1.3+deb11u16
+#17 5.800   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.865 Get:83 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 liberror-perl all 0.17029-1 [31.0 kB]
+#17 5.870 Err:84 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 git-man all 1:2.30.2-1+deb11u5
+#17 5.870   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.870 Err:85 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 git arm64 1:2.30.2-1+deb11u5
+#17 5.870   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.882 Err:86 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 icu-devtools arm64 67.1-7+deb11u1
+#17 5.882   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.883 Get:87 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libatk1.0-data all 2.36.0-2 [149 kB]
+#17 5.884 Get:88 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libatk1.0-0 arm64 2.36.0-2 [49.9 kB]
+#17 5.885 Err:89 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libavahi-common-data arm64 0.8-5+deb11u3
+#17 5.885   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.886 Err:90 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libavahi-common3 arm64 0.8-5+deb11u3
+#17 5.886   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.886 Get:91 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libdbus-1-3 arm64 1.12.28-0+deb11u1 [213 kB]
+#17 5.896 Err:92 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libavahi-client3 arm64 0.8-5+deb11u3
+#17 5.896   404  Not Found [IP: 0.250.250.254 7890]
+#17 5.935 Get:93 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libmd0 arm64 1.0.3-3 [27.9 kB]
+#17 5.938 Get:94 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libbsd0 arm64 0.11.3-1+deb11u1 [106 kB]
+#17 5.942 Get:95 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libpixman-1-0 arm64 0.40.0-1.1~deb11u1 [445 kB]
+#17 5.966 Get:96 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxau6 arm64 1:1.0.9-1 [19.7 kB]
+#17 5.967 Get:97 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxdmcp6 arm64 1:1.1.2-3 [25.4 kB]
+#17 5.969 Get:98 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxcb1 arm64 1.14-3 [138 kB]
+#17 5.972 Get:99 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libx11-data all 2:1.7.2-1+deb11u2 [311 kB]
+#17 5.973 Get:100 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libx11-6 arm64 2:1.7.2-1+deb11u2 [744 kB]
+#17 5.977 Get:101 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxcb-render0 arm64 1.14-3 [111 kB]
+#17 5.978 Get:102 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxcb-shm0 arm64 1.14-3 [101 kB]
+#17 6.007 Get:103 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxext6 arm64 2:1.3.3-1.1 [51.6 kB]
+#17 6.008 Get:104 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxrender1 arm64 1:0.9.10-1 [30.4 kB]
+#17 6.011 Get:105 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libcairo2 arm64 1.16.0-5 [648 kB]
+#17 6.044 Get:106 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libcairo-gobject2 arm64 1.16.0-5 [125 kB]
+#17 6.044 Get:107 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libcdt5 arm64 2.42.2-5+deb11u1 [61.2 kB]
+#17 6.045 Get:108 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libcgraph6 arm64 2.42.2-5+deb11u1 [82.8 kB]
+#17 6.046 Err:109 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libcups2 arm64 2.3.3op2-3+deb11u10
+#17 6.046   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.046 Get:110 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libdatrie1 arm64 0.2.13-1 [42.1 kB]
+#17 6.050 Err:111 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libdpkg-perl all 1.20.14
+#17 6.050   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.050 Get:112 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libevent-2.1-7 arm64 2.1.12-stable-1 [176 kB]
+#17 6.080 Get:113 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libfribidi0 arm64 1.0.8-2+deb11u1 [64.9 kB]
+#17 6.081 Get:114 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgpg-error-dev arm64 1.38-2 [132 kB]
+#17 6.086 Get:115 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgcrypt20-dev arm64 1.8.7-6 [551 kB]
+#17 6.112 Get:116 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxpm4 arm64 1:3.5.12-1.1+deb11u1 [47.4 kB]
+#17 6.114 Err:117 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgd3 arm64 2.3.0-2+deb11u2
+#17 6.114   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.115 Get:118 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgeos-3.9.0 arm64 3.9.0-1 [865 kB]
+#17 6.125 Get:119 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgeos-c1v5 arm64 3.9.0-1 [371 kB]
+#17 6.130 Get:120 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgeos-dev arm64 3.9.0-1 [397 kB]
+#17 6.133 Get:121 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgmpxx4ldbl arm64 2:6.2.1+dfsg-1+deb11u1 [337 kB]
+#17 6.136 Get:122 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgmp-dev arm64 2:6.2.1+dfsg-1+deb11u1 [625 kB]
+#17 6.150 Err:123 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libunbound8 arm64 1.13.1-1+deb11u7
+#17 6.150   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.151 Err:124 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgnutls-dane0 arm64 3.7.1-5+deb11u10
+#17 6.151   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.158 Err:125 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgnutls-openssl27 arm64 3.7.1-5+deb11u10
+#17 6.158   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.183 Err:126 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgnutlsxx28 arm64 3.7.1-5+deb11u10
+#17 6.183   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.185 Get:127 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libidn2-dev arm64 2.3.0-5 [87.2 kB]
+#17 6.193 Get:128 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libp11-kit-dev arm64 0.23.22-1 [214 kB]
+#17 6.202 Err:129 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libtasn1-6-dev arm64 4.16.0-2+deb11u2
+#17 6.202   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.202 Get:130 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 nettle-dev arm64 3.7.3-1 [1270 kB]
+#17 6.312 Err:131 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libgnutls28-dev arm64 3.7.1-5+deb11u10
+#17 6.312   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.312 Get:132 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgraphite2-3 arm64 1.3.14-1 [75.6 kB]
+#17 6.315 Get:133 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgts-0.7-5 arm64 0.7.6+darcs121130-4+b1 [143 kB]
+#17 6.317 Get:134 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libltdl7 arm64 2.4.6-15 [390 kB]
+#17 6.323 Get:135 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libharfbuzz0b arm64 2.7.4-1 [1445 kB]
+#17 6.333 Get:136 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libthai-data all 0.1.28-3 [170 kB]
+#17 6.335 Get:137 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libthai0 arm64 0.1.28-3 [53.0 kB]
+#17 6.336 Get:138 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libpango-1.0-0 arm64 1.46.2-3 [183 kB]
+#17 6.338 Get:139 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libpangoft2-1.0-0 arm64 1.46.2-3 [59.4 kB]
+#17 6.383 Get:140 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libpangocairo-1.0-0 arm64 1.46.2-3 [48.6 kB]
+#17 6.388 Get:141 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libpathplan4 arm64 2.42.2-5+deb11u1 [62.7 kB]
+#17 6.390 Get:142 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgvc6 arm64 2.42.2-5+deb11u1 [635 kB]
+#17 6.397 Get:143 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgvpr2 arm64 2.42.2-5+deb11u1 [201 kB]
+#17 6.398 Get:144 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxdot4 arm64 2.42.2-5+deb11u1 [57.6 kB]
+#17 6.402 Get:145 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 liblab-gamut1 arm64 2.42.2-5+deb11u1 [221 kB]
+#17 6.407 Get:146 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgtk2.0-common all 2.24.33-2+deb11u1 [2700 kB]
+#17 6.445 Get:147 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxcomposite1 arm64 1:0.4.5-1 [16.6 kB]
+#17 6.446 Get:148 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxfixes3 arm64 1:5.0.3-2 [22.1 kB]
+#17 6.447 Get:149 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxcursor1 arm64 1:1.2.0-2 [36.6 kB]
+#17 6.453 Get:150 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxdamage1 arm64 1:1.1.5-2 [15.7 kB]
+#17 6.458 Get:151 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxi6 arm64 2:1.7.10-1 [81.7 kB]
+#17 6.463 Get:152 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxinerama1 arm64 2:1.1.4-2 [17.7 kB]
+#17 6.464 Get:153 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxrandr2 arm64 2:1.5.1-1 [35.3 kB]
+#17 6.468 Get:154 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgtk2.0-0 arm64 2.24.33-2+deb11u1 [1705 kB]
+#17 6.498 Get:155 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 librsvg2-2 arm64 2.50.3+dfsg-1+deb11u1 [2138 kB]
+#17 6.518 Get:156 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgvc6-plugins-gtk arm64 2.42.2-5+deb11u1 [62.7 kB]
+#17 6.567 Get:157 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libgraphviz-dev arm64 2.42.2-5+deb11u1 [100 kB]
+#17 6.567 Err:158 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libicu-dev arm64 67.1-7+deb11u1
+#17 6.567   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.567 Get:159 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libjpeg62-turbo-dev arm64 1:2.0.6-4 [255 kB]
+#17 6.568 Get:160 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libjpeg-dev arm64 1:2.0.6-4 [67.8 kB]
+#17 6.569 Get:161 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libldap2-dev arm64 2.4.57+dfsg-3+deb11u1 [340 kB]
+#17 6.573 Get:162 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libnspr4 arm64 2:4.29-1 [105 kB]
+#17 6.574 Get:163 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libnspr4-dev arm64 2:4.29-1 [207 kB]
+#17 6.577 Err:164 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libnss3 arm64 2:3.61-1+deb11u7
+#17 6.577   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.586 Err:165 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libnss3-dev arm64 2:3.61-1+deb11u7
+#17 6.586   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.635 Get:166 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libsasl2-dev arm64 2.1.27+dfsg-2.1+deb11u1 [277 kB]
+#17 6.638 Err:167 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libxml2-dev arm64 2.9.10+dfsg-6.7+deb11u10
+#17 6.638   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.639 Err:168 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libxslt1.1 arm64 1.1.34-4+deb11u3
+#17 6.639   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.642 Get:169 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxmlsec1 arm64 1.2.31-1 [132 kB]
+#17 6.648 Get:170 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxmlsec1-gcrypt arm64 1.2.31-1 [59.3 kB]
+#17 6.649 Get:171 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxmlsec1-gnutls arm64 1.2.31-1 [52.3 kB]
+#17 6.650 Get:172 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxmlsec1-nss arm64 1.2.31-1 [76.9 kB]
+#17 6.651 Get:173 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxmlsec1-openssl arm64 1.2.31-1 [89.2 kB]
+#17 6.831 Err:174 https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security/main arm64 libxslt1-dev arm64 1.1.34-4+deb11u3
+#17 6.831   404  Not Found [IP: 0.250.250.254 7890]
+#17 6.831 Get:175 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 libxmlsec1-dev arm64 1.2.31-1 [432 kB]
+#17 6.832 Get:176 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 make arm64 4.3-4.1 [391 kB]
+#17 6.834 Get:177 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 pkg-config arm64 0.29.2-1 [63.6 kB]
+#17 6.835 Get:178 https://mirrors.tuna.tsinghua.edu.cn/debian bullseye/main arm64 xmlsec1 arm64 1.2.31-1 [47.0 kB]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/p/perl/perl-base_5.32.1-4%2bdeb11u5_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/p/perl/perl-modules-5.32_5.32.1-4%2bdeb11u5_all.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/glibc/libc6_2.31-13%2bdeb11u14_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/p/perl/libperl5.32_5.32.1-4%2bdeb11u5_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/p/perl/perl_5.32.1-4%2bdeb11u5_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libt/libtasn1-6/libtasn1-6_4.16.0-2%2bdeb11u2_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gnutls28/libgnutls30_3.7.1-5%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/o/openssl/libssl1.1_1.1.1w-0%2bdeb11u8_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/u/ucf/ucf_3.0043%2bdeb11u2_all.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gdk-pixbuf/libgdk-pixbuf2.0-common_2.42.2%2bdfsg-1%2bdeb11u5_all.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/glib2.0/libglib2.0-0_2.66.8-1%2bdeb11u8_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/i/icu/libicu67_67.1-7%2bdeb11u1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libx/libxml2/libxml2_2.9.10%2bdfsg-6.7%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libp/libpng1.6/libpng16-16_1.6.37-3%2bdeb11u4_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/t/tiff/libtiff5_4.2.0-1%2bdeb11u8_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gdk-pixbuf/libgdk-pixbuf-2.0-0_2.42.2%2bdfsg-1%2bdeb11u5_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/m/mariadb-10.5/mariadb-common_10.5.29-0%2bdeb11u1_all.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/m/mariadb-10.5/libmariadb3_10.5.29-0%2bdeb11u1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/o/openssl/libssl-dev_1.1.1w-0%2bdeb11u8_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/glibc/libc-dev-bin_2.31-13%2bdeb11u14_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/l/linux/linux-libc-dev_5.10.262-1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/glibc/libc6-dev_2.31-13%2bdeb11u14_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/m/mariadb-10.5/libmariadb-dev_10.5.29-0%2bdeb11u1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/m/mariadb-10.5/libmariadb-dev-compat_10.5.29-0%2bdeb11u1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/f/freetype/libfreetype6_2.10.4%2bdfsg-1%2bdeb11u2_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/n/nghttp2/libnghttp2-14_1.43.0-1%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/c/curl/libcurl3-gnutls_7.74.0-1.3%2bdeb11u16_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/git/git-man_2.30.2-1%2bdeb11u5_all.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/git/git_2.30.2-1%2bdeb11u5_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/i/icu/icu-devtools_67.1-7%2bdeb11u1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/a/avahi/libavahi-common-data_0.8-5%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/a/avahi/libavahi-common3_0.8-5%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/a/avahi/libavahi-client3_0.8-5%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/c/cups/libcups2_2.3.3op2-3%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/d/dpkg/libdpkg-perl_1.20.14_all.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libg/libgd2/libgd3_2.3.0-2%2bdeb11u2_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/u/unbound/libunbound8_1.13.1-1%2bdeb11u7_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gnutls28/libgnutls-dane0_3.7.1-5%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gnutls28/libgnutls-openssl27_3.7.1-5%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gnutls28/libgnutlsxx28_3.7.1-5%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libt/libtasn1-6/libtasn1-6-dev_4.16.0-2%2bdeb11u2_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gnutls28/libgnutls28-dev_3.7.1-5%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/i/icu/libicu-dev_67.1-7%2bdeb11u1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/n/nss/libnss3_3.61-1%2bdeb11u7_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/n/nss/libnss3-dev_3.61-1%2bdeb11u7_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libx/libxml2/libxml2-dev_2.9.10%2bdfsg-6.7%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libx/libxslt/libxslt1.1_1.1.34-4%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libx/libxslt/libxslt1-dev_1.1.34-4%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+#17 6.841 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+#17 6.841 Fetched 84.8 MB in 4s (22.9 MB/s)
+#17 ERROR: process "/bin/sh -c sed -i         -e \"s|http://deb.debian.org/debian|${DEBIAN_MIRROR}|g\"         -e \"s|http://security.debian.org/debian-security|${DEBIAN_SECURITY_MIRROR}|g\"         /etc/apt/sources.list     && apt-get update && apt-get install -y --no-install-recommends     git gcc g++ make     default-libmysqlclient-dev     libgeos-dev libgeos-c1v5     libldap2-dev libsasl2-dev     libxml2-dev libxslt-dev libxmlsec1-dev xmlsec1 pkg-config libjpeg-dev zlib1g-dev     libgraphviz-dev     && apt-get clean && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
+
+#15 [stage-0  4/21] ADD https://github.com/astral-sh/uv/releases/download/0.1.44/uv-aarch64-unknown-linux-gnu.tar.gz /tmp/uv.tar.gz
+#15 CANCELED
+------
+ > [stage-0  2/21] RUN sed -i         -e "s|http://deb.debian.org/debian|https://mirrors.tuna.tsinghua.edu.cn/debian|g"         -e "s|http://security.debian.org/debian-security|https://mirrors.tuna.tsinghua.edu.cn/debian-security|g"         /etc/apt/sources.list     && apt-get update && apt-get install -y --no-install-recommends     git gcc g++ make     default-libmysqlclient-dev     libgeos-dev libgeos-c1v5     libldap2-dev libsasl2-dev     libxml2-dev libxslt-dev libxmlsec1-dev xmlsec1 pkg-config libjpeg-dev zlib1g-dev     libgraphviz-dev     && apt-get clean && rm -rf /var/lib/apt/lists/*:
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libt/libtasn1-6/libtasn1-6-dev_4.16.0-2%2bdeb11u2_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/g/gnutls28/libgnutls28-dev_3.7.1-5%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/i/icu/libicu-dev_67.1-7%2bdeb11u1_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/n/nss/libnss3_3.61-1%2bdeb11u7_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/n/nss/libnss3-dev_3.61-1%2bdeb11u7_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libx/libxml2/libxml2-dev_2.9.10%2bdfsg-6.7%2bdeb11u10_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libx/libxslt/libxslt1.1_1.1.34-4%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Failed to fetch https://mirrors.tuna.tsinghua.edu.cn/debian-security/pool/updates/main/libx/libxslt/libxslt1-dev_1.1.34-4%2bdeb11u3_arm64.deb  404  Not Found [IP: 0.250.250.254 7890]
+6.841 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+6.841 Fetched 84.8 MB in 4s (22.9 MB/s)
+------
+Dockerfile:13
+--------------------
+  12 |     # System dependencies (apt works via devstack_default network)
+  13 | >>> RUN sed -i \
+  14 | >>>         -e "s|http://deb.debian.org/debian|${DEBIAN_MIRROR}|g" \
+  15 | >>>         -e "s|http://security.debian.org/debian-security|${DEBIAN_SECURITY_MIRROR}|g" \
+  16 | >>>         /etc/apt/sources.list \
+  17 | >>>     && apt-get update && apt-get install -y --no-install-recommends \
+  18 | >>>     git gcc g++ make \
+  19 | >>>     default-libmysqlclient-dev \
+  20 | >>>     libgeos-dev libgeos-c1v5 \
+  21 | >>>     libldap2-dev libsasl2-dev \
+  22 | >>>     libxml2-dev libxslt-dev libxmlsec1-dev xmlsec1 pkg-config libjpeg-dev zlib1g-dev \
+  23 | >>>     libgraphviz-dev \
+  24 | >>>     && apt-get clean && rm -rf /var/lib/apt/lists/*
+  25 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c sed -i         -e \"s|http://deb.debian.org/debian|${DEBIAN_MIRROR}|g\"         -e \"s|http://security.debian.org/debian-security|${DEBIAN_SECURITY_MIRROR}|g\"         /etc/apt/sources.list     && apt-get update && apt-get install -y --no-install-recommends     git gcc g++ make     default-libmysqlclient-dev     libgeos-dev libgeos-c1v5     libldap2-dev libsasl2-dev     libxml2-dev libxslt-dev libxmlsec1-dev xmlsec1 pkg-config libjpeg-dev zlib1g-dev     libgraphviz-dev     && apt-get clean && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
