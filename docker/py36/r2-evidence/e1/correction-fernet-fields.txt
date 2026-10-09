@@ -1,0 +1,28 @@
+# E1 correction - 2026-10-09 17:41:47 +0800
+Finding (from E2 attempt 2 freeze): django-fernet-fields is NOT enterprise-family.
+It is a direct requirement of the KEPT edxval==1.3.4 (R1 lock: 'edxval metadata and Open edX Juniper release pin').
+Removing its pin left it installed as an unconstrained transitive dependency. Pin restored in both files.
+
+## In-image requirement graph (ltdps/edxapp:py36-r2-20261009 attempt 2, b62edad4a50d)
+Required-by: edxval
+Version: 1.3.4
+Requires: pysrt, django-model-utils, edx-drf-extensions, django-fernet-fields, django-storages, boto, Django, enum34, lxml
+edx-enterprise required-by: []
+django-multi-email-field required-by: []
+django-object-actions required-by: []
+djangorestframework-xml required-by: []
+jsondiff required-by: []
+
+## Net lock diff vs 09c7da2 after correction (expect 10 deletions, 5 packages x 2 files)
+0	5	docker/py36/py36-base.txt
+0	5	docker/py36/py36-constraints.txt
+-django-multi-email-field==0.5.1
+-django-object-actions==0.10.0
+-djangorestframework-xml==1.3.0
+-edx-enterprise==0.70.3
+-jsondiff==1.1.1
+-django-multi-email-field==0.5.1
+-django-object-actions==0.10.0
+-djangorestframework-xml==1.3.0
+-edx-enterprise==0.70.3
+-jsondiff==1.1.1
