@@ -1,0 +1,4 @@
+build start 2026-10-09 17:20:13 +0800
+deviation from R1 build_command: DEBIAN_SECURITY_MIRROR=http://archive.debian.org/debian-security (see attempt1-diagnosis.txt)
+build end 2026-10-09 17:40:40 +0800
+build exit=0

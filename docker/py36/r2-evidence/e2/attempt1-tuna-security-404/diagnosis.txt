@@ -1,0 +1,25 @@
+# E2 attempt 1 failure diagnosis - 2026-10-09 17:20:00 +0800
+Symptom: apt-get install exit 100; 8 bullseye-security arm64 .deb files 404 on mirrors.tuna (see build-attempt1-tuna-security-404.log).
+Cause: Debian 11 bullseye LTS ended 2026-08-31; upstream security.debian.org pool no longer serves these files
+while dists/bullseye-security/Release (Date 2026-09-12) still lists them. Files moved to archive.debian.org.
+
+## Probe: pool/updates/main/libx/libxml2/libxml2-dev_2.9.10%2bdfsg-6.7%2bdeb11u10_arm64.deb
+404 https://mirrors.tuna.tsinghua.edu.cn/debian-security
+404 http://security.debian.org/debian-security
+404 https://deb.debian.org/debian-security
+404 https://mirrors.ustc.edu.cn/debian-security
+404 https://mirrors.aliyun.com/debian-security
+404 https://mirrors.tuna.tsinghua.edu.cn/debian-archive/debian-security
+200 http://archive.debian.org/debian-security
+
+## dists/bullseye-security/Release SHA256
+38f9844c99ed12eca4d5642fb8c276e8ead2b276e9241d663ce7464930339d40 http://security.debian.org/debian-security
+38f9844c99ed12eca4d5642fb8c276e8ead2b276e9241d663ce7464930339d40 http://archive.debian.org/debian-security
+38f9844c99ed12eca4d5642fb8c276e8ead2b276e9241d663ce7464930339d40 https://mirrors.tuna.tsinghua.edu.cn/debian-security
+
+## dists/bullseye/Release SHA256 (main suite stays on tuna)
+db2d4fbf43fcd7a08124e7fbc387d2e8e2599f01858aa7e26f6e9d68a5835657 http://deb.debian.org/debian
+db2d4fbf43fcd7a08124e7fbc387d2e8e2599f01858aa7e26f6e9d68a5835657 https://mirrors.tuna.tsinghua.edu.cn/debian
+
+Resolution: build-arg only, DEBIAN_SECURITY_MIRROR=http://archive.debian.org/debian-security.
+Dockerfile and lock unchanged; apt still verifies InRelease signatures; package set equals the upstream security suite.
