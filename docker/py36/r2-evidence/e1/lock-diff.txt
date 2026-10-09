@@ -1,0 +1,35 @@
+# E1 lock update - 2026-10-09 17:18:16 +0800
+## Consumer scan of R2-preview source (fd5e359ec1c) - only non-consumers expected
+./scripts/drop_removed_app_tables.py:26:  - enterprise / consent / integrated_channel: edx-enterprise pip package
+./scripts/drop_removed_app_tables.py:170:    # edx-enterprise pip package (empty identity tables; four-region census 2026-09-18).
+./scripts/drop_removed_app_tables.py:172:    'enterprise': [
+./scripts/drop_removed_app_tables.py:190:    'consent': [
+./scripts/drop_removed_app_tables.py:205:    'enterprise', 'consent', 'integrated_channel', 'degreed', 'sap_success_factors',
+./lms/djangoapps/branding/api.py:210:            ("enterprise", marketing_link("ENTERPRISE"),
+./lms/djangoapps/branding/api.py:266:            ("enterprise", marketing_link("ENTERPRISE"),
+./lms/djangoapps/branding/tests/test_api.py:77:                {'url': 'https://edx.org/enterprise', 'name': 'enterprise', 'title': '\xe9dX for Business'},
+./lms/djangoapps/branding/tests/test_api.py:87:                {'url': 'https://edx.org/enterprise', 'name': 'enterprise', 'title': '\xe9dX for Business'},
+./common/djangoapps/third_party_auth/pipeline.py:237:    Example: ``quarantine_session(request, ('enterprise.views',))``
+
+## Diff numstat
+0	6	docker/py36/py36-base.txt
+0	6	docker/py36/py36-constraints.txt
+
+## Removed lines
+-django-fernet-fields==0.6
+-django-multi-email-field==0.5.1
+-django-object-actions==0.10.0
+-djangorestframework-xml==1.3.0
+-edx-enterprise==0.70.3
+-jsondiff==1.1.1
+-django-fernet-fields==0.6
+-django-multi-email-field==0.5.1
+-django-object-actions==0.10.0
+-djangorestframework-xml==1.3.0
+-edx-enterprise==0.70.3
+-jsondiff==1.1.1
+
+## Pins remaining after edit (expect 0)
+py36-base.txt:0
+py36-constraints.txt:0
+py36-git-requirements.txt diff lines: 0
