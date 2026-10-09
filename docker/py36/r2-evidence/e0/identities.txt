@@ -1,0 +1,64 @@
+# E0 identities - 2026-10-09 17:17:33 +0800
+host: Darwin arm64  docker: 29.4.0 arm64
+
+## Platform (git fetch origin done)
+origin/master                      6750b5331809c510dd36133ca8223b4a32f13ed8
+origin/master^{tree}               d71fe7fde049f0aefaa1dec0920b39e487c07d32
+origin/r2-preview-20261009         fd5e359ec1c7d52a0a522688bfc5b5842dc57006
+origin/r2-preview-20261009^{tree}  5d7e28bb7bbc3e82eff6706168cc8d4a9fc17d8a
+R2-preview commits on master:
+fd5e359ec1c Py3.6 integration: apply R1 runtime fixes on master + open DCC
+0bd59aad78e Py3.6 integration: pin Py2/3-compatible LT dependency forks from R1
+91255bac518 Dead code: remove verify_student pay/photo UI (PARTIAL) (#2396)
+85dee6c4b18 Dead code: remove unused edx-enterprise integration (#2397)
+b92d18c4663 Dead code: remove course mode chooser (SPLIT) (#2395)
+
+## Source worktree platform-r2-py36-src
+HEAD  fd5e359ec1c7d52a0a522688bfc5b5842dc57006  (detached: yes)
+tree  5d7e28bb7bbc3e82eff6706168cc8d4a9fc17d8a
+status --porcelain lines: 0
+
+## Devstack worktree devstack-py36-r2-env
+branch py36-r2-env
+HEAD   09c7da26cb155e1c2a89af09131df1ff3f9ab3d9
+tree   cba0d6f67a9f1c5d65d30e8d48792928cd97f095
+origin/py36-integration-r1 a901822daa0620ab49e98e117e24bdb053b9cfb2
+ahead of origin/py36-integration-r1: 2
+status --porcelain lines (excluding r2-evidence/): 0
+
+## R1 references
+platform-py3-integration HEAD  33590b3ab476185011fa03e8114d0b1a6af14004
+R1 freeze baseline lines: 226
+edx-ora2 HEAD                  d3f24a9c539528e960c8dcc9aef200cea0c49baf
+
+## Images
+ltdps/edxapp:m5-fixed sha256:50b4a73f4814dcc1d41b0da983346990ceb2e31f8c08b1db6093e751c2743b19 amd64
+rabbitmq:3.8-management sha256:4206c16c09a58d0a604668e91227c32f4a222368e796bfb7bf2e0d0d160ef97a arm64
+python       3.6-slim             sha256:ac11ce85a603a835533b2ec608246fef2fea4a4b4790df97a20d9cce7032faf6   ac11ce85a603   4 years ago    173MB
+python       3.6-slim             sha256:2cfebc27956e6a55f78606864d91fe527696f9e32a724e6f9702b5f9602d0474   2cfebc27956e   4 years ago    355MB
+Dockerfile FROM: FROM python:3.6-slim@sha256:ac11ce85a603a835533b2ec608246fef2fea4a4b4790df97a20d9cce7032faf6
+
+## PR #2401
+head=fd5e359ec1c7d52a0a522688bfc5b5842dc57006 state=OPEN mergeable=MERGEABLE title=[DRAFT!!!] R2 preview 20261009
+  Python 2.7 Syntax Check: SUCCESS
+  Python 3 Syntax Check: SUCCESS
+  Check Test Isolation: SUCCESS
+
+## Network
+host -> clash -> github.com: 200
+host -> tuna debian:          200
+host -> tuna debian-security: 200
+container -> host.docker.internal:7890 -> github.com: 200
+
+## Protected containers (must stay untouched)
+edx.devstack.devpi ltdps/devpi:latest Up 5 weeks
+edx.devstack.discovery ltdps/discovery:latest Up 2 weeks
+edx.devstack.ecommerce ltdps/ecommerce:latest Up 4 weeks
+edx.devstack.elasticsearch edxops/elasticsearch:devstack Up 44 minutes
+edx.devstack.lms ltdps/edxapp:m5-fixed Up 52 minutes
+edx.devstack.memcached memcached:1.5.4 Up 5 weeks
+edx.devstack.mongo mongo:3.2.16 Up 2 weeks
+edx.devstack.mysql mysql:5.6 Up 5 weeks
+edx.devstack.py2-master-memcached memcached:1.5.4 Up 5 weeks
+edx.devstack.studio ltdps/edxapp:m5-fixed-studio Up 11 days
+r2-preview-studio r2-preview-studio:20261009 Up 7 hours
