@@ -41,6 +41,7 @@ django-countries==4.6.1
 django-crequest==2018.5.11
 django-crum==0.7.9
 django-debug-toolbar==1.8
+django-fernet-fields==0.6
 django-filter==1.0.4
 django-ipware==2.1.0
 django-js-asset==1.2.3
