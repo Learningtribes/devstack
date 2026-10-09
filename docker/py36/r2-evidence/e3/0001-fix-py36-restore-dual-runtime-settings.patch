@@ -1,0 +1,224 @@
+From 0ac3bfa6d099916cc58fc258db17221801f49d48 Mon Sep 17 00:00:00 2001
+From: noahwang <234082230@qq.com>
+Date: Fri, 9 Oct 2026 19:52:29 +0800
+Subject: [PATCH] fix(py36): restore dual-runtime settings lost in R1 master
+ syncs
+
+R1 merge 04af2db3d04 dropped the proctoring de-duplication, the CMS
+HEARTBEAT_ELASTICSEARCH_TIMEOUT import and the submissions
+MIGRATION_MODULES; 4dbe0c68497 reverted the course wiki include. On
+fd5e359ec1c the LMS check fails on Python 3.6 and the CMS check fails on
+both runtimes.
+
+- Plugin apps already in INSTALLED_APPS are skipped, so edx-proctoring is
+  installed once whether it comes from the static list (Python 2.7 fork,
+  no entry point) or also from its 1.5.x plugin entry point (Python 3).
+- The wiki include uses only the (patterns, app_name) pair that both
+  django-wiki pins return.
+- The submissions migration snapshots match edx-submissions 2.0.12 and
+  2.1.1 except for byte-string literals.
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+---
+ cms/envs/common.py                            | 10 +++-
+ lms/envs/common.py                            |  9 +++-
+ lms/urls.py                                   |  9 ++--
+ .../core/djangoapps/plugins/plugin_apps.py    | 21 +++++---
+ .../core/djangoapps/plugins/tests/__init__.py |  0
+ .../plugins/tests/test_plugin_apps.py         | 49 +++++++++++++++++++
+ 6 files changed, 87 insertions(+), 11 deletions(-)
+ create mode 100644 openedx/core/djangoapps/plugins/tests/__init__.py
+ create mode 100644 openedx/core/djangoapps/plugins/tests/test_plugin_apps.py
+
+diff --git a/cms/envs/common.py b/cms/envs/common.py
+index 583e7500599..270a7888782 100644
+--- a/cms/envs/common.py
++++ b/cms/envs/common.py
+@@ -76,6 +76,7 @@ from lms.envs.common import (
+     HEARTBEAT_CHECKS,
+     HEARTBEAT_EXTENDED_CHECKS,
+     HEARTBEAT_CELERY_TIMEOUT,
++    HEARTBEAT_ELASTICSEARCH_TIMEOUT,
+ 
+     # Theme to use when no site or site theme is defined,
+     DEFAULT_SITE_THEME,
+@@ -989,6 +990,13 @@ VIDEO_UPLOAD_PIPELINE = {
+ 
+ ############################ APPS #####################################
+ 
++# edx-submissions (2.0.12 on Python 2.7, 2.1.1 on Python 3) ships byte-string
++# schema metadata. Keep the upstream migration names while loading
++# dual-runtime-compatible snapshots of the same four migrations.
++MIGRATION_MODULES = {
++    'submissions': 'openedx.core.djangoapps.submissions_migrations',
++}
++
+ # The order of INSTALLED_APPS is important, when adding new apps here
+ # remember to check that you are not creating new
+ # RemovedInDjango19Warnings in the test logs.
+@@ -1550,7 +1558,7 @@ COMPLETION_VIDEO_COMPLETE_PERCENTAGE = 0.95
+ ############## Installed Django Apps #########################
+ 
+ from openedx.core.djangoapps.plugins import plugin_apps, plugin_settings, constants as plugin_constants
+-INSTALLED_APPS.extend(plugin_apps.get_apps(plugin_constants.ProjectType.CMS))
++INSTALLED_APPS.extend(plugin_apps.get_apps(plugin_constants.ProjectType.CMS, INSTALLED_APPS))
+ plugin_settings.add_plugins(__name__, plugin_constants.ProjectType.CMS, plugin_constants.SettingsType.COMMON)
+ 
+ # Course exports streamed in blocks of this size. 8192 or 8kb is the default
+diff --git a/lms/envs/common.py b/lms/envs/common.py
+index 327c5b8aa51..3c5a29dae38 100644
+--- a/lms/envs/common.py
++++ b/lms/envs/common.py
+@@ -1886,6 +1886,13 @@ YOUTUBE_API_KEY = None
+ 
+ ################################### APPS ######################################
+ 
++# edx-submissions (2.0.12 on Python 2.7, 2.1.1 on Python 3) ships byte-string
++# schema metadata. Keep the upstream migration names while loading
++# dual-runtime-compatible snapshots of the same four migrations.
++MIGRATION_MODULES = {
++    'submissions': 'openedx.core.djangoapps.submissions_migrations',
++}
++
+ # The order of INSTALLED_APPS is important, when adding new apps here
+ # remember to check that you are not creating new
+ # RemovedInDjango19Warnings in the test logs.
+@@ -3148,7 +3155,7 @@ USER_STATE_BATCH_SIZE = 5000
+ ############## Plugin Django Apps #########################
+ 
+ from openedx.core.djangoapps.plugins import plugin_apps, plugin_settings, constants as plugin_constants
+-INSTALLED_APPS.extend(plugin_apps.get_apps(plugin_constants.ProjectType.LMS))
++INSTALLED_APPS.extend(plugin_apps.get_apps(plugin_constants.ProjectType.LMS, INSTALLED_APPS))
+ plugin_settings.add_plugins(__name__, plugin_constants.ProjectType.LMS, plugin_constants.SettingsType.COMMON)
+ 
+ OFFICIAL_ADVANCED_MODULES = [
+diff --git a/lms/urls.py b/lms/urls.py
+index d6f998f0be5..ab7ebea5195 100644
+--- a/lms/urls.py
++++ b/lms/urls.py
+@@ -196,12 +196,15 @@ if settings.WIKI_ENABLED:
+     from course_wiki import views as course_wiki_views
+     from django_notify.urls import get_pattern as notify_pattern
+ 
++    # django-wiki v0.0.18 (Python 2.7) returns (patterns, app_name, namespace) and
++    # accepts a namespace argument; the Python 3 pin returns (patterns, app_name) only.
++    wiki_url_patterns, wiki_app_name = wiki_pattern()[:2]
++
+     urlpatterns += [
+         # First we include views from course_wiki that we use to override the default views.
+         # They come first in the urlpatterns so they get resolved first
+         url('^wiki/create-root/$', course_wiki_views.root_create, name='root_create'),
+-        # get_pattern() returns (patterns, app_name, namespace). Django 1.11 include() accepts that 3-tuple.
+-        url(r'^wiki/', include(wiki_pattern())),
++        url(r'^wiki/', include((wiki_url_patterns, wiki_app_name))),
+         url(r'^notify/', include(notify_pattern())),
+ 
+         # These urls are for viewing the wiki in the context of a course. They should
+@@ -209,7 +212,7 @@ if settings.WIKI_ENABLED:
+         url(r'^courses/{}/course_wiki/?$'.format(settings.COURSE_ID_PATTERN),
+             course_wiki_views.course_wiki_redirect, name='course_wiki'),
+         url(r'^courses/{}/wiki/'.format(settings.COURSE_KEY_REGEX),
+-            include(wiki_pattern(app_name='course_wiki_do_not_reverse', namespace='course_wiki_do_not_reverse'))),
++            include((wiki_url_patterns, 'course_wiki_do_not_reverse'), namespace='course_wiki_do_not_reverse')),
+     ]
+ 
+ urlpatterns += [
+diff --git a/openedx/core/djangoapps/plugins/plugin_apps.py b/openedx/core/djangoapps/plugins/plugin_apps.py
+index f1edc0c1aa9..08cabfddd22 100644
+--- a/openedx/core/djangoapps/plugins/plugin_apps.py
++++ b/openedx/core/djangoapps/plugins/plugin_apps.py
+@@ -5,18 +5,27 @@ from . import constants, registry
+ log = getLogger(__name__)
+ 
+ 
+-def get_apps(project_type):
++def get_apps(project_type, installed_apps=()):
+     """
+     Returns a list of all registered Plugin Apps, expected to be added to
+     the INSTALLED_APPS list for the given project_type.
++
++    Plugins already present in installed_apps, by app module name or by
++    AppConfig path, are skipped. A package that is listed statically and also
++    ships a plugin entry point (edx-proctoring 1.5+ on the Python 3 lock, but
++    not the Python 2.7 fork) would otherwise be installed twice.
+     """
+-    plugin_apps = [
+-        u'{module_name}.{class_name}'.format(
++    plugin_apps = []
++    for app_config in registry.get_app_configs(project_type):
++        if getattr(app_config, constants.PLUGIN_APP_CLASS_ATTRIBUTE_NAME, None) is None:
++            continue
++        app_path = u'{module_name}.{class_name}'.format(
+             module_name=app_config.__module__,
+             class_name=app_config.__name__,
+         )
+-        for app_config in registry.get_app_configs(project_type)
+-        if getattr(app_config, constants.PLUGIN_APP_CLASS_ATTRIBUTE_NAME, None) is not None
+-    ]
++        if app_config.name in installed_apps or app_path in installed_apps:
++            log.debug(u'Plugin Apps: %s is already installed', app_path)
++            continue
++        plugin_apps.append(app_path)
+     log.debug(u'Plugin Apps: Found %s', plugin_apps)
+     return plugin_apps
+diff --git a/openedx/core/djangoapps/plugins/tests/__init__.py b/openedx/core/djangoapps/plugins/tests/__init__.py
+new file mode 100644
+index 00000000000..e69de29bb2d
+diff --git a/openedx/core/djangoapps/plugins/tests/test_plugin_apps.py b/openedx/core/djangoapps/plugins/tests/test_plugin_apps.py
+new file mode 100644
+index 00000000000..96acea3acc7
+--- /dev/null
++++ b/openedx/core/djangoapps/plugins/tests/test_plugin_apps.py
+@@ -0,0 +1,49 @@
++# -*- coding: utf-8 -*-
++from __future__ import absolute_import, division, print_function, unicode_literals
++
++from unittest import TestCase
++
++from django.apps import AppConfig
++from mock import patch
++
++from openedx.core.djangoapps.plugins import plugin_apps
++from openedx.core.djangoapps.plugins.constants import ProjectType
++
++
++class PluginConfig(AppConfig):
++    name = 'plugin_pkg'
++    plugin_app = {}
++
++
++class OtherPluginConfig(AppConfig):
++    name = 'other_pkg'
++    plugin_app = {}
++
++
++class NotAPluginConfig(AppConfig):
++    name = 'regular_pkg'
++
++
++@patch('openedx.core.djangoapps.plugins.plugin_apps.registry.get_app_configs')
++class GetAppsTestCase(TestCase):
++    PLUGIN_PATH = '{}.PluginConfig'.format(__name__)
++    OTHER_PATH = '{}.OtherPluginConfig'.format(__name__)
++
++    def test_returns_plugin_app_config_paths(self, mock_get_app_configs):
++        mock_get_app_configs.return_value = [PluginConfig, NotAPluginConfig, OtherPluginConfig]
++
++        self.assertEqual(plugin_apps.get_apps(ProjectType.LMS), [self.PLUGIN_PATH, self.OTHER_PATH])
++        mock_get_app_configs.assert_called_once_with(ProjectType.LMS)
++
++    def test_skips_plugin_listed_by_module_name(self, mock_get_app_configs):
++        mock_get_app_configs.return_value = [PluginConfig, OtherPluginConfig]
++
++        self.assertEqual(
++            plugin_apps.get_apps(ProjectType.CMS, ['django.contrib.auth', 'plugin_pkg']),
++            [self.OTHER_PATH],
++        )
++
++    def test_skips_plugin_listed_by_app_config_path(self, mock_get_app_configs):
++        mock_get_app_configs.return_value = [PluginConfig, OtherPluginConfig]
++
++        self.assertEqual(plugin_apps.get_apps(ProjectType.LMS, [self.OTHER_PATH]), [self.PLUGIN_PATH])
+-- 
+2.50.1 (Apple Git-155)
+

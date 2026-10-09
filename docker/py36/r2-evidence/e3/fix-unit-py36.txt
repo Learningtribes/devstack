@@ -1,0 +1,9 @@
+test_returns_plugin_app_config_paths (openedx.core.djangoapps.plugins.tests.test_plugin_apps.GetAppsTestCase) ... ok
+test_skips_plugin_listed_by_app_config_path (openedx.core.djangoapps.plugins.tests.test_plugin_apps.GetAppsTestCase) ... ok
+test_skips_plugin_listed_by_module_name (openedx.core.djangoapps.plugins.tests.test_plugin_apps.GetAppsTestCase) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+py36 unit exit=0

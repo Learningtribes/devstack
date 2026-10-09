@@ -1,0 +1,57 @@
+python 3.6.15
+files 3217
+syntax_errors 29
+  ERROR cms/djangoapps/contentstore/tests/test_courseware_index.py:680: invalid syntax
+  ERROR cms/djangoapps/contentstore/tests/test_import.py:123: invalid syntax
+  ERROR common/djangoapps/static_replace/test/test_static_replace.py:195: invalid syntax
+  ERROR common/lib/capa/capa/tests/test_shuffle.py:279: Missing parentheses in call to 'print'. Did you mean print(html)?
+  ERROR common/lib/sandbox-packages/eia.py:94: invalid syntax
+  ERROR common/lib/xmodule/xmodule/tests/test_conditional.py:180: Missing parentheses in call to 'print'. Did you mean print("ajax: ", ajax)?
+  ERROR common/lib/xmodule/xmodule/tests/test_course_module.py:215: invalid syntax
+  ERROR common/lib/xmodule/xmodule/tests/test_export.py:34: invalid syntax
+  ERROR common/lib/xmodule/xmodule/tests/test_import.py:75: invalid syntax
+  ERROR common/lib/xmodule/xmodule/tests/test_stringify.py:41: Missing parentheses in call to 'print'. Did you mean print("output:")?
+  ERROR common/test/acceptance/pages/studio/container.py:675: invalid syntax
+  ERROR common/test/acceptance/tests/studio/test_studio_container.py:83: invalid syntax
+  ERROR common/test/acceptance/tests/studio/test_studio_outline.py:115: invalid syntax
+  ERROR lms/djangoapps/courseware/management/commands/tests/test_dump_course.py:105: invalid syntax
+  ERROR lms/djangoapps/instructor_analytics/tests/test_distributions.py:48: Missing parentheses in call to 'print'. Did you mean print(distribution)?
+  ERROR openedx/core/djangoapps/heartbeat/tests/test_heartbeat.py:32: Missing parentheses in call to 'print'. Did you mean print(response)?
+  ERROR openedx/core/djangoapps/profile_images/tests/test_views.py:32: invalid token
+  ERROR openedx/core/djangoapps/theming/tests/test_util.py:68: invalid syntax
+  ERROR openedx/core/djangoapps/user_api/accounts/tests/test_image_helpers.py:17: invalid token
+  ERROR openedx/core/djangolib/tests/test_markup.py:30: invalid syntax
+  ERROR openedx/core/lib/rsa_key_utils.py:18: Missing parentheses in call to 'print'. Did you mean print(public_key_str)?
+  ERROR openedx/core/lib/xblock_builtin/xblock_discussion/tests.py:112: Missing parentheses in call to 'print'. Did you mean print(xblock_xml)?
+  ERROR openedx/tests/xblock_integration/test_external_xblocks.py:52: Missing parentheses in call to 'print'. Did you mean print("Loading XBlock test: " + classname)?
+  ERROR openedx/tests/xblock_integration/xblock_testcase.py:394: Missing parentheses in call to 'print'. Did you mean print("Invalid JSON response")?
+  ERROR scripts/course_country_migrate.py:31: invalid syntax
+  ERROR scripts/course_tag_migrate.py:33: invalid syntax
+  ERROR scripts/retrieve-learner-badge-success-dates.py:59: Missing parentheses in call to 'print'. Did you mean print(chapter['pretty'])?
+  ERROR scripts/show_events.py:17: invalid syntax
+  ERROR scripts/xblock/xblock_counts.py:107: Missing parentheses in call to 'print'. Did you mean print('Processed %d courses' % total_courses)?
+compile_warnings 24
+  WARN common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:20: DeprecationWarning: invalid escape sequence \d
+  WARN common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:25: DeprecationWarning: invalid escape sequence \d
+  WARN common/test/acceptance/tests/discussion/test_discussion.py:1006: DeprecationWarning: invalid escape sequence \o
+  WARN lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  WARN lms/djangoapps/triboo_analytics/views.py:1913: DeprecationWarning: invalid escape sequence \ 
+  WARN openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:80: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:81: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:82: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:85: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:92: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:93: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:95: DeprecationWarning: invalid escape sequence \s
+  WARN scripts/xsslint/tests/test_main.py:119: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:127: DeprecationWarning: invalid escape sequence \s
+  WARN scripts/xsslint/tests/test_main.py:149: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:152: DeprecationWarning: invalid escape sequence \s
+  WARN scripts/xsslint/tests/test_main.py:153: DeprecationWarning: invalid escape sequence \s
+  WARN scripts/xsslint/tests/test_main.py:175: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:177: DeprecationWarning: invalid escape sequence \.
+  WARN scripts/xsslint/tests/test_main.py:180: DeprecationWarning: invalid escape sequence \s
+  WARN scripts/xsslint/xsslint/linters.py:176: DeprecationWarning: invalid escape sequence \s
+  WARN scripts/xsslint/xsslint/linters.py:1163: DeprecationWarning: invalid escape sequence \w
+  WARN scripts/xsslint/xsslint/linters.py:1164: DeprecationWarning: invalid escape sequence \w

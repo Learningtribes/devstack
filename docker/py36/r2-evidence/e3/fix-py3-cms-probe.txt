@@ -1,0 +1,5 @@
+python 3.6.15
+proctoring_apps ['edx_proctoring']
+migration_modules {'submissions': 'openedx.core.djangoapps.submissions_migrations'}
+heartbeat_es_timeout 2
+submissions_migrations [('0001_initial', 'openedx.core.djangoapps.submissions_migrations.0001_initial'), ('0002_auto_20151119_0913', 'openedx.core.djangoapps.submissions_migrations.0002_auto_20151119_0913'), ('0003_submission_status', 'openedx.core.djangoapps.submissions_migrations.0003_submission_status'), ('0004_remove_django_extensions', 'openedx.core.djangoapps.submissions_migrations.0004_remove_django_extensions')]

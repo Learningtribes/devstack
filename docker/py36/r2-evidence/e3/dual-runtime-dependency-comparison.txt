@@ -1,0 +1,81 @@
+# Py2 image ltdps/edxapp:m5-fixed vs Py3 image ltdps/edxapp:py36-r2-20261009
+('SUB', '/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/submissions')
+('WIKI', '/edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki')
+('PROC', '/edx/app/edxapp/venvs/edxapp/src/edx-proctoring/edx_proctoring', 'edx_proctoring.apps.EdxProctoringConfig', '1.4.0')
+('lms.djangoapp', [])
+('cms.djangoapp', [])
+
+== submissions 0001_initial: 2.0.12 (py2) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+54c54
+<                 ('answer', jsonfield.fields.JSONField(db_column=b'raw_answer', blank=True)),
+---
+>                 ('answer', jsonfield.fields.JSONField(db_column='raw_answer', blank=True)),
+== submissions 0001_initial: 2.1.1 (py3) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+54c54
+<                 ('answer', jsonfield.fields.JSONField(db_column=b'raw_answer', blank=True)),
+---
+>                 ('answer', jsonfield.fields.JSONField(db_column='raw_answer', blank=True)),
+== submissions 0002_auto_20151119_0913: 2.0.12 (py2) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+== submissions 0002_auto_20151119_0913: 2.1.1 (py3) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+== submissions 0003_submission_status: 2.0.12 (py2) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+17c17
+<             field=models.CharField(default=b'A', max_length=1, choices=[(b'D', b'Deleted'), (b'A', b'Active')]),
+---
+>             field=models.CharField(default='A', max_length=1, choices=[('D', 'Deleted'), ('A', 'Active')]),
+== submissions 0003_submission_status: 2.1.1 (py3) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+17c17
+<             field=models.CharField(default=b'A', max_length=1, choices=[(b'D', b'Deleted'), (b'A', b'Active')]),
+---
+>             field=models.CharField(default='A', max_length=1, choices=[('D', 'Deleted'), ('A', 'Active')]),
+== submissions 0004_remove_django_extensions: 2.0.12 (py2) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+== submissions 0004_remove_django_extensions: 2.1.1 (py3) vs snapshot
+2c2
+< from __future__ import unicode_literals
+---
+> from __future__ import absolute_import, division, print_function, unicode_literals
+== django-wiki v0.0.18 (py2) get_pattern
+def get_pattern(app_name="wiki", namespace="wiki"):
+    """Every url resolution takes place as "wiki:view_name".
+       You should not attempt to have multiple deployments of the wiki in a
+       single Django project.
+       https://docs.djangoproject.com/en/dev/topics/http/urls/#topics-http-reversing-url-namespaces
+    """
+    return urlpatterns, app_name, namespace
+== django-wiki 4ceac471 (py3) get_pattern
+def get_pattern(app_name="wiki"):
+    """Every url resolution takes place as "wiki:view_name".
+       You should not attempt to have multiple deployments of the wiki in a
+       single Django project.
+       https://docs.djangoproject.com/en/dev/topics/http/urls/#topics-http-reversing-url-namespaces
+    """
+    return urlpatterns, app_name
+== edx_proctoring apps.py py2(1.4.0) vs py3(1.5.7): plugin_app present only in py3
+py3/edx_proctoring/apps.py:1

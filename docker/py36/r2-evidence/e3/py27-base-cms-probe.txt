@@ -1,0 +1,2 @@
+Traceback (most recent call last):
+NameError: name 'HEARTBEAT_ELASTICSEARCH_TIMEOUT' is not defined

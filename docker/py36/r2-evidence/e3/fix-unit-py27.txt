@@ -1,0 +1,10 @@
+('compile ok', 6)
+test_returns_plugin_app_config_paths (openedx.core.djangoapps.plugins.tests.test_plugin_apps.GetAppsTestCase) ... ok
+test_skips_plugin_listed_by_app_config_path (openedx.core.djangoapps.plugins.tests.test_plugin_apps.GetAppsTestCase) ... ok
+test_skips_plugin_listed_by_module_name (openedx.core.djangoapps.plugins.tests.test_plugin_apps.GetAppsTestCase) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+py27 unit exit=0 (image ltdps/edxapp:m5-fixed, source platform-r2-py36-fix @ working tree == 0ac3bfa6d09)

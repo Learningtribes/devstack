@@ -1,0 +1,8 @@
+python 2.7.12
+proctoring_apps ['edx_proctoring']
+migration_modules {}
+heartbeat_es_timeout 2
+submissions_migrations [(u'0001_initial', 'submissions.migrations.0001_initial'), (u'0002_auto_20151119_0913', 'submissions.migrations.0002_auto_20151119_0913'), (u'0003_submission_status', 'submissions.migrations.0003_submission_status'), (u'0004_remove_django_extensions', 'submissions.migrations.0004_remove_django_extensions')]
+wiki_namespaces ['course_wiki_do_not_reverse', 'wiki']
+wiki_reverse /wiki/
+course_wiki_resolve course_wiki_do_not_reverse
