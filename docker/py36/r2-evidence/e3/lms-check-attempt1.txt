@@ -1,0 +1,17 @@
+2026-10-09 07:36:28,582 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/course_wiki/plugins/markdownedx/wiki_plugin.py:7: DeprecationWarning: 'etree' is deprecated. Use 'xml.etree.ElementTree' instead.
+  from course_wiki.plugins.markdownedx import mdx_mathjax, mdx_video
+
+2026-10-09 07:36:28,887 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+Traceback (most recent call last):
+  File "manage.py", line 118, in <module>
+    startup.run()
+  File "/edx/app/edxapp/edx-platform/lms/startup.py", line 19, in run
+    django.setup()
+  File "/usr/local/lib/python3.6/site-packages/django/__init__.py", line 27, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "/usr/local/lib/python3.6/site-packages/django/apps/registry.py", line 89, in populate
+    "duplicates: %s" % app_config.label)
+django.core.exceptions.ImproperlyConfigured: Application labels aren't unique, duplicates: edx_proctoring
+lms check exit=1

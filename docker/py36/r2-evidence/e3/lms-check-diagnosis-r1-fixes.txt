@@ -1,0 +1,78 @@
+2026-10-09 07:40:46,717 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/course_wiki/plugins/markdownedx/wiki_plugin.py:7: DeprecationWarning: 'etree' is deprecated. Use 'xml.etree.ElementTree' instead.
+  from course_wiki.plugins.markdownedx import mdx_mathjax, mdx_video
+
+2026-10-09 07:40:46,996 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-09 07:40:47,048 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rest_framework/utils/model_meta.py:10: DeprecationWarning: 'version' is deprecated. Use '__version__' instead.
+  from rest_framework.compat import get_related_model, get_remote_field
+
+2026-10-09 07:40:47,117 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-09 07:40:47,258 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-09 07:40:47,292 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-09 07:40:47,450 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/wiki/plugins/links/wiki_plugin.py:11: DeprecationWarning: 'etree' is deprecated. Use 'xml.etree.ElementTree' instead.
+  from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
+
+2026-10-09 07:40:47,599 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  username_match = re.search('(www\.)?' + url_stub + '(?P<username>.*?)[/]?$', url_domain_and_path, re.IGNORECASE)
+
+2026-10-09 07:40:47,642 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 07:40:47,757 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 07:40:47,879 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/triboo_analytics/views.py:1913: DeprecationWarning: invalid escape sequence \ 
+  "message": _("Error while sending mail\ please try again later.")})
+
+Traceback (most recent call last):
+  File "manage.py", line 121, in <module>
+    execute_from_command_line([sys.argv[0]] + django_args)
+  File "/usr/local/lib/python3.6/site-packages/django/core/management/__init__.py", line 364, in execute_from_command_line
+    utility.execute()
+  File "/usr/local/lib/python3.6/site-packages/django/core/management/__init__.py", line 356, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "/usr/local/lib/python3.6/site-packages/django/core/management/base.py", line 283, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "/usr/local/lib/python3.6/site-packages/django/core/management/base.py", line 330, in execute
+    output = self.handle(*args, **options)
+  File "/usr/local/lib/python3.6/site-packages/django/core/management/commands/check.py", line 68, in handle
+    fail_level=getattr(checks, options['fail_level']),
+  File "/usr/local/lib/python3.6/site-packages/django/core/management/base.py", line 359, in check
+    include_deployment_checks=include_deployment_checks,
+  File "/usr/local/lib/python3.6/site-packages/django/core/management/base.py", line 346, in _run_checks
+    return checks.run_checks(**kwargs)
+  File "/usr/local/lib/python3.6/site-packages/django/core/checks/registry.py", line 81, in run_checks
+    new_errors = check(app_configs=app_configs)
+  File "/usr/local/lib/python3.6/site-packages/django/core/checks/urls.py", line 16, in check_url_config
+    return check_resolver(resolver)
+  File "/usr/local/lib/python3.6/site-packages/django/core/checks/urls.py", line 26, in check_resolver
+    return check_method()
+  File "/usr/local/lib/python3.6/site-packages/django/urls/resolvers.py", line 256, in check
+    for pattern in self.url_patterns:
+  File "/usr/local/lib/python3.6/site-packages/django/utils/functional.py", line 35, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/local/lib/python3.6/site-packages/django/urls/resolvers.py", line 407, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/usr/local/lib/python3.6/site-packages/django/utils/functional.py", line 35, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/local/lib/python3.6/site-packages/django/urls/resolvers.py", line 400, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/edx/app/edxapp/edx-platform/lms/urls.py", line 212, in <module>
+    include(wiki_pattern(app_name='course_wiki_do_not_reverse', namespace='course_wiki_do_not_reverse'))),
+TypeError: get_pattern() got an unexpected keyword argument 'namespace'
+lms check exit=1

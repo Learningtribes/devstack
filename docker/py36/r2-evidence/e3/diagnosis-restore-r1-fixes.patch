@@ -1,0 +1,85 @@
+--- a/lms/envs/common.py
++++ b/lms/envs/common.py
+@@ -1886,6 +1886,12 @@
+ 
+ ################################### APPS ######################################
+ 
++# edx-submissions 2.1.1 ships Python 2 byte-string schema metadata. Keep the
++# upstream migration names while loading dual-runtime-compatible snapshots.
++MIGRATION_MODULES = {
++    'submissions': 'openedx.core.djangoapps.submissions_migrations',
++}
++
+ # The order of INSTALLED_APPS is important, when adding new apps here
+ # remember to check that you are not creating new
+ # RemovedInDjango19Warnings in the test logs.
+@@ -2695,9 +2701,6 @@
+ 
+     # edxval
+     ('edxval', 'openedx.core.djangoapps.content.course_overviews.apps.CourseOverviewsConfig'),
+-
+-    # edX Proctoring
+-    ('edx_proctoring', None),
+ 
+     # Organizations App (http://github.com/edx/edx-organizations)
+     ('organizations', None),
+--- a/cms/envs/common.py
++++ b/cms/envs/common.py
+@@ -76,6 +76,7 @@
+     HEARTBEAT_CHECKS,
+     HEARTBEAT_EXTENDED_CHECKS,
+     HEARTBEAT_CELERY_TIMEOUT,
++    HEARTBEAT_ELASTICSEARCH_TIMEOUT,
+ 
+     # Theme to use when no site or site theme is defined,
+     DEFAULT_SITE_THEME,
+@@ -988,6 +989,12 @@
+ }
+ 
+ ############################ APPS #####################################
++
++# edx-submissions 2.1.1 ships Python 2 byte-string schema metadata. Keep the
++# upstream migration names while loading dual-runtime-compatible snapshots.
++MIGRATION_MODULES = {
++    'submissions': 'openedx.core.djangoapps.submissions_migrations',
++}
+ 
+ # The order of INSTALLED_APPS is important, when adding new apps here
+ # remember to check that you are not creating new
+@@ -1104,9 +1111,6 @@
+     'openedx.core.djangoapps.self_paced',
+ 
+     'xblock_django',
+-
+-    # edX Proctoring
+-    'edx_proctoring',
+ 
+     # Catalog integration
+     'openedx.core.djangoapps.catalog',
+--- a/lms/urls.py
++++ b/lms/urls.py
+@@ -196,12 +196,13 @@
+     from course_wiki import views as course_wiki_views
+     from django_notify.urls import get_pattern as notify_pattern
+ 
++    wiki_url_patterns, wiki_app_name = wiki_pattern()
++
+     urlpatterns += [
+         # First we include views from course_wiki that we use to override the default views.
+         # They come first in the urlpatterns so they get resolved first
+         url('^wiki/create-root/$', course_wiki_views.root_create, name='root_create'),
+-        # get_pattern() returns (patterns, app_name, namespace). Django 1.11 include() accepts that 3-tuple.
+-        url(r'^wiki/', include(wiki_pattern())),
++        url(r'^wiki/', include((wiki_url_patterns, wiki_app_name))),
+         url(r'^notify/', include(notify_pattern())),
+ 
+         # These urls are for viewing the wiki in the context of a course. They should
+@@ -209,7 +210,7 @@
+         url(r'^courses/{}/course_wiki/?$'.format(settings.COURSE_ID_PATTERN),
+             course_wiki_views.course_wiki_redirect, name='course_wiki'),
+         url(r'^courses/{}/wiki/'.format(settings.COURSE_KEY_REGEX),
+-            include(wiki_pattern(app_name='course_wiki_do_not_reverse', namespace='course_wiki_do_not_reverse'))),
++            include((wiki_url_patterns, 'course_wiki_do_not_reverse'), namespace='course_wiki_do_not_reverse')),
+     ]
+ 
+ urlpatterns += [

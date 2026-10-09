@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "manage.py", line 117, in <module>
+    startup = importlib.import_module(edx_args.startup)
+  File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/edx/app/edxapp/edx-platform/cms/startup.py", line 9, in <module>
+    settings.INSTALLED_APPS  # pylint: disable=pointless-statement
+  File "/usr/local/lib/python3.6/site-packages/django/conf/__init__.py", line 56, in __getattr__
+    self._setup(name)
+  File "/usr/local/lib/python3.6/site-packages/django/conf/__init__.py", line 41, in _setup
+    self._wrapped = Settings(settings_module)
+  File "/usr/local/lib/python3.6/site-packages/django/conf/__init__.py", line 110, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+  File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/edx/app/edxapp/edx-platform/cms/envs/devstack_docker.py", line 3, in <module>
+    from .devstack import *  # pylint: disable=wildcard-import, unused-wildcard-import
+  File "/edx/app/edxapp/edx-platform/cms/envs/devstack.py", line 7, in <module>
+    from .aws import *  # pylint: disable=wildcard-import, unused-wildcard-import
+  File "/edx/app/edxapp/edx-platform/cms/envs/aws.py", line 280, in <module>
+    HEARTBEAT_ELASTICSEARCH_TIMEOUT,
+NameError: name 'HEARTBEAT_ELASTICSEARCH_TIMEOUT' is not defined
+cms check exit=1

@@ -1,0 +1,41 @@
+2026-10-09 07:41:53,229 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/course_wiki/plugins/markdownedx/wiki_plugin.py:7: DeprecationWarning: 'etree' is deprecated. Use 'xml.etree.ElementTree' instead.
+  from course_wiki.plugins.markdownedx import mdx_mathjax, mdx_video
+
+2026-10-09 07:41:53,487 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-09 07:41:53,535 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rest_framework/utils/model_meta.py:10: DeprecationWarning: 'version' is deprecated. Use '__version__' instead.
+  from rest_framework.compat import get_related_model, get_remote_field
+
+2026-10-09 07:41:53,598 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-09 07:41:53,735 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-09 07:41:53,766 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-09 07:41:53,912 WARNING 7 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/wiki/plugins/links/wiki_plugin.py:11: DeprecationWarning: 'etree' is deprecated. Use 'xml.etree.ElementTree' instead.
+  from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
+
+2026-10-09 07:41:54,052 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  username_match = re.search('(www\.)?' + url_stub + '(?P<username>.*?)[/]?$', url_domain_and_path, re.IGNORECASE)
+
+2026-10-09 07:41:54,094 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 07:41:54,201 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 07:41:54,365 WARNING 7 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/triboo_analytics/views.py:1913: DeprecationWarning: invalid escape sequence \ 
+  "message": _("Error while sending mail\ please try again later.")})
+
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+
+System check identified 2 issues (0 silenced).
+lms check exit=0

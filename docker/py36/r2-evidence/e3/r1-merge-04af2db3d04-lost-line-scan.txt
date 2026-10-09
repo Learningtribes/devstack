@@ -1,0 +1,73 @@
+LOST/REINTRODUCED      cms/djangoapps/contentstore/views/settings_data_config.py  lost=1+ back=0+
+    - lost   : "teams_configuration", "remote_gradebook"]},
+LOST/REINTRODUCED      cms/envs/common.py  lost=4+ back=2+
+    - lost   : HEARTBEAT_ELASTICSEARCH_TIMEOUT,
+    - lost   : # edx-submissions 2.1.1 ships Python 2 byte-string schema metadata. Keep the
+    - lost   : # upstream migration names while loading dual-runtime-compatible snapshots.
+    - lost   : MIGRATION_MODULES = {
+    + back   : # edX Proctoring
+    + back   : 'edx_proctoring',
+LOST/REINTRODUCED      common/djangoapps/student/views/dashboard.py  lost=4+ back=3+
+    - lost   : # If the enrollment has no enrollment date, explicitly exclude the course
+    - lost   : if enrollment.is_active and enrollment.enrollment_date and enrollment.enrollment_date > time_delta
+    - lost   : def _sort_course_enrollments_by_date(course_enrollments):
+    - lost   : """Return enrollments ordered newest-first, with missing dates last."""
+    + back   : # If the enrollment has no created date, we are explicitly excluding the course
+    + back   : if enrollment.is_active and enrollment.enrollment_date > time_delta
+    + back   : course_enrollments.sort(key=lambda x: x.enrollment_date, reverse=True)
+LOST/REINTRODUCED      lms/djangoapps/badges/apps.py  lost=4+ back=0+
+    - lost   : The badges app's feature code (handlers/events/backends/api/service) was removed,
+    - lost   : but the package is kept as a registered Django app so its historical migrations
+    - lost   : for apps in INSTALLED_APPS. Badge awarding signal handlers are intentionally NOT
+    - lost   : connected here (the feature is gone), so ready() is left as the default no-op.
+LOST/REINTRODUCED      lms/djangoapps/badges/models.py  lost=3+ back=0+
+    - lost   : The badges app's feature code (handlers/events/backends/api/service) was removed,
+    - lost   : but the package is kept as a registered Django app (see apps.py) so its historical
+    - lost   : apps in INSTALLED_APPS.
+LOST/REINTRODUCED      lms/djangoapps/certificates/views/external_resources.py  lost=4+ back=0+
+    - lost   : from functools import wraps
+    - lost   : HttpResponseForbidden,
+    - lost   : from student.admin_permissions import AdminAccess
+    - lost   : def require_certificate_permission(func):
+LOST/REINTRODUCED      lms/djangoapps/courseware/access.py  lost=1+ back=0+
+    - lost   : reg_method_ok = True
+LOST/REINTRODUCED      lms/djangoapps/courseware/views/views.py  lost=1+ back=1+
+    - lost   : Return the last accessed courseware section URL, or the course home URL.
+    + back   : Returns the courseware module URL that the user last accessed, or None if it cannot be found.
+LOST/REINTRODUCED      lms/djangoapps/dashboard/sysadmin.py  lost=1+ back=0+
+    - lost   : return _('Password must be supplied if not using certificates')
+FILE_GONE_AFTER_MERGE  lms/djangoapps/teams/serializers/course_team.py  (master deleted, 2 R1-added lines)
+FILE_GONE_AFTER_MERGE  lms/djangoapps/teams/views/__init__.py  (master deleted, 7 R1-added lines)
+LOST/REINTRODUCED      lms/envs/common.py  lost=4+ back=3+
+    - lost   : AUTHENTICATION_BACKENDS = [
+    - lost   : 'openedx.core.djangoapps.oauth_dispatch.dot_overrides.backends.EdxRateLimitedAllowAllUsersModelBackend'
+    - lost   : # edx-submissions 2.1.1 ships Python 2 byte-string schema metadata. Keep the
+    - lost   : # upstream migration names while loading dual-runtime-compatible snapshots.
+    + back   : AUTHENTICATION_BACKENDS = ['openedx.core.djangoapps.oauth_dispatch.dot_overrides.validators.EdxRateLimitedAllo
+    + back   : # edX Proctoring
+    + back   : ('edx_proctoring', None),
+LOST/REINTRODUCED      openedx/core/djangoapps/programs/tests/test_utils.py  lost=2+ back=0+
+    - lost   : """Stub: entitlements module removed. No-op."""
+    - lost   : pass
+LOST/REINTRODUCED      openedx/core/djangoapps/programs/utils.py  lost=2+ back=0+
+    - lost   : self.entitlements = []
+    - lost   : self.course_uuids = []
+LOST/REINTRODUCED      openedx/core/djangoapps/user_api/accounts/api.py  lost=4+ back=4+
+    - lost   : from __future__ import absolute_import, division, print_function
+    - lost   : from six import string_types,  text_type
+    - lost   : _validate_text_type(username)
+    - lost   : _validate_type(username, string_types, accounts.USERNAME_BAD_TYPE_MSG)
+    + back   : _validate_unicode(username)
+    + back   : _validate_type(username, basestring, accounts.USERNAME_BAD_TYPE_MSG)
+    + back   : _validate_unicode(email)
+    + back   : _validate_type(email, basestring, accounts.EMAIL_BAD_TYPE_MSG)
+LOST/REINTRODUCED      openedx/core/djangoapps/user_api/api.py  lost=4+ back=2+
+    - lost   : from __future__ import absolute_import, division, print_function
+    - lost   : import six
+    - lost   : from six import text_type
+    - lost   : from . import accounts
+    + back   : import accounts
+    + back   : for key, value in complexities.iteritems():
+LOST/REINTRODUCED      scripts/drop_removed_app_tables.py  lost=1+ back=0+
+    - lost   : 'experiments', 'external_auth', 'entitlements', 'embargo',
+scanned R1-modified .py files: 978 flagged: 17
