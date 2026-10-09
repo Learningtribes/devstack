@@ -7,26 +7,27 @@ RUNNER_TARGET="${2:-identity}"
 
 case "${RUNNER_KIND}" in
     py36)
-        RUNNER_IMAGE="${PY36_R1_PY36_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p1b-ora2-test-runner-20260804-r5}"
-        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py36}"
+        RUNNER_IMAGE="${PY36_R2_PY36_RUNNER_IMAGE:-ltdps/edxapp:py36-r2-py36-runner-20261009}"
+        RUNNER_NAMESPACE="${PY36_R2_TEST_NAMESPACE:-py36-r2-e5-py36}"
         ;;
     py27)
-        RUNNER_IMAGE="${PY36_R1_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r1-p1b-ora2-py27-test-runner-20260804-r3}"
-        RUNNER_NAMESPACE="${PY36_R1_TEST_NAMESPACE:-py36-r1-p1b-batch2-py27}"
+        RUNNER_IMAGE="${PY36_R2_PY27_RUNNER_IMAGE:-ltdps/edxapp:py36-r2-py27-runner-20261009}"
+        RUNNER_NAMESPACE="${PY36_R2_TEST_NAMESPACE:-py36-r2-e5-py27}"
         ;;
     *)
-        echo "usage: $0 {py36|py27} {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
+        echo "usage: $0 {py36|py27} {identity|r2-dcc-collect|r2-dcc|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
         exit 2
         ;;
 esac
 
-SOURCE_INPUT="${PLATFORM_INTEGRATION_ROOT:-${SCRIPT_DIR}/../../../platform-py3-integration}"
+SOURCE_INPUT="${PLATFORM_SOURCE_ROOT:-${SCRIPT_DIR}/../../../platform-r2-py36-src}"
 SOURCE_ROOT=$(CDPATH= cd -- "${SOURCE_INPUT}" && pwd -P)
 ORA2_SOURCE_INPUT="${ORA2_INTEGRATION_ROOT:-${SCRIPT_DIR}/../../../edx-ora2}"
 ORA2_SOURCE_ROOT=$(CDPATH= cd -- "${ORA2_SOURCE_INPUT}" && pwd -P)
 PROTECTED_ROOT=/Users/noahwang/workspace/hawthorn/platform
-EXPECTED_PLATFORM_COMMIT=b104c1e8031f36ae798e04541f19fb83afbe522f
-EXPECTED_PLATFORM_TREE=3e2b85a0a5ef9ca65c4de74e6f49fc7dd0dc9eb7
+# R2-preview PR #2401 head after the E3 fix; override only for a recorded new identity.
+EXPECTED_PLATFORM_COMMIT="${EXPECTED_PLATFORM_COMMIT:-0ac3bfa6d099916cc58fc258db17221801f49d48}"
+EXPECTED_PLATFORM_TREE="${EXPECTED_PLATFORM_TREE:-357effc3232a453f780d61cb9e22656fe08ca479}"
 
 if [ "${SOURCE_ROOT}" = "${PROTECTED_ROOT}" ]; then
     echo "refusing protected Platform source: ${SOURCE_ROOT}" >&2

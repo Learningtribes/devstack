@@ -1,0 +1,3 @@
+# m5-fixed leaves the normal Devstack edx-search mount point empty; install the
+# R2-preview base.txt pin inside the derived runner instead of mounting /edx/src.
+git+https://github.com/Learningtribes/edx-search.git@c770553be3c90ab2250bffd1afa3556fd660af11#egg=edx-search

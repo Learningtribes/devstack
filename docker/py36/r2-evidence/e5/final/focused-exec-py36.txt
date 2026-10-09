@@ -1,0 +1,286 @@
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+........................................................................ [ 61%]
+..............................................                           [100%]
+=============================== warnings summary ===============================
+common/lib/xmodule/xmodule/tests/test_fields.py::RelativeTimeTest::test_to_json
+  /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/tests/test_fields.py:233: DeprecationWarning: Please use assertRaisesRegex instead.
+    with self.assertRaisesRegexp(ValueError, error_msg):
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessRequest::test_invalid_user_at_step_4
+  /usr/local/lib/python3.6/site-packages/completion/api/urls.py:10: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('completion.api.v1.urls', namespace='v1')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:112: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/completion/', include('completion.api.urls', namespace='completion_api')),
+  /usr/local/lib/python3.6/site-packages/organizations/urls.py:8: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v0/', include('organizations.v0.urls', namespace='v0')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:130: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/organizations/', include('organizations.urls', namespace='organizations')),
+  /edx/app/edxapp/edx-platform/lms/djangoapps/triboo_analytics/views.py:1913: DeprecationWarning: invalid escape sequence \ 
+    "message": _("Error while sending mail\ please try again later.")})
+  /edx/app/edxapp/edx-platform/lms/urls.py:152: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/extended/', include('extended_api.urls', namespace='extended_api')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:792: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^triboo-guanli/', include(admin.site.urls)),
+  /edx/app/edxapp/edx-platform/lms/urls.py:803: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^oauth2/', include('edx_oauth2_provider.urls', namespace='oauth2')),
+  /edx/app/edxapp/edx-platform/lms/djangoapps/grades/api/urls.py:26: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('grades.api.v1.urls', namespace='v1'))
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/plugins/plugin_urls.py:23: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    for url_module_path, url_config in _iter_plugins(project_type)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:53: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, HttpResponseRedirect.status_code)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:74: DeprecationWarning: Please use assertEqual instead.
+    self.user.id
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessRequest::test_parse_error_at_step_1
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:53: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, HttpResponseRedirect.status_code)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessRequest::test_success
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:74: DeprecationWarning: Please use assertEqual instead.
+    self.user.id
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:91: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(self.request.COOKIES[settings.SESSION_COOKIE_NAME], session_id)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:97: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(self.request.safe_cookie_verified_user_id, self.user.id)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_anonymous_user
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_cant_update_cookie_at_step_3_error
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:176: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(mock_delete_cookie.called, expect_delete_called)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_confirm_user_at_step_2
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_deletion_of_cookies_at_step_4_1_True
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:176: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(mock_delete_cookie.called, expect_delete_called)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_deletion_of_cookies_at_step_4_2_False
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:176: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(mock_delete_cookie.called, expect_delete_called)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_deletion_of_no_cookies_at_step_4
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:176: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(mock_delete_cookie.called, expect_delete_called)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_different_user_at_step_2_error
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_success
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionProcessResponse::test_update_cookie_data_at_step_3
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:158: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:209: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(safe_cookie_data.version, SafeCookieData.CURRENT_VERSION)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:210: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(safe_cookie_data.session_id, "some_session_id")
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionMiddleware::test_error
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:295: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(request_response.status_code, expected_response_status)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionMiddleware::test_error_from_mobile_app
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:295: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(request_response.status_code, expected_response_status)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionMiddleware::test_error_from_mobile_web_view
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:295: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(request_response.status_code, expected_response_status)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionMiddleware::test_success
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:268: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(self.request.safe_cookie_verified_user_id, self.user.id)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:273: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionMiddleware::test_success_from_mobile_app
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:268: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(self.request.safe_cookie_verified_user_id, self.user.id)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:273: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+
+openedx/core/djangoapps/safe_sessions/tests/test_middleware.py::TestSafeSessionMiddleware::test_success_from_mobile_web_view
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:268: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(self.request.safe_cookie_verified_user_id, self.user.id)
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_middleware.py:273: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(response.status_code, 200)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_create_invalid_session_id_1_None
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_create_invalid_session_id_2_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_create_no_user_id_1_None
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_create_no_user_id_2_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_error_1_1
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_error_2_1_s
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_error_3_1_s_k
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_error_4_1_s_k_sig_extra
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_error_5_73453
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_error_6_s90sfs
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_invalid_version_1_0
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_invalid_version_2_2
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_invalid_version_3__1
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_parse_invalid_version_4_invalid_version
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_another_signature
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signature
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_10__75__5_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_11__75__10_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_12__75__15_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_1__0__5_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_2__0__10_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_3__0__15_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_4__25__5_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_5__25__10_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_6__25__15_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_7__50__5_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_8__50__10_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_corrupt_signed_data_9__50__15_
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_expired_signature
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_incorrect_field_value_1_version
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_incorrect_field_value_2_session_id
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_incorrect_key_salt
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_incorrect_user_id_1_None
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_incorrect_user_id_2_invalid_user_id
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_verify_incorrect_user_id_3__1
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_utils.py:23: DeprecationWarning: Please use assertRegex instead.
+    self.assertRegexpMatches(mock_log.call_args_list[0][0][0], log_string)
+
+openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py::TestSafeCookieData::test_version
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/safe_sessions/tests/test_safe_cookie_data.py:62: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(self.safe_cookie_data.version, SafeCookieData.CURRENT_VERSION)
+
+-- Docs: http://doc.pytest.org/en/latest/warnings.html
+118 passed, 83 warnings in 1.53 seconds
+exit=0

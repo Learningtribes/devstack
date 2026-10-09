@@ -1,0 +1,3 @@
+lms/djangoapps/courseware/tests/test_views.py::TestJumpTo::test_jumpto_from_module
+lms/djangoapps/courseware/tests/test_views.py::TestJumpTo::test_jumpto_from_nested_module
+lms/djangoapps/courseware/tests/test_views.py::TestJumpTo::test_jumpto_from_section

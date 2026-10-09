@@ -1,0 +1,263 @@
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+.................................................ss.s................... [ 11%]
+..........................ss..............................ssss.ssss..... [ 22%]
+........................................................................ [ 33%]
+...FFF.............................sssss......ssssssssssssssssssssssssss [ 44%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 55%]
+ssssssssssssss.....................................s.................s.. [ 67%]
+........................................................................ [ 78%]
+........................................................................ [ 89%]
+................................................................s..      [100%]
+=================================== FAILURES ===================================
+______________________ TestJumpTo.test_jumpto_from_module ______________________
+/edx/app/edxapp/edx-platform/lms/djangoapps/courseware/tests/test_views.py:122: in test_jumpto_from_module
+    chapter = ItemFactory.create(category='chapter', parent_location=course.location)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:623: in create
+    return cls._generate(True, attrs)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:548: in _generate
+    obj = cls._prepare(create, **attrs)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:523: in _prepare
+    return cls._create(model_class, *args, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/tests/factories.py:364: in _create
+    parent = kwargs.pop('parent', None) or store.get_item(parent_location)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mixed.py:97: in inner
+    retval = func(field_decorator=strip_key_collection, *args, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mixed.py:263: in get_item
+    return store.get_item(usage_key, depth, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/draft.py:106: in get_item
+    return get_published()
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/draft.py:91: in get_published
+    for_parent=kwargs.get('for_parent'),
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1212: in get_item
+    for_parent=for_parent,
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1000: in _load_items
+    for item in items
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:930: in _load_item
+    resource_fs = _OSFS_INSTANCE.setdefault(root, OSFS(root, create=True))
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/fs/osfs.py:136: in __init__
+    "unable to create {} ({})".format(root_path, error), error
+E   CreateFailed: unable to create /edx/app/edxapp/edx-platform/common/test/data/course_281 ([Errno 30] Read-only file system: '/edx/app/edxapp/edx-platform/common/test/data/course_281')
+__________________ TestJumpTo.test_jumpto_from_nested_module ___________________
+/edx/app/edxapp/edx-platform/lms/djangoapps/courseware/tests/test_views.py:159: in test_jumpto_from_nested_module
+    chapter = ItemFactory.create(category='chapter', parent_location=course.location)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:623: in create
+    return cls._generate(True, attrs)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:548: in _generate
+    obj = cls._prepare(create, **attrs)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:523: in _prepare
+    return cls._create(model_class, *args, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/tests/factories.py:364: in _create
+    parent = kwargs.pop('parent', None) or store.get_item(parent_location)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mixed.py:97: in inner
+    retval = func(field_decorator=strip_key_collection, *args, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mixed.py:263: in get_item
+    return store.get_item(usage_key, depth, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/draft.py:106: in get_item
+    return get_published()
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/draft.py:91: in get_published
+    for_parent=kwargs.get('for_parent'),
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1212: in get_item
+    for_parent=for_parent,
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1000: in _load_items
+    for item in items
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:930: in _load_item
+    resource_fs = _OSFS_INSTANCE.setdefault(root, OSFS(root, create=True))
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/fs/osfs.py:136: in __init__
+    "unable to create {} ({})".format(root_path, error), error
+E   CreateFailed: unable to create /edx/app/edxapp/edx-platform/common/test/data/course_283 ([Errno 30] Read-only file system: '/edx/app/edxapp/edx-platform/common/test/data/course_283')
+_____________________ TestJumpTo.test_jumpto_from_section ______________________
+/edx/app/edxapp/edx-platform/lms/djangoapps/courseware/tests/test_views.py:104: in test_jumpto_from_section
+    chapter = ItemFactory.create(category='chapter', parent_location=course.location)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:623: in create
+    return cls._generate(True, attrs)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:548: in _generate
+    obj = cls._prepare(create, **attrs)
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/factory/base.py:523: in _prepare
+    return cls._create(model_class, *args, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/tests/factories.py:364: in _create
+    parent = kwargs.pop('parent', None) or store.get_item(parent_location)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mixed.py:97: in inner
+    retval = func(field_decorator=strip_key_collection, *args, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mixed.py:263: in get_item
+    return store.get_item(usage_key, depth, **kwargs)
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/draft.py:106: in get_item
+    return get_published()
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/draft.py:91: in get_published
+    for_parent=kwargs.get('for_parent'),
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1212: in get_item
+    for_parent=for_parent,
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1000: in _load_items
+    for item in items
+/edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:930: in _load_item
+    resource_fs = _OSFS_INSTANCE.setdefault(root, OSFS(root, create=True))
+/edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/fs/osfs.py:136: in __init__
+    "unable to create {} ({})".format(root_path, error), error
+E   CreateFailed: unable to create /edx/app/edxapp/edx-platform/common/test/data/course_285 ([Errno 30] Read-only file system: '/edx/app/edxapp/edx-platform/common/test/data/course_285')
+=========================== short test summary info ============================
+FAIL ../edx/app/edxapp/edx-platform/lms/djangoapps/courseware/tests/test_views.py::TestJumpTo::test_jumpto_from_module
+FAIL ../edx/app/edxapp/edx-platform/lms/djangoapps/courseware/tests/test_views.py::TestJumpTo::test_jumpto_from_nested_module
+FAIL ../edx/app/edxapp/edx-platform/lms/djangoapps/courseware/tests/test_views.py::TestJumpTo::test_jumpto_from_section
+=============================== warnings summary ===============================
+common/djangoapps/course_modes/tests/test_views.py::CourseModeCreateViewTest::test_default_mode_creation
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/completion/api/urls.py:10: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('completion.api.v1.urls', namespace='v1')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:112: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/completion/', include('completion.api.urls', namespace='completion_api')),
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/organizations/urls.py:8: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v0/', include('organizations.v0.urls', namespace='v0')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:130: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/organizations/', include('organizations.urls', namespace='organizations')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:152: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/extended/', include('extended_api.urls', namespace='extended_api')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:208: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^notify/', include(notify_pattern())),
+  /edx/app/edxapp/edx-platform/lms/urls.py:792: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^triboo-guanli/', include(admin.site.urls)),
+  /edx/app/edxapp/edx-platform/lms/urls.py:803: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^oauth2/', include('edx_oauth2_provider.urls', namespace='oauth2')),
+  /edx/app/edxapp/edx-platform/lms/djangoapps/grades/api/urls.py:26: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('grades.api.v1.urls', namespace='v1'))
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/plugins/plugin_urls.py:23: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    for url_module_path, url_config in _iter_plugins(project_type)
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/handlers/base.py:52: RemovedInDjango20Warning: Old-style middleware using settings.MIDDLEWARE_CLASSES is deprecated. Update your middleware and use settings.MIDDLEWARE instead.
+    "instead.", RemovedInDjango20Warning
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/middleware.py:54: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    if request.user.is_authenticated() is False:
+
+common/djangoapps/student/tests/tests.py::DashboardTest::test_linked_in_add_to_profile_btn_not_appearing_without_config
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+lms/djangoapps/course_wiki/tests/tests.py::WikiRedirectTestCase::test_course_navigator
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/views/management.py:1101: DeprecationWarning: Please use RegistrationView instead.
+    warnings.warn("Please use RegistrationView instead.", DeprecationWarning)
+  /edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki/models/article.py:53: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    if user.is_anonymous() and not settings.ANONYMOUS:
+  /edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki/templatetags/wiki_tags.py:16: RemovedInDjango20Warning: assignment_tag() is deprecated. Use simple_tag() instead
+    @register.assignment_tag(takes_context=True)
+  /edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki/models/article.py:70: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
+  /edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki/models/article.py:74: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    elif user.is_anonymous():
+  /edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki/core/permissions.py:13: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    return not user.is_anonymous() and settings.CAN_MODERATE(article, user)
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/markdown/__init__.py:259: DeprecationWarning: Using short names for Markdown's builtin extensions is deprecated. Use the full path to the extension with Python's dot notation (eg: "markdown.extensions.extra" instead of "extra"). The current behavior will raise an error in version 2.7. See the Release Notes for Python-Markdown version 2.6 for more info.
+    DeprecationWarning)
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/markdown/__init__.py:259: DeprecationWarning: Using short names for Markdown's builtin extensions is deprecated. Use the full path to the extension with Python's dot notation (eg: "markdown.extensions.toc" instead of "toc"). The current behavior will raise an error in version 2.7. See the Release Notes for Python-Markdown version 2.6 for more info.
+    DeprecationWarning)
+  /edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki/core/permissions.py:9: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    return not user.is_anonymous() and settings.CAN_CHANGE_PERMISSIONS(article, user)
+
+lms/djangoapps/course_wiki/tests/tests.py::WikiRedirectTestCase::test_wiki_no_root_access
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/handlers/exception.py:60: RemovedInDjango20Warning: Error handlers should accept an exception parameter. Update your code as this parameter will be required in Django 2.0
+    response = get_exception_response(request, get_resolver(get_urlconf()), 403, exc)
+
+lms/djangoapps/courseware/tests/test_course_info.py::CourseInfoTestCase::test_nonexistent_course
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/handlers/exception.py:53: RemovedInDjango20Warning: Error handlers should accept an exception parameter. Update your code as this parameter will be required in Django 2.0
+    response = get_exception_response(request, get_resolver(get_urlconf()), 404, exc)
+
+lms/djangoapps/courseware/tests/test_view_authentication.py::TestViewAuth::test_redirection_enrolled
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.244/999/Robot_Super_Course.2026-10-09 12:47:15.104498+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::IndexQueryTestCase::test_index_access_1_mongo
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.287/course_287/Run_287.2026-10-09 12:47:19.268116+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::IndexQueryTestCase::test_index_access_2_split
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.course-v1:org.311+course_311+Run_311.2026-10-09 12:47:19.905135+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::ViewsTestCase::test_accordion
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.335/course_335/Testing_course.2026-10-09 12:47:20.282620+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::ViewsTestCase::test_index_success
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.431/course_431/Testing_course.2026-10-09 12:47:23.671239+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestAccordionDueDate::test_backwards_compatibility
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.540/course_540/Run_540.2026-10-09 12:47:26.935976+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestAccordionDueDate::test_defaults
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.545/course_545/Run_545.2026-10-09 12:47:27.201184+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestAccordionDueDate::test_format_date
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.550/course_550/Run_550.2026-10-09 12:47:27.484318+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestAccordionDueDate::test_format_invalid
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.555/course_555/Run_555.2026-10-09 12:47:28.039301+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestAccordionDueDate::test_format_none
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.560/course_560/Run_560.2026-10-09 12:47:28.308668+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexView::test_activate_block_id
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.573/course_573/Run_573.2026-10-09 12:47:29.902570+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewCompleteOnView::test_completion_service_disabled_1_mongo
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.591/course_591/Run_591.2026-10-09 12:47:31.104440+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewCompleteOnView::test_completion_service_disabled_2_split
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.course-v1:org.602+course_602+Run_602.2026-10-09 12:47:31.556233+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewCompleteOnView::test_completion_service_enabled_1_mongo
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.613/course_613/Run_613.2026-10-09 12:47:32.021681+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewCompleteOnView::test_completion_service_enabled_2_split
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.course-v1:org.624+course_624+Run_624.2026-10-09 12:47:33.060956+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewWithVerticalPositions::test_vertical_positions_1____1___1_
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.635/course_635/Run_635.2026-10-09 12:47:33.700376+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewWithVerticalPositions::test_vertical_positions_2___0___1_
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.641/course_641/Run_641.2026-10-09 12:47:34.084941+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewWithVerticalPositions::test_vertical_positions_3____0___1_
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.647/course_647/Run_647.2026-10-09 12:47:34.341783+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewWithVerticalPositions::test_vertical_positions_4___2___2_
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.653/course_653/Run_653.2026-10-09 12:47:34.584625+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewWithVerticalPositions::test_vertical_positions_5___5___1_
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.659/course_659/Run_659.2026-10-09 12:47:34.910004+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewWithGating::test_index_with_gated_sequential
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.665/course_665/Run_665.2026-10-09 12:47:35.148820+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/courseware/tests/test_views.py::TestIndexViewCrawlerStudentStateWrites::test_write_by_default
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/cache/backends/base.py:245: CacheKeyWarning: Cache key contains characters that will cause errors if used with memcached: u'py36-r2-e5-py27:1:openedx.content.course_structures.api.v0.api.course_structure.org.831/course_831/Run_831.2026-10-09 12:47:49.797941+00:00.'
+    'used with memcached: %r' % key, CacheKeyWarning
+
+lms/djangoapps/discussion/tests/test_views.py::SingleThreadTestCase::test_ajax
+  /usr/lib/python2.7/json/__init__.py:251: DeprecationWarning: locations.i4xEncoder.default is deprecated! Please use keys.i4xEncoder.default
+    sort_keys=sort_keys, **kw).encode(obj)
+
+lms/djangoapps/student_account/test/test_views.py::StudentAccountUpdateTest::test_password_change
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/contrib/auth/views.py:54: RemovedInDjango21Warning: The password_reset_confirm() view is superseded by the class-based PasswordResetConfirmView().
+    return func(*args, **kwargs)
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/contrib/auth/views.py:54: RemovedInDjango21Warning: The password_reset_complete() view is superseded by the class-based PasswordResetCompleteView().
+    return func(*args, **kwargs)
+
+-- Docs: http://doc.pytest.org/en/latest/warnings.html
+3 failed, 507 passed, 133 skipped, 49 warnings in 113.16 seconds
+exit=1

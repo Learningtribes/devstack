@@ -1,0 +1,30 @@
+# R2-preview Python 2.7 control runner on the accepted m5-fixed image digest.
+# Unlike the R1 runner, django-wiki stays at the image's v0.0.18: that is the
+# R2-preview Python 2.7 pin, and 0ac3bfa6d09 made the wiki URLs work with it.
+FROM ltdps/edxapp@sha256:50b4a73f4814dcc1d41b0da983346990ceb2e31f8c08b1db6093e751c2743b19
+
+LABEL description="Open edX Hawthorn Python 2.7 R2-preview isolated test runner"
+LABEL runtime_image="ltdps/edxapp@sha256:50b4a73f4814dcc1d41b0da983346990ceb2e31f8c08b1db6093e751c2743b19"
+
+ENV RUNNER_PYTHON=/edx/app/edxapp/venvs/edxapp/bin/python \
+    RUNNER_PLATFORM_ROOT=/edx/app/edxapp/edx-platform \
+    PY36_R1_GENERATE_SOURCE_METADATA=1 \
+    PY36_R1_METADATA_ROOT=/runner/source-metadata \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /runner
+
+COPY py27-test-tools.txt /opt/runner/py27-test-tools.txt
+COPY r2-py27-runner-requirements.txt /opt/runner/r2-py27-runner-requirements.txt
+COPY py36_r1_test_settings.py /opt/runner/py36_r1_test_settings.py
+COPY py27_source_metadata.py /opt/runner/py27_source_metadata.py
+COPY test-runner-entrypoint.sh /opt/runner/test-runner-entrypoint.sh
+
+RUN /edx/app/edxapp/venvs/edxapp/bin/pip install --no-cache-dir --no-deps \
+        -r /opt/runner/r2-py27-runner-requirements.txt \
+    && chmod 0755 /opt/runner/test-runner-entrypoint.sh \
+    && /edx/app/edxapp/venvs/edxapp/bin/python -c "import pkg_resources; assert pkg_resources.get_distribution('django-wiki').version == '0.0.18', pkg_resources.get_distribution('django-wiki').version" \
+    && /edx/app/edxapp/venvs/edxapp/bin/python -c "import pkg_resources; expected = {'pytest': '3.6.2', 'pytest-django': '3.1.2', 'ddt': '0.8.0', 'mock': '1.0.1', 'atomicwrites': '1.1.5', 'attrs': '17.4.0', 'more-itertools': '4.2.0', 'pluggy': '0.6.0', 'py': '1.5.4'}; actual = {name: pkg_resources.get_distribution(name).version for name in expected}; assert actual == expected, (expected, actual); print('Py2.7 test tools OK', actual)"
+
+ENTRYPOINT ["/opt/runner/test-runner-entrypoint.sh"]
+CMD ["identity"]

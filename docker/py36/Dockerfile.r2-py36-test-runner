@@ -1,0 +1,30 @@
+# R2-preview Python 3.6 test runner, derived from the E2 runtime image.
+# Test-only packages come from the reviewed py36-test-tools.txt freeze.
+# The runtime was never pushed, so BuildKit cannot resolve it by digest; the
+# local tag is used and r2-build-test-runners.sh verifies after the build that
+# the runner's rootfs layers start with every layer of sha256:4560a9c2b264.
+FROM ltdps/edxapp:py36-r2-20261009
+
+LABEL description="Open edX Hawthorn Python 3.6 R2-preview isolated test runner"
+LABEL runtime_image="ltdps/edxapp@sha256:4560a9c2b264ba25f5cf93bd49ee7e163eb2133e24d537811dbaf45c84d397ce"
+
+ENV RUNNER_PYTHON=/usr/local/bin/python \
+    RUNNER_PLATFORM_ROOT=/edx/app/edxapp/edx-platform \
+    PY36_R1_GENERATE_SOURCE_METADATA=1 \
+    PY36_R1_METADATA_ROOT=/runner/source-metadata \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /runner
+
+COPY py36-test-tools.txt /opt/runner/py36-test-tools.txt
+COPY py36_r1_test_settings.py /opt/runner/py36_r1_test_settings.py
+COPY py27_source_metadata.py /opt/runner/py27_source_metadata.py
+COPY test-runner-entrypoint.sh /opt/runner/test-runner-entrypoint.sh
+
+RUN pip install --no-cache-dir --no-deps -r /opt/runner/py36-test-tools.txt \
+    && chmod 0755 /opt/runner/test-runner-entrypoint.sh \
+    && pip check \
+    && python -c "import pkg_resources; expected = {'pytest': '3.6.4', 'pytest-django': '3.1.2', 'ddt': '0.8.0', 'mock': '1.0.1', 'nose': '1.3.7', 'factory-boy': '2.8.1', 'Faker': '0.8.16', 'freezegun': '0.3.10', 'cssselect': '1.0.3', 'pyquery': '1.4.0', 'testfixtures': '6.2.0'}; actual = {name: pkg_resources.get_distribution(name).version for name in expected}; assert actual == expected, (expected, actual); print('Py3.6 test tools OK', actual)"
+
+ENTRYPOINT ["/opt/runner/test-runner-entrypoint.sh"]
+CMD ["identity"]

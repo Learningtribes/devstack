@@ -36,6 +36,7 @@ cd /runner
 print_identity() {
     "${RUNNER_PYTHON}" -c 'import pkg_resources, sys; sys.stdout.write("python=%s\n" % sys.version.split()[0]); sys.stdout.write("python_executable=%s\n" % sys.executable); [sys.stdout.write("%s=%s\n" % (name, pkg_resources.get_distribution(name).version)) for name in ("pytest", "pytest-django", "ddt", "mock", "nose", "factory-boy", "Faker")]'
     printf '%s\n' "settings=${DJANGO_SETTINGS_MODULE}" "namespace=${RUNNER_NAMESPACE}" "mongo_host=${EDXAPP_TEST_MONGO_HOST}" "mongo_db_prefix=${PY36_R1_MONGO_DB_PREFIX:-${RUNNER_NAMESPACE}}" "source=${RUNNER_PLATFORM_ROOT}" "source_mount=read-only-required"
+    "${RUNNER_PYTHON}" -c 'import django, pkg_resources, sys; django.setup(); from django.conf import settings; apps = [a for a in settings.INSTALLED_APPS if a.split(".")[0] == "edx_proctoring"]; sys.stdout.write("edx_proctoring_apps=%s\n" % apps); sys.stdout.write("django-wiki=%s\n" % pkg_resources.get_distribution("django-wiki").version); sys.stdout.write("django_setup=ok\n")'
 }
 
 collect_target() {
@@ -584,9 +585,64 @@ run_scorm_render_compatibility() {
         "${RUNNER_PLATFORM_ROOT}/common/djangoapps/static_replace/test/test_python3_compat.py"
 }
 
+# R2-preview E5: unit test files still present after the #2395/#2397/#2396
+# squashes modified them, plus the plugin de-dup tests added by 0ac3bfa6d09.
+run_r2_dcc() {
+    collection_flag=""
+    case "$1" in
+        collect)
+            collection_flag="--collect-only"
+            ;;
+        execute)
+            ;;
+        *)
+            echo "usage: run_r2_dcc {collect|execute}" >&2
+            exit 2
+            ;;
+    esac
+
+    export DJANGO_SETTINGS_MODULE="py36_r1_test_settings"
+    "${RUNNER_PYTHON}" -m pytest \
+        -p no:django \
+        -p pytest_django.plugin \
+        -p no:xdist \
+        -p no:xdist.looponfail \
+        -p no:randomly \
+        -p no:pytest_forked \
+        -p no:pytest_cov \
+        -p no:attrib \
+        -p no:cacheprovider \
+        -o addopts= \
+        --nomigrations \
+        --reuse-db \
+        ${collection_flag} \
+        --rootdir="${RUNNER_PLATFORM_ROOT}" \
+        --tb=short \
+        -q \
+        -rfE \
+        --continue-on-collection-errors \
+        "${RUNNER_PLATFORM_ROOT}/openedx/core/djangoapps/plugins/tests/test_plugin_apps.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/course_modes/tests/test_views.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/test_enrollment.py" \
+        "${RUNNER_PLATFORM_ROOT}/common/djangoapps/student/tests/tests.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/course_wiki/tests/tests.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_course_info.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_date_summary.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_view_authentication.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_views.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/discussion/tests/test_views.py" \
+        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/student_account/test/test_views.py"
+}
+
 case "${1:-identity}" in
     identity)
         print_identity
+        ;;
+    r2-dcc-collect)
+        run_r2_dcc collect
+        ;;
+    r2-dcc)
+        run_r2_dcc execute
         ;;
     lms)
         collect_target "lms/djangoapps/static_template_view/tests/test_views.py"
@@ -663,7 +719,7 @@ case "${1:-identity}" in
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
+        echo "usage: $0 {identity|r2-dcc-collect|r2-dcc|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
         exit 2
         ;;
 esac

@@ -1,0 +1,45 @@
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_change_enrollment_auto_enroll_sets_self_origin
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_change_enrollment_unenroll_preserves_course_origin
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_1_______audit__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_2____verified____audit_____audit__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_3____honor____verified____audit_____honor__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_4____professional____None_
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_5____no_id_professional____None_
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_10____no_id_professional_____true__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_11____no_id_professional_____false__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_12____no_id_professional____None_
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_1_______true__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_2_______false__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_3______None_
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_4____honor____verified_____true__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_5____honor____verified_____false__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_6____honor____verified____None_
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_7____professional_____true__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_8____professional_____false__
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enroll_with_email_opt_in_9____professional____None_
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_enrollment_limit
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_invalid_enrollment_action
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_missing_course_id_param
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_score_recalculation_on_enrollment_update
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_unenroll
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_unenroll_not_enrolled_in_course
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_user_not_authenticated
+common/djangoapps/student/tests/test_enrollment.py::EnrollmentTest::test_with_invalid_course_id
+common/djangoapps/student/tests/test_recent_enrollments.py::TestRecentEnrollments::test_dashboard_escaped_rendering
+common/djangoapps/student/tests/test_recent_enrollments.py::TestRecentEnrollments::test_dashboard_rendering_with_downloadable_certificate
+common/djangoapps/student/tests/test_recent_enrollments.py::TestRecentEnrollments::test_dashboard_rendering_with_single_course
+common/djangoapps/student/tests/test_recent_enrollments.py::TestRecentEnrollments::test_dashboard_rendering_with_two_courses
+common/djangoapps/student/tests/test_recent_enrollments.py::TestRecentEnrollments::test_enrollments_sorted_most_recent
+common/djangoapps/student/tests/test_recent_enrollments.py::TestRecentEnrollments::test_recently_enrolled_courses
+common/djangoapps/student/tests/test_recent_enrollments.py::TestRecentEnrollments::test_zero_second_delta
+common/djangoapps/student/tests/test_recent_enrollment_filter.py::RecentEnrollmentFilterTests::test_excludes_enrollment_without_date
+common/djangoapps/student/tests/test_recent_enrollment_filter.py::RecentEnrollmentFilterTests::test_excludes_inactive_and_old_enrollments
+common/djangoapps/student/tests/test_recent_enrollment_filter.py::RecentEnrollmentFilterTests::test_includes_recent_active_enrollment
+common/djangoapps/student/tests/test_recent_enrollment_filter.py::RecentEnrollmentFilterTests::test_sorts_missing_dates_after_dated_enrollments
+
+no tests ran in 0.04 seconds
+exit=0

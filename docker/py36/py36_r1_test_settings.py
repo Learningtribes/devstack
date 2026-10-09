@@ -14,23 +14,9 @@ else:
     from lms.envs.test import *  # noqa: F401,F403
 
 
-# The m5-fixed Python 2 base carries edx-proctoring 1.4 without the plugin
-# metadata used by the current Python 3 runtime. Keep the runner settings
-# equivalent by registering the installed app when the entry point cannot do
-# it for us.
-try:
-    import edx_proctoring  # noqa: F401
-except ImportError:
-    pass
-else:
-    if not any(app.startswith('edx_proctoring') for app in INSTALLED_APPS):
-        INSTALLED_APPS.append('edx_proctoring')
-
-# CMS contentstore tests import xblock_config models directly. The LMS test
-# settings do not normally install this CMS-only app, so register its exact
-# AppConfig for the shared runner overlay.
-if not any(app.startswith('xblock_config') for app in INSTALLED_APPS):
-    INSTALLED_APPS.append('xblock_config.apps.XBlockConfig')
+# Do not add CMS-only apps to the LMS profile: xblock_config's ready() swaps
+# xmodule's global handler_url for Studio's, which breaks LMS handler tests.
+# CMS targets set PY36_R1_TEST_SERVICE=cms, whose settings already install it.
 
 # ORA2 handler tests use the xblock-sdk workbench runtime and its state model.
 # Keep this test-only app scoped to the ORA2 profile.
