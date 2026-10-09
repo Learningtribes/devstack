@@ -1,0 +1,6 @@
+COLLECTION modulestore.active_versions 1
+COLLECTION modulestore.definitions 18
+COLLECTION modulestore.structures 17
+ACTIVE QA Acceptance Test Mon Sep 28 2026 05:16:38 GMT+0000 (UTC)
+BRANCH draft-branch blocks=2 course:course(0) about:overview(0)
+BRANCH published-branch blocks=7 about:overview(0) chapter:qa_chapter2(1) problem:qa_problem(0) sequential:qa_seq(1) vertical:qa_vert(2) course:course(1) html:qa_html(0)

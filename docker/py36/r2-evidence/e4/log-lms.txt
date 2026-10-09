@@ -1,0 +1,18 @@
+2026-10-09 08:20:20,089 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.005s]
+2026-10-09 08:20:20,089 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/elasticsearch/connection/http_urllib3.py:98: DeprecationWarning: HTTPResponse.getheaders() is deprecated and will be removed in urllib3 v2.1.0. Instead access HTTPResponse.headers directly.
+  return response.status, response.getheaders(), raw_data
+
+[09/Oct/2026 08:20:20] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-09 08:20:20,091 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.15', 43192), raddr=('192.168.148.14', 11211)>
+
+2026-10-09 08:20:20,446 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.002s]
+[09/Oct/2026 08:20:20] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-09 08:20:20,447 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.15', 43200), raddr=('192.168.148.14', 11211)>
+
+[09/Oct/2026 08:20:20] "GET /login HTTP/1.1" 200 72808
+2026-10-09 08:20:20,635 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.15', 43214), raddr=('192.168.148.14', 11211)>
+
+2026-10-09 08:20:20,655 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.002s]
+[09/Oct/2026 08:20:20] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-09 08:20:20,657 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.15', 43234), raddr=('192.168.148.14', 11211)>
+

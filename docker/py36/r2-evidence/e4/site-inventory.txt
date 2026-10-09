@@ -1,0 +1,72 @@
+2026-10-09 08:21:55,480 WARNING 79 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-09 08:21:55,519 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rules/predicates.py:70: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = inspect.getargspec(fn)
+
+2026-10-09 08:21:55,618 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rest_framework/utils/model_meta.py:10: DeprecationWarning: 'version' is deprecated. Use '__version__' instead.
+  from rest_framework.compat import get_related_model, get_remote_field
+
+2026-10-09 08:21:55,658 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+
+2026-10-09 08:21:55,679 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-09 08:21:55,863 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-09 08:21:55,867 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-09 08:21:56,176 WARNING 79 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 08:21:56,355 WARNING 79 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 08:21:56,463 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:485: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  getargspec(func)
+
+2026-10-09 08:21:56,463 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:463: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(matcher)
+
+2026-10-09 08:21:56,463 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:497: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = getargspec(func)
+
+2026-10-09 08:21:56,465 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:509: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(func)
+
+2026-10-09 08:21:56,465 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:246: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(self.factory)
+
+2026-10-09 08:21:56,469 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:244: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(empty)
+
+2026-10-09 08:21:56,550 WARNING 79 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rules/predicates.py:70: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = inspect.getargspec(fn)
+
+SITE id=1 domain=example.com enabled=None course_org_filter=None
+SITE id=2 domain=0.0.0.0:18000 enabled=True course_org_filter=edX
+SITE id=3 domain=0.0.0.0:18010 enabled=True course_org_filter=edX
+SITE id=4 domain=localhost:18000 enabled=True course_org_filter=edX
+SITE id=5 domain=localhost:18010 enabled=True course_org_filter=edX
+SITE id=6 domain=localhost:18001 enabled=True course_org_filter=edX
+SITE id=7 domain=localhost:18011 enabled=True course_org_filter=edX
+SITE id=8 domain=localhost:18120 enabled=True course_org_filter=QA
+SITE id=9 domain=localhost:18121 enabled=True course_org_filter=QA
+SITE id=10 domain=localhost:18122 enabled=True course_org_filter=QA
+SITE id=11 domain=localhost:18123 enabled=True course_org_filter=QA
+SITE id=12 domain=localhost:18124 enabled=True course_org_filter=QA
+SITE id=13 domain=localhost:18125 enabled=True course_org_filter=QA
+SITE id=14 domain=localhost:18126 enabled=True course_org_filter=QA
+SITE id=15 domain=localhost:18127 enabled=True course_org_filter=QA
+SITE id=16 domain=localhost:18128 enabled=True course_org_filter=QA
+SITE id=17 domain=localhost:18129 enabled=True course_org_filter=QA
+SITE id=18 domain=localhost:18130 enabled=True course_org_filter=QA
+SITE id=19 domain=localhost:18131 enabled=True course_org_filter=QA
+SITE id=20 domain=localhost:18132 enabled=True course_org_filter=QA
+SITE id=21 domain=localhost:18134 enabled=True course_org_filter=QA
+SITE id=22 domain=localhost:18133 enabled=True course_org_filter=QA
+SITE id=23 domain=localhost:18135 enabled=True course_org_filter=QA
+SITE id=24 domain=localhost:18136 enabled=True course_org_filter=QA

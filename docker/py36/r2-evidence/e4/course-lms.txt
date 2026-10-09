@@ -1,0 +1,38 @@
+2026-10-09 08:20:21,501 WARNING 41 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/course_wiki/plugins/markdownedx/wiki_plugin.py:7: DeprecationWarning: 'etree' is deprecated. Use 'xml.etree.ElementTree' instead.
+  from course_wiki.plugins.markdownedx import mdx_mathjax, mdx_video
+
+2026-10-09 08:20:21,754 WARNING 41 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-09 08:20:21,818 WARNING 41 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rest_framework/utils/model_meta.py:10: DeprecationWarning: 'version' is deprecated. Use '__version__' instead.
+  from rest_framework.compat import get_related_model, get_remote_field
+
+2026-10-09 08:20:21,906 WARNING 41 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-09 08:20:22,043 WARNING 41 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-09 08:20:22,071 WARNING 41 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-09 08:20:22,200 WARNING 41 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/wiki/plugins/links/wiki_plugin.py:11: DeprecationWarning: 'etree' is deprecated. Use 'xml.etree.ElementTree' instead.
+  from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
+
+2026-10-09 08:20:22,320 WARNING 41 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  username_match = re.search('(www\.)?' + url_stub + '(?P<username>.*?)[/]?$', url_domain_and_path, re.IGNORECASE)
+
+2026-10-09 08:20:22,368 WARNING 41 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 08:20:22,616 WARNING 41 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+  self, resource_name
+
+2026-10-09 08:20:22,622 WARNING 41 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+COURSES count=1 python=3.6.15
+COURSES id=course-v1:QA+Acceptance+Test+branch@published-branch
+COURSE_READ id=course-v1:QA+Acceptance+Test name='QA Acceptance Test' blocks=6
+COURSE_TYPES [('chapter', 1), ('course', 1), ('html', 1), ('problem', 1), ('sequential', 1), ('vertical', 1)]
+E4_COURSE_OK

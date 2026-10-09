@@ -1,0 +1,136 @@
+2026-10-09 12:20:27.513 [info] <0.947.0> accepting AMQP connection <0.947.0> (192.168.148.17:55544 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.514 [info] <0.947.0> connection <0.947.0> (192.168.148.17:55544 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.518 [info] <0.947.0> closing AMQP connection <0.947.0> (192.168.148.17:55544 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.518 [info] <0.965.0> Closing all channels from connection '192.168.148.17:55544 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.521 [info] <0.968.0> accepting AMQP connection <0.968.0> (192.168.148.17:55554 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.522 [info] <0.968.0> connection <0.968.0> (192.168.148.17:55554 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.524 [info] <0.979.0> accepting AMQP connection <0.979.0> (192.168.148.17:55566 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.525 [info] <0.979.0> connection <0.979.0> (192.168.148.17:55566 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.526 [info] <0.979.0> closing AMQP connection <0.979.0> (192.168.148.17:55566 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.526 [info] <0.991.0> Closing all channels from connection '192.168.148.17:55566 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.528 [info] <0.994.0> accepting AMQP connection <0.994.0> (192.168.148.17:55580 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.529 [info] <0.994.0> connection <0.994.0> (192.168.148.17:55580 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.530 [info] <0.994.0> closing AMQP connection <0.994.0> (192.168.148.17:55580 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.530 [info] <0.1007.0> Closing all channels from connection '192.168.148.17:55580 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.532 [info] <0.968.0> closing AMQP connection <0.968.0> (192.168.148.17:55554 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.532 [info] <0.1010.0> Closing all channels from connection '192.168.148.17:55554 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.533 [info] <0.1013.0> accepting AMQP connection <0.1013.0> (192.168.148.17:55590 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.533 [info] <0.1013.0> connection <0.1013.0> (192.168.148.17:55590 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.535 [info] <0.1013.0> closing AMQP connection <0.1013.0> (192.168.148.17:55590 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.535 [info] <0.1026.0> Closing all channels from connection '192.168.148.17:55590 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.537 [info] <0.1029.0> accepting AMQP connection <0.1029.0> (192.168.148.17:55592 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.537 [info] <0.1032.0> accepting AMQP connection <0.1032.0> (192.168.148.17:55598 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.538 [info] <0.1032.0> connection <0.1032.0> (192.168.148.17:55598 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.538 [info] <0.1029.0> connection <0.1029.0> (192.168.148.17:55592 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.539 [info] <0.1032.0> closing AMQP connection <0.1032.0> (192.168.148.17:55598 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.539 [info] <0.1052.0> Closing all channels from connection '192.168.148.17:55598 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.541 [info] <0.1055.0> accepting AMQP connection <0.1055.0> (192.168.148.17:55600 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.542 [info] <0.1055.0> connection <0.1055.0> (192.168.148.17:55600 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.542 [info] <0.1055.0> closing AMQP connection <0.1055.0> (192.168.148.17:55600 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.542 [info] <0.1067.0> Closing all channels from connection '192.168.148.17:55600 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.543 [info] <0.1029.0> closing AMQP connection <0.1029.0> (192.168.148.17:55592 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.543 [info] <0.1071.0> Closing all channels from connection '192.168.148.17:55592 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.545 [info] <0.1074.0> accepting AMQP connection <0.1074.0> (192.168.148.17:55610 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.547 [info] <0.1074.0> connection <0.1074.0> (192.168.148.17:55610 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.558 [info] <0.1074.0> closing AMQP connection <0.1074.0> (192.168.148.17:55610 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.558 [info] <0.1088.0> Closing all channels from connection '192.168.148.17:55610 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.559 [info] <0.1090.0> accepting AMQP connection <0.1090.0> (192.168.148.17:55618 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.561 [info] <0.1090.0> connection <0.1090.0> (192.168.148.17:55618 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.566 [info] <0.1090.0> closing AMQP connection <0.1090.0> (192.168.148.17:55618 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.566 [info] <0.1103.0> accepting AMQP connection <0.1103.0> (192.168.148.17:55632 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.566 [info] <0.1105.0> Closing all channels from connection '192.168.148.17:55618 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.571 [info] <0.1108.0> accepting AMQP connection <0.1108.0> (192.168.148.17:55636 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.572 [info] <0.1103.0> connection <0.1103.0> (192.168.148.17:55632 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.572 [info] <0.1108.0> connection <0.1108.0> (192.168.148.17:55636 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.574 [info] <0.1108.0> closing AMQP connection <0.1108.0> (192.168.148.17:55636 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.574 [info] <0.1128.0> Closing all channels from connection '192.168.148.17:55636 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.575 [info] <0.1103.0> closing AMQP connection <0.1103.0> (192.168.148.17:55632 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.576 [info] <0.1132.0> Closing all channels from connection '192.168.148.17:55632 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.579 [info] <0.1135.0> accepting AMQP connection <0.1135.0> (192.168.148.17:55642 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.580 [info] <0.1135.0> connection <0.1135.0> (192.168.148.17:55642 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.581 [info] <0.1135.0> closing AMQP connection <0.1135.0> (192.168.148.17:55642 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.581 [info] <0.1148.0> Closing all channels from connection '192.168.148.17:55642 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.583 [info] <0.1151.0> accepting AMQP connection <0.1151.0> (192.168.148.17:55644 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.584 [info] <0.1154.0> accepting AMQP connection <0.1154.0> (192.168.148.17:55646 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.584 [info] <0.1151.0> connection <0.1151.0> (192.168.148.17:55644 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.584 [info] <0.1154.0> connection <0.1154.0> (192.168.148.17:55646 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.585 [info] <0.1154.0> closing AMQP connection <0.1154.0> (192.168.148.17:55646 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.585 [info] <0.1174.0> Closing all channels from connection '192.168.148.17:55646 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.590 [info] <0.1177.0> accepting AMQP connection <0.1177.0> (192.168.148.17:55656 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.590 [info] <0.1177.0> connection <0.1177.0> (192.168.148.17:55656 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:27.592 [info] <0.1177.0> closing AMQP connection <0.1177.0> (192.168.148.17:55656 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.593 [info] <0.1189.0> Closing all channels from connection '192.168.148.17:55656 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.594 [info] <0.1151.0> closing AMQP connection <0.1151.0> (192.168.148.17:55644 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:27.594 [info] <0.1193.0> Closing all channels from connection '192.168.148.17:55644 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:27.601 [info] <0.1196.0> accepting AMQP connection <0.1196.0> (192.168.148.17:55664 -> 192.168.148.13:5672)
+2026-10-09 12:20:27.602 [info] <0.1196.0> connection <0.1196.0> (192.168.148.17:55664 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:32.629 [info] <0.1196.0> closing AMQP connection <0.1196.0> (192.168.148.17:55664 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:32.629 [info] <0.1218.0> Closing all channels from connection '192.168.148.17:55664 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:32.631 [info] <0.1221.0> accepting AMQP connection <0.1221.0> (192.168.148.17:55672 -> 192.168.148.13:5672)
+2026-10-09 12:20:32.632 [info] <0.1221.0> connection <0.1221.0> (192.168.148.17:55672 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:37.656 [info] <0.1221.0> closing AMQP connection <0.1221.0> (192.168.148.17:55672 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:37.657 [info] <0.1243.0> Closing all channels from connection '192.168.148.17:55672 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:37.660 [info] <0.1246.0> accepting AMQP connection <0.1246.0> (192.168.148.17:42480 -> 192.168.148.13:5672)
+2026-10-09 12:20:37.663 [info] <0.1246.0> connection <0.1246.0> (192.168.148.17:42480 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:42.697 [info] <0.1246.0> closing AMQP connection <0.1246.0> (192.168.148.17:42480 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:42.699 [info] <0.1267.0> Closing all channels from connection '192.168.148.17:42480 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:42.708 [info] <0.1270.0> accepting AMQP connection <0.1270.0> (192.168.148.17:42484 -> 192.168.148.13:5672)
+2026-10-09 12:20:42.712 [info] <0.1270.0> connection <0.1270.0> (192.168.148.17:42484 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:47.743 [info] <0.1270.0> closing AMQP connection <0.1270.0> (192.168.148.17:42484 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:47.743 [info] <0.1292.0> Closing all channels from connection '192.168.148.17:42484 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:50.154 [info] <0.907.0> closing AMQP connection <0.907.0> (192.168.148.17:40532 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:50.155 [info] <0.1302.0> Closing all channels from connection '192.168.148.17:40532 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:50.158 [info] <0.899.0> closing AMQP connection <0.899.0> (192.168.148.17:40522 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:50.158 [info] <0.1304.0> Closing all channels from connection '192.168.148.17:40522 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:54.181 [info] <0.1308.0> accepting AMQP connection <0.1308.0> (192.168.148.17:53880 -> 192.168.148.13:5672)
+2026-10-09 12:20:54.183 [info] <0.1308.0> connection <0.1308.0> (192.168.148.17:53880 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:54.187 [info] <0.1316.0> accepting AMQP connection <0.1316.0> (192.168.148.17:53888 -> 192.168.148.13:5672)
+2026-10-09 12:20:54.188 [info] <0.1316.0> connection <0.1316.0> (192.168.148.17:53888 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.471 [info] <0.1347.0> accepting AMQP connection <0.1347.0> (192.168.148.17:53904 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.472 [info] <0.1347.0> connection <0.1347.0> (192.168.148.17:53904 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.476 [info] <0.1347.0> closing AMQP connection <0.1347.0> (192.168.148.17:53904 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.476 [info] <0.1365.0> Closing all channels from connection '192.168.148.17:53904 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.479 [info] <0.1368.0> accepting AMQP connection <0.1368.0> (192.168.148.17:53920 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.479 [info] <0.1368.0> connection <0.1368.0> (192.168.148.17:53920 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.481 [info] <0.1379.0> accepting AMQP connection <0.1379.0> (192.168.148.17:53936 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.481 [info] <0.1379.0> connection <0.1379.0> (192.168.148.17:53936 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.483 [info] <0.1379.0> closing AMQP connection <0.1379.0> (192.168.148.17:53936 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.483 [info] <0.1391.0> Closing all channels from connection '192.168.148.17:53936 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.484 [info] <0.1394.0> accepting AMQP connection <0.1394.0> (192.168.148.17:53938 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.485 [info] <0.1394.0> connection <0.1394.0> (192.168.148.17:53938 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.485 [info] <0.1394.0> closing AMQP connection <0.1394.0> (192.168.148.17:53938 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.485 [info] <0.1406.0> Closing all channels from connection '192.168.148.17:53938 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.486 [info] <0.1368.0> closing AMQP connection <0.1368.0> (192.168.148.17:53920 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.486 [info] <0.1410.0> Closing all channels from connection '192.168.148.17:53920 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.488 [info] <0.1413.0> accepting AMQP connection <0.1413.0> (192.168.148.17:53944 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.488 [info] <0.1413.0> connection <0.1413.0> (192.168.148.17:53944 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.492 [info] <0.1413.0> closing AMQP connection <0.1413.0> (192.168.148.17:53944 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.492 [info] <0.1426.0> Closing all channels from connection '192.168.148.17:53944 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.492 [info] <0.1429.0> accepting AMQP connection <0.1429.0> (192.168.148.17:53950 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.493 [info] <0.1429.0> connection <0.1429.0> (192.168.148.17:53950 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.494 [info] <0.1429.0> closing AMQP connection <0.1429.0> (192.168.148.17:53950 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.494 [info] <0.1441.0> Closing all channels from connection '192.168.148.17:53950 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.494 [info] <0.1444.0> accepting AMQP connection <0.1444.0> (192.168.148.17:53964 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.494 [info] <0.1444.0> connection <0.1444.0> (192.168.148.17:53964 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.496 [info] <0.1455.0> accepting AMQP connection <0.1455.0> (192.168.148.17:53966 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.496 [info] <0.1455.0> connection <0.1455.0> (192.168.148.17:53966 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:20:56.497 [info] <0.1455.0> closing AMQP connection <0.1455.0> (192.168.148.17:53966 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.497 [info] <0.1468.0> Closing all channels from connection '192.168.148.17:53966 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.498 [info] <0.1444.0> closing AMQP connection <0.1444.0> (192.168.148.17:53964 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:20:56.498 [info] <0.1471.0> Closing all channels from connection '192.168.148.17:53964 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:20:56.500 [info] <0.1474.0> accepting AMQP connection <0.1474.0> (192.168.148.17:53974 -> 192.168.148.13:5672)
+2026-10-09 12:20:56.501 [info] <0.1474.0> connection <0.1474.0> (192.168.148.17:53974 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:21:01.528 [info] <0.1474.0> closing AMQP connection <0.1474.0> (192.168.148.17:53974 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:21:01.529 [info] <0.1495.0> Closing all channels from connection '192.168.148.17:53974 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:21:01.530 [info] <0.1498.0> accepting AMQP connection <0.1498.0> (192.168.148.17:53988 -> 192.168.148.13:5672)
+2026-10-09 12:21:01.530 [info] <0.1498.0> connection <0.1498.0> (192.168.148.17:53988 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:21:06.566 [info] <0.1498.0> closing AMQP connection <0.1498.0> (192.168.148.17:53988 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:21:06.568 [info] <0.1520.0> Closing all channels from connection '192.168.148.17:53988 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:21:06.576 [info] <0.1523.0> accepting AMQP connection <0.1523.0> (192.168.148.17:57248 -> 192.168.148.13:5672)
+2026-10-09 12:21:06.580 [info] <0.1523.0> connection <0.1523.0> (192.168.148.17:57248 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:21:11.614 [info] <0.1523.0> closing AMQP connection <0.1523.0> (192.168.148.17:57248 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:21:11.615 [info] <0.1544.0> Closing all channels from connection '192.168.148.17:57248 -> 192.168.148.13:5672' because it has been closed
+2026-10-09 12:21:11.616 [info] <0.1547.0> accepting AMQP connection <0.1547.0> (192.168.148.17:57260 -> 192.168.148.13:5672)
+2026-10-09 12:21:11.617 [info] <0.1547.0> connection <0.1547.0> (192.168.148.17:57260 -> 192.168.148.13:5672): user 'py36r2' authenticated and granted access to vhost 'py36-r2-20261009'
+2026-10-09 12:21:16.644 [info] <0.1547.0> closing AMQP connection <0.1547.0> (192.168.148.17:57260 -> 192.168.148.13:5672, vhost: 'py36-r2-20261009', user: 'py36r2')
+2026-10-09 12:21:16.645 [info] <0.1569.0> Closing all channels from connection '192.168.148.17:57260 -> 192.168.148.13:5672' because it has been closed
