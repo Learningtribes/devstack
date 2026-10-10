@@ -58,8 +58,15 @@ RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
 # dependencies are resolved through the same complete constraints set.
 # xblock-utils requires future, not the stale Python 2-only futures package;
 # future==1.0.0 is installed from py36-base.txt under these constraints.
-RUN pip install --no-cache-dir --force-reinstall --constraint /tmp/py36-constraints.txt \
-    -r /tmp/py36-git-requirements.txt
+# GitHub is read from the git_mirror context (r2-mirror-git-sources.sh, exact
+# pinned commits): this image's GnuTLS git intermittently loses the TLS
+# handshake through the build proxy. The URLs pip records are unchanged.
+RUN --mount=type=bind,from=git_mirror,target=/git-mirror \
+    test ! -e /root/.gitconfig \
+    && git config --global url."file:///git-mirror/".insteadOf "https://github.com/" \
+    && pip install --no-cache-dir --force-reinstall --constraint /tmp/py36-constraints.txt \
+        -r /tmp/py36-git-requirements.txt \
+    && rm /root/.gitconfig
 
 # 3. Private LT XBlock. xblock-ilt has no anonymous URL, so the build takes the
 # exact source export from r2-export-xblock-ilt.sh as the xblock_ilt context
