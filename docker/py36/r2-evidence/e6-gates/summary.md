@@ -122,7 +122,7 @@ Earlier attempt, kept as evidence:
 | --- | --- | --- |
 | py36 attempt1 | 32 console errors on Studio pages: 404 for `/static/css/{noto,foundever}-sans.css` and `/static/fonts/NotoSans/*` (the publish flow itself completed) | the `hawthorn` theme's fonts partial (`src/themes/hawthorn/common/static/sass/_fonts.scss`) and `common/static/css/noto-sans.css` (#1683) reference `/static/css/` and `/static/fonts/` absolutely, outside Studio's `/static/studio/` `STATIC_URL`. Production nginx serves the whole `/static/` prefix from the shared collected tree on the Studio host too; the E6 handler only covered `STATIC_URL`. R1 avoided it by setting Studio's `STATIC_URL` to `/static/`. Fix in `r2_e6_wsgi.py` (next section) |
 
-## Learning Path (2026-10-10) - R2 node set PASS on both runtimes; R1-only test not run
+## Learning Path (2026-10-10) - PASS on both runtimes (R2 node set, then with the R1 read-path test)
 
 Learning Path has no browser spec; the gate is the R1 `p1b-learning-path`
 runner target (`run-test-runner.sh <rt> <target>`, shared-Mongo test DBs under
@@ -150,6 +150,24 @@ The product files it exercises differ between R1 and R2 (`persistance/programs.p
 `programs/workflows.py`, `models.py`, `courseware/views/views.py`), so R1's
 result does not carry over to R2. Running it on R2 needs the file in the
 mounted tree (owner call, handoff §7).
+
+Owner decision (2026-10-10 16:05): run it from a local test-only commit.
+`a385677d4a2` on `r2-py36-runtime-fixes` (tree `cf5bc8ca60fc`, parent
+`0ac3bfa6d09`, not pushed) adds the R1 file verbatim. `platform-r2-py36-src`
+was detached to it for the run (runner identity overridden to that commit and
+tree) and then returned to `0ac3bfa6d09`, clean. Full R1 target
+`p1b-learning-path` (`learning-path/r1-test/`):
+
+| Runtime | LMS | CMS |
+| --- | --- | --- |
+| py36 | 10 passed (the R2 six + the four R1 read-path tests) | 3 passed |
+| py27 | 10 passed | 3 passed |
+
+Collected node lists are identical across runtimes. **Learning Path PASS on
+both runtimes.** One Python 3.6 warning worth tracking (master line, not R2):
+`common/djangoapps/pipeline_mako/templates/mako/js.html` uses `async` as a
+Mako context name, so the compiled template assigns `async = context.get(...)`,
+a `SyntaxError` from Python 3.7 on. It does not affect the 3.6 floor.
 
 ## Harness fix: static files served ahead of Django
 
