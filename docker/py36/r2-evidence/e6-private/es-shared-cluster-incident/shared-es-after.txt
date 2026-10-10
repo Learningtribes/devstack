@@ -1,0 +1,20 @@
+# read-only snapshot of edx.devstack.elasticsearch after the private node left (2026-10-10T05:26:12Z)
+started=2026-10-09T08:32:53.106028331Z image=sha256:27235efd307d30c82aa24baf0f6cc24b2cbc504445bb3fccd0e5c13f8c51d1bd
+name        ip             master 
+Reeva Payge 192.168.148.12 *      
+health index                        docs.count docs.deleted 
+yellow program_index                         4            0 
+yellow content                               0            0 
+red    program_index_20260719081406          0            0 
+yellow program_index_20260719081319          0            0 
+red    program_index_20260719081421          0            0 
+yellow library_index                         0            0 
+yellow courseware_index                     10            1 
+{"content":{"settings":{"index":{"creation_date":"1791609728348","number_of_shards":"5","number_of_replicas":"1","version":{"created":"1050299"},"uuid":"dbnwemLySrOZ3AZV0ObiAA"}}}}
+content primaries.index_total=0 delete_total=0
+courseware_index primaries.index_total=0 delete_total=0
+library_index primaries.index_total=0 delete_total=0
+program_index primaries.index_total=0 delete_total=0
+program_index_20260719081319 primaries.index_total=0 delete_total=0
+program_index_20260719081406 primaries.index_total=0 delete_total=0
+program_index_20260719081421 primaries.index_total=0 delete_total=0

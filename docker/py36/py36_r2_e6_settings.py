@@ -82,7 +82,14 @@ FEATURES.update({
     'RESTRICT_AUTOMATIC_AUTH': False,
     'ALLOW_PUBLIC_ACCOUNT_CREATION': True,
     'CERTIFICATES_HTML_VIEW': True,
-    # The comments service and its Mongo are shared; auto_auth would create
-    # forum users there.
-    'ENABLE_DISCUSSION_SERVICE': False,
+    # Off unless the stack runs its own comments service: auto_auth would
+    # otherwise create forum users in the shared one.
+    'ENABLE_DISCUSSION_SERVICE': bool(os.environ.get('PY36_R2_E6_FORUM_URL')),
 })
+
+if FEATURES['ENABLE_DISCUSSION_SERVICE']:
+    COMMENTS_SERVICE_URL = os.environ['PY36_R2_E6_FORUM_URL']
+    COMMENTS_SERVICE_KEY = _required('COMMENTS_SERVICE_KEY')
+    # Global fallback for the discussion exclusion helpers; the gate fixture
+    # sets the same value on the site configuration.
+    DISCUSSION_EXCLUDE = []

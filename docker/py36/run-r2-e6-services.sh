@@ -1,8 +1,9 @@
 #!/bin/sh
 # R2-preview E6: per-runtime LMS + Studio on private MySQL and Mongo clones, an
-# empty private Elasticsearch, and memcached.
+# empty private Elasticsearch, memcached and, with PY36_R2_E6_WITH_FORUM=1, an
+# empty private comments service.
 # usage: run-r2-e6-services.sh clone
-#        run-r2-e6-services.sh {py36|py27} {start|status|cleanup|logs}
+#        run-r2-e6-services.sh {py36|py27} {start|status|cleanup|logs|script <file.py> <evidence-dir> [args]}
 #
 # `clone` takes one read-only mysqldump of the shared edxapp/edxapp_csmh
 # databases and one mongodump of the shared `edxapp` Mongo database; every
@@ -31,6 +32,10 @@ CACHE_IMAGE=memcached@sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf
 # Same images as edx.devstack.mongo / edx.devstack.elasticsearch.
 MONGO_IMAGE=mongo@sha256:6a0061a32c34bc8004ed69c9d9331a0695bda9430e24bea7fb4b331864394d7f
 ES_IMAGE=edxops/elasticsearch@sha256:27235efd307d30c82aa24baf0f6cc24b2cbc504445bb3fccd0e5c13f8c51d1bd
+FORUM_IMAGE=ltdps/forum@sha256:1f594e841dbeeb6dfad1a16ebff127e93b4db5427cdc0e28810b9828cf558d1e
+# Opt-in so group 1 keeps running with the discussion service off.
+WITH_FORUM=${PY36_R2_E6_WITH_FORUM:-0}
+FORUM_ENV=${CONFIG}/e6-forum.env
 NETWORK=devstack_default
 LABEL=io.openedx.py36-r2.gate=e6
 # Gate containers share the Docker VM with edx.devstack.*; without a cgroup
@@ -78,7 +83,7 @@ case "${RUNTIME}" in
         METADATA="${PYTHON} /opt/runner/py27_source_metadata.py /runner/source-metadata ${P}/setup.py ${L}/xmodule/setup.py ${L}/capa/setup.py ${P}/openedx/core/lib/xblock_builtin/xblock_discussion/setup.py >/dev/null && "
         ;;
     *)
-        echo "usage: $0 clone | {py36|py27} {start|status|cleanup|logs}" >&2
+        echo "usage: $0 clone | {py36|py27} {start|status|cleanup|logs|script <file.py> <evidence-dir> [args]}" >&2
         exit 2
         ;;
 esac
@@ -87,11 +92,14 @@ NAMESPACE=py36-r2-e6-${RUNTIME}
 MYSQL=${NAMESPACE}-mysql
 MONGO=${NAMESPACE}-mongo
 ES=${NAMESPACE}-es
+FORUM=${NAMESPACE}-forum
+FORUM_URL=http://${FORUM}:4567
 CACHE=${NAMESPACE}-memcached
 LMS=${NAMESPACE}-lms
 CMS=${NAMESPACE}-cms
 LMS_PORT=${PORT_BASE}00
 CMS_PORT=${PORT_BASE}10
+STACK="${MYSQL} ${MONGO} ${ES} ${FORUM} ${CACHE} ${LMS} ${CMS}"
 LOG_ROOT=${PY36_R2_E6_LOG_ROOT:-/tmp/py36-r2-e6-20261010}/${RUNTIME}
 PYTHONPATH_VALUE=/edx/app/edxapp:/runner/source-metadata:${P}:${L}/xmodule:${L}/capa:${P}/openedx/core/lib/xblock_builtin/xblock_discussion:${L}/calc:${L}/safe_lxml:${L}/symmath:${L}/chem:${L}/dogstats
 
@@ -135,6 +143,21 @@ service_args() {
         --env "EDXAPP_TEST_MONGO_HOST=${MONGO}" --env NO_PYTHON_UNINSTALL=1 \
         --env RES_OPTIONS=single-request \
         -w "${P}"
+    if [ "${WITH_FORUM}" = 1 ]; then
+        printf '%s\n' --env-file "${FORUM_ENV}" --env "PY36_R2_E6_FORUM_URL=${FORUM_URL}" \
+            --env "COMMENTS_SERVICE_URL=${FORUM_URL}"
+    fi
+}
+
+es_isolated() {
+    nodes=$(docker exec "${ES}" curl -fsS 'http://localhost:9200/_cat/nodes?h=ip' | wc -l | tr -d ' ')
+    name=$(docker exec "${ES}" curl -fsS http://localhost:9200/ | sed -n 's/.*"cluster_name" *: *"\([^"]*\)".*/\1/p')
+    if [ "${nodes}" != 1 ] || [ "${name}" != "${ES}" ]; then
+        echo "private elasticsearch is not isolated: nodes=${nodes} cluster=${name}" >&2
+        docker stop "${ES}" >/dev/null
+        exit 1
+    fi
+    echo "es_isolated cluster=${name} nodes=${nodes}"
 }
 
 start() {
@@ -145,9 +168,12 @@ start() {
     grep -qx "commit=${XBLOCK_ILT_COMMIT}" "${XBLOCK_ILT_SRC}.identity"
     grep -qx "source_commit=${EXPECTED_COMMIT}" "${ASSET_ROOT}/logs/provenance.txt"
     grep -qx "collect_${RUNTIME}_image=${IMAGE} ${IMAGE_ID}" "${ASSET_ROOT}/logs/provenance.txt"
-    for c in ${MYSQL} ${MONGO} ${ES} ${CACHE} ${LMS} ${CMS}; do
+    for c in ${STACK}; do
         if exists "$c"; then echo "refusing to replace existing container: $c" >&2; exit 2; fi
     done
+    if [ "${WITH_FORUM}" = 1 ] && [ ! -f "${FORUM_ENV}" ]; then
+        (umask 077; key=$(openssl rand -hex 16); printf 'COMMENTS_SERVICE_KEY=%s\n' "${key}" > "${FORUM_ENV}")
+    fi
     for port in ${LMS_PORT} ${CMS_PORT}; do
         if lsof -nP -iTCP:"${port}" -sTCP:LISTEN >/dev/null 2>&1; then echo "port ${port} in use" >&2; exit 2; fi
     done
@@ -164,12 +190,28 @@ start() {
         --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 --memory 1g \
         --mount type=tmpfs,dst=/data/db "${MONGO_IMAGE}" \
         mongod --smallfiles --nojournal --storageEngine wiredTiger --wiredTigerCacheSizeGB 1 >/dev/null
+    # ES 1.5 multicast-discovers any default-named node on the network: without
+    # these flags this node joins edx.devstack.elasticsearch's cluster and every
+    # read and write lands in the shared indices.
     docker run -d --name "${ES}" --network "${NETWORK}" --label "${LABEL}" \
         --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 --memory 1g \
-        --env ES_HEAP_SIZE=384m "${ES_IMAGE}" >/dev/null
+        --env ES_HEAP_SIZE=384m "${ES_IMAGE}" elasticsearch \
+        "-Des.cluster.name=${ES}" -Des.discovery.zen.ping.multicast.enabled=false >/dev/null
     wait_for mongo docker exec "${MONGO}" mongo --quiet --eval 'quit(db.adminCommand({ping: 1}).ok ? 0 : 1)'
     docker exec -i "${MONGO}" mongorestore --quiet --archive < "${MONGO_DUMP}"
     wait_for elasticsearch docker exec "${ES}" curl -fsS http://localhost:9200/
+    es_isolated
+    if [ "${WITH_FORUM}" = 1 ]; then
+        # The comments service searches `content` but does not create it.
+        docker exec "${ES}" curl -fsS -X PUT http://localhost:9200/content > "${LOG_ROOT}/es-content-index.json"
+        # API_KEY is re-exported after devstack_forum_env, which sets its own.
+        docker run -d --name "${FORUM}" --network "${NETWORK}" --label "${LABEL}" \
+            --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 --memory 1g \
+            --env-file "${FORUM_ENV}" --entrypoint /bin/bash "${FORUM_IMAGE}" -lc \
+            "source /edx/app/forum/ruby_env && source /edx/app/forum/devstack_forum_env && export MONGOHQ_URL=mongodb://${MONGO}:27017/cs_comments_service SEARCH_SERVER=http://${ES}:9200 API_KEY=\"\${COMMENTS_SERVICE_KEY}\" && cd /edx/app/forum/cs_comments_service && bundle install --local --path /edx/app/forum/.gem && exec ruby app.rb -o 0.0.0.0" >/dev/null
+        wait_for forum sh -c "docker exec '${ES}' curl -fsS '${FORUM_URL}/heartbeat' | grep -q '\"OK\":true'"
+        docker exec "${ES}" curl -fsS "${FORUM_URL}/heartbeat" > "${LOG_ROOT}/forum-heartbeat.json"
+    fi
     # The entrypoint runs a socket-only server for init, then the final server
     # on TCP; pinging over TCP waits for the final one.
     wait_for mysql mysql_client mysqladmin -uroot -h127.0.0.1 ping
@@ -201,7 +243,7 @@ start() {
 }
 
 status() {
-    for c in ${MYSQL} ${MONGO} ${ES} ${CACHE} ${LMS} ${CMS}; do
+    for c in ${STACK}; do
         if exists "$c"; then
             docker inspect "$c" --format '{{.Name}} running={{.State.Running}} restarts={{.RestartCount}} image={{.Image}} source_ro={{range .Mounts}}{{if eq .Destination "/edx/app/edxapp/edx-platform"}}{{not .RW}}{{end}}{{end}}'
         else
@@ -211,7 +253,7 @@ status() {
 }
 
 cleanup() {
-    for c in ${CMS} ${LMS} ${CACHE} ${ES} ${MONGO} ${MYSQL}; do
+    for c in ${CMS} ${LMS} ${CACHE} ${FORUM} ${ES} ${MONGO} ${MYSQL}; do
         if exists "$c"; then
             test "$(docker inspect "$c" --format '{{index .Config.Labels "io.openedx.py36-r2.gate"}}')" = e6
             docker rm -f "$c" >/dev/null && echo "removed $c"
@@ -219,10 +261,31 @@ cleanup() {
     done
 }
 
+# Runs <file.py> (relative to this directory) with the LMS container's mounts,
+# settings and environment; <evidence-dir> is mounted writable at
+# /edx/var/r2-evidence. Extra environment comes from PY36_R2_E6_SCRIPT_ENV_FILE.
+run_script() {
+    script=$1 evidence=$2; shift 2
+    test -f "${SCRIPT_DIR}/${script}"
+    mkdir -p "${evidence}"
+    extra=
+    if [ -n "${PY36_R2_E6_SCRIPT_ENV_FILE:-}" ]; then extra="--env-file ${PY36_R2_E6_SCRIPT_ENV_FILE}"; fi
+    # shellcheck disable=SC2046,SC2086
+    docker run --rm --network "${NETWORK}" \
+        --mount "type=bind,src=${SCRIPT_DIR},dst=/opt/r2-scripts,readonly" \
+        --mount "type=bind,src=${evidence},dst=/edx/var/r2-evidence" \
+        $(service_args lms) ${extra} "${IMAGE}" \
+        -c "${METADATA}exec ${PYTHON} /opt/r2-scripts/${script} $*"
+}
+
+# A running stack keeps the forum mode it was started with.
+if [ "${2:-}" != start ] && exists "${FORUM}"; then WITH_FORUM=1; fi
+
 case "${2:-}" in
     start) start ;;
     status) status ;;
     cleanup) cleanup ;;
     logs) for c in ${LMS} ${CMS}; do echo "== ${c}"; docker logs "${c}" 2>&1; done ;;
-    *) echo "usage: $0 clone | {py36|py27} {start|status|cleanup|logs}" >&2; exit 2 ;;
+    script) shift 2; run_script "$@" ;;
+    *) echo "usage: $0 clone | {py36|py27} {start|status|cleanup|logs|script <file.py> <evidence-dir> [args]}" >&2; exit 2 ;;
 esac

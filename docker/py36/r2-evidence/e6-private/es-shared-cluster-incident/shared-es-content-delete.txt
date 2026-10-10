@@ -1,0 +1,9 @@
+# 2026-10-10T05:27:21Z user-approved DELETE /content on edx.devstack.elasticsearch (uuid=dbnwemLySrOZ3AZV0ObiAA count=0)
+{"acknowledged":true}
+health index                        docs.count 
+yellow program_index                         4 
+red    program_index_20260719081406          0 
+yellow program_index_20260719081319          0 
+red    program_index_20260719081421          0 
+yellow library_index                         0 
+yellow courseware_index                     10 
