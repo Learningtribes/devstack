@@ -14,6 +14,9 @@ RABBIT_IMAGE=rabbitmq@sha256:4206c16c09a58d0a604668e91227c32f4a222368e796bfb7bf2
 CACHE_IMAGE=memcached@sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226
 NETWORK=devstack_default
 LABEL=io.openedx.py36-r2.gate=e4
+# Gate containers share the Docker VM with edx.devstack.*; without a cgroup
+# cap a spike here makes the kernel OOM killer pick the shared Mongo instead.
+APP_MEMORY=${PY36_R2_GATE_APP_MEMORY:-2g}
 NAMESPACE=py36-r2
 VHOST=py36-r2-20261009
 RABBIT=py36-r2-rabbitmq-20261009
@@ -38,6 +41,7 @@ service_args() {
     svc=$1
     printf '%s\n' \
         --network "${NETWORK}" --label "${LABEL}" --label "io.openedx.py36-r2.service=${svc}" \
+        --memory "${APP_MEMORY}" \
         --mount "type=bind,src=${SOURCE_ROOT},dst=${P},readonly" \
         --mount "type=bind,src=${WORKSPACE}/src,dst=/edx/src,readonly" \
         --mount "type=bind,src=${CONFIG}/${svc}.auth.json,dst=/edx/app/edxapp/${svc}.auth.json,readonly" \
@@ -82,11 +86,11 @@ start() {
         "${LOG_ROOT}/worker/lms" "${LOG_ROOT}/worker/cms"
     . "${BROKER_ENV}"
 
-    docker run -d --name "${RABBIT}" --network "${NETWORK}" --label "${LABEL}" \
+    docker run -d --name "${RABBIT}" --network "${NETWORK}" --label "${LABEL}" --memory 512m \
         --env "RABBITMQ_DEFAULT_USER=${PY36_R2_E4_RABBIT_USER}" \
         --env "RABBITMQ_DEFAULT_PASS=${PY36_R2_E4_RABBIT_PASSWORD}" \
         --env "RABBITMQ_DEFAULT_VHOST=${VHOST}" "${RABBIT_IMAGE}" >/dev/null
-    docker run -d --name "${CACHE}" --network "${NETWORK}" --label "${LABEL}" \
+    docker run -d --name "${CACHE}" --network "${NETWORK}" --label "${LABEL}" --memory 128m \
         "${CACHE_IMAGE}" memcached -m 64 >/dev/null
     wait_for rabbitmq docker exec "${RABBIT}" rabbitmq-diagnostics -q check_running
 

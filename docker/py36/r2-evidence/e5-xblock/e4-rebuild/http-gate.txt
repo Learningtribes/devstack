@@ -1,0 +1,40 @@
+lms-login: exit=0 http=200 text/html; charset=utf-8 72808 location=
+lms-heartbeat: exit=0 http=200 application/json 188 location=
+  {
+  "modulestore": {
+    "status": true,
+    "message": "OK"
+  },
+  "sql": {
+    "status": true,
+    "message": "OK"
+  },
+  "elasticsearch": {
+    "status": true,
+    "message": "OK"
+  }
+}
+cms-root: exit=0 http=302 text/html; charset=utf-8 0 location=/signin?next=/
+cms-signin: exit=0 http=200 text/html; charset=utf-8 15366 location=
+cms-login-post: exit=0 http=200 application/json 45 location=
+  {
+  "success": true,
+  "redirect_url": null
+}
+cms-authenticated-root: exit=0 http=200 text/html; charset=utf-8 57857 location=
+cms-heartbeat: exit=0 http=200 application/json 188 location=
+  {
+  "modulestore": {
+    "status": true,
+    "message": "OK"
+  },
+  "sql": {
+    "status": true,
+    "message": "OK"
+  },
+  "elasticsearch": {
+    "status": true,
+    "message": "OK"
+  }
+}
+cms-static: exit=0 http=200 application/javascript 11013 location=

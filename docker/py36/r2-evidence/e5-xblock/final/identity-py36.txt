@@ -1,0 +1,25 @@
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+python=3.6.15
+python_executable=/usr/local/bin/python
+pytest=3.6.4
+pytest-django=3.1.2
+ddt=0.8.0
+mock=1.0.1
+nose=1.3.7
+factory-boy=2.8.1
+Faker=0.8.16
+settings=py36_r1_test_settings
+namespace=py36-r2-e5-py36
+mongo_host=edx.devstack.mongo
+mongo_db_prefix=py36-r2-e5-py36
+source=/edx/app/edxapp/edx-platform
+source_mount=read-only-required
+/usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+edx_proctoring_apps=['edx_proctoring']
+django-wiki=0.0.27
+django_setup=ok
+exit=0

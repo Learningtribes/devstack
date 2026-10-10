@@ -27,6 +27,10 @@ MYSQL_IMAGE=mysql:5.6
 CACHE_IMAGE=memcached@sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226
 NETWORK=devstack_default
 LABEL=io.openedx.py36-r2.gate=e6
+# Gate containers share the Docker VM with edx.devstack.*; without a cgroup
+# cap a spike here makes the kernel OOM killer pick the shared Mongo instead.
+APP_MEMORY=${PY36_R2_GATE_APP_MEMORY:-2g}
+MYSQL_MEMORY=${PY36_R2_GATE_MYSQL_MEMORY:-2g}
 P=/edx/app/edxapp/edx-platform
 L=${P}/common/lib
 
@@ -98,7 +102,7 @@ service_args() {
     # --dns-option is rejected for the CMS container:<lms> network mode.
     printf '%s\n' \
         --label "${LABEL}" --label "io.openedx.py36-r2.runtime=${RUNTIME}" --label "io.openedx.py36-r2.service=${svc}" \
-        --platform "${PLATFORM}" --entrypoint /bin/sh \
+        --platform "${PLATFORM}" --entrypoint /bin/sh --memory "${APP_MEMORY}" \
         --mount "type=bind,src=${SOURCE_ROOT},dst=${P},readonly" \
         --mount "type=bind,src=${WORKSPACE}/src,dst=/edx/src,readonly" \
         --mount "type=bind,src=${XBLOCK_ILT_SRC},dst=/edx/src/xblock-ilt,readonly" \
@@ -136,11 +140,11 @@ start() {
     mkdir -p "${LOG_ROOT}/lms/lms" "${LOG_ROOT}/lms/cms" "${LOG_ROOT}/cms/lms" "${LOG_ROOT}/cms/cms"
 
     docker run -d --name "${MYSQL}" --network "${NETWORK}" --label "${LABEL}" \
-        --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 \
+        --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 --memory "${MYSQL_MEMORY}" \
         --mount type=tmpfs,dst=/var/lib/mysql --env-file "${MYSQL_ENV}" \
         "${MYSQL_IMAGE}" --character-set-server=utf8 --collation-server=utf8_general_ci >/dev/null
     docker run -d --name "${CACHE}" --network "${NETWORK}" --label "${LABEL}" \
-        --label "io.openedx.py36-r2.runtime=${RUNTIME}" "${CACHE_IMAGE}" memcached -m 64 >/dev/null
+        --label "io.openedx.py36-r2.runtime=${RUNTIME}" --memory 128m "${CACHE_IMAGE}" memcached -m 64 >/dev/null
     # The entrypoint runs a socket-only server for init, then the final server
     # on TCP; pinging over TCP waits for the final one.
     wait_for mysql mysql_client mysqladmin -uroot -h127.0.0.1 ping

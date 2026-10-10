@@ -1,0 +1,1232 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<!--[if lte IE 9]><html class="ie ie9 lte9" lang="en"><![endif]-->
+<!--[if !IE]><!--><html lang="en"><!--<![endif]-->
+<head dir="ltr">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+  
+      <title>
+       Sign in | Triboo
+      </title>
+  
+
+
+  
+
+  <script type="text/javascript" src="/static/js/i18n/en/djangojs.js"></script>
+  <script type="text/javascript" src="/static/js/ie11_find_array.js"></script>
+
+  <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" />
+
+  
+  
+
+      <link rel="stylesheet" href="/static/css/vendor/swiper.min.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/css/vendor/jquery.qtip.min.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/js/vendor/timepicker/jquery.timepicker.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/css/vendor/iziModal.min.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/css/vendor/select2.min.css" type="text/css" media="all" / >
+
+    
+  
+
+      <link rel="stylesheet" href="/static/hawthorn/css/lms-main-v1.css" type="text/css" media="all" / >
+
+
+    
+      <script type="text/javascript" src="/static/common/js/vendor/jquery.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/jquery-migrate.js"></script>
+      <script type="text/javascript" src="/static/js/vendor/jquery.cookie.js"></script>
+      <script type="text/javascript" src="/static/js/vendor/url.min.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/vue.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/vue-resource.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/underscore.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/underscore.string.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/picturefill.js"></script>
+      <script type="text/javascript" src="/static/edx-ui-toolkit/js/utils/global-loader.js"></script>
+      <script type="text/javascript" src="/static/edx-ui-toolkit/js/utils/string-utils.js"></script>
+      <script type="text/javascript" src="/static/edx-ui-toolkit/js/utils/html-utils.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/require.js"></script>
+      <script type="text/javascript" src="/static/js/RequireJS-namespace-undefine.js"></script>
+      <script type="text/javascript" src="/static/js/vendor/URI.min.js"></script>
+      <script type="text/javascript" src="/static/common/js/vendor/backbone.js"></script>
+
+    
+      <script type="text/javascript" src="/static/js/src/utility.js"></script>
+      <script type="text/javascript" src="/static/js/src/logger.js"></script>
+      <script type="text/javascript" src="/static/js/user_dropdown_v1.js"></script>
+      <script type="text/javascript" src="/static/js/dialog_tab_controls.js"></script>
+      <script type="text/javascript" src="/static/js/src/string_utils.js"></script>
+      <script type="text/javascript" src="/static/js/form.ext.js"></script>
+      <script type="text/javascript" src="/static/js/src/ie_shim.js"></script>
+      <script type="text/javascript" src="/static/js/src/accessibility_tools.js"></script>
+      <script type="text/javascript" src="/static/js/toggle_login_modal.js"></script>
+      <script type="text/javascript" src="/static/js/src/lang_edx.js"></script>
+
+
+  
+    
+    
+    <script type="text/javascript" src="/static/bundles/commons.js" ></script>
+
+  
+    
+    
+    <script type="text/javascript" src="/static/bundles/IltGlobals.js" ></script>
+
+  
+    
+    
+    <script type="text/javascript" src="/static/bundles/DSComponents.js" ></script>
+
+
+
+  <script>
+    window.baseUrl = "/static/";
+    (function (require) {
+      require.config({
+          baseUrl: window.baseUrl
+      });
+    }).call(this, require || RequireJS.require);
+  </script>
+  <script type="text/javascript" src="/static/lms/js/require-config.js"></script>
+  
+    <script type="text/javascript">
+        (function (require) {
+          require.config({
+              paths: {
+                'course_bookmarks/js/views/bookmark_button': 'course_bookmarks/js/views/bookmark_button',
+'js/views/message_banner': 'js/views/message_banner',
+'moment': 'common/js/vendor/moment-with-locales',
+'moment-timezone': 'common/js/vendor/moment-timezone-with-data',
+'js/courseware/course_info_events': 'js/courseware/course_info_events',
+'js/courseware/accordion_events': 'js/courseware/accordion_events',
+'js/dateutil_factory': 'js/dateutil_factory',
+'js/courseware/link_clicked_events': 'js/courseware/link_clicked_events',
+'js/courseware/toggle_element_visibility': 'js/courseware/toggle_element_visibility',
+'js/student_account/logistration_factory': 'js/student_account/logistration_factory',
+'js/courseware/courseware_factory': 'js/courseware/courseware_factory',
+'js/groups/views/cohorts_dashboard_factory': 'js/groups/views/cohorts_dashboard_factory',
+'js/groups/discussions_management/discussions_dashboard_factory': 'js/discussions_management/views/discussions_dashboard_factory',
+'draggabilly': 'js/vendor/draggabilly',
+'hls': 'common/js/vendor/hls'
+            }
+          });
+        }).call(this, require || RequireJS.require);
+    </script>
+  
+
+  
+  
+
+  
+
+
+<script type="application/json" id="user-metadata">
+    {"username": "", "user_id": null, "course_id": null, "enrollment_mode": null, "upgrade_link": null, "upgrade_price": null, "pacing_type": null, "has_admin_access": null, "forum_roles": null, "schedule_start": null, "enrollment_time": null, "course_start": null, "course_end": null, "upgrade_deadline": null}
+</script>
+
+  
+
+
+
+
+  
+
+
+  
+
+
+<!-- dummy Segment -->
+<script type="text/javascript">
+  var analytics = {
+    track: function() { return; },
+    trackLink: function() { return; },
+    pageview: function() { return; },
+    page: function() { return; }
+  };
+</script>
+<!-- end dummy Segment -->
+
+
+  <meta name="path_prefix" content="">
+
+  
+
+  <meta name="openedx-release-line" content="hawthorn" />
+
+
+
+
+
+</head>
+
+<body class="ltr  lang_en fa-width-auto">
+
+
+<div id="page-prompt"></div>
+  <div class="window-wrap" dir="ltr">
+    <a class="nav-skip sr-only sr-only-focusable" href="#main">Skip to main content</a>
+
+      
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+
+<div id="recommend-content-modal" class="recommend-content-modal" style="display: none" v-show="isOpen">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">{{ modalTitle }}</span>
+            <span class="fa fa-close close" alt="Close" aria-hidden="true" @click="closeRecommendContentModal"></span>
+        </div>
+        <div class="content">
+            <div class="label-group">
+                <label>Please enter the email addresses of the learners you want to email and recommend this content to.</label>
+                <label>Email addresses must be separated by new lines or commas, and belong to @foundever.com</label>
+            </div>
+            <label class="ds-textarea">
+              <textarea
+                  rows="7"
+                  name="emails"
+                  placeholder="Enter email addresses separated by commas"
+                  v-model="emailAddresses"
+                  @input="validateEmails"
+              ></textarea>
+              <span v-if="emailAddresses.length > 0 && emailError">
+                  The email you provided does not belong to a supported domain.
+              </span>
+            </label>
+        </div>
+        <div class="buttons">
+            <button class="ds-button ds-button--neutral" @click="closeRecommendContentModal">Cancel</button>
+            <button
+                class="ds-button"
+                @click="onSendRecommendation"
+            >
+                Send
+            </button>
+        </div>
+    </div>
+</div>
+
+    
+
+
+
+<div id="rating-content-modal" class="rating-content-modal" style="display: none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" v-text="modalTitle"></span>
+        <span class="fa fa-close close" @click="closeRatingContentModal"></span>
+      </div>
+      <div class="content">
+        <div class="stars">
+          <i
+            v-for="(n, index) in 5"
+            :key="index"
+            class="fa-star fa"
+            :class="{ 'fa-solid': index + 1 <= selectedRating, 'fa-regular': index + 1 > selectedRating }"
+            @click="selectRating(index + 1)">
+          </i>
+        </div>
+      </div>
+      <div class="buttons">
+        <button class="ds-button ds-button--neutral" @click="closeRatingContentModal">Cancel</button>
+        <button
+          class="ds-button"
+          :disabled="!selectedRating"
+          @click="submitRating">
+          Submit
+        </button>
+      </div>
+    </div>
+</div>
+
+    
+
+
+
+<div id="contact-instructor-modal" class="contact-instructor-modal" style="display: none" v-show="isOpen">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <span class="modal-title">Contact the Author</span>
+            <span class="fa fa-close close" @click="closeContactInstructorModal"></span>
+        </div>
+
+        <div class="content">
+            <div class="instructor-info">
+                <img :src="instructorImage" class="instructor-avatar" />
+                <h2>{{ instructorName }}</h2>
+                <span>{{ instructorTitle }}</span>
+            </div>
+
+            <label class="ds-textarea">
+                Have a question or suggestion? Reach out to the author by sending a message.
+                <textarea
+                    rows="3"
+                    name="message"
+                    placeholder="Write your message here..."
+                    v-model="message"
+                    @input="validateMessage"
+                ></textarea>
+            </label>
+        </div>
+
+        <div class="buttons">
+            <button class="ds-button ds-button--neutral" @click="closeContactInstructorModal">
+                Cancel
+            </button>
+            <button class="ds-button" :disabled="!isMessageValid" @click="sendMessage">
+                <i class="far fa-envelope"></i>
+                Send Message
+            </button>
+        </div>
+    </div>
+</div>
+
+    <div class="marketing-hero"></div>
+
+    <div class="content-wrapper main-container" id="content">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+        <script type="text/template" id="account-tpl">
+            <form id="email-change-form" method="post">
+    <label for="new-email"><%- gettext("New Address") %></label>
+    <input id="new-email" type="text" name="new-email" value="" placeholder="xsy@edx.org" data-validate="required email"/>
+    <div id="new-email-status"></div>
+
+    <label for="password"><%- gettext("Password") %></label>
+    <input id="password" type="password" name="password" value="" data-validate="required"/>
+    <div id="password-status"></div>
+
+    <div class="submit-button">
+        <input type="submit" id="email-change-submit" value="<%- gettext("Change My Email Address") %>">
+    </div>
+    <div id="request-email-status"></div>
+
+    <div id="password-reset">
+        <button type="button"><%- gettext("Reset Password") %></button>
+    </div>
+    <div id="password-reset-status"></div>
+</form>
+
+        </script>
+        <script type="text/template" id="access-tpl">
+            <section id="login-anchor" class="form-type">
+    <div id="login-form" class="form-wrapper <% if ( mode !== 'login' ) { %>hidden<% } %>"></div>
+</section>
+
+<section id="register-anchor" class="form-type">
+    <div id="register-form" class="form-wrapper <% if ( mode !== 'register' ) { %>hidden<% } %>"></div>
+</section>
+
+<section id="password-reset-anchor" class="form-type">
+    <div id="password-reset-form" class="form-wrapper hidden"></div>
+</section>
+
+<section id="institution_login-anchor" class="form-type">
+    <div id="institution_login-form" class="form-wrapper hidden"></div>
+</section>
+
+<section id="hinted-login-anchor" class="form-type">
+    <div id="hinted-login-form" class="form-wrapper <% if ( mode !== 'hinted_login' ) { %>hidden<% } %>"></div>
+</section>
+
+        </script>
+        <script type="text/template" id="form_field-tpl">
+            <div class="form-field <%- type %>-<%- name %>">
+    <% if ( type !== 'checkbox' && type !== 'plaintext') { %>
+        <label for="<%- form %>-<%- name %>">
+            <span class="label-text"><%- label + (required?'*':'') %></span>
+            <% if ( required && type !== 'hidden' ) { %>
+                <span id="<%- form %>-<%- name %>-required-label"
+                    class="label-required <% if ( !requiredStr ) { %>hidden<% } %>">
+                    <% if ( requiredStr ) { %><%- requiredStr %><% }%>
+                </span>
+                <span class="icon fa" id="<%- form %>-<%- name %>-validation-icon" aria-hidden="true"></span>
+            <% } %>
+            <% if ( !required && optionalStr && (type !== 'hidden') ) { %>
+                <span class="label-optional" id="<%- form %>-<%- name %>-optional-label"><%- optionalStr %></span>
+            <% } %>
+        </label>
+        <% if (supplementalLink && supplementalText) { %>
+            <div class="supplemental-link">
+                <a href="<%- supplementalLink %>" target="_blank"><%- supplementalText %></a>
+            </div>
+        <% } %>
+    <% } %>
+
+    <% if ( type === 'select' ) { %>
+        <select id="<%- form %>-<%- name %>"
+            name="<%- name %>"
+            class="input-inline"
+            <% if ( instructions ) { %>
+            aria-describedby="<%- form %>-<%- name %>-desc <%- form %>-<%- name %>-validation-error"
+            <% } %>
+            <% if ( typeof errorMessages !== 'undefined' ) {
+                _.each(errorMessages, function( msg, type ) {%>
+                    data-errormsg-<%- type %>="<%- msg %>"
+            <%  });
+            } %>
+            <% if ( required ) { %> aria-required="true" required<% } %>
+        >
+            <% _.each(options, function(el) { %>
+                <option value="<%- el.value%>"<% if ( el.default ) { %> data-isdefault="true" selected<% } %>><%- el.name %></option>
+            <% }); %>
+        </select>
+        <span id="<%- form %>-<%- name %>-validation-error" class="tip error" aria-live="assertive">
+            <span class="sr-only">ERROR: </span>
+            <span id="<%- form %>-<%- name %>-validation-error-msg"></span>
+        </span>
+        <% if ( instructions ) { %> <span class="tip tip-input" id="<%- form %>-<%- name %>-desc"><%- instructions %></span><% } %>
+        <% if (supplementalLink && supplementalText) { %>
+            <div class="supplemental-link">
+                <a href="<%- supplementalLink %>" target="_blank"><%- supplementalText %></a>
+            </div>
+        <% } %>
+    <% } else if ( type === 'textarea' ) { %>
+        <textarea id="<%- form %>-<%- name %>"
+            type="<%- type %>"
+            name="<%- name %>"
+            class="input-block"
+            <% if ( instructions ) { %>
+            aria-describedby="<%- form %>-<%- name %>-desc <%- form %>-<%- name %>-validation-error"
+            <% } %>
+            <% if ( restrictions.min_length ) { %> minlength="<%- restrictions.min_length %>"<% } %>
+            <% if ( restrictions.max_length ) { %> maxlength="<%- restrictions.max_length %>"<% } %>
+            <% if ( typeof errorMessages !== 'undefined' ) {
+                _.each(errorMessages, function( msg, type ) {%>
+                    data-errormsg-<%- type %>="<%- msg %>"
+            <%  });
+            } %>
+            <% if ( required ) { %> aria-required="true" required<% } %>></textarea>
+        <span id="<%- form %>-<%- name %>-validation-error" class="tip error" aria-live="assertive">
+            <span class="sr-only">ERROR: </span>
+            <span id="<%- form %>-<%- name %>-validation-error-msg"></span>
+        </span>
+        <% if ( instructions ) { %> <span class="tip tip-input" id="<%- form %>-<%- name %>-desc"><%- instructions %></span><% } %>
+        <% if (supplementalLink && supplementalText) { %>
+            <div class="supplemental-link">
+                <a href="<%- supplementalLink %>" target="_blank"><%- supplementalText %></a>
+            </div>
+        <% } %>
+    <% } else if (type === 'plaintext' ) { %>
+            <span class="plaintext-field"><%= HtmlUtils.HTML(label) %></span>
+            <input id="<%- form %>-<%- name %>"
+               type="hidden"
+               name="<%- name %>"
+               class="input-block"
+               value="true"
+            />
+    <% } else { %>
+        <% if ( type === 'checkbox' ) { %>
+            <% if (supplementalLink && supplementalText) { %>
+                <div class="supplemental-link">
+                    <a href="<%- supplementalLink %>" target="_blank"><%- supplementalText %></a>
+                </div>
+            <% } %>
+        <% } %>
+        <input id="<%- form %>-<%- name %>"
+           type="<%- type %>"
+           name="<%- name %>"
+           class="input-block <% if ( type === 'checkbox' ) { %>checkbox<% } %>"
+            <% if ( instructions ) { %>
+            aria-describedby="<%- form %>-<%- name %>-desc <%- form %>-<%- name %>-validation-error"
+            <% } %>
+            <% if ( restrictions.min_length ) { %> minlength="<%- restrictions.min_length %>"<% } %>
+            <% if ( restrictions.max_length ) { %> maxlength="<%- restrictions.max_length %>"<% } %>
+            <% if ( restrictions.readonly )   { %> readonly <% } %>
+            <% if ( required ) { %> required<% } %>
+            <% if ( typeof errorMessages !== 'undefined' ) {
+                _.each(errorMessages, function( msg, type ) {%>
+                    data-errormsg-<%- type %>="<%- msg %>"
+            <%  });
+            } %>
+            <% if ( placeholder ) { %> placeholder="<%- placeholder %>"<% } %>
+            value="<%- defaultValue %>"
+        />
+        <% if ( type === 'checkbox' ) { %>
+            <label for="<%- form %>-<%- name %>">
+                <span class="label-text"><%= HtmlUtils.HTML(label) %></span>
+                <% if ( required && type !== 'hidden' ) { %>
+                    <span id="<%- form %>-<%- name %>-required-label"
+                        class="label-required <% if ( !requiredStr ) { %>hidden<% } %>">
+                        <% if ( requiredStr ) { %><%- requiredStr %><% }%>
+                    </span>
+                    <span class="icon fa" id="<%- form %>-<%- name %>-validation-icon" aria-hidden="true"></span>
+                <% } %>
+                <% if ( !required && optionalStr ) { %>
+                    <span class="label-optional" id="<%- form %>-<%- name %>-optional-label"><%- optionalStr %></span>
+                <% } %>
+            </label>
+        <% } %>
+
+        <span id="<%- form %>-<%- name %>-validation-error" class="tip error" aria-live="assertive">
+            <span class="sr-only">ERROR: </span>
+            <span id="<%- form %>-<%- name %>-validation-error-msg"></span>
+        </span>
+        <% if ( instructions ) { %> <span class="tip tip-input" id="<%- form %>-<%- name %>-desc"><%- instructions %></span><% } %>
+    <% } %>
+
+    <% if( form === 'login' && name === 'password' ) { %>
+        <button type="button" class="forgot-password field-link"><%- gettext("Forgot password?") %></button>
+    <% } %>
+</div>
+
+        </script>
+        <script type="text/template" id="ds_form_field-tpl">
+            <div class="form-field <%- type %>-<%- name %>">
+    <% if ( type === 'select' ) { %>
+        <ds-dropdown upstream="<%- form %>-<%- name %>" <% if ( placeholder ) { %> placeholder="<%- placeholder %>"<% } %>>
+            <% _.each(options, function(el) { %>
+                <span data-value="<%- el.value%>" class="<% if ( el.default ) { %>selected<% } %>"><%- el.name %></span>
+            <% }); %>
+            <span slot="label"><%= HtmlUtils.HTML(label) %></span>
+        </ds-dropdown>
+        <input type="hidden" id="<%- form %>-<%- name %>" name="<%- name %>" <% if ( required ) { %>required<% } %> />
+    <% } else if ( type === 'textarea' ) { %>
+        <label class="ds-textarea">
+            <%= HtmlUtils.HTML(label) %>
+            <textarea
+                id="<%- form %>-<%- name %>"
+                name="<%- name %>"
+                rows="2"
+                <% if ( restrictions.min_length ) { %> minlength="<%- restrictions.min_length %>"<% } %>
+                <% if ( restrictions.max_length ) { %> maxlength="<%- restrictions.max_length %>"<% } %>
+                <% if ( required ) { %>required<% } %>
+            ></textarea>
+            <% if ( instructions ) { %><span><%- instructions %></span><% } %>
+        </label>
+    <% } else if (type === 'checkbox' ) { %>
+        <label for="<%- form %>-<%- name %>">
+            <input class="ds-checkbox" type="checkbox" id="<%- form %>-<%- name %>" name="<%- name %>">
+            <span><%= HtmlUtils.HTML(label) %></span>
+        </label>
+    <% } else if (type === 'text' || type === 'password' || type === 'email') { %>
+        <label class="ds-input">
+            <%= HtmlUtils.HTML(label) %>
+            <input
+                type="<%- type %>"
+                id="<%- form %>-<%- name %>"
+                name="<%- name %>"
+                placeholder="<%= gettext('Enter your ' + name) %>"
+                <% if ( restrictions.readonly ) { %>readonly<% } %>
+                <% if ( required ) { %>required<% } %>
+            />
+            <% if ( instructions ) { %><span class="institution"><%- instructions %></span><% } %>
+        </label>
+    <% } else if (type === 'plaintext' ) { %>
+        <label class="ds-input">
+            <input type="hidden" id="<%- form %>-<%- name %>" name="<%- name %>" value="true" />
+            <span><%= HtmlUtils.HTML(label) %></span>
+        </label>
+    <% } else { %>
+        <input id="<%- form %>-<%- name %>"
+           type="<%- type %>"
+           name="<%- name %>"
+           class="input-block"
+            <% if ( instructions ) { %>
+            aria-describedby="<%- form %>-<%- name %>-desc <%- form %>-<%- name %>-validation-error"
+            <% } %>
+            <% if ( restrictions.min_length ) { %> minlength="<%- restrictions.min_length %>"<% } %>
+            <% if ( restrictions.max_length ) { %> maxlength="<%- restrictions.max_length %>"<% } %>
+            <% if ( restrictions.readonly )   { %> readonly <% } %>
+            <% if ( required ) { %> required<% } %>
+            <% if ( typeof errorMessages !== 'undefined' ) {
+                _.each(errorMessages, function( msg, type ) {%>
+                    data-errormsg-<%- type %>="<%- msg %>"
+            <%  });
+            } %>
+            <% if ( placeholder ) { %> placeholder="<%- placeholder %>"<% } %>
+            value="<%- defaultValue %>"
+        />
+
+        <span id="<%- form %>-<%- name %>-validation-error" class="tip error" aria-live="assertive">
+            <span class="sr-only">ERROR: </span>
+            <span id="<%- form %>-<%- name %>-validation-error-msg"></span>
+        </span>
+        <% if ( instructions ) { %> <span class="instruction" id="<%- form %>-<%- name %>-desc"><%- instructions %></span><% } %>
+    <% } %>
+
+    <% if( form === 'login' && name === 'password' ) { %>
+        <a type="button" class="forgot-password ds-link btn"><%- gettext("Forgot password?") %></a>
+    <% } %>
+</div>
+
+        </script>
+        <script type="text/template" id="login-tpl">
+            <aside>
+    <figure class="instruction-text">
+        <img src="<%- context.static_url %>/login-illustration.jpg" />
+    </figure>
+</aside>
+<article>
+    <div class="article-inner-wrapper">
+        <figure class="welcome-text">
+          <img src="<%- context.static_url %>/logo.png">
+          <div>
+            <h1><%- gettext("Welcome back, \ngood to see you again") %></h1>
+            <figcaption><%- gettext("Sign in to your account") %></figcaption>
+          </div>
+        </figure>
+
+        <% // Hide SSO related messages if we are not in the SSO pipeline.  %>
+        <% if (context.enterpriseName && context.currentProvider) { %>
+            <% if (context.pipelineUserDetails && context.pipelineUserDetails.email) { %>
+                <h2><%- gettext("Sign in to continue learning as {email}").replace("{email}", context.pipelineUserDetails.email) %></h2>
+            <% } else { %>
+                <h2><%- gettext("Sign in to continue learning") %></h2>
+            <% } %>
+            <p>
+                <%- gettext("You already have an edX account with your {enterprise_name} email address.").replace(/{enterprise_name}/g, context.enterpriseName) %>
+                <% if (context.syncLearnerProfileData) {
+                    %><%- gettext("Going forward, your account information will be updated and maintained by {enterprise_name}.").replace(/{enterprise_name}/g, context.enterpriseName) %>
+                <% } %>
+                <%- gettext("You can view your information or unlink from {enterprise_name} anytime in your Account Settings.").replace(/{enterprise_name}/g, context.enterpriseName) %>
+            </p>
+            <p><%- gettext("To continue learning with this account, sign in below.") %></p>
+        <% } %>
+
+        <div class="login-providers">
+          <% _.each( context.providers, function( provider ) {
+              if ( provider.loginUrl ) { %>
+                  <button type="button" class="ds-button button-<%- provider.id %> login-provider login-<%- provider.id %>" data-provider-url="<%- provider.loginUrl %>">
+                      <div class="icon <% if ( provider.iconClass ) { %>fa <%- provider.iconClass %><% } %>" aria-hidden="true">
+                          <% if ( provider.iconImage ) { %>
+                              <img class="icon-image" src="<%- provider.iconImage %>" alt="<%- provider.name %> icon" />
+                          <% } %>
+                      </div>
+                      <span><%- _.sprintf( gettext("Sign in with %(providerName)s"), {providerName: provider.name} ) %></span>
+                  </button>
+              <% }
+          }); %>
+
+          <% if ( context.hasSecondaryProviders ) { %>
+              <button type="button" class="ds-button form-toggle" data-type="institution_login">
+                  <%- gettext("Use my institution/campus credentials") %>
+              </button>
+          <% } %>
+        </div>
+
+        <form id="login" class="login-form" tabindex="-1" method="POST">
+
+            <p class="sr">
+                <% if ( context.providers.length > 0 && !context.currentProvider || context.hasSecondaryProviders ) { %>
+                    <%- gettext("Sign in here using your email address and password, or use one of the providers listed below.") %>
+                <% } else { %>
+                    <%- gettext("Sign in here using your email address and password.") %>
+                <% } %>
+                <%- gettext("If you do not yet have an account, use the button below to register.") %>
+            </p>
+
+            <%= context.fields %>
+
+            <div class="js-form-feedback" aria-live="assertive" tabindex="-1"></div>
+
+            <button type="submit" class="js-login ds-button"><%- gettext("Sign in") %></button>
+
+            <% if (context.allowRegistrationForm !== false && !context.syncLearnerProfileData && !(context.enterpriseName && context.currentProvider)) { %>
+              <div class="toggle-form">
+                  <span><%- gettext("Don’t have an account yet?") %></span>
+                  <a href="#login" class="form-toggle ds-link btn" data-type="register"><%- gettext("Create an Account.") %></a>
+              </div>
+            <% } %>
+        </form>
+
+        <hr class="ds-divider login-option-appendix" data-text="<%- gettext('Or') %>">
+
+        <div class="login-option-appendix">
+          <button class="ds-button sso-link sso-login"><i class="far fa-lock"></i><%- gettext("Sign in using SSO") %></button>
+          <button class="ds-button email-login-link email-login"><%- gettext("Sign in using email") %></button>
+        </div>
+    </div>
+</article>
+
+        </script>
+        <script type="text/template" id="register-tpl">
+            <aside>
+  <figure class="instruction-text">
+    <img src="<%- context.static_url %>/login-illustration.jpg" />
+  </figure>
+</aside>
+<article>
+    <div class="article-inner-wrapper">
+        <figure class="welcome-text">
+          <a class="brand-link" href="/"><img src="<%- context.static_url %>/logo.png"></a>
+          <div style="width: 100%;">
+            <% if (!context.currentProvider) { %>
+                <% if (context.providers.length > 0 || context.hasSecondaryProviders) { %>
+                    <div class="login-providers">
+                        <h1><%- gettext("Create an account using") %></h1>
+                        <%
+                        _.each( context.providers, function( provider) {
+                            if ( provider.registerUrl ) { %>
+                                <button type="button" class="ds-button button-<%- provider.id %> login-provider register-<%- provider.id %>" data-provider-url="<%- provider.registerUrl %>">
+                                    <div class="icon <% if ( provider.iconClass ) { %>fa <%- provider.iconClass %><% } %>" aria-hidden="true">
+                                        <% if ( provider.iconImage ) { %>
+                                            <img class="icon-image" src="<%- provider.iconImage %>" alt="<%- provider.name %> icon" />
+                                        <% } %>
+                                    </div>
+                                    <span aria-hidden="true"><%- provider.name %></span>
+                                    <span class="sr"><%- _.sprintf( gettext("Create account using %(providerName)s."), {providerName: provider.name} ) %></span>
+                                </button>
+                        <%  }
+                        }); %>
+
+                        <% if ( context.hasSecondaryProviders ) { %>
+                            <button type="button" class="ds-button form-toggle" data-type="institution_login">
+                                <%- gettext("Use my institution/campus credentials") %>
+                            </button>
+                        <% } %>
+                    </div>
+                    <h1><%- gettext("or create a new one here") %></h1>
+                <% } else { %>
+                    <h1><%- gettext('Create an Account')%></h1>
+                <% } %>
+            <% } else if (context.autoRegisterWelcomeMessage) { %>
+                <h1><%- context.autoRegisterWelcomeMessage %></h1>
+            <% } %>
+          </div>
+        </figure>
+
+        <form id="register" class="register-form" autocomplete="off" tabindex="-1" method="POST">
+            <%= context.fields %>
+
+            <div class="js-form-feedback" aria-live="assertive" tabindex="-1"></div>
+
+            <button type="submit" class="ds-button js-register">
+                <% if ( context.registerFormSubmitButtonText ) { %><%- context.registerFormSubmitButtonText %><% } else { %><%- gettext("Create Account") %><% } %>
+            </button>
+
+            <% if (!context.syncLearnerProfileData) { %>
+              <div class="toggle-form">
+                  <span><%- gettext("Already have an account?") %></span>
+                  <a href="#login" class="form-toggle ds-link btn" data-type="login"><%- gettext("Sign in.") %></a>
+              </div>
+            <% } %>
+        </form>
+    </div>
+</article>
+
+        </script>
+        <script type="text/template" id="institution_login-tpl">
+            <div class="wrapper-other-login">
+    <div class="section-title lines">
+        <h2>
+            <span class="text">
+                <%- gettext("Sign in with Institution/Campus Credentials") %>
+            </span>
+        </h2>
+    </div>
+
+    <p class="instructions"><%- gettext("Choose your institution from the list below:") %></p>
+
+    <ul class="institution-list">
+        <% _.each( _.sortBy(providers, "name"), function( provider ) {
+            if ( provider.loginUrl ) { %>
+                <li class="institution">
+                    <a class="institution-login-link" href="<%- provider.loginUrl %>"><%- provider.name %></a>
+                </li>
+            <% }
+        }); %>
+    </ul>
+
+    <div class="section-title lines">
+        <h2>
+            <span class="text"><%- gettext("or") %></span>
+        </h2>
+    </div>
+
+    <div class="toggle-form">
+        <button class="nav-btn form-toggle" data-type="login"><%- gettext("Back to sign in") %></button>
+    </div>
+</div>
+
+        </script>
+        <script type="text/template" id="institution_register-tpl">
+            <div class="wrapper-other-login">
+    <div class="section-title lines">
+        <h2>
+            <span class="text">
+                <%- gettext("Register with Institution/Campus Credentials") %>
+            </span>
+        </h2>
+    </div>
+
+    <p class="instructions"><%- gettext("Choose your institution from the list below:") %></p>
+
+    <ul class="institution-list">
+        <% _.each( _.sortBy(providers, "name"), function( provider ) {
+            if ( provider.registerUrl ) { %>
+                <li class="institution">
+                    <a class="institution-login-link" href="<%- provider.registerUrl %>"><%- provider.name %></a>
+                </li>
+            <% }
+        }); %>
+    </ul>
+
+    <div class="section-title lines">
+        <h2>
+            <span class="text"><%- gettext("or") %></span>
+        </h2>
+    </div>
+
+    <div class="toggle-form">
+        <button class="nav-btn form-toggle" data-type="register"><%- gettext("Register through edX") %></button>
+    </div>
+</div>
+
+        </script>
+        <script type="text/template" id="password_reset-tpl">
+            <aside>
+  <figure class="instruction-text">
+    <img src="<%- context.static_url %>/login-illustration.jpg" />
+  </figure>
+</aside>
+<article>
+    <div class="article-inner-wrapper">
+        <figure class="welcome-text">
+          <img src="<%- context.static_url %>/logo.png">
+          <div>
+            <h1><%- gettext("Reset your password") %></h1>
+            <figcaption><%- gettext("Please enter your email address below and we will send you instructions for setting a new password.") %></figcaption>
+          </div>
+        </figure>
+
+        <div class="js-form-feedback" aria-live="assertive" tabindex="-1"></div>
+
+        <form id="password-reset" class="password-reset-form" tabindex="-1" method="POST">
+            <%= fields %>
+
+            <button type="submit" class="ds-button js-reset"><%- gettext("Reset my password") %></button>
+
+            <div class="toggle-form">
+                <a href="#login" class="form-toggle ds-link btn" data-type="login"><%- gettext("Back to login.") %></a>
+            </div>
+        </form>
+    </div>
+</article>
+
+        </script>
+        <script type="text/template" id="hinted_login-tpl">
+            <div class="wrapper-other-login">
+    <div class="section-title lines">
+        <h2>
+            <span class="text"><%- gettext("Sign in") %></span>
+        </h2>
+    </div>
+
+    <p class="instructions"><%- _.sprintf( gettext("Would you like to sign in using your %(providerName)s credentials?"), { providerName: hintedProvider.name } ) %></p>
+
+    <button class="action action-primary action-update proceed-button button-<%- hintedProvider.id %> hinted-login-<%- hintedProvider.id %>">
+        <span class="icon <% if ( hintedProvider.iconClass ) { %>fa <%- hintedProvider.iconClass %><% } %>" aria-hidden="true">
+            <% if ( hintedProvider.iconImage ) { %>
+                <img class="icon-image" src="<%- hintedProvider.iconImage %>" alt="<%- hintedProvider.name %> icon" />
+            <% } %>
+        </span>
+        <%- _.sprintf( gettext("Sign in using %(providerName)s"), { providerName: hintedProvider.name } ) %>
+    </button>
+
+    <div class="section-title lines">
+        <h2>
+            <span class="text"><%- gettext("or") %></span>
+        </h2>
+    </div>
+
+    <div class="toggle-form">
+        <button class="nav-btn form-toggle" data-type="login"><%- gettext("Show me other ways to sign in or register") %></button>
+    </div>
+</div>
+
+        </script>
+
+<main id="main" aria-label="Content" tabindex="-1">
+    <div class="logo-motto-and-toggle-form">
+    </div>
+
+    <div id="login-and-registration-container" class="login-register"></div>
+
+</main>
+
+      
+    </div>
+
+
+  </div>
+
+  
+  
+    
+    
+    <script type="text/javascript">
+        (function (require) {
+            require(['js/student_account/logistration_factory'], function (LogistrationFactory) {
+                
+        var options = {"login_redirect_url": "/dashboard", "initial_mode": "login", "third_party_auth": {"currentProvider": null, "providers": [], "secondaryProviders": [], "finishAuthUrl": null, "errorMessage": null, "registerFormSubmitButtonText": "Create Account", "syncLearnerProfileData": false, "pipeline_user_details": {}}, "third_party_auth_hint": "", "platform_name": "Triboo", "support_link": {}, "password_reset_support_link": "", "account_activation_messages": [], "login_form_desc": {"method": "post", "submit_url": "/user_api/v1/account/login_session/", "fields": [{"name": "email", "label": "Email", "type": "text", "defaultValue": "", "placeholder": "username@domain.com", "instructions": "The email address you used to register with Triboo", "required": true, "restrictions": {"min_length": 3, "max_length": 254}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}, {"name": "password", "label": "Password", "type": "password", "defaultValue": "", "placeholder": "", "instructions": "", "required": true, "restrictions": {"max_length": 75}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}, {"name": "remember", "label": "Remember me", "type": "checkbox", "defaultValue": false, "placeholder": "", "instructions": "", "required": false, "restrictions": {}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}]}, "registration_form_desc": {"method": "post", "submit_url": "/user_api/v1/account/registration/", "fields": [{"name": "name", "label": "Full Name", "type": "text", "defaultValue": "", "placeholder": "", "instructions": "This name will be used on any certificates that you earn.", "required": true, "restrictions": {"max_length": 255}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}, {"name": "username", "label": "Public Username", "type": "text", "defaultValue": "", "placeholder": "", "instructions": "The name that will identify you in your courses. It cannot be changed later.", "required": true, "restrictions": {"min_length": 2, "max_length": 30}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}, {"name": "email", "label": "Email", "type": "email", "defaultValue": "", "placeholder": "", "instructions": "This is what you will use to login.", "required": true, "restrictions": {"min_length": 3, "max_length": 254}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}, {"name": "password", "label": "Password", "type": "password", "defaultValue": "", "placeholder": "", "instructions": "Your password must contain at least 2 characters.", "required": true, "restrictions": {"min_length": 2, "max_length": 75}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}, {"name": "country", "label": "Country or Region of Residence", "type": "select", "defaultValue": "", "placeholder": "", "instructions": "The country or region where you live.", "required": true, "restrictions": {}, "errorMessages": {"required": "Select your country or region of residence."}, "supplementalLink": "", "supplementalText": "", "options": [{"value": "", "name": "--", "default": true}, {"value": "AF", "name": "Afghanistan", "default": false}, {"value": "AX", "name": "\u00c5land Islands", "default": false}, {"value": "AL", "name": "Albania", "default": false}, {"value": "DZ", "name": "Algeria", "default": false}, {"value": "AS", "name": "American Samoa", "default": false}, {"value": "AD", "name": "Andorra", "default": false}, {"value": "AO", "name": "Angola", "default": false}, {"value": "AI", "name": "Anguilla", "default": false}, {"value": "AQ", "name": "Antarctica", "default": false}, {"value": "AG", "name": "Antigua and Barbuda", "default": false}, {"value": "AR", "name": "Argentina", "default": false}, {"value": "AM", "name": "Armenia", "default": false}, {"value": "AW", "name": "Aruba", "default": false}, {"value": "AU", "name": "Australia", "default": false}, {"value": "AT", "name": "Austria", "default": false}, {"value": "AZ", "name": "Azerbaijan", "default": false}, {"value": "BS", "name": "Bahamas", "default": false}, {"value": "BH", "name": "Bahrain", "default": false}, {"value": "BD", "name": "Bangladesh", "default": false}, {"value": "BB", "name": "Barbados", "default": false}, {"value": "BY", "name": "Belarus", "default": false}, {"value": "BE", "name": "Belgium", "default": false}, {"value": "BZ", "name": "Belize", "default": false}, {"value": "BJ", "name": "Benin", "default": false}, {"value": "BM", "name": "Bermuda", "default": false}, {"value": "BT", "name": "Bhutan", "default": false}, {"value": "BO", "name": "Bolivia", "default": false}, {"value": "BQ", "name": "Bonaire, Sint Eustatius and Saba", "default": false}, {"value": "BA", "name": "Bosnia and Herzegovina", "default": false}, {"value": "BW", "name": "Botswana", "default": false}, {"value": "BV", "name": "Bouvet Island", "default": false}, {"value": "BR", "name": "Brazil", "default": false}, {"value": "IO", "name": "British Indian Ocean Territory", "default": false}, {"value": "BN", "name": "Brunei", "default": false}, {"value": "BG", "name": "Bulgaria", "default": false}, {"value": "BF", "name": "Burkina Faso", "default": false}, {"value": "BI", "name": "Burundi", "default": false}, {"value": "CV", "name": "Cabo Verde", "default": false}, {"value": "KH", "name": "Cambodia", "default": false}, {"value": "CM", "name": "Cameroon", "default": false}, {"value": "CA", "name": "Canada", "default": false}, {"value": "KY", "name": "Cayman Islands", "default": false}, {"value": "CF", "name": "Central African Republic", "default": false}, {"value": "TD", "name": "Chad", "default": false}, {"value": "CL", "name": "Chile", "default": false}, {"value": "CN", "name": "China", "default": false}, {"value": "CX", "name": "Christmas Island", "default": false}, {"value": "CC", "name": "Cocos (Keeling) Islands", "default": false}, {"value": "CO", "name": "Colombia", "default": false}, {"value": "KM", "name": "Comoros", "default": false}, {"value": "CG", "name": "Congo", "default": false}, {"value": "CD", "name": "Congo (the Democratic Republic of the)", "default": false}, {"value": "CK", "name": "Cook Islands", "default": false}, {"value": "CR", "name": "Costa Rica", "default": false}, {"value": "CI", "name": "C\u00f4te d'Ivoire", "default": false}, {"value": "HR", "name": "Croatia", "default": false}, {"value": "CU", "name": "Cuba", "default": false}, {"value": "CW", "name": "Cura\u00e7ao", "default": false}, {"value": "CY", "name": "Cyprus", "default": false}, {"value": "CZ", "name": "Czechia", "default": false}, {"value": "DK", "name": "Denmark", "default": false}, {"value": "DJ", "name": "Djibouti", "default": false}, {"value": "DM", "name": "Dominica", "default": false}, {"value": "DO", "name": "Dominican Republic", "default": false}, {"value": "EC", "name": "Ecuador", "default": false}, {"value": "EG", "name": "Egypt", "default": false}, {"value": "SV", "name": "El Salvador", "default": false}, {"value": "GQ", "name": "Equatorial Guinea", "default": false}, {"value": "ER", "name": "Eritrea", "default": false}, {"value": "EE", "name": "Estonia", "default": false}, {"value": "ET", "name": "Ethiopia", "default": false}, {"value": "FK", "name": "Falkland Islands  [Malvinas]", "default": false}, {"value": "FO", "name": "Faroe Islands", "default": false}, {"value": "FJ", "name": "Fiji", "default": false}, {"value": "FI", "name": "Finland", "default": false}, {"value": "FR", "name": "France", "default": false}, {"value": "GF", "name": "French Guiana", "default": false}, {"value": "PF", "name": "French Polynesia", "default": false}, {"value": "TF", "name": "French Southern Territories", "default": false}, {"value": "GA", "name": "Gabon", "default": false}, {"value": "GM", "name": "Gambia", "default": false}, {"value": "GE", "name": "Georgia", "default": false}, {"value": "DE", "name": "Germany", "default": false}, {"value": "GH", "name": "Ghana", "default": false}, {"value": "GI", "name": "Gibraltar", "default": false}, {"value": "GR", "name": "Greece", "default": false}, {"value": "GL", "name": "Greenland", "default": false}, {"value": "GD", "name": "Grenada", "default": false}, {"value": "GP", "name": "Guadeloupe", "default": false}, {"value": "GU", "name": "Guam", "default": false}, {"value": "GT", "name": "Guatemala", "default": false}, {"value": "GG", "name": "Guernsey", "default": false}, {"value": "GN", "name": "Guinea", "default": false}, {"value": "GW", "name": "Guinea-Bissau", "default": false}, {"value": "GY", "name": "Guyana", "default": false}, {"value": "HT", "name": "Haiti", "default": false}, {"value": "HM", "name": "Heard Island and McDonald Islands", "default": false}, {"value": "VA", "name": "Holy See", "default": false}, {"value": "HN", "name": "Honduras", "default": false}, {"value": "HK", "name": "Hong Kong", "default": false}, {"value": "HU", "name": "Hungary", "default": false}, {"value": "IS", "name": "Iceland", "default": false}, {"value": "IN", "name": "India", "default": false}, {"value": "ID", "name": "Indonesia", "default": false}, {"value": "IR", "name": "Iran", "default": false}, {"value": "IQ", "name": "Iraq", "default": false}, {"value": "IE", "name": "Ireland", "default": false}, {"value": "IM", "name": "Isle of Man", "default": false}, {"value": "IL", "name": "Israel", "default": false}, {"value": "IT", "name": "Italy", "default": false}, {"value": "JM", "name": "Jamaica", "default": false}, {"value": "JP", "name": "Japan", "default": false}, {"value": "JE", "name": "Jersey", "default": false}, {"value": "JO", "name": "Jordan", "default": false}, {"value": "KZ", "name": "Kazakhstan", "default": false}, {"value": "KE", "name": "Kenya", "default": false}, {"value": "KI", "name": "Kiribati", "default": false}, {"value": "XK", "name": "Kosovo", "default": false}, {"value": "KW", "name": "Kuwait", "default": false}, {"value": "KG", "name": "Kyrgyzstan", "default": false}, {"value": "LA", "name": "Laos", "default": false}, {"value": "LV", "name": "Latvia", "default": false}, {"value": "LB", "name": "Lebanon", "default": false}, {"value": "LS", "name": "Lesotho", "default": false}, {"value": "LR", "name": "Liberia", "default": false}, {"value": "LY", "name": "Libya", "default": false}, {"value": "LI", "name": "Liechtenstein", "default": false}, {"value": "LT", "name": "Lithuania", "default": false}, {"value": "LU", "name": "Luxembourg", "default": false}, {"value": "MO", "name": "Macao", "default": false}, {"value": "MK", "name": "Macedonia", "default": false}, {"value": "MG", "name": "Madagascar", "default": false}, {"value": "MW", "name": "Malawi", "default": false}, {"value": "MY", "name": "Malaysia", "default": false}, {"value": "MV", "name": "Maldives", "default": false}, {"value": "ML", "name": "Mali", "default": false}, {"value": "MT", "name": "Malta", "default": false}, {"value": "MH", "name": "Marshall Islands", "default": false}, {"value": "MQ", "name": "Martinique", "default": false}, {"value": "MR", "name": "Mauritania", "default": false}, {"value": "MU", "name": "Mauritius", "default": false}, {"value": "YT", "name": "Mayotte", "default": false}, {"value": "MX", "name": "Mexico", "default": false}, {"value": "FM", "name": "Micronesia (Federated States of)", "default": false}, {"value": "MD", "name": "Moldova", "default": false}, {"value": "MC", "name": "Monaco", "default": false}, {"value": "MN", "name": "Mongolia", "default": false}, {"value": "ME", "name": "Montenegro", "default": false}, {"value": "MS", "name": "Montserrat", "default": false}, {"value": "MA", "name": "Morocco", "default": false}, {"value": "MZ", "name": "Mozambique", "default": false}, {"value": "MM", "name": "Myanmar", "default": false}, {"value": "NA", "name": "Namibia", "default": false}, {"value": "NR", "name": "Nauru", "default": false}, {"value": "NP", "name": "Nepal", "default": false}, {"value": "NL", "name": "Netherlands", "default": false}, {"value": "NC", "name": "New Caledonia", "default": false}, {"value": "NZ", "name": "New Zealand", "default": false}, {"value": "NI", "name": "Nicaragua", "default": false}, {"value": "NE", "name": "Niger", "default": false}, {"value": "NG", "name": "Nigeria", "default": false}, {"value": "NU", "name": "Niue", "default": false}, {"value": "NF", "name": "Norfolk Island", "default": false}, {"value": "KP", "name": "North Korea", "default": false}, {"value": "MP", "name": "Northern Mariana Islands", "default": false}, {"value": "NO", "name": "Norway", "default": false}, {"value": "OM", "name": "Oman", "default": false}, {"value": "PK", "name": "Pakistan", "default": false}, {"value": "PW", "name": "Palau", "default": false}, {"value": "PS", "name": "Palestine, State of", "default": false}, {"value": "PA", "name": "Panama", "default": false}, {"value": "PG", "name": "Papua New Guinea", "default": false}, {"value": "PY", "name": "Paraguay", "default": false}, {"value": "PE", "name": "Peru", "default": false}, {"value": "PH", "name": "Philippines", "default": false}, {"value": "PN", "name": "Pitcairn", "default": false}, {"value": "PL", "name": "Poland", "default": false}, {"value": "PT", "name": "Portugal", "default": false}, {"value": "PR", "name": "Puerto Rico", "default": false}, {"value": "QA", "name": "Qatar", "default": false}, {"value": "RE", "name": "R\u00e9union", "default": false}, {"value": "RO", "name": "Romania", "default": false}, {"value": "RU", "name": "Russia", "default": false}, {"value": "RW", "name": "Rwanda", "default": false}, {"value": "BL", "name": "Saint Barth\u00e9lemy", "default": false}, {"value": "SH", "name": "Saint Helena, Ascension and Tristan da Cunha", "default": false}, {"value": "KN", "name": "Saint Kitts and Nevis", "default": false}, {"value": "LC", "name": "Saint Lucia", "default": false}, {"value": "MF", "name": "Saint Martin (French part)", "default": false}, {"value": "PM", "name": "Saint Pierre and Miquelon", "default": false}, {"value": "VC", "name": "Saint Vincent and the Grenadines", "default": false}, {"value": "WS", "name": "Samoa", "default": false}, {"value": "SM", "name": "San Marino", "default": false}, {"value": "ST", "name": "Sao Tome and Principe", "default": false}, {"value": "SA", "name": "Saudi Arabia", "default": false}, {"value": "SN", "name": "Senegal", "default": false}, {"value": "RS", "name": "Serbia", "default": false}, {"value": "SC", "name": "Seychelles", "default": false}, {"value": "SL", "name": "Sierra Leone", "default": false}, {"value": "SG", "name": "Singapore", "default": false}, {"value": "SX", "name": "Sint Maarten (Dutch part)", "default": false}, {"value": "SK", "name": "Slovakia", "default": false}, {"value": "SI", "name": "Slovenia", "default": false}, {"value": "SB", "name": "Solomon Islands", "default": false}, {"value": "SO", "name": "Somalia", "default": false}, {"value": "ZA", "name": "South Africa", "default": false}, {"value": "GS", "name": "South Georgia and the South Sandwich Islands", "default": false}, {"value": "KR", "name": "South Korea", "default": false}, {"value": "SS", "name": "South Sudan", "default": false}, {"value": "ES", "name": "Spain", "default": false}, {"value": "LK", "name": "Sri Lanka", "default": false}, {"value": "SD", "name": "Sudan", "default": false}, {"value": "SR", "name": "Suriname", "default": false}, {"value": "SJ", "name": "Svalbard and Jan Mayen", "default": false}, {"value": "SZ", "name": "Swaziland", "default": false}, {"value": "SE", "name": "Sweden", "default": false}, {"value": "CH", "name": "Switzerland", "default": false}, {"value": "SY", "name": "Syria", "default": false}, {"value": "TW", "name": "Taiwan", "default": false}, {"value": "TJ", "name": "Tajikistan", "default": false}, {"value": "TZ", "name": "Tanzania", "default": false}, {"value": "TH", "name": "Thailand", "default": false}, {"value": "TL", "name": "Timor-Leste", "default": false}, {"value": "TG", "name": "Togo", "default": false}, {"value": "TK", "name": "Tokelau", "default": false}, {"value": "TO", "name": "Tonga", "default": false}, {"value": "TT", "name": "Trinidad and Tobago", "default": false}, {"value": "TN", "name": "Tunisia", "default": false}, {"value": "TR", "name": "Turkey", "default": false}, {"value": "TM", "name": "Turkmenistan", "default": false}, {"value": "TC", "name": "Turks and Caicos Islands", "default": false}, {"value": "TV", "name": "Tuvalu", "default": false}, {"value": "UG", "name": "Uganda", "default": false}, {"value": "UA", "name": "Ukraine", "default": false}, {"value": "AE", "name": "United Arab Emirates", "default": false}, {"value": "GB", "name": "United Kingdom", "default": false}, {"value": "UM", "name": "United States Minor Outlying Islands", "default": false}, {"value": "US", "name": "United States of America", "default": false}, {"value": "UY", "name": "Uruguay", "default": false}, {"value": "UZ", "name": "Uzbekistan", "default": false}, {"value": "VU", "name": "Vanuatu", "default": false}, {"value": "VE", "name": "Venezuela", "default": false}, {"value": "VN", "name": "Vietnam", "default": false}, {"value": "VG", "name": "Virgin Islands (British)", "default": false}, {"value": "VI", "name": "Virgin Islands (U.S.)", "default": false}, {"value": "WF", "name": "Wallis and Futuna", "default": false}, {"value": "EH", "name": "Western Sahara", "default": false}, {"value": "YE", "name": "Yemen", "default": false}, {"value": "ZM", "name": "Zambia", "default": false}, {"value": "ZW", "name": "Zimbabwe", "default": false}]}, {"name": "gender", "label": "Gender", "type": "select", "defaultValue": "", "placeholder": "", "instructions": "", "required": false, "restrictions": {}, "errorMessages": {}, "supplementalLink": "", "supplementalText": "", "options": [{"value": "", "name": "--", "default": true}, {"value": "m", "name": "Male", "default": false}, {"value": "f", "name": "Female", "default": false}, {"value": "o", "name": "Other/Prefer Not to Say", "default": false}]}, {"name": "year_of_birth", "label": "Year of birth", "type": "select", "defaultValue": "", "placeholder": "", "instructions": "", "required": false, "restrictions": {}, "errorMessages": {}, "supplementalLink": "", "supplementalText": "", "options": [{"value": "", "name": "--", "default": true}, {"value": "2026", "name": "2026", "default": false}, {"value": "2025", "name": "2025", "default": false}, {"value": "2024", "name": "2024", "default": false}, {"value": "2023", "name": "2023", "default": false}, {"value": "2022", "name": "2022", "default": false}, {"value": "2021", "name": "2021", "default": false}, {"value": "2020", "name": "2020", "default": false}, {"value": "2019", "name": "2019", "default": false}, {"value": "2018", "name": "2018", "default": false}, {"value": "2017", "name": "2017", "default": false}, {"value": "2016", "name": "2016", "default": false}, {"value": "2015", "name": "2015", "default": false}, {"value": "2014", "name": "2014", "default": false}, {"value": "2013", "name": "2013", "default": false}, {"value": "2012", "name": "2012", "default": false}, {"value": "2011", "name": "2011", "default": false}, {"value": "2010", "name": "2010", "default": false}, {"value": "2009", "name": "2009", "default": false}, {"value": "2008", "name": "2008", "default": false}, {"value": "2007", "name": "2007", "default": false}, {"value": "2006", "name": "2006", "default": false}, {"value": "2005", "name": "2005", "default": false}, {"value": "2004", "name": "2004", "default": false}, {"value": "2003", "name": "2003", "default": false}, {"value": "2002", "name": "2002", "default": false}, {"value": "2001", "name": "2001", "default": false}, {"value": "2000", "name": "2000", "default": false}, {"value": "1999", "name": "1999", "default": false}, {"value": "1998", "name": "1998", "default": false}, {"value": "1997", "name": "1997", "default": false}, {"value": "1996", "name": "1996", "default": false}, {"value": "1995", "name": "1995", "default": false}, {"value": "1994", "name": "1994", "default": false}, {"value": "1993", "name": "1993", "default": false}, {"value": "1992", "name": "1992", "default": false}, {"value": "1991", "name": "1991", "default": false}, {"value": "1990", "name": "1990", "default": false}, {"value": "1989", "name": "1989", "default": false}, {"value": "1988", "name": "1988", "default": false}, {"value": "1987", "name": "1987", "default": false}, {"value": "1986", "name": "1986", "default": false}, {"value": "1985", "name": "1985", "default": false}, {"value": "1984", "name": "1984", "default": false}, {"value": "1983", "name": "1983", "default": false}, {"value": "1982", "name": "1982", "default": false}, {"value": "1981", "name": "1981", "default": false}, {"value": "1980", "name": "1980", "default": false}, {"value": "1979", "name": "1979", "default": false}, {"value": "1978", "name": "1978", "default": false}, {"value": "1977", "name": "1977", "default": false}, {"value": "1976", "name": "1976", "default": false}, {"value": "1975", "name": "1975", "default": false}, {"value": "1974", "name": "1974", "default": false}, {"value": "1973", "name": "1973", "default": false}, {"value": "1972", "name": "1972", "default": false}, {"value": "1971", "name": "1971", "default": false}, {"value": "1970", "name": "1970", "default": false}, {"value": "1969", "name": "1969", "default": false}, {"value": "1968", "name": "1968", "default": false}, {"value": "1967", "name": "1967", "default": false}, {"value": "1966", "name": "1966", "default": false}, {"value": "1965", "name": "1965", "default": false}, {"value": "1964", "name": "1964", "default": false}, {"value": "1963", "name": "1963", "default": false}, {"value": "1962", "name": "1962", "default": false}, {"value": "1961", "name": "1961", "default": false}, {"value": "1960", "name": "1960", "default": false}, {"value": "1959", "name": "1959", "default": false}, {"value": "1958", "name": "1958", "default": false}, {"value": "1957", "name": "1957", "default": false}, {"value": "1956", "name": "1956", "default": false}, {"value": "1955", "name": "1955", "default": false}, {"value": "1954", "name": "1954", "default": false}, {"value": "1953", "name": "1953", "default": false}, {"value": "1952", "name": "1952", "default": false}, {"value": "1951", "name": "1951", "default": false}, {"value": "1950", "name": "1950", "default": false}, {"value": "1949", "name": "1949", "default": false}, {"value": "1948", "name": "1948", "default": false}, {"value": "1947", "name": "1947", "default": false}, {"value": "1946", "name": "1946", "default": false}, {"value": "1945", "name": "1945", "default": false}, {"value": "1944", "name": "1944", "default": false}, {"value": "1943", "name": "1943", "default": false}, {"value": "1942", "name": "1942", "default": false}, {"value": "1941", "name": "1941", "default": false}, {"value": "1940", "name": "1940", "default": false}, {"value": "1939", "name": "1939", "default": false}, {"value": "1938", "name": "1938", "default": false}, {"value": "1937", "name": "1937", "default": false}, {"value": "1936", "name": "1936", "default": false}, {"value": "1935", "name": "1935", "default": false}, {"value": "1934", "name": "1934", "default": false}, {"value": "1933", "name": "1933", "default": false}, {"value": "1932", "name": "1932", "default": false}, {"value": "1931", "name": "1931", "default": false}, {"value": "1930", "name": "1930", "default": false}, {"value": "1929", "name": "1929", "default": false}, {"value": "1928", "name": "1928", "default": false}, {"value": "1927", "name": "1927", "default": false}, {"value": "1926", "name": "1926", "default": false}, {"value": "1925", "name": "1925", "default": false}, {"value": "1924", "name": "1924", "default": false}, {"value": "1923", "name": "1923", "default": false}, {"value": "1922", "name": "1922", "default": false}, {"value": "1921", "name": "1921", "default": false}, {"value": "1920", "name": "1920", "default": false}, {"value": "1919", "name": "1919", "default": false}, {"value": "1918", "name": "1918", "default": false}, {"value": "1917", "name": "1917", "default": false}, {"value": "1916", "name": "1916", "default": false}, {"value": "1915", "name": "1915", "default": false}, {"value": "1914", "name": "1914", "default": false}, {"value": "1913", "name": "1913", "default": false}, {"value": "1912", "name": "1912", "default": false}, {"value": "1911", "name": "1911", "default": false}, {"value": "1910", "name": "1910", "default": false}, {"value": "1909", "name": "1909", "default": false}, {"value": "1908", "name": "1908", "default": false}, {"value": "1907", "name": "1907", "default": false}]}, {"name": "level_of_education", "label": "Highest level of education completed", "type": "select", "defaultValue": "", "placeholder": "", "instructions": "", "required": false, "restrictions": {}, "errorMessages": {"required": "Select the highest level of education you have completed."}, "supplementalLink": "", "supplementalText": "", "options": [{"value": "", "name": "--", "default": true}, {"value": "p", "name": "Doctorate", "default": false}, {"value": "m", "name": "Master's or professional degree", "default": false}, {"value": "b", "name": "Bachelor's degree", "default": false}, {"value": "a", "name": "Associate degree", "default": false}, {"value": "hs", "name": "Secondary/high school", "default": false}, {"value": "jhs", "name": "Junior secondary/junior high/middle school", "default": false}, {"value": "el", "name": "Elementary/primary school", "default": false}, {"value": "none", "name": "No formal education", "default": false}, {"value": "other", "name": "Other education", "default": false}]}, {"name": "goals", "label": "Tell us why you're interested in Triboo", "type": "textarea", "defaultValue": "", "placeholder": "", "instructions": "", "required": false, "restrictions": {}, "errorMessages": {"required": "Tell us your goals."}, "supplementalLink": "", "supplementalText": ""}, {"name": "honor_code", "label": "By creating an account with Triboo, you agree                   to abide by our Triboo                   \u003ca href='/tos' target='_blank'\u003eTerms of Service\u003c/a\u003e and \u003ca href='/honor' target='_blank'\u003eHonor Code\u003c/a\u003e                   and agree to our \u003ca href='/privacy' target='_blank'\u003ePrivacy Policy\u003c/a\u003e.", "type": "plaintext", "defaultValue": false, "placeholder": "", "instructions": "", "required": true, "restrictions": {}, "errorMessages": {"required": "You must agree to the Triboo Terms of Service and Honor Code"}, "supplementalLink": "", "supplementalText": ""}]}, "password_reset_form_desc": {"method": "post", "submit_url": "/account/password", "fields": [{"name": "email", "label": "Email", "type": "email", "defaultValue": "", "placeholder": "username@domain.com", "instructions": "The email address you used to register with Triboo", "required": true, "restrictions": {"min_length": 3, "max_length": 254}, "errorMessages": {}, "supplementalLink": "", "supplementalText": ""}]}, "account_creation_allowed": false, "allow_registration_form": false, "register_user_url": "/register", "prioritize_email_login": false, "login_registration_logo": false};
+        options.static_url = "/static/hawthorn/images";
+        let accessView = LogistrationFactory(options);
+        if ('newrelic' in window) {
+            newrelic.finished();
+            // Because of a New Relic bug, the finished() event doesn't show up
+            // in Insights, so we have to make a new PageAction that is basically
+            // the same thing. We still want newrelic.finished() for session
+            // traces though.
+            newrelic.addPageAction('xfinished');
+        }
+    
+            });
+        }).call(this, require || RequireJS.require);
+    </script>
+
+
+
+  
+
+
+
+  <script type="text/javascript" src="/static/js/vendor/noreferrer.js" charset="utf-8"></script>
+  <script type="text/javascript" src="/static/js/utils/navigation.js" charset="utf-8"></script>
+  <script type="text/javascript" src="/static/js/header/header.js"></script>
+  
+
+    <script aria-hidden="true" type="text/template" id="dialog-template">
+        
+<!--<h4 id="editor-dialog-title" class="dialog-title"><span>Title</span></h4>-->
+<i class="fas fa-times"></i>
+<div role="status" id="wmd-editor-dialog-form-errors" class="sr" tabindex="-1"></div>
+<div class="dialog-content"></div>
+
+    </script>
+    <script aria-hidden="true" type="text/template" id="confirmation-template">
+        
+
+<!--<h4 id="editor-dialog-title" class="dialog-title"><span>Title</span></h4>-->
+<i class="far fa-times"></i>
+<div role="status" id="wmd-editor-dialog-form-errors" class="sr" tabindex="-1"></div>
+<div class="dialog-content"></div>
+<div class="actions">
+    <input type="button" id="btn-secondary" class="btn-secondary" value="Cancel">
+    <input type="button" class="btn-primary" value="Confirm">
+</div>
+
+    </script>
+    <div id="dialog-container"></div>
+    
+    
+    
+    <script type="text/javascript" src="/static/bundles/Dialog.js" ></script>
+
+
+<link rel="stylesheet" href="/static/debug_toolbar/css/print.css" type="text/css" media="print" />
+<link rel="stylesheet" href="/static/debug_toolbar/css/toolbar.css" type="text/css" />
+
+<!-- Prevent our copy of jQuery from registering as an AMD module on sites that use RequireJS. -->
+<script src="/static/debug_toolbar/js/jquery_pre.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="/static/debug_toolbar/js/jquery_post.js"></script>
+
+<script src="/static/debug_toolbar/js/toolbar.js"></script>
+<div id="djDebug" class="djdt-hidden" dir="ltr"
+     data-store-id="31dfa2afe1fd4fdebf2ac1f1712deea7" data-render-panel-url="/__debug__/render_panel/"
+     >
+	<div class="djdt-hidden" id="djDebugToolbar">
+		<ul id="djDebugPanelList">
+			
+			<li><a id="djHideToolBarButton" href="#" title="Hide toolbar">Hide &#187;</a></li>
+			
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtVersionsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Versions" class="VersionsPanel">
+					
+					Versions
+					
+					
+						<br /><small>Django 1.11.29</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtTimerPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Time" class="TimerPanel">
+					
+					Time
+					
+					
+						<br /><small>CPU: 130.66ms (138.88ms)</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSettingsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Settings from &lt;code&gt;py36_r2_e4_settings&lt;/code&gt;" class="SettingsPanel">
+					
+					Settings
+					
+					
+						
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtHeadersPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Headers" class="HeadersPanel">
+					
+					Headers
+					
+					
+						
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtRequestPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Request" class="RequestPanel">
+					
+					Request
+					
+					
+						<br /><small>login_and_registration_form</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSQLPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="SQL queries from 1 connection" class="SQLPanel">
+					
+					SQL
+					
+					
+						<br /><small>6 queries in 7.47ms</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSignalsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Signals" class="SignalsPanel">
+					
+					Signals
+					
+					
+						<br /><small>83 receivers of 12 signals</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtLoggingPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Log messages" class="LoggingPanel">
+					
+					Logging
+					
+					
+						<br /><small>0 messages</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+		</ul>
+	</div>
+	<div class="djdt-hidden" id="djDebugToolbarHandle">
+		<span title="Show toolbar" id="djShowToolBarButton">&#171;</span>
+	</div>
+	
+		
+			<div id="VersionsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Versions</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="TimerPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Time</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SettingsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Settings from <code>py36_r2_e4_settings</code></h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="HeadersPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Headers</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="RequestPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Request</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SQLPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>SQL queries from 1 connection</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SignalsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Signals</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="LoggingPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Log messages</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+	<div id="djDebugWindow" class="djdt-panelContent"></div>
+</div>
+</body>
+</html>
+
+

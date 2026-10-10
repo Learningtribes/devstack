@@ -53,8 +53,10 @@ if [ -n "$(git -C "${ORA2_SOURCE_ROOT}" status --porcelain=v1)" ]; then
     exit 2
 fi
 
+# The cgroup cap keeps an OOM inside the runner instead of the shared edx.devstack.mongo.
 exec docker run --rm \
     --network devstack_default \
+    --memory "${PY36_R2_GATE_TEST_MEMORY:-4g}" \
     --read-only \
     --tmpfs /runner:rw,exec,size=1g \
     --tmpfs /tmp:rw,exec,size=1g \

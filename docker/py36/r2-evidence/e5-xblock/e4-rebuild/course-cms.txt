@@ -1,0 +1,53 @@
+2026-10-10 00:35:03,832 WARNING 43 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-10 00:35:03,872 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rules/predicates.py:70: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = inspect.getargspec(fn)
+
+2026-10-10 00:35:03,955 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+
+2026-10-10 00:35:03,973 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-10 00:35:04,127 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-10 00:35:04,130 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-10 00:35:04,327 WARNING 43 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 00:35:04,500 WARNING 43 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 00:35:04,574 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:485: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  getargspec(func)
+
+2026-10-10 00:35:04,574 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:463: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(matcher)
+
+2026-10-10 00:35:04,574 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:497: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = getargspec(func)
+
+2026-10-10 00:35:04,576 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:509: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(func)
+
+2026-10-10 00:35:04,576 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:246: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(self.factory)
+
+2026-10-10 00:35:04,580 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:244: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(empty)
+
+2026-10-10 00:35:04,650 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rules/predicates.py:70: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = inspect.getargspec(fn)
+
+2026-10-10 00:35:04,732 WARNING 43 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+  self, resource_name
+
+COURSES count=1 python=3.6.15
+COURSES id=course-v1:QA+Acceptance+Test+branch@draft-branch
+COURSE_READ id=course-v1:QA+Acceptance+Test name='QA Acceptance Test' blocks=1
+COURSE_TYPES [('course', 1)]
+E4_COURSE_OK

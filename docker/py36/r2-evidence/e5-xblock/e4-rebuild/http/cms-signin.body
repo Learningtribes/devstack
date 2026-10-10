@@ -1,0 +1,536 @@
+
+
+
+
+
+
+
+<!doctype html>
+<!--[if lte IE 9]><html class="ie9 lte9" lang="en"><![endif]-->
+<!--[if !IE]><<!--><html lang="en"><!--<![endif]-->
+  <head dir="ltr">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="openedx-release-line" content="hawthorn" />
+    <title>
+        Sign In |
+        Studio
+    </title>
+
+    
+
+
+    <script type="text/javascript" src="/static/studio/js/i18n/en/djangojs.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="path_prefix" content="">
+    <link rel="icon" type="image/x-icon" href="/static/studio/images/favicon.ico" />
+
+    
+  
+
+      <link rel="stylesheet" href="/static/studio/css/vendor/normalize.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/vendor/html5-input-polyfills/number-polyfill.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/CodeMirror/codemirror.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/vendor/ui-lightness/jquery-ui-1.8.22.custom.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/vendor/jquery.qtip.min.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/markitup/skins/simple/style.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/markitup/sets/wiki/style.css" type="text/css" media="all" / >
+
+    
+  
+
+      <link rel="stylesheet" href="/static/studio/css/tinymce-studio-content-fonts.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/tinymce-studio-content.css" type="text/css" media="all" / >
+
+    
+  
+
+      <link rel="stylesheet" href="/static/studio/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/skin.min.css" type="text/css" media="all" / >
+
+
+      
+  
+
+      <link rel="stylesheet" href="/static/studio/hawthorn/css/studio-main-v1.css" type="text/css" media="all" / >
+
+
+    
+
+
+
+<!-- dummy Segment -->
+<script type="text/javascript">
+  var analytics = {
+    "track": function() {}
+  };
+</script>
+<!-- end dummy Segment -->
+
+
+    
+  </head>
+
+  <body class="ltr not-signedin view-signin lang_en fa-width-auto">
+    
+
+    <a class="nav-skip" href="#main">Skip to main content</a>
+
+    
+      <script type="text/javascript" src="/static/studio/js/src/utility.js"></script>
+      <script type="text/javascript" src="/static/studio/js/src/logger.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/jquery.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/jquery-migrate.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/vue.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/vue-resource.js"></script>
+      <script type="text/javascript" src="/static/studio/js/vendor/jquery.cookie.js"></script>
+      <script type="text/javascript" src="/static/studio/js/vendor/url.min.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/underscore.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/underscore.string.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/backbone.js"></script>
+      <script type="text/javascript" src="/static/studio/js/vendor/URI.min.js"></script>
+      <script type="text/javascript" src="/static/studio/edx-ui-toolkit/js/utils/global-loader.js"></script>
+      <script type="text/javascript" src="/static/studio/edx-ui-toolkit/js/utils/string-utils.js"></script>
+      <script type="text/javascript" src="/static/studio/edx-ui-toolkit/js/utils/html-utils.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/popper.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/bootstrap.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/require.js"></script>
+
+
+    
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/commons.js" ></script>
+
+
+    <script type="text/javascript">
+      window.baseUrl = "/static/studio/";
+      require.config({
+          baseUrl: window.baseUrl
+      });
+
+    </script>
+
+    <script type="text/javascript" src="/static/studio/cms/js/require-config.js"></script>
+
+    <!-- view -->
+    <div class="wrapper wrapper-view" dir="ltr">
+      
+
+      
+
+      
+
+
+      <div id="page-alert">
+      
+      </div>
+
+      <main id="main" aria-label="Content" tabindex="-1">
+        <div id="content">
+        
+
+<div class="login-register">
+  <section class="form-wrapper">
+    <aside>
+      <figure>
+        <img src='/static/studio/hawthorn/images/login-illustration.jpg' />
+      </figure>
+    </aside>
+
+    <article role="main">
+      <div class="article-inner-wrapper">
+      <figure class="welcome-text">
+        <a class="brand-link" href="/"><img src="/static/studio/hawthorn/images/studio-logo.png"></a>
+        <figcaption>Welcome to your training platform, log in to find your training space!</figcaption>
+      </figure>
+
+      <form id="login_form" method="post" action="login_post" onsubmit="return false;">
+        <input type="hidden" name="csrfmiddlewaretoken" value="zKmPQMcaddkcCBHX4X7BQUEjYmoGpIM1wdvkfU1KjJJa4u4ryGXBAe8w2FmnZSwS" />
+
+        <div class="form-field">
+          <label class="ds-input">
+            E-mail
+            <input id="email" type="text" name="email" autocomplete="off" required />
+          </label>
+        </div>
+
+        <div class="form-field">
+          <label class="ds-input">
+            Password
+            <input id="password" type="password" name="password" required />
+          </label>
+
+          <a href="//edx.devstack.lms:18000/login#forgot-password-modal" class="ds-link btn">Forgot password?</a>
+        </div>
+
+        <button type="submit" id="submit" name="submit" class="action ds-button">Sign In to Studio</button>
+
+        <!-- no honor code for CMS, but need it because we're using the lms student object -->
+        <input name="honor_code" type="checkbox" value="true" checked="true" hidden="true">
+
+      </form>
+      </div>
+    </article>
+    <div class="logo-motto-and-toggle-form">
+    </div>
+  </section>
+</div>
+
+        </div>
+      </main>
+
+
+      
+
+      <div id="page-notification"></div>
+    </div>
+
+    <div id="page-prompt"></div>
+
+    
+
+    
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/DSComponents.js" ></script>
+
+    
+
+
+    
+  
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/LoginFactory.js" ></script>
+      <script type="text/javascript">
+        
+    LoginFactory("/");
+  
+      </script>
+
+
+    
+
+
+
+    <div class="modal-cover"></div>
+
+    <script aria-hidden="true" type="text/template" id="dialog-template">
+        
+<!--<h4 id="editor-dialog-title" class="dialog-title"><span>Title</span></h4>-->
+<i class="fas fa-times"></i>
+<div role="status" id="wmd-editor-dialog-form-errors" class="sr" tabindex="-1"></div>
+<div class="dialog-content"></div>
+
+    </script>
+    <script aria-hidden="true" type="text/template" id="confirmation-template">
+        
+
+<!--<h4 id="editor-dialog-title" class="dialog-title"><span>Title</span></h4>-->
+<i class="far fa-times"></i>
+<div role="status" id="wmd-editor-dialog-form-errors" class="sr" tabindex="-1"></div>
+<div class="dialog-content"></div>
+<div class="actions">
+    <input type="button" id="btn-secondary" class="btn-secondary" value="Cancel">
+    <input type="button" class="btn-primary" value="Confirm">
+</div>
+
+    </script>
+    <div id="dialog-container"></div>
+    
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/Dialog.js" ></script>
+
+  
+<link rel="stylesheet" href="/static/studio/debug_toolbar/css/print.css" type="text/css" media="print" />
+<link rel="stylesheet" href="/static/studio/debug_toolbar/css/toolbar.css" type="text/css" />
+
+<!-- Prevent our copy of jQuery from registering as an AMD module on sites that use RequireJS. -->
+<script src="/static/studio/debug_toolbar/js/jquery_pre.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="/static/studio/debug_toolbar/js/jquery_post.js"></script>
+
+<script src="/static/studio/debug_toolbar/js/toolbar.js"></script>
+<div id="djDebug" class="djdt-hidden" dir="ltr"
+     data-store-id="deb8e8c26d724409b4b1aa0d88243516" data-render-panel-url="/__debug__/render_panel/"
+     >
+	<div class="djdt-hidden" id="djDebugToolbar">
+		<ul id="djDebugPanelList">
+			
+			<li><a id="djHideToolBarButton" href="#" title="Hide toolbar">Hide &#187;</a></li>
+			
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtVersionsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Versions" class="VersionsPanel">
+					
+					Versions
+					
+					
+						<br /><small>Django 1.11.29</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtTimerPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Time" class="TimerPanel">
+					
+					Time
+					
+					
+						<br /><small>CPU: 40.56ms (40.71ms)</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSettingsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Settings from &lt;code&gt;py36_r2_e4_settings&lt;/code&gt;" class="SettingsPanel">
+					
+					Settings
+					
+					
+						
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtHeadersPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Headers" class="HeadersPanel">
+					
+					Headers
+					
+					
+						
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtRequestPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Request" class="RequestPanel">
+					
+					Request
+					
+					
+						<br /><small>login_page</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSQLPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="SQL queries from 0 connections" class="SQLPanel">
+					
+					SQL
+					
+					
+						<br /><small>0 queries in 0.00ms</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSignalsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Signals" class="SignalsPanel">
+					
+					Signals
+					
+					
+						<br /><small>77 receivers of 12 signals</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtLoggingPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Log messages" class="LoggingPanel">
+					
+					Logging
+					
+					
+						<br /><small>0 messages</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtProfilingPanel" title="Enable for next and successive requests" />
+					
+						<div class="djdt-contentless djdt-disabled">
+					
+					Profiling
+					
+					
+						</div>
+					
+				</li>
+			
+		</ul>
+	</div>
+	<div class="djdt-hidden" id="djDebugToolbarHandle">
+		<span title="Show toolbar" id="djShowToolBarButton">&#171;</span>
+	</div>
+	
+		
+			<div id="VersionsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Versions</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="TimerPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Time</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SettingsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Settings from <code>py36_r2_e4_settings</code></h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="HeadersPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Headers</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="RequestPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Request</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SQLPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>SQL queries from 0 connections</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SignalsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Signals</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="LoggingPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Log messages</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+	
+	<div id="djDebugWindow" class="djdt-panelContent"></div>
+</div>
+</body>
+</html>

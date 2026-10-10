@@ -1,0 +1,9 @@
+RESTART stop_at=2026-10-10T04:35:27Z
+py36-r2-worker-20261009
+RESTART stop_seconds=3
+RESTART stopped exit=0 oom=false
+RESTART log: worker: Warm shutdown (MainProcess)
+RESTART start_at=2026-10-10T04:35:30Z
+py36-r2-worker-20261009
+RESTART worker_ready=true
+RESTART running=true restarts=0

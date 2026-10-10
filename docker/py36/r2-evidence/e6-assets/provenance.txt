@@ -1,0 +1,20 @@
+source_root=/Users/noahwang/workspace/hawthorn/platform-r2-py36-src
+source_commit=0ac3bfa6d099916cc58fc258db17221801f49d48
+source_tree=357effc3232a453f780d61cb9e22656fe08ca479
+devstack_commit=109750c6d86d4d09ef5ffb7d6ddce530d233024f
+compile_image=ltdps/edxapp:py36-r2-py27-runner-20261009 sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89
+collect_py27_image=ltdps/edxapp:py36-r2-py27-runner-20261009 sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89
+collect_py36_image=ltdps/edxapp:py36-r2-20261009 sha256:9b43579930c4cd53e77e1fc5cfe1100f8852c605f1dfa8e9ab924fa2503f2211
+source_untracked=lms/envs/r2_e6_asset.py cms/envs/r2_e6_asset.py = r2_e6_asset_settings.py sha256 2c492804c37eedea87cff03fd3eeedc50ecaf5feae6124200fe74b619b37e31e
+source_status=0 tracked changes
+xblock_ilt=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
+node_modules_volume=devstack_edxapp_node_modules (read-only; versions equal to package-lock.json, 1658 packages)
+compile_command=compilejsi18n lms+cms; paver update_assets lms studio --settings=r2_e6_asset --skip-collect
+collect_command=manage.py {lms,cms} --settings=r2_e6_asset collectstatic --ignore fixtures --ignore 'karma_*.js' --ignore spec --ignore spec_helpers --ignore spec-helpers --ignore xmodule_js --ignore geoip --ignore sass --noinput
+themes=copy of /Users/noahwang/workspace/hawthorn/src/themes (not a git checkout), compiled in the copy; themes_input_files=486 sha256=83c8fac8130bdd5ffed3538fc84e2225e28b7f6d4a8542dcda341f765c4d5336
+compile_seconds=197
+collect_seconds=17
+py27_files=9506
+py36_files=8546
+py27_vs_py36_changed_lines=1068
+py27_only_or_changed=1014 py36_only_or_changed=54 compiled_differences=0 (by dir: py27-vs-py36.by-dir.txt)

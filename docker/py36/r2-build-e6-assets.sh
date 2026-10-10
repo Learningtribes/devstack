@@ -48,7 +48,7 @@ grep -qx "commit=${XBLOCK_ILT_COMMIT}" "${XBLOCK_ILT_SRC}.identity"
 
 common_args() {
     printf '%s\n' \
-        --rm --network none --label "${LABEL}" --entrypoint /bin/sh \
+        --rm --network none --label "${LABEL}" --entrypoint /bin/sh --memory "${PY36_R2_GATE_ASSET_MEMORY:-6g}" \
         --mount "type=bind,src=${WORKSPACE}/src,dst=/edx/src,readonly" \
         --mount "type=bind,src=${XBLOCK_ILT_SRC},dst=/edx/src/xblock-ilt,readonly" \
         --mount "type=bind,src=${CONFIG}/lms.auth.json,dst=/edx/app/edxapp/lms.auth.json,readonly" \
@@ -109,8 +109,11 @@ collect_runtime() {
     runtime=$1; image=$2; platform=$3; python=$4; prefix=$5
     mkdir -p "${OUT}/${runtime}"
     # shellcheck disable=SC2046
+    # update_assets leaves common/static/edx-{ui-toolkit,pattern-library} as
+    # symlinks into node_modules, so collectstatic needs the same volume.
     docker run $(common_args) --platform "${platform}" \
         --mount "type=bind,src=${OUT}/source,dst=${P},readonly" \
+        --mount "type=volume,src=${NODE_MODULES_VOLUME},dst=${P}/node_modules,readonly" \
         --mount "type=bind,src=${OUT}/${runtime},dst=${STATIC}" \
         --mount "type=bind,src=${OUT}/themes,dst=/edx/src/themes,readonly" \
         "${image}" -c "${LOG_DIRS} && ${prefix}${python} manage.py lms --settings=r2_e6_asset collectstatic ${COLLECT_ARGS} &&
@@ -124,6 +127,9 @@ collect() {
     py36_image_id=${PY36_R2_IMAGE_ID:?set PY36_R2_IMAGE_ID to the expected Python 3.6 image ID}
     test "$(docker image inspect "${PY36_IMAGE}" --format '{{.Id}}')" = "${py36_image_id}"
     test -f "${OUT}/logs/compile-seconds.txt"
+    docker run --rm --network none --mount "type=volume,src=${NODE_MODULES_VOLUME},dst=/nm,readonly" busybox \
+        cat /nm/.package-lock.json | cmp -s - "${OUT}/logs/node-modules-hidden-lock.json" ||
+        { echo "node_modules volume changed since compile" >&2; exit 1; }
     for runtime in py27 py36; do
         if [ -e "${OUT}/${runtime}" ]; then echo "refusing to overwrite ${OUT}/${runtime}" >&2; exit 2; fi
     done
@@ -154,10 +160,17 @@ studio/js/i18n/en/djangojs.js'
             find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 > "${OUT}/logs/${runtime}.sha256")
         chmod -R a-w "${OUT}/${runtime}"
     done
-    # Runtime-specific content is expected only under xblock/resources/.
+    # App static dirs come from each runtime's installed packages and may
+    # differ; everything the shared compile step produced must not.
     diff "${OUT}/logs/py27.sha256" "${OUT}/logs/py36.sha256" > "${OUT}/logs/py27-vs-py36.diff" || true
-    grep -E '^[<>]' "${OUT}/logs/py27-vs-py36.diff" | grep -v -E '^[<>] [0-9a-f]{64}  \./(studio/)?xblock/resources/' \
-        > "${OUT}/logs/py27-vs-py36.outside-xblock-resources.diff" || true
+    grep -E '^[<>]' "${OUT}/logs/py27-vs-py36.diff" |
+        awk '{n = split($3, p, "/"); d = (n > 3) ? p[2] "/" p[3] : p[2]; c[$1 " " d]++} END {for (k in c) print c[k], k}' |
+        LC_ALL=C sort -k3 -k2 > "${OUT}/logs/py27-vs-py36.by-dir.txt"
+    compiled='^[<>] [0-9a-f]{64}  \./(studio/)?(bundles|js/i18n|hawthorn)/|^[<>] [0-9a-f]{64}  \./(css/lms-|studio/css/studio-)'
+    if grep -E "${compiled}" "${OUT}/logs/py27-vs-py36.diff" > "${OUT}/logs/py27-vs-py36.compiled.diff"; then
+        echo "compiled assets differ between runtimes" >&2
+        exit 1
+    fi
 
     {
         echo "source_root=${SOURCE_ROOT}"
@@ -180,7 +193,7 @@ studio/js/i18n/en/djangojs.js'
             echo "${runtime}_files=$(wc -l < "${OUT}/logs/${runtime}.inventory" | tr -d ' ')"
         done
         echo "py27_vs_py36_changed_lines=$(grep -c -E '^[<>]' "${OUT}/logs/py27-vs-py36.diff" || true)"
-        echo "py27_vs_py36_outside_xblock_resources=$(wc -l < "${OUT}/logs/py27-vs-py36.outside-xblock-resources.diff" | tr -d ' ')"
+        echo "py27_only_or_changed=$(grep -c '^<' "${OUT}/logs/py27-vs-py36.diff" || true) py36_only_or_changed=$(grep -c '^>' "${OUT}/logs/py27-vs-py36.diff" || true) compiled_differences=0 (by dir: py27-vs-py36.by-dir.txt)"
     } > "${OUT}/logs/provenance.txt"
     cat "${OUT}/logs/provenance.txt"
     echo "E6_ASSETS_OK root=${OUT}"

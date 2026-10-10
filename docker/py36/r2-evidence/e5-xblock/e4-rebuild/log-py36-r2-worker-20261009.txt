@@ -1,0 +1,34 @@
+2026-10-10 00:35:06,866 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: openedx.core.djangoapps.heartbeat.tasks.sample_task[3090acf2-843f-4a8b-8342-b7ef4d52a086]
+2026-10-10 00:35:06,876 INFO 1 [celery.worker.job] job.py:402 - Task openedx.core.djangoapps.heartbeat.tasks.sample_task[3090acf2-843f-4a8b-8342-b7ef4d52a086] succeeded in 0.008112131617963314s: True
+2026-10-10 00:35:06,880 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: py36_r2_e4.success[07a2f429-7976-4c77-afd2-b30e62ed380f]
+2026-10-10 00:35:06,887 INFO 1 [celery.worker.job] job.py:402 - Task py36_r2_e4.success[07a2f429-7976-4c77-afd2-b30e62ed380f] succeeded in 0.007144347298890352s: {'status': 'ok', 'worker': 'py36-r2-worker-20261009'}
+2026-10-10 00:35:06,891 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: py36_r2_e4.controlled_failure[d052283e-e86c-4fd9-b0b7-747e4b761fea]
+2026-10-10 00:35:06,900 ERROR 1 [celery.worker.job] log.py:282 - Task py36_r2_e4.controlled_failure[d052283e-e86c-4fd9-b0b7-747e4b761fea] raised unexpected: RuntimeError('py36-r2-e4-controlled-failure',)
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/edx/app/edxapp/py36_r2_e4_worker.py", line 31, in controlled_failure
+    raise RuntimeError('py36-r2-e4-controlled-failure')
+RuntimeError: py36-r2-e4-controlled-failure
+2026-10-10 00:35:06,905 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: py36_r2_e4.success[a9eeaa56-8c03-46ad-b608-b07014e341af]
+2026-10-10 00:35:06,912 INFO 1 [celery.worker.job] job.py:402 - Task py36_r2_e4.success[a9eeaa56-8c03-46ad-b608-b07014e341af] succeeded in 0.006802740041166544s: {'status': 'ok', 'worker': 'py36-r2-worker-20261009'}
+
+worker: Warm shutdown (MainProcess)
+/usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+PY36_R2_E4_WORKER_READY queue=py36-r2.lms.default registered=53 broker_heartbeat=30.0
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+2026-10-10 00:35:32,083 INFO 1 [celery.worker.consumer] consumer.py:526 - Connected to amqp://py36r2:**@py36-r2-rabbitmq-20261009:5672/py36-r2-20261009
+2026-10-10 00:35:33,641 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: openedx.core.djangoapps.heartbeat.tasks.sample_task[490b575d-dbdf-4f5d-8595-1b10364a64ed]
+2026-10-10 00:35:33,650 INFO 1 [celery.worker.job] job.py:402 - Task openedx.core.djangoapps.heartbeat.tasks.sample_task[490b575d-dbdf-4f5d-8595-1b10364a64ed] succeeded in 0.008261207956820726s: True
+2026-10-10 00:35:33,654 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: py36_r2_e4.success[4dbd81bb-e286-4628-a2f7-ade98b3234cb]
+2026-10-10 00:35:33,661 INFO 1 [celery.worker.job] job.py:402 - Task py36_r2_e4.success[4dbd81bb-e286-4628-a2f7-ade98b3234cb] succeeded in 0.0063894689083099365s: {'status': 'ok', 'worker': 'py36-r2-worker-20261009'}

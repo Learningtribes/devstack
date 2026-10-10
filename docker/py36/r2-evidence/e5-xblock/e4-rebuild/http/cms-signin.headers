@@ -1,0 +1,12 @@
+HTTP/1.0 200 OK
+Date: Sat, 10 Oct 2026 04:35:00 GMT
+Server: WSGIServer/0.2 CPython/3.6.15
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: DENY
+Vary: Cookie, Accept-Language
+x-content-type-options: nosniff
+Content-Language: en
+Content-Length: 15366
+Set-Cookie:  csrftoken=kszizyOoR7zr6E2jgPv7wjiUP90jYpHBhVINYGDYXDYpyxpNKyl7gDM7TsY0yzrs; expires=Sat, 09-Oct-2027 04:35:00 GMT; Max-Age=31449600; Path=/
+Set-Cookie:  change-openedx-language-preference=""; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+

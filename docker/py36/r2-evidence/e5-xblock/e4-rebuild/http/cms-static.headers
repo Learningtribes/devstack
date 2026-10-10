@@ -1,0 +1,12 @@
+HTTP/1.0 200 OK
+Date: Sat, 10 Oct 2026 04:35:00 GMT
+Server: WSGIServer/0.2 CPython/3.6.15
+Content-Type: application/javascript
+Last-Modified: Fri, 14 Aug 2026 04:28:21 GMT
+Content-Length: 11013
+x-content-type-options: nosniff
+X-Frame-Options: ALLOW
+Vary: Accept-Language, Cookie
+Content-Language: en
+Set-Cookie:  change-openedx-language-preference=""; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+
