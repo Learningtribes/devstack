@@ -1,0 +1,23 @@
+runtime=py36 netns=py36-r2-e6-py36-lms image=sha256:f02cf5e79316295694dff8e5248b8704fcd1866fb8b651bef9384c7b395aec37
+harness_head=68255fc7742c9486b760e026bd5cb5b1e5f75bf6
+harness_code_clean=0_changes
+playwright_image=mcr.microsoft.com/playwright@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48
+playwright_test=1.61.1
+test_timeout_ms=300000
+spec=tests/studio_edit_publish.spec.ts sha256=3968d80fd03a4d1ec051f16c7a90d159e6fa5510b03200fd63d7644839e45ead
+env BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000
+env BROWSER_STUDIO_ATTEMPT=1
+env BROWSER_STUDIO_AUTHOR_EMAIL=qastudio_py36@example.com
+env BROWSER_STUDIO_AUTHOR_PASSWORD=<redacted>
+env BROWSER_STUDIO_BASELINE=STUDIO_PUBLISH_BASELINE_PY36
+env BROWSER_STUDIO_CMS_BASE_URL=http://localhost:18010
+env BROWSER_STUDIO_COURSE_KEY=course-v1:QA+StudioPublish+Py36
+env BROWSER_STUDIO_EVIDENCE_DIR=/work/out/evidence
+env BROWSER_STUDIO_LEARNER_EMAIL=qastudiolearner_py36@example.com
+env BROWSER_STUDIO_LEARNER_PASSWORD=<redacted>
+env BROWSER_STUDIO_LMS_BASE_URL=http://localhost:18000
+env BROWSER_STUDIO_MARKER=STUDIO_PUBLISH_AFTER_PY36_ATTEMPT_1
+env BROWSER_STUDIO_RUNTIME=py36
+env BROWSER_STUDIO_SERVICE_SCRIPT=/work/e6/handshake.sh
+started=2026-10-10T07:35:32Z
+finished=2026-10-10T07:35:58Z exit=1

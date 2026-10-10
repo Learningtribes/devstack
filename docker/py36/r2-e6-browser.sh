@@ -6,8 +6,9 @@
 #   A bare name is read from the harness checklists/ (must be committed and
 #   unmodified); a path is used as-is.
 #   E6_SPEC selects another harness spec (default tests/checklist.spec.ts);
-#   BROWSER_* variables are passed through to it, and anything the spec writes
-#   under /work/out/evidence is kept as <out-dir>/evidence.
+#   BROWSER_* variables are passed through to it (values of *PASSWORD* names
+#   are not recorded), and anything the spec writes under /work/out/evidence
+#   is kept as <out-dir>/evidence.
 set -eu
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
@@ -33,6 +34,10 @@ rm -rf "${WORK}"
 mkdir -p "${WORK}/checklists" "${WORK}/node_modules" "${WORK}/out"
 cp -R "${HARNESS}/lib" "${HARNESS}/tests" "${HARNESS}/playwright.config.ts" "${HARNESS}/package.json" "${WORK}/"
 test -f "${WORK}/${SPEC}"
+# Specs that call a service script get /work/e6/handshake.sh instead (no Docker
+# inside the browser container); the gate wrapper answers on the host.
+mkdir -p "${WORK}/e6"
+cp "${SCRIPT_DIR}/r2-e6-handshake.sh" "${WORK}/e6/handshake.sh"
 
 {
     echo "runtime=${RUNTIME} netns=${NETNS} image=$(docker inspect "${NETNS}" --format '{{.Image}}')"
@@ -43,7 +48,10 @@ test -f "${WORK}/${SPEC}"
     echo "test_timeout_ms=${TEST_TIMEOUT_MS}"
     echo "spec=${SPEC} sha256=$(shasum -a 256 "${WORK}/${SPEC}" | cut -d' ' -f1)"
     for name in ${BROWSER_ENV_NAMES}; do
-        eval "echo \"env ${name}=\${${name}}\""
+        case "${name}" in
+            *PASSWORD*) echo "env ${name}=<redacted>" ;;
+            *) eval "echo \"env ${name}=\${${name}}\"" ;;
+        esac
     done
     for item in "$@"; do
         case "${item}" in

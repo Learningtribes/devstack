@@ -1,0 +1,175 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 [chromium] › tests/studio_edit_publish.spec.ts:474:5 › visible Studio edit and publish changes only the published learner branch (25.1s)
+
+
+  1) [chromium] › tests/studio_edit_publish.spec.ts:474:5 › visible Studio edit and publish changes only the published learner branch 
+
+    Error: browser console errors
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 120
+
+    - Array []
+    + Array [
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/foundever-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Refused to apply style from 'http://localhost:18010/static/css/noto-sans.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    +   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    + ]
+
+      638 |
+      639 |     const allDiagnostics = allPages.map((item) => item.diagnostics);
+    > 640 |     expect(allDiagnostics.flatMap((item) => item.consoleErrors), 'browser console errors').toEqual([]);
+          |                                                                                            ^
+      641 |     expect(allDiagnostics.flatMap((item) => item.pageErrors), 'browser page errors').toEqual([]);
+      642 |     expect(allDiagnostics.flatMap((item) => item.failedRequests), 'browser failed requests').toEqual([]);
+      643 |     expect(allDiagnostics.flatMap((item) => item.httpErrors), 'same-origin HTTP errors').toEqual([]);
+        at /work/tests/studio_edit_publish.spec.ts:640:92
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    out/test-results/studio_edit_publish-visibl-fe6ec-he-published-learner-branch-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    out/test-results/studio_edit_publish-visibl-fe6ec-he-published-learner-branch-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    out/test-results/studio_edit_publish-visibl-fe6ec-he-published-learner-branch-chromium/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: out/test-results/studio_edit_publish-visibl-fe6ec-he-published-learner-branch-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    out/test-results/studio_edit_publish-visibl-fe6ec-he-published-learner-branch-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace out/test-results/studio_edit_publish-visibl-fe6ec-he-published-learner-branch-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/studio_edit_publish.spec.ts:474:5 › visible Studio edit and publish changes only the published learner branch 
+npm notice
+npm notice New major version of npm available! 11.13.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

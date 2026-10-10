@@ -68,6 +68,59 @@ Stack fixes found on the way (not gate failures):
   Volumes leaked by earlier E6 runs cannot be told apart from other dangling
   volumes and were left alone.
 
+## Studio edit/publish (2026-10-10) - py27 PASS; py36 browser PASS, service log FAIL on a master Python 3 defect
+
+Port of R1 `provision-p1b-studio-edit-publish.py` +
+`tests/studio_edit_publish.spec.ts` (`r2-e6-studio.sh` / `r2-e6-studio.py`)
+onto the default E6 stack (eager Celery, private ES, no forum or broker).
+Differences from R1:
+
+- Sites: R1 renamed fixed Site ids to per-gate domains and replaced their
+  configuration. E6 keeps the clone's canonical `localhost:18010` (id 5) and
+  `localhost:18000` (id 4) rows and merges `course_org_filter=QA` and
+  `ENABLE_LAST_ACTIVITY=True` into their existing values (`E6_STUDIO_SITE`
+  lines in `provision.log`; Studio was `edX`). Studio's course listing reads
+  `course_org_filter` through runserver's cached Site, so provision runs as the
+  new `PY36_R2_E6_PRESTART` step of `run-r2-e6-services.sh` (after the fixture,
+  before the servers) with CMS settings (`PY36_R2_E6_SCRIPT_SERVICE=cms`).
+  The global fixture is unchanged, so group 1's Studio checks keep `edX`.
+- External calls: the spec runs its service script at midcondition and
+  postflight. The browser container has no Docker, so
+  `BROWSER_STUDIO_SERVICE_SCRIPT` is `r2-e6-handshake.sh`, which files a
+  request under the harness output; the wrapper answers it on the host by
+  running the provisioner action on the CMS side and returns its output and
+  exit status.
+- Credentials: author and learner passwords are generated into
+  `.py36-r2-config/e6-studio.env` (mode 600) and passed with `--env-file`;
+  `r2-e6-browser.sh` now writes `<redacted>` for every `*PASSWORD*` name in
+  `browser-identity.txt`.
+- The courses are QA-org; the Studio site stays themed (`hawthorn`); the spec
+  had no theme conflict there.
+
+| Runtime | Attempt | Result | Browser diagnostics | External steps | Service logs (LMS, CMS) |
+| --- | --- | --- | --- | --- | --- |
+| py36 | `studio-py36/attempt2` | `E6_STUDIO_OK` (24.0 s) | 0 console, 0 page, 0 failed, 0 HTTP errors | `MIDCONDITION_OK`, `STUDIO_POSTFLIGHT_OK` | INFO cohort-cache line; **CMS `ERROR` + traceback at publish (below)** |
+| py27 | `studio-py27/attempt1` | `E6_STUDIO_OK` | 0 console, 0 page, 0 failed, 0 HTTP errors | `MIDCONDITION_OK`, `STUDIO_POSTFLIGHT_OK` | same INFO line only |
+
+No 4xx/5xx in either runtime's LMS or CMS access log.
+
+**Python 3 defect (master line, not R2):** on publish the eager
+`update_search_index` task fails on Python 3.6 with
+`AttributeError: 'dict_items' object has no attribute 'extend'` at
+`cms/djangoapps/contentstore/courseware_index.py:398` (`fetch_group_usage`
+calls `.extend()` on `dict.items()`). The same line is on `origin/master`
+(last touched by #2361). `index()` logs it and aborts the whole course
+reindex, so on Python 3 Studio publishes never update `courseware_index`;
+py27 issued two `POST /_bulk 200` for the same flow. R1 used a mock search
+engine and did not reach this line. Per the 21:00 decision this goes to a
+master owner PR / Track E card, not #2401.
+
+Earlier attempt, kept as evidence:
+
+| Attempt | Failure | Root cause and fix |
+| --- | --- | --- |
+| py36 attempt1 | 32 console errors on Studio pages: 404 for `/static/css/{noto,foundever}-sans.css` and `/static/fonts/NotoSans/*` (the publish flow itself completed) | the `hawthorn` theme's fonts partial (`src/themes/hawthorn/common/static/sass/_fonts.scss`) and `common/static/css/noto-sans.css` (#1683) reference `/static/css/` and `/static/fonts/` absolutely, outside Studio's `/static/studio/` `STATIC_URL`. Production nginx serves the whole `/static/` prefix from the shared collected tree on the Studio host too; the E6 handler only covered `STATIC_URL`. R1 avoided it by setting Studio's `STATIC_URL` to `/static/`. Fix in `r2_e6_wsgi.py` (next section) |
+
 ## Harness fix: static files served ahead of Django
 
 After the toolbar removal, the py27 group 1 control showed bursts of LMS
@@ -101,6 +154,16 @@ answers `STATIC_URL` from `STATIC_ROOT` with the same
 The private MySQL keeps the shared server's configuration (`mysql:5.6`, default
 `max_connections` 151); it was not raised.
 
+Studio gate follow-up: the handler now answers `/static/<path>` from
+`STATIC_ROOT_BASE/<path>` (the shared tree both services mount) instead of
+`STATIC_URL` from `STATIC_ROOT`, matching nginx on the Studio host. For LMS the
+two are identical (`/static/`, `STATIC_ROOT == STATIC_ROOT_BASE`); for Studio,
+`/static/studio/<x>` maps to the same file and the previously unserved
+`/static/css|fonts/...` now resolve. Checked on py36: five LMS/Studio assets
+byte-equal to the collected files (including `/static/css/noto-sans.css` and a
+NotoSans font on 18010), missing files 404, `..` traversal rejected by
+`safe_join` (`SuspiciousFileOperation`, same view as before).
+
 ## Group 1 under the final settings
 
 | Runtime | Result | Failures | Service logs |
@@ -114,7 +177,8 @@ Evidence: `../e6-discussion-image/group1-{py36,py27}/`.
 
 The shared Elasticsearch had the same index list, document counts and
 `index_total=0` / `delete_total=0` before the clone, after the clone, after
-the discussion gates and after the grading gates. No shared container was
+the discussion gates, after the grading gates and after the Studio gates. No shared container was
 started, stopped or written. A secret scan of `docker/py36` (scripts and
 evidence) and the gate log root for the MySQL, forum and broker secrets found
-no match.
+no match; the same scan with the Studio author/learner passwords added found
+no match in the Studio evidence, which contains no Playwright trace archive.

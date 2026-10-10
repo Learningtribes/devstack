@@ -1,0 +1,63 @@
+{
+  "course_key": "course-v1:QA+StudioPublish+Py27", 
+  "identities": {
+    "author": {
+      "groups": [
+        "Studio Admin"
+      ], 
+      "id": 31, 
+      "is_staff": false, 
+      "is_superuser": false, 
+      "roles": [
+        [
+          "staff", 
+          "QA", 
+          "course-v1:QA+StudioPublish+Py27"
+        ]
+      ], 
+      "username": "qastudio_py27"
+    }, 
+    "enrollment": {
+      "active": true, 
+      "completion_date": null, 
+      "mode": "audit", 
+      "origin": "self enrollment"
+    }, 
+    "learner": {
+      "groups": [], 
+      "id": 32, 
+      "is_staff": false, 
+      "is_superuser": false, 
+      "roles": [], 
+      "username": "qastudiolearner_py27"
+    }
+  }, 
+  "namespace": "py36-r2-e6-py27", 
+  "runtime": "py27", 
+  "state": {
+    "draft": {
+      "body": "<p>STUDIO_PUBLISH_BASELINE_PY27</p>", 
+      "usage_key": "block-v1:QA+StudioPublish+Py27+type@html+block@studio_publish_html"
+    }, 
+    "draft_usage_keys": [
+      "block-v1:QA+StudioPublish+Py27+type@chapter+block@studio_publish_section", 
+      "block-v1:QA+StudioPublish+Py27+type@sequential+block@studio_publish_subsection", 
+      "block-v1:QA+StudioPublish+Py27+type@vertical+block@studio_publish_unit", 
+      "block-v1:QA+StudioPublish+Py27+type@html+block@studio_publish_html"
+    ], 
+    "has_changes": false, 
+    "published": {
+      "body": "<p>STUDIO_PUBLISH_BASELINE_PY27</p>", 
+      "usage_key": "block-v1:QA+StudioPublish+Py27+type@html+block@studio_publish_html"
+    }, 
+    "published_by": 31, 
+    "published_on": "2026-10-10 07:40:54.002000+00:00", 
+    "published_usage_keys": [
+      "block-v1:QA+StudioPublish+Py27+type@chapter+block@studio_publish_section", 
+      "block-v1:QA+StudioPublish+Py27+type@sequential+block@studio_publish_subsection", 
+      "block-v1:QA+StudioPublish+Py27+type@vertical+block@studio_publish_unit", 
+      "block-v1:QA+StudioPublish+Py27+type@html+block@studio_publish_html"
+    ]
+  }, 
+  "status": "STUDIO_RESET_OK"
+}

@@ -1,0 +1,12 @@
+es_isolated cluster=py36-r2-e6-py27-es nodes=1
+E6_FIXTURE_OK user_id=17 course=course-v1:QA+Acceptance+Test site=localhost:18000 course_org_filter=edX->QA enable_last_activity=True
+/py36-r2-e6-py27-mysql running=true restarts=0 image=sha256:20575ecebe6216036d25dab5903808211f1e9ba63dc7825ac20cb975e34cfcae source_ro=
+/py36-r2-e6-py27-mongo running=true restarts=0 image=sha256:6a0061a32c34bc8004ed69c9d9331a0695bda9430e24bea7fb4b331864394d7f source_ro=
+/py36-r2-e6-py27-es running=true restarts=0 image=sha256:27235efd307d30c82aa24baf0f6cc24b2cbc504445bb3fccd0e5c13f8c51d1bd source_ro=
+/py36-r2-e6-py27-forum absent
+/py36-r2-e6-py27-rabbitmq absent
+/py36-r2-e6-py27-memcached running=true restarts=0 image=sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226 source_ro=
+/py36-r2-e6-py27-lms running=true restarts=0 image=sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89 source_ro=true
+/py36-r2-e6-py27-cms running=true restarts=0 image=sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89 source_ro=true
+/py36-r2-e6-py27-worker absent
+E6_SERVICES_STARTED runtime=py27 lms=http://127.0.0.1:18400 cms=http://127.0.0.1:18410 netns=py36-r2-e6-py27-lms

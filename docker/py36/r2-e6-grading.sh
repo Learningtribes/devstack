@@ -42,7 +42,7 @@ step() {
         tail -n 40 "${OUT}/${name}.log" >&2
         return 1
     fi
-    grep -q "^${marker} " "${OUT}/${name}.log"
+    grep -q "^${marker} " "${OUT}/${name}.log" || return 1
     echo "${name}: ${marker}"
 }
 

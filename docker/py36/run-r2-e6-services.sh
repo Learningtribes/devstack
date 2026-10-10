@@ -2,7 +2,8 @@
 # R2-preview E6: per-runtime LMS + Studio on private MySQL, Mongo and
 # Elasticsearch clones, memcached and, with PY36_R2_E6_WITH_FORUM=1, an empty
 # private comments service; with PY36_R2_E6_WITH_BROKER=1, a private RabbitMQ
-# and a grade/progress worker.
+# and a grade/progress worker. PY36_R2_E6_PRESTART="<file.py> <evidence-dir> [args]"
+# runs a `script` after the clones are loaded and before the servers start.
 # usage: run-r2-e6-services.sh {clone|clone-es}
 #        run-r2-e6-services.sh {py36|py27} {start|status|cleanup|logs|script <file.py> <evidence-dir> [args]}
 #
@@ -266,6 +267,15 @@ start() {
         -c "${METADATA}exec ${PYTHON} manage.py lms shell -c \"exec(open('/edx/app/edxapp/r2_e6_fixture.py').read())\"" \
         > "${LOG_ROOT}/fixture.txt" 2>&1
     grep '^E6_FIXTURE_OK ' "${LOG_ROOT}/fixture.txt"
+    # A gate whose provisioning changes SiteConfiguration runs it here: the
+    # servers keep the configuration of each Site they have already served.
+    if [ -n "${PY36_R2_E6_PRESTART:-}" ]; then
+        # shellcheck disable=SC2086
+        if ! run_script ${PY36_R2_E6_PRESTART} > "${LOG_ROOT}/prestart.txt" 2>&1; then
+            tail -n 40 "${LOG_ROOT}/prestart.txt" >&2
+            exit 1
+        fi
+    fi
 
     # shellcheck disable=SC2046
     docker run -d --name "${LMS}" --network "${NETWORK}" \
@@ -313,20 +323,23 @@ cleanup() {
     done
 }
 
-# Runs <file.py> (relative to this directory) with the LMS container's mounts,
-# settings and environment; <evidence-dir> is mounted writable at
-# /edx/var/r2-evidence. Extra environment comes from PY36_R2_E6_SCRIPT_ENV_FILE.
+# Runs <file.py> (relative to this directory) with the mounts, settings and
+# environment of the LMS container, or of Studio with PY36_R2_E6_SCRIPT_SERVICE=cms;
+# <evidence-dir> is mounted writable at /edx/var/r2-evidence. Extra environment
+# comes from the space-separated files in PY36_R2_E6_SCRIPT_ENV_FILE.
 run_script() {
     script=$1 evidence=$2; shift 2
+    svc=${PY36_R2_E6_SCRIPT_SERVICE:-lms}
+    case "${svc}" in lms|cms) ;; *) echo "PY36_R2_E6_SCRIPT_SERVICE must be lms or cms" >&2; return 2 ;; esac
     test -f "${SCRIPT_DIR}/${script}"
     mkdir -p "${evidence}"
     extra=
-    if [ -n "${PY36_R2_E6_SCRIPT_ENV_FILE:-}" ]; then extra="--env-file ${PY36_R2_E6_SCRIPT_ENV_FILE}"; fi
+    for env_file in ${PY36_R2_E6_SCRIPT_ENV_FILE:-}; do extra="${extra} --env-file ${env_file}"; done
     # shellcheck disable=SC2046,SC2086
     docker run --rm --network "${NETWORK}" \
         --mount "type=bind,src=${SCRIPT_DIR},dst=/opt/r2-scripts,readonly" \
         --mount "type=bind,src=${evidence},dst=/edx/var/r2-evidence" \
-        $(service_args lms) ${extra} "${IMAGE}" \
+        $(service_args "${svc}") ${extra} "${IMAGE}" \
         -c "${METADATA}exec ${PYTHON} /opt/r2-scripts/${script} $*"
 }
 

@@ -1,0 +1,7 @@
+# filtered from docker logs of py36-r2-e6-py36-{lms,cms,forum} since 2026-10-10T07:35:32Z: lines matching Traceback|ERROR|Exception| 5xx status
+== py36-r2-e6-py36-lms
+398:2026-10-10 03:35:47,416 INFO 1 [openedx.core.djangoapps.course_groups.cohorts] cohorts.py:477 - Exception occurs ( user_id:32 ) in clean_cohort_cache() caller: task_evaluate_subsection_completion_milestones : CohortMembership matching query does not exist.
+== py36-r2-e6-py36-cms
+1632:2026-10-10 03:35:51,515 ERROR 1 [edx.modulestore] courseware_index.py:270 - Indexing error encountered, courseware index may be out of date course-v1:QA+StudioPublish+Py36 - AttributeError("'dict_items' object has no attribute 'extend'",)
+1633:Traceback (most recent call last):
+1639:2026-10-10 03:35:51,515 ERROR 1 [contentstore.tasks] tasks.py:497 - Search indexing error for complete course course-v1:QA+StudioPublish+Py36 - Error(s) present during indexing
