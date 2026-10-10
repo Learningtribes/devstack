@@ -1,10 +1,12 @@
 #!/bin/sh
-# R2-preview E6: per-runtime LMS + Studio on a private MySQL clone and memcached.
+# R2-preview E6: per-runtime LMS + Studio on private MySQL and Mongo clones, an
+# empty private Elasticsearch, and memcached.
 # usage: run-r2-e6-services.sh clone
 #        run-r2-e6-services.sh {py36|py27} {start|status|cleanup|logs}
 #
 # `clone` takes one read-only mysqldump of the shared edxapp/edxapp_csmh
-# databases; every runtime stack loads the same snapshot into its own MySQL.
+# databases and one mongodump of the shared `edxapp` Mongo database; every
+# runtime stack loads the same snapshots into its own servers.
 # LMS (:18000) and Studio (:18010) share one network namespace so a browser
 # joined to it sees the canonical devstack origins (Site rows, absolute Studio
 # URLs, cookies) while the host ports stay with the shared Python 2.7 devstack.
@@ -23,8 +25,12 @@ XBLOCK_ILT_COMMIT=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
 XBLOCK_ILT_SRC=${WORKSPACE}/.py36-r2-sources/xblock-ilt-${XBLOCK_ILT_COMMIT}
 # r2-build-e6-assets.sh output; LMS and Studio both mount the runtime's tree.
 ASSET_ROOT=${PY36_R2_E6_ASSET_ROOT:-/tmp/py36-r2-e6-assets-20261010-r3}
+MONGO_DUMP=${CONFIG}/e6-mongo-snapshot.archive
 MYSQL_IMAGE=mysql:5.6
 CACHE_IMAGE=memcached@sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226
+# Same images as edx.devstack.mongo / edx.devstack.elasticsearch.
+MONGO_IMAGE=mongo@sha256:6a0061a32c34bc8004ed69c9d9331a0695bda9430e24bea7fb4b331864394d7f
+ES_IMAGE=edxops/elasticsearch@sha256:27235efd307d30c82aa24baf0f6cc24b2cbc504445bb3fccd0e5c13f8c51d1bd
 NETWORK=devstack_default
 LABEL=io.openedx.py36-r2.gate=e6
 # Gate containers share the Docker VM with edx.devstack.*; without a cgroup
@@ -44,6 +50,11 @@ clone() {
         --databases edxapp edxapp_csmh > "${DUMP}.tmp"
     mv "${DUMP}.tmp" "${DUMP}"
     echo "E6_CLONE_DONE at=$(date -u +%Y-%m-%dT%H:%M:%SZ) bytes=$(wc -c < "${DUMP}" | tr -d ' ') sha256=$(shasum -a 256 "${DUMP}" | cut -d' ' -f1)"
+    # Modulestore and contentstore live in `edxapp`; the comments service
+    # database is not cloned (the gate forum starts empty).
+    docker exec edx.devstack.mongo mongodump --quiet --db edxapp --archive > "${MONGO_DUMP}.tmp"
+    mv "${MONGO_DUMP}.tmp" "${MONGO_DUMP}"
+    echo "E6_MONGO_CLONE_DONE bytes=$(wc -c < "${MONGO_DUMP}" | tr -d ' ') sha256=$(shasum -a 256 "${MONGO_DUMP}" | cut -d' ' -f1)"
 }
 
 if [ "${1:-}" = clone ]; then clone; exit 0; fi
@@ -74,6 +85,8 @@ esac
 
 NAMESPACE=py36-r2-e6-${RUNTIME}
 MYSQL=${NAMESPACE}-mysql
+MONGO=${NAMESPACE}-mongo
+ES=${NAMESPACE}-es
 CACHE=${NAMESPACE}-memcached
 LMS=${NAMESPACE}-lms
 CMS=${NAMESPACE}-cms
@@ -118,7 +131,8 @@ service_args() {
         --env "PYTHONPATH=${PYTHONPATH_VALUE}" --env PYTHONDONTWRITEBYTECODE=1 \
         --env "PY36_R2_E6_NAMESPACE=${NAMESPACE}" --env "PY36_R2_E6_CACHE_HOST=${CACHE}" \
         --env "PY36_R2_E6_MYSQL_HOST=${MYSQL}" \
-        --env EDXAPP_TEST_MONGO_HOST=edx.devstack.mongo --env NO_PYTHON_UNINSTALL=1 \
+        --env "PY36_R2_E6_MONGO_HOST=${MONGO}" --env "PY36_R2_E6_ES_HOST=${ES}" \
+        --env "EDXAPP_TEST_MONGO_HOST=${MONGO}" --env NO_PYTHON_UNINSTALL=1 \
         --env RES_OPTIONS=single-request \
         -w "${P}"
 }
@@ -127,11 +141,11 @@ start() {
     test "$(docker image inspect "${IMAGE}" --format '{{.Id}}')" = "${IMAGE_ID}"
     test "$(git -C "${SOURCE_ROOT}" rev-parse HEAD)" = "${EXPECTED_COMMIT}"
     test -z "$(git -C "${SOURCE_ROOT}" status --porcelain)"
-    test -f "${DUMP}" && test -f "${MYSQL_ENV}"
+    test -f "${DUMP}" && test -f "${MYSQL_ENV}" && test -f "${MONGO_DUMP}"
     grep -qx "commit=${XBLOCK_ILT_COMMIT}" "${XBLOCK_ILT_SRC}.identity"
     grep -qx "source_commit=${EXPECTED_COMMIT}" "${ASSET_ROOT}/logs/provenance.txt"
     grep -qx "collect_${RUNTIME}_image=${IMAGE} ${IMAGE_ID}" "${ASSET_ROOT}/logs/provenance.txt"
-    for c in ${MYSQL} ${CACHE} ${LMS} ${CMS}; do
+    for c in ${MYSQL} ${MONGO} ${ES} ${CACHE} ${LMS} ${CMS}; do
         if exists "$c"; then echo "refusing to replace existing container: $c" >&2; exit 2; fi
     done
     for port in ${LMS_PORT} ${CMS_PORT}; do
@@ -145,6 +159,17 @@ start() {
         "${MYSQL_IMAGE}" --character-set-server=utf8 --collation-server=utf8_general_ci >/dev/null
     docker run -d --name "${CACHE}" --network "${NETWORK}" --label "${LABEL}" \
         --label "io.openedx.py36-r2.runtime=${RUNTIME}" --memory 128m "${CACHE_IMAGE}" memcached -m 64 >/dev/null
+    # No --auth: the settings overlay drops the Mongo credentials.
+    docker run -d --name "${MONGO}" --network "${NETWORK}" --label "${LABEL}" \
+        --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 --memory 1g \
+        --mount type=tmpfs,dst=/data/db "${MONGO_IMAGE}" \
+        mongod --smallfiles --nojournal --storageEngine wiredTiger --wiredTigerCacheSizeGB 1 >/dev/null
+    docker run -d --name "${ES}" --network "${NETWORK}" --label "${LABEL}" \
+        --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 --memory 1g \
+        --env ES_HEAP_SIZE=384m "${ES_IMAGE}" >/dev/null
+    wait_for mongo docker exec "${MONGO}" mongo --quiet --eval 'quit(db.adminCommand({ping: 1}).ok ? 0 : 1)'
+    docker exec -i "${MONGO}" mongorestore --quiet --archive < "${MONGO_DUMP}"
+    wait_for elasticsearch docker exec "${ES}" curl -fsS http://localhost:9200/
     # The entrypoint runs a socket-only server for init, then the final server
     # on TCP; pinging over TCP waits for the final one.
     wait_for mysql mysql_client mysqladmin -uroot -h127.0.0.1 ping
@@ -176,7 +201,7 @@ start() {
 }
 
 status() {
-    for c in ${MYSQL} ${CACHE} ${LMS} ${CMS}; do
+    for c in ${MYSQL} ${MONGO} ${ES} ${CACHE} ${LMS} ${CMS}; do
         if exists "$c"; then
             docker inspect "$c" --format '{{.Name}} running={{.State.Running}} restarts={{.RestartCount}} image={{.Image}} source_ro={{range .Mounts}}{{if eq .Destination "/edx/app/edxapp/edx-platform"}}{{not .RW}}{{end}}{{end}}'
         else
@@ -186,7 +211,7 @@ status() {
 }
 
 cleanup() {
-    for c in ${CMS} ${LMS} ${CACHE} ${MYSQL}; do
+    for c in ${CMS} ${LMS} ${CACHE} ${ES} ${MONGO} ${MYSQL}; do
         if exists "$c"; then
             test "$(docker inspect "$c" --format '{{index .Config.Labels "io.openedx.py36-r2.gate"}}')" = e6
             docker rm -f "$c" >/dev/null && echo "removed $c"

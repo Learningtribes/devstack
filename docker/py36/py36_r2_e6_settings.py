@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """R2-preview E6 browser-gate settings for both runtimes.
 
-devstack_docker plus a private MySQL clone and memcached, so /auto_auth,
-sessions and enrollments never write to the shared devstack stores.
+devstack_docker plus private MySQL and Mongo clones, a private Elasticsearch
+and memcached, so /auto_auth, sessions, enrollments, course writes and search
+indexing never reach the shared devstack stores.
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 
@@ -26,6 +27,8 @@ E6_NAMESPACE = _required('PY36_R2_E6_NAMESPACE')
 E6_CACHE_HOST = _required('PY36_R2_E6_CACHE_HOST')
 E6_MYSQL_HOST = _required('PY36_R2_E6_MYSQL_HOST')
 E6_MYSQL_PASSWORD = _required('PY36_R2_E6_MYSQL_ROOT_PASSWORD')
+E6_MONGO_HOST = _required('PY36_R2_E6_MONGO_HOST')
+E6_ES_HOST = _required('PY36_R2_E6_ES_HOST')
 
 ALLOWED_HOSTS = list(ALLOWED_HOSTS)
 for host in ('localhost', '127.0.0.1'):
@@ -35,6 +38,30 @@ for host in ('localhost', '127.0.0.1'):
 DATABASES = copy.deepcopy(DATABASES)
 for database in DATABASES.values():
     database.update({'HOST': E6_MYSQL_HOST, 'PORT': '3306', 'USER': 'root', 'PASSWORD': E6_MYSQL_PASSWORD})
+
+
+def _private_mongo(config):
+    # The private mongod runs without --auth; the shared credentials would be
+    # rejected there.
+    config = dict(config, host=[E6_MONGO_HOST] if isinstance(config.get('host'), list) else E6_MONGO_HOST)
+    config.pop('user', None)
+    config.pop('password', None)
+    return config
+
+
+DOC_STORE_CONFIG = _private_mongo(DOC_STORE_CONFIG)
+MODULESTORE = copy.deepcopy(MODULESTORE)
+for store in MODULESTORE['default']['OPTIONS']['stores']:
+    store['DOC_STORE_CONFIG'] = _private_mongo(store['DOC_STORE_CONFIG'])
+CONTENTSTORE = copy.deepcopy(CONTENTSTORE)
+CONTENTSTORE['DOC_STORE_CONFIG'] = _private_mongo(CONTENTSTORE['DOC_STORE_CONFIG'])
+CONTENTSTORE['OPTIONS'] = _private_mongo(CONTENTSTORE['OPTIONS'])
+if 'EDX_OBJECTS_MONGODB_SETTINGS' in globals():
+    EDX_OBJECTS_MONGODB_SETTINGS = {
+        name: _private_mongo(config) for name, config in EDX_OBJECTS_MONGODB_SETTINGS.items()
+    }
+
+ELASTIC_SEARCH_CONFIG = [{'use_ssl': False, 'host': E6_ES_HOST, 'port': 9200}]
 
 # LMS and CMS share one namespace so the LMS /auto_auth session also
 # authenticates Studio, as on the stock devstack.
