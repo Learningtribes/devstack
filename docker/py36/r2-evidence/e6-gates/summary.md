@@ -113,7 +113,8 @@ calls `.extend()` on `dict.items()`). The same line is on `origin/master`
 reindex, so on Python 3 Studio publishes never update `courseware_index`;
 py27 issued two `POST /_bulk 200` for the same flow. R1 used a mock search
 engine and did not reach this line. Per the 21:00 decision this goes to a
-master owner PR / Track E card, not #2401.
+master owner PR / Track E card, not #2401. Owner decision (2026-10-10
+15:50): the gate counts as a PASS for the R2 question on both runtimes.
 
 Earlier attempt, kept as evidence:
 
