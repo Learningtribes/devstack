@@ -92,6 +92,10 @@ from openassessment.xblock.xml import serialize_content  # noqa: E402
 EXPECTED_PLATFORM_COMMIT = '7644241bb598ac20e20e70dd7abf2e5110f5b7bd'
 EXPECTED_PLATFORM_TREE = '7c5e963e767bb1eaa16c9e64222694698b7727a3'
 EXPECTED_ORA2_COMMIT = 'd3f24a9c539528e960c8dcc9aef200cea0c49baf'
+# PersistentCourseProgress rows before the staff assessment: before Platform
+# #2369 the COURSE_GRADE_CHANGED receiver persisted 0% progress on the first
+# grade read; from #2369 only the calculate_course_progress task writes it.
+PENDING_COURSE_PROGRESS_ROWS = 1
 COURSE_DISPLAY_NAME = 'P1-B ORA2 Assessment'
 COURSE_START = datetime(2026, 8, 1, tzinfo=pytz.UTC)
 COURSE_END = datetime(2027, 8, 1, tzinfo=pytz.UTC)
@@ -1086,8 +1090,20 @@ def _pending_persistent_state(fixture, state, submission):
     progress = state['course_progress_object']
     course, _blocks, _olx = _published_fixture(fixture)
     policy_hash = GradesTransformer.grading_policy_hash(course)
+    if not PENDING_COURSE_PROGRESS_ROWS:
+        if progress is not None:
+            raise RuntimeError('ORA2 pending course progress row is unexpected: {!r}'.format(progress.id))
+        progress_payload = None
+    elif progress is None or float(progress.percent_progress) != 0.0 or progress.created > submission.submitted_at:
+        raise RuntimeError('ORA2 pending course progress state is invalid')
+    else:
+        progress_payload = {
+            'id': progress.id,
+            'percent_progress': progress.percent_progress,
+            'created': progress.created,
+        }
     if (
-            subsection_grade is None or course_grade is None or progress is None or
+            subsection_grade is None or course_grade is None or
             subsection_grade.user_id != state['enrollment_object'].user_id or
             subsection_grade.course_id != fixture['course_key_object'] or
             subsection_grade.usage_key != fixture['usage_keys']['sequential'] or
@@ -1096,8 +1112,7 @@ def _pending_persistent_state(fixture, state, submission):
             subsection_grade.first_attempted is not None or
             float(course_grade.percent_grade) != 0.0 or course_grade.letter_grade != '' or
             course_grade.grading_policy_hash != policy_hash or
-            float(progress.percent_progress) != 0.0 or
-            any(value.created > submission.submitted_at for value in (subsection_grade, course_grade, progress))
+            any(value.created > submission.submitted_at for value in (subsection_grade, course_grade))
     ):
         raise RuntimeError('ORA2 pending persistent grade/progress state is invalid')
     return {
@@ -1117,11 +1132,7 @@ def _pending_persistent_state(fixture, state, submission):
             'grading_policy_hash': course_grade.grading_policy_hash,
             'created': course_grade.created,
         },
-        'course_progress': {
-            'id': progress.id,
-            'percent_progress': progress.percent_progress,
-            'created': progress.created,
-        },
+        'course_progress': progress_payload,
     }
 
 
@@ -1140,7 +1151,7 @@ def submission_ready(fixture):
         'student_module': 1,
         'subsection_grade': 1,
         'course_grade': 1,
-        'course_progress': 1,
+        'course_progress': PENDING_COURSE_PROGRESS_ROWS,
     }
     mismatched = {name: (counts[name], value) for name, value in expected.items() if counts[name] != value}
     forbidden = (

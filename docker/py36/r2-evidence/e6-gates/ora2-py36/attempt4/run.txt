@@ -1,0 +1,13 @@
+E6_ORA2_SITE site_id=4 domain=localhost:18000 previous=[('ENABLE_LAST_ACTIVITY', True), ('course_org_filter', 'QA')] unthemed=['hawthorn']
+provision: PROVISION_OK
+identity: IDENTITY_OK
+preflight: PRECONDITION_OK
+submission-ready: SUBMISSION_READY_OK
+staff-lease: STAFF_LEASE_OK
+postflight: POSTCONDITION_OK
+npm notice
+npm notice New major version of npm available! 11.13.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+E6_ORA2_OK runtime=py36 mode=installed attempt=1 ora2=d3f24a9c539528e960c8dcc9aef200cea0c49baf

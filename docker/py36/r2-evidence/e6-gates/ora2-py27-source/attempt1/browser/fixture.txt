@@ -1,0 +1,1 @@
+E6_FIXTURE_OK user_id=17 course=course-v1:QA+Acceptance+Test site=localhost:18000 course_org_filter=edX->QA enable_last_activity=True

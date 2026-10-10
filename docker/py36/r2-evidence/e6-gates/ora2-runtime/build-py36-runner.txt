@@ -1,0 +1,149 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.r2-ora2-py36-test-runner
+#1 transferring dockerfile: 4.15kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/ltdps/edxapp:py36-r2-ora2-20261010
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/ltdps/edxapp:py36-r2-py36-runner-20261009
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [stage-0 1/8] FROM docker.io/ltdps/edxapp:py36-r2-py36-runner-20261009@sha256:004a03ddbb81cb7866028f1b4c7233242e39668c529e8022daa5e8798ac3863b
+#6 resolve docker.io/ltdps/edxapp:py36-r2-py36-runner-20261009@sha256:004a03ddbb81cb7866028f1b4c7233242e39668c529e8022daa5e8798ac3863b 0.0s done
+#6 DONE 0.1s
+
+#7 FROM docker.io/ltdps/edxapp:py36-r2-ora2-20261010@sha256:7f1bf1cd7be236362aff6ee97af595de0b4b16155ba02235495c73495be97022
+#7 resolve docker.io/ltdps/edxapp:py36-r2-ora2-20261010@sha256:7f1bf1cd7be236362aff6ee97af595de0b4b16155ba02235495c73495be97022
+#7 resolve docker.io/ltdps/edxapp:py36-r2-ora2-20261010@sha256:7f1bf1cd7be236362aff6ee97af595de0b4b16155ba02235495c73495be97022 0.0s done
+#7 CACHED
+
+#6 [stage-0 1/8] FROM docker.io/ltdps/edxapp:py36-r2-py36-runner-20261009@sha256:004a03ddbb81cb7866028f1b4c7233242e39668c529e8022daa5e8798ac3863b
+#6 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 2.83kB done
+#5 DONE 0.0s
+
+#8 [stage-0 2/8] COPY --from=ltdps/edxapp:py36-r2-ora2-20261010     /usr/local/lib/python3.6/site-packages/submissions/api.py     /usr/local/lib/python3.6/site-packages/submissions/models.py     /usr/local/lib/python3.6/site-packages/submissions/
+#8 DONE 0.3s
+
+#9 [stage-0 6/8] ADD https://codeload.github.com/getmoto/moto/tar.gz/4eaf5d527ef5d619aedbc48c9e09d3364239b41d /opt/runner/moto-0.4.31-4eaf5d5.tar.gz
+#9 ...
+
+#10 [stage-0 3/8] COPY p1b-ora2-py36-test-deps.txt /opt/runner/p1b-ora2-py36-test-deps.txt
+#10 DONE 0.1s
+
+#11 [stage-0 4/8] COPY p1b-ora2-xblock-sdk-deps.txt /opt/runner/p1b-ora2-xblock-sdk-deps.txt
+#11 DONE 0.1s
+
+#12 [stage-0 5/8] COPY xblock-sdk-v0.1.4-workbench-py3.patch /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch
+#12 DONE 0.1s
+
+#13 [stage-0 7/8] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#13 DONE 1.1s
+
+#9 [stage-0 6/8] ADD https://codeload.github.com/getmoto/moto/tar.gz/4eaf5d527ef5d619aedbc48c9e09d3364239b41d /opt/runner/moto-0.4.31-4eaf5d5.tar.gz
+#9 DONE 1.2s
+
+#13 [stage-0 7/8] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#13 DONE 1.1s
+
+#14 [stage-0 6/8] ADD https://codeload.github.com/getmoto/moto/tar.gz/4eaf5d527ef5d619aedbc48c9e09d3364239b41d /opt/runner/moto-0.4.31-4eaf5d5.tar.gz
+#14 DONE 0.1s
+
+#15 [stage-0 7/8] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#15 DONE 0.1s
+
+#16 [stage-0 8/8] RUN cd /usr/local/lib/python3.6/site-packages     && echo "a30b76f9f7676c73b57f8a696c6eb1fc101ae4a6cabf80680cc8f1e5380dd319  submissions/api.py" | sha256sum -c -     && echo "0b89c4191af3c9aaeaf41376c3dd44ad194841e95adee964360eb1a79cb68de3  submissions/models.py" | sha256sum -c -     && ! grep -E 'basestring|unicode\(' submissions/api.py submissions/models.py     && cd /     && pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-py36-test-deps.txt     && pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt     && echo "2732cf43018440d7caa1fe6fb77f7f990f26c857afba703e68d12a805c137cde  /opt/runner/moto-0.4.31-4eaf5d5.tar.gz" | sha256sum -c -     && echo "6b6acf90398ac740add51daa4ba158499a8148763a481c905040f76df889b160  /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz" | sha256sum -c -     && pip install --no-cache-dir --no-deps /opt/runner/moto-0.4.31-4eaf5d5.tar.gz     && pip install --no-cache-dir --no-deps /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz     && cd /usr/local/lib/python3.6/site-packages     && echo "aa362758a66e8a39c4e743ce4f3bd86cdccdf198854c29868f8379ac3f7dfc9e  workbench/runtime.py" | sha256sum -c -     && git apply --check /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch     && git apply /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch     && cd /     && python -m compileall -q         /usr/local/lib/python3.6/site-packages/submissions/api.py         /usr/local/lib/python3.6/site-packages/submissions/models.py         /usr/local/lib/python3.6/site-packages/workbench/runtime.py     && pip check     && python -c "import pkg_resources; expected = {'pytest': '3.6.4', 'pytest-django': '3.1.2', 'ddt': '0.8.0', 'mock': '1.0.1', 'nose': '1.3.7', 'factory-boy': '2.8.1', 'Faker': '0.8.16', 'freezegun': '0.3.10', 'cssselect': '1.0.3', 'pyquery': '1.4.0', 'edx-submissions': '2.1.1', 'moto': '0.4.31', 'httpretty': '0.8.10', 'xmltodict': '0.11.0', 'Werkzeug': '0.14.1', 'xblock-sdk': '0.1.4', 'cookiecutter': '0.9.0', 'binaryornot': '0.4.4', 'django-nose': '1.4.7', 'pypng': '0.0.18'}; actual = {name: pkg_resources.get_distribution(name).version for name in expected}; assert actual == expected, (expected, actual); print('Py3.6 ORA2 test tools OK', actual)"
+#16 0.089 submissions/api.py: OK
+#16 0.090 submissions/models.py: OK
+#16 0.901 Collecting httpretty==0.8.10
+#16 1.322   Downloading httpretty-0.8.10.tar.gz (41 kB)
+#16 2.036 Collecting Werkzeug==0.14.1
+#16 2.245   Downloading Werkzeug-0.14.1-py2.py3-none-any.whl (322 kB)
+#16 2.677 Collecting xmltodict==0.11.0
+#16 2.881   Downloading xmltodict-0.11.0-py2.py3-none-any.whl (7.2 kB)
+#16 2.883 Building wheels for collected packages: httpretty
+#16 2.884   Building wheel for httpretty (setup.py): started
+#16 2.997   Building wheel for httpretty (setup.py): finished with status 'done'
+#16 2.997   Created wheel for httpretty: filename=httpretty-0.8.10-py3-none-any.whl size=24001 sha256=7ddc2dc1bf86be4639f0bb12960e0cbcb98a044bcf64ed2d3874b9b1e4f46d1e
+#16 2.997   Stored in directory: /tmp/pip-ephem-wheel-cache-wldzatl0/wheels/9a/1c/14/92b60cd98245f8df27555f05204c02c591fd42a46a09af32be
+#16 2.998 Successfully built httpretty
+#16 2.998 Installing collected packages: xmltodict, Werkzeug, httpretty
+#16 3.072 Successfully installed Werkzeug-0.14.1 httpretty-0.8.10 xmltodict-0.11.0
+#16 3.662 WARNING: You are using pip version 20.3.4; however, version 21.3.1 is available.
+#16 3.662 You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+#16 4.368 Collecting binaryornot==0.4.4
+#16 4.766   Downloading binaryornot-0.4.4.tar.gz (371 kB)
+#16 5.536 Collecting cookiecutter==0.9.0
+#16 5.661   Downloading cookiecutter-0.9.0.tar.gz (115 kB)
+#16 6.096 Collecting django-nose==1.4.7
+#16 6.224   Downloading django-nose-1.4.7.tar.gz (45 kB)
+#16 6.444 Collecting pypng==0.0.18
+#16 6.748   Downloading pypng-0.0.18.tar.gz (377 kB)
+#16 7.066 Skipping wheel build for binaryornot, due to binaries being disabled for it.
+#16 7.066 Skipping wheel build for cookiecutter, due to binaries being disabled for it.
+#16 7.066 Skipping wheel build for django-nose, due to binaries being disabled for it.
+#16 7.066 Skipping wheel build for pypng, due to binaries being disabled for it.
+#16 7.066 Installing collected packages: pypng, django-nose, cookiecutter, binaryornot
+#16 7.067     Running setup.py install for pypng: started
+#16 7.457     Running setup.py install for pypng: finished with status 'done'
+#16 7.457     Running setup.py install for django-nose: started
+#16 7.556     Running setup.py install for django-nose: finished with status 'done'
+#16 7.557     Running setup.py install for cookiecutter: started
+#16 7.659     Running setup.py install for cookiecutter: finished with status 'done'
+#16 7.659     Running setup.py install for binaryornot: started
+#16 7.749     Running setup.py install for binaryornot: finished with status 'done'
+#16 7.767 Successfully installed binaryornot-0.4.4 cookiecutter-0.9.0 django-nose-1.4.7 pypng-0.0.18
+#16 8.323 WARNING: You are using pip version 20.3.4; however, version 21.3.1 is available.
+#16 8.323 You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+#16 8.342 /opt/runner/moto-0.4.31-4eaf5d5.tar.gz: OK
+#16 8.343 /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz: OK
+#16 8.450 Processing /opt/runner/moto-0.4.31-4eaf5d5.tar.gz
+#16 8.572 Building wheels for collected packages: moto
+#16 8.572   Building wheel for moto (setup.py): started
+#16 8.711   Building wheel for moto (setup.py): finished with status 'done'
+#16 8.711   Created wheel for moto: filename=moto-0.4.31-py2.py3-none-any.whl size=307054 sha256=87e8c675096c0349e6b8bcc45acd544cb1a27bfa6d54154fc53273ae74beb477
+#16 8.711   Stored in directory: /tmp/pip-ephem-wheel-cache-43ypaw_a/wheels/cd/f5/39/a54ed85480149626ffea9c0c47740481cdde30e17b8caf4171
+#16 8.713 Successfully built moto
+#16 8.713 Installing collected packages: moto
+#16 8.815 Successfully installed moto-0.4.31
+#16 9.415 WARNING: You are using pip version 20.3.4; however, version 21.3.1 is available.
+#16 9.415 You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+#16 9.540 Processing /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#16 9.635 Building wheels for collected packages: xblock-sdk
+#16 9.635   Building wheel for xblock-sdk (setup.py): started
+#16 9.760   Building wheel for xblock-sdk (setup.py): finished with status 'done'
+#16 9.760   Created wheel for xblock-sdk: filename=xblock_sdk-0.1.4-py3-none-any.whl size=230927 sha256=0d07e184da43429a3bb6677d4853cb6656ac8818eeaad13bebb27a4bae11d621
+#16 9.760   Stored in directory: /tmp/pip-ephem-wheel-cache-sa5e2gqz/wheels/38/58/ce/8fed48a08151b9262a33b8b1822e3137b26e6d02c051babb99
+#16 9.760 Successfully built xblock-sdk
+#16 9.761 Installing collected packages: xblock-sdk
+#16 9.793 Successfully installed xblock-sdk-0.1.4
+#16 10.40 WARNING: You are using pip version 20.3.4; however, version 21.3.1 is available.
+#16 10.40 You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+#16 10.42 workbench/runtime.py: OK
+#16 10.66 No broken requirements found.
+#16 10.72 Py3.6 ORA2 test tools OK {'pytest': '3.6.4', 'pytest-django': '3.1.2', 'ddt': '0.8.0', 'mock': '1.0.1', 'nose': '1.3.7', 'factory-boy': '2.8.1', 'Faker': '0.8.16', 'freezegun': '0.3.10', 'cssselect': '1.0.3', 'pyquery': '1.4.0', 'edx-submissions': '2.1.1', 'moto': '0.4.31', 'httpretty': '0.8.10', 'xmltodict': '0.11.0', 'Werkzeug': '0.14.1', 'xblock-sdk': '0.1.4', 'cookiecutter': '0.9.0', 'binaryornot': '0.4.4', 'django-nose': '1.4.7', 'pypng': '0.0.18'}
+#16 DONE 10.8s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 0.5s done
+#17 exporting manifest sha256:a93b7ffddb0fd6e4ff298f5eb6c7c9051ccfe4ac6211960913706aaf6f746698
+#17 exporting manifest sha256:a93b7ffddb0fd6e4ff298f5eb6c7c9051ccfe4ac6211960913706aaf6f746698 0.0s done
+#17 exporting config sha256:5d4045c855a0e4a79a4d839d7ecf70378715fc1b011e62f38531e99154e6afa9 0.0s done
+#17 exporting attestation manifest sha256:82af55e7778e0ad8ea401b1012fcfcb04de12a44820df1a6a489abb9fec45995 0.0s done
+#17 exporting manifest list sha256:ef76a359b17001be6d8b00b06f5a82aba4a3a7a2fb0d66169e902bd10ead752c 0.0s done
+#17 naming to docker.io/ltdps/edxapp:py36-r2-ora2-py36-runner-20261010 done
+#17 unpacking to docker.io/ltdps/edxapp:py36-r2-ora2-py36-runner-20261010
+#17 unpacking to docker.io/ltdps/edxapp:py36-r2-ora2-py36-runner-20261010 0.3s done
+#17 DONE 0.9s

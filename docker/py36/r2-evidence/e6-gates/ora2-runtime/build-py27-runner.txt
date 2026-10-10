@@ -1,0 +1,94 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.r2-ora2-py27-test-runner
+#1 transferring dockerfile: 2.71kB done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/ltdps/edxapp:py36-r2-py27-runner-20261009
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/5] FROM docker.io/ltdps/edxapp:py36-r2-py27-runner-20261009@sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89
+#5 resolve docker.io/ltdps/edxapp:py36-r2-py27-runner-20261009@sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89 0.1s done
+#5 DONE 0.1s
+
+#6 [stage-0 7/8] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#6 ...
+
+#4 [internal] load build context
+#4 transferring context: 2.39kB done
+#4 DONE 0.2s
+
+#5 [1/5] FROM docker.io/ltdps/edxapp:py36-r2-py27-runner-20261009@sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89
+#5 DONE 0.6s
+
+#6 [stage-0 7/8] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#6 ...
+
+#7 [2/5] COPY p1b-ora2-xblock-sdk-deps.txt /opt/runner/p1b-ora2-xblock-sdk-deps.txt
+#7 DONE 0.1s
+
+#8 [3/5] COPY xblock-sdk-v0.1.4-workbench-py3.patch /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch
+#8 DONE 0.0s
+
+#6 [stage-0 7/8] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#6 DONE 1.1s
+
+#6 [stage-0 7/8] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#6 DONE 1.1s
+
+#9 [4/5] ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#9 DONE 0.0s
+
+#10 [5/5] RUN echo "6b6acf90398ac740add51daa4ba158499a8148763a481c905040f76df889b160  /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz" | sha256sum -c -     && /edx/app/edxapp/venvs/edxapp/bin/pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt     && /edx/app/edxapp/venvs/edxapp/bin/pip install --no-cache-dir --no-deps /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz     && cd /edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages     && echo "aa362758a66e8a39c4e743ce4f3bd86cdccdf198854c29868f8379ac3f7dfc9e  workbench/runtime.py" | sha256sum -c -     && git apply --check /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch     && git apply /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch     && cd /     && /edx/app/edxapp/venvs/edxapp/bin/python -m compileall -q /edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/workbench/runtime.py     && { PIP_DISABLE_PIP_VERSION_CHECK=1 /edx/app/edxapp/venvs/edxapp/bin/pip check > /tmp/r2-ora2-py27-pip-check.txt 2>&1 || true; }     && cat /tmp/r2-ora2-py27-pip-check.txt     && /edx/app/edxapp/venvs/edxapp/bin/python -c "import pkg_resources; expected = {'edx-submissions': '2.0.12', 'moto': '0.3.1', 'xblock-sdk': '0.1.4', 'cookiecutter': '0.9.0', 'binaryornot': '0.4.4', 'django-nose': '1.4.7', 'pypng': '0.0.18'}; actual = {name: pkg_resources.get_distribution(name).version for name in expected}; assert actual == expected, (expected, actual); print('Py2.7 ORA2 test tools OK', actual)"
+#10 0.159 /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz: OK
+#10 0.709 Collecting binaryornot==0.4.4 (from -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt (line 4))
+#10 3.447   Downloading https://files.pythonhosted.org/packages/a7/fe/7ebfec74d49f97fc55cd38240c7a7d08134002b1e14be8c3897c0dd5e49b/binaryornot-0.4.4.tar.gz (371kB)
+#10 4.567 Collecting cookiecutter==0.9.0 (from -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt (line 6))
+#10 6.057   Downloading https://files.pythonhosted.org/packages/85/71/2c5ccfd6877e994e02cbcedada541a59513f9551d90ca7603bbe453bcde7/cookiecutter-0.9.0.tar.gz (115kB)
+#10 6.548 Collecting django-nose==1.4.7 (from -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt (line 8))
+#10 7.890   Downloading https://files.pythonhosted.org/packages/4c/d6/a340da9854cf0a2b54e23cf9147911b1e15a831911428983dd0158572ce9/django-nose-1.4.7.tar.gz (45kB)
+#10 8.346 Collecting pypng==0.0.18 (from -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt (line 10))
+#10 9.723   Downloading https://files.pythonhosted.org/packages/2f/b1/c8dfcf50feb12a30be7d95c5f45d638704682487d8e50419ef41463febcd/pypng-0.0.18.tar.gz (377kB)
+#10 10.26 Installing collected packages: binaryornot, cookiecutter, django-nose, pypng
+#10 10.26   Running setup.py install for binaryornot: started
+#10 10.53     Running setup.py install for binaryornot: finished with status 'done'
+#10 10.53   Running setup.py install for cookiecutter: started
+#10 10.80     Running setup.py install for cookiecutter: finished with status 'done'
+#10 10.81   Running setup.py install for django-nose: started
+#10 11.10     Running setup.py install for django-nose: finished with status 'done'
+#10 11.10   Running setup.py install for pypng: started
+#10 11.39     Running setup.py install for pypng: finished with status 'done'
+#10 11.60 Successfully installed binaryornot-0.4.4 cookiecutter-0.9.0 django-nose-1.4.7 pypng-0.0.18
+#10 11.68 You are using pip version 9.0.3, however version 26.2.1 is available.
+#10 11.68 You should consider upgrading via the 'pip install --upgrade pip' command.
+#10 12.15 Processing /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+#10 12.69 Installing collected packages: xblock-sdk
+#10 12.69   Running setup.py install for xblock-sdk: started
+#10 13.04     Running setup.py install for xblock-sdk: finished with status 'done'
+#10 13.10 Successfully installed xblock-sdk-0.1.4
+#10 13.17 You are using pip version 9.0.3, however version 26.2.1 is available.
+#10 13.17 You should consider upgrading via the 'pip install --upgrade pip' command.
+#10 13.19 workbench/runtime.py: OK
+#10 13.98 slackclient 1.3.2 has requirement requests<3.0a0,>=2.11, but you have requests 2.9.1.
+#10 13.98 fs-s3fs 0.1.9 has requirement fs~=2.0.18, but you have fs 2.4.16.
+#10 14.18 ('Py2.7 ORA2 test tools OK', {'edx-submissions': '2.0.12', 'moto': '0.3.1', 'django-nose': '1.4.7', 'xblock-sdk': '0.1.4', 'cookiecutter': '0.9.0', 'binaryornot': '0.4.4', 'pypng': '0.0.18'})
+#10 DONE 14.3s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 0.2s done
+#11 exporting manifest sha256:579f3dd0a9e94e9feb16a966ae23bd477df651e9de7c1ab17c567f71711fafd7
+#11 exporting manifest sha256:579f3dd0a9e94e9feb16a966ae23bd477df651e9de7c1ab17c567f71711fafd7 0.0s done
+#11 exporting config sha256:3a9fcf473bd9f4dbd867a22fae8e63b2d1ccf6e752c4e26e01e2e3d1912a4249 0.0s done
+#11 exporting attestation manifest sha256:c24b80da4d6e32532e4a296ec53baa00f564f2c393cf116acc3a3e9e46d27404 0.0s done
+#11 exporting manifest list sha256:dd7dfd8b5acf63dadadf36a830e8a08c799d0eea06a4d26f77386de713928aac 0.0s done
+#11 naming to docker.io/ltdps/edxapp:py36-r2-ora2-py27-runner-20261010
+#11 naming to docker.io/ltdps/edxapp:py36-r2-ora2-py27-runner-20261010 done
+#11 DONE 0.4s

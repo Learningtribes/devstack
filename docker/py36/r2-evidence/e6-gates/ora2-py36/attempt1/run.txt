@@ -1,0 +1,15 @@
+E6_ORA2_SITE site_id=4 domain=localhost:18000 previous=[('ENABLE_LAST_ACTIVITY', True), ('course_org_filter', 'QA')] unthemed=['hawthorn']
+provision: PROVISION_OK
+/usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+Traceback (most recent call last):
+  File "/opt/r2-scripts/r2-e6-ora2.py", line 71, in <module>
+    R1.main()
+  File "/opt/r2-scripts/provision-p1b-ora2-assessment.py", line 1545, in main
+    actions[action](fixture)
+  File "/opt/r2-scripts/provision-p1b-ora2-assessment.py", line 938, in identity
+    'packages': _source_identity(),
+  File "/opt/r2-scripts/provision-p1b-ora2-assessment.py", line 898, in _source_identity
+    AssessmentWorkflow.STATUS_VALUES
+RuntimeError: AssessmentWorkflow status values are incomplete: ['peer', 'self', 'training', 'waiting', 'done', 'cancelled']
+E6_ORA2_FAIL runtime=py36 mode=installed step=identity

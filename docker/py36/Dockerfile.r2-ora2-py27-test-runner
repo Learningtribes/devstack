@@ -1,0 +1,29 @@
+# R2-preview Python 2.7 ORA2 test runner: the E5 Python 2.7 runner with the
+# ORA2 test dependencies of the R1 Python 2.7 ORA2 runner
+# (Dockerfile.p1b-ora2-py27-test-runner). The runner target puts the frozen
+# ORA2 checkout first on PYTHONPATH, so no ORA2 install is needed.
+# Build (amd64): docker build --platform linux/amd64 -f Dockerfile.r2-ora2-py27-test-runner -t ltdps/edxapp:py36-r2-ora2-py27-runner-20261010 .
+#   with ltdps/edxapp:py36-r2-py27-runner-20261009 = sha256:e5ecccf98eb9...
+FROM ltdps/edxapp:py36-r2-py27-runner-20261009
+
+LABEL description="Open edX Hawthorn Python 2.7 R2-preview ORA2 test runner"
+LABEL base_runner="ltdps/edxapp:py36-r2-py27-runner-20261009 sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89"
+LABEL xblock_sdk_source="4b900102d096a977f78de57c804931ad4a4c1ade"
+
+COPY p1b-ora2-xblock-sdk-deps.txt /opt/runner/p1b-ora2-xblock-sdk-deps.txt
+COPY xblock-sdk-v0.1.4-workbench-py3.patch /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch
+
+ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+
+RUN echo "6b6acf90398ac740add51daa4ba158499a8148763a481c905040f76df889b160  /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz" | sha256sum -c - \
+    && /edx/app/edxapp/venvs/edxapp/bin/pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt \
+    && /edx/app/edxapp/venvs/edxapp/bin/pip install --no-cache-dir --no-deps /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz \
+    && cd /edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages \
+    && echo "aa362758a66e8a39c4e743ce4f3bd86cdccdf198854c29868f8379ac3f7dfc9e  workbench/runtime.py" | sha256sum -c - \
+    && git apply --check /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch \
+    && git apply /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch \
+    && cd / \
+    && /edx/app/edxapp/venvs/edxapp/bin/python -m compileall -q /edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/workbench/runtime.py \
+    && { PIP_DISABLE_PIP_VERSION_CHECK=1 /edx/app/edxapp/venvs/edxapp/bin/pip check > /tmp/r2-ora2-py27-pip-check.txt 2>&1 || true; } \
+    && cat /tmp/r2-ora2-py27-pip-check.txt \
+    && /edx/app/edxapp/venvs/edxapp/bin/python -c "import pkg_resources; expected = {'edx-submissions': '2.0.12', 'moto': '0.3.1', 'xblock-sdk': '0.1.4', 'cookiecutter': '0.9.0', 'binaryornot': '0.4.4', 'django-nose': '1.4.7', 'pypng': '0.0.18'}; actual = {name: pkg_resources.get_distribution(name).version for name in expected}; assert actual == expected, (expected, actual); print('Py2.7 ORA2 test tools OK', actual)"

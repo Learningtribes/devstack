@@ -1,0 +1,161 @@
+{
+  "attempt": 1,
+  "pending_persistent_state": {
+    "course_grade": {
+      "created": "2026-10-10 08:26:18.104716+00:00",
+      "grading_policy_hash": "z9TLT0kWbxYf2HFm6Xr2N1QJBbg=",
+      "id": 33,
+      "letter_grade": "",
+      "percent_grade": 0.0
+    },
+    "course_progress": null,
+    "subsection_grade": {
+      "created": "2026-10-10 08:26:18.098084+00:00",
+      "earned_all": 0.0,
+      "earned_graded": 0.0,
+      "first_attempted": null,
+      "id": 17,
+      "possible_all": 1.0,
+      "possible_graded": 1.0
+    }
+  },
+  "queue_state": {
+    "default": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.default"
+    },
+    "grade": {
+      "consumers": 1,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.grade"
+    },
+    "high": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.high"
+    },
+    "high_mem": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.high_mem"
+    },
+    "low": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.low"
+    },
+    "progress": {
+      "consumers": 1,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.progress"
+    }
+  },
+  "response_marker": "ORA2_RESPONSE_py36_A1",
+  "row_counts": {
+    "assessment": 0,
+    "assessment_part": 0,
+    "assessment_workflow": 1,
+    "assessment_workflow_cancellation": 0,
+    "assessment_workflow_step": 1,
+    "block_completion": 0,
+    "certificate": 0,
+    "course_grade": 1,
+    "course_progress": 0,
+    "criterion": 0,
+    "criterion_option": 0,
+    "enrollment": 1,
+    "enrollment_completion_date": null,
+    "enrollment_mode": "audit",
+    "learner_anonymous_id": "697aa673fd4f3bde34bfa48db32d060b",
+    "rubric": 0,
+    "score_annotation": 0,
+    "score_current_non_reset": 0,
+    "score_reset": 0,
+    "score_total": 0,
+    "staff_anonymous_id": "a342bac25571669c1b06c3307dadbde3",
+    "staff_workflow": 1,
+    "student_item": 1,
+    "student_module": 1,
+    "submission_active": 1,
+    "submission_total": 1,
+    "subsection_grade": 1,
+    "subsection_override": 0
+  },
+  "runtime": "py36",
+  "staff_workflow": {
+    "grading_completed_at": null,
+    "grading_started_at": null,
+    "id": 1,
+    "scorer_id": ""
+  },
+  "submission": {
+    "answer": {
+      "parts": [
+        {
+          "text": "ORA2_RESPONSE_py36_A1"
+        }
+      ]
+    },
+    "attempt_number": 1,
+    "created_at": "2026-10-10 08:26:20.671090+00:00",
+    "submitted_at": "2026-10-10 08:26:20.671087+00:00",
+    "uuid": "44a5b3e0-97b1-488e-b68f-b5f0c0a9a9f5"
+  },
+  "task_summary": {
+    "grade": {
+      "received": [],
+      "received_records": 0,
+      "retry_records": 0,
+      "succeeded": [],
+      "successes": 0,
+      "task_ids": [],
+      "task_name": "lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3"
+    },
+    "path": "/edx/var/log/worker.log",
+    "progress": {
+      "received": [],
+      "received_records": 0,
+      "retry_records": 0,
+      "succeeded": [],
+      "successes": 0,
+      "task_ids": [],
+      "task_name": "lms.djangoapps.grades.tasks.calculate_course_progress"
+    },
+    "window_bytes": 0
+  },
+  "worker_state": {
+    "active": {
+      "py36-r2-e6-py36-worker@c96e8ba3b57d": []
+    },
+    "ping": [
+      {
+        "py36-r2-e6-py36-worker@c96e8ba3b57d": {
+          "ok": "pong"
+        }
+      }
+    ],
+    "registered_count": 42,
+    "registered_required": {
+      "lms.djangoapps.grades.tasks.calculate_course_progress": true,
+      "lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3": true
+    },
+    "reserved": {
+      "py36-r2-e6-py36-worker@c96e8ba3b57d": []
+    },
+    "scheduled": {
+      "py36-r2-e6-py36-worker@c96e8ba3b57d": []
+    }
+  },
+  "workflow": {
+    "assessment_completed_at": null,
+    "id": 1,
+    "status": "waiting",
+    "step": "staff",
+    "submitter_completed_at": "2026-10-10 08:26:20.676647+00:00"
+  },
+  "xblock_state": {
+    "submission_uuid": "44a5b3e0-97b1-488e-b68f-b5f0c0a9a9f5"
+  },
+  "status": "SUBMISSION_READY_OK"
+}

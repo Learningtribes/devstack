@@ -45,6 +45,13 @@ FORUM_ENV=${CONFIG}/e6-forum.env
 WITH_BROKER=${PY36_R2_E6_WITH_BROKER:-0}
 BROKER_ENV=${CONFIG}/e6-broker.env
 RABBIT_IMAGE=rabbitmq@sha256:4206c16c09a58d0a604668e91227c32f4a222368e796bfb7bf2e0d0d160ef97a
+# Python 2.7 only, opt-in: PY36_R2_E6_ORA2_SOURCE is a clean checkout of
+# ORA2_SOURCE_COMMIT (the ORA2 the Python 3.6 image installs), mounted
+# read-only ahead of the image's editable edx-ora2 on PYTHONPATH, as the test
+# runner does. Its setup.py and requirements equal those of the installed
+# 4fcfa234, so the installed ora2 metadata (entry points, requirements) holds.
+ORA2_SOURCE=${PY36_R2_E6_ORA2_SOURCE:-}
+ORA2_SOURCE_COMMIT=d3f24a9c539528e960c8dcc9aef200cea0c49baf
 NETWORK=devstack_default
 LABEL=io.openedx.py36-r2.gate=e6
 # Gate containers share the Docker VM with edx.devstack.*; without a cgroup
@@ -106,6 +113,14 @@ case "${RUNTIME}" in
         exit 2
         ;;
 esac
+# The asset tree was collected with the base runtime image.
+ASSET_IMAGE=${IMAGE}
+ASSET_IMAGE_ID=${IMAGE_ID}
+# Python 3.6 only, opt-in: Dockerfile.r2-ora2-runtime, the base runtime plus
+# the R1 ORA2 gate's edx-submissions Python 3 patch (Python files only, so the
+# collected assets still apply).
+ORA2_RUNTIME_IMAGE=ltdps/edxapp:py36-r2-ora2-20261010
+ORA2_RUNTIME_IMAGE_ID=sha256:7f1bf1cd7be236362aff6ee97af595de0b4b16155ba02235495c73495be97022
 
 NAMESPACE=py36-r2-e6-${RUNTIME}
 MYSQL=${NAMESPACE}-mysql
@@ -172,6 +187,9 @@ service_args() {
     if [ "${WITH_BROKER}" = 1 ] && [ "${svc}" = lms ]; then
         printf '%s\n' --env-file "${BROKER_ENV}" --env "PY36_R2_E6_RABBIT_HOST=${RABBIT}"
     fi
+    if [ -n "${ORA2_SOURCE}" ]; then
+        printf '%s\n' --mount "type=bind,src=${ORA2_SOURCE},dst=/runner/edx-ora2,readonly"
+    fi
 }
 
 es_isolated() {
@@ -192,7 +210,7 @@ start() {
     test -f "${DUMP}" && test -f "${MYSQL_ENV}" && test -f "${MONGO_DUMP}" && test -f "${ES_DUMP}"
     grep -qx "commit=${XBLOCK_ILT_COMMIT}" "${XBLOCK_ILT_SRC}.identity"
     grep -qx "source_commit=${EXPECTED_COMMIT}" "${ASSET_ROOT}/logs/provenance.txt"
-    grep -qx "collect_${RUNTIME}_image=${IMAGE} ${IMAGE_ID}" "${ASSET_ROOT}/logs/provenance.txt"
+    grep -qx "collect_${RUNTIME}_image=${ASSET_IMAGE} ${ASSET_IMAGE_ID}" "${ASSET_ROOT}/logs/provenance.txt"
     for c in ${STACK}; do
         if exists "$c"; then echo "refusing to replace existing container: $c" >&2; exit 2; fi
     done
@@ -343,9 +361,28 @@ run_script() {
         -c "${METADATA}exec ${PYTHON} /opt/r2-scripts/${script} $*"
 }
 
-# A running stack keeps the forum and broker modes it was started with.
+# A running stack keeps the forum, broker and ORA2 source modes it was started with.
 if [ "${2:-}" != start ] && exists "${FORUM}"; then WITH_FORUM=1; fi
 if [ "${2:-}" != start ] && exists "${RABBIT}"; then WITH_BROKER=1; fi
+ORA2_RUNTIME=${PY36_R2_E6_ORA2_RUNTIME:-0}
+if [ "${2:-}" != start ] && exists "${LMS}"; then
+    ORA2_SOURCE=$(docker inspect "${LMS}" --format '{{range .Mounts}}{{if eq .Destination "/runner/edx-ora2"}}{{.Source}}{{end}}{{end}}')
+    if [ "$(docker inspect "${LMS}" --format '{{.Image}}')" = "${ORA2_RUNTIME_IMAGE_ID}" ]; then ORA2_RUNTIME=1; else ORA2_RUNTIME=0; fi
+fi
+if [ "${ORA2_RUNTIME}" = 1 ]; then
+    if [ "${RUNTIME}" != py36 ]; then echo "PY36_R2_E6_ORA2_RUNTIME is py36 only" >&2; exit 2; fi
+    IMAGE=${ORA2_RUNTIME_IMAGE}
+    IMAGE_ID=${ORA2_RUNTIME_IMAGE_ID}
+fi
+if [ -n "${ORA2_SOURCE}" ]; then
+    if [ "${RUNTIME}" != py27 ] ||
+       [ "$(git -C "${ORA2_SOURCE}" rev-parse HEAD)" != "${ORA2_SOURCE_COMMIT}" ] ||
+       [ -n "$(git -C "${ORA2_SOURCE}" status --porcelain)" ]; then
+        echo "PY36_R2_E6_ORA2_SOURCE must be a clean ${ORA2_SOURCE_COMMIT} checkout (py27 only): ${ORA2_SOURCE}" >&2
+        exit 2
+    fi
+    PYTHONPATH_VALUE=/edx/app/edxapp:/runner/source-metadata:/runner/edx-ora2:${PYTHONPATH_VALUE#/edx/app/edxapp:/runner/source-metadata:}
+fi
 
 case "${2:-}" in
     start) start ;;

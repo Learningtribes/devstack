@@ -1,0 +1,75 @@
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+........................................................................ [ 36%]
+........................................................................ [ 73%]
+.....................................................                    [100%]
+=============================== warnings summary ===============================
+test_staff.py::TestStaffAssessment::test_fetch_next_submission
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:59) while time zone support is active.
+    RuntimeWarning)
+
+test_staff.py::TestStaffAssessment::test_fetch_submission_delayed
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-09 23:37:59) while time zone support is active.
+    RuntimeWarning)
+
+test_submission.py::SubmissionTest::test_ability_to_submit_blank_answer_if_text_response_none
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_closed_submissions
+  /edx/app/edxapp/venvs/edxapp/src/django-wiki/wiki/templatetags/wiki_tags.py:16: RemovedInDjango20Warning: assignment_tag() is deprecated. Use simple_tag() instead
+    @register.assignment_tag(takes_context=True)
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_closed_graded
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+
+test_staff_area.py::TestCourseStaff::test_hide_course_staff_area_in_studio_preview
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:500: DeprecationWarning: xblock.fragment is deprecated. Please use web_fragments.fragment instead
+    fragment = Fragment(template.render(context_dict))
+
+test_staff_area.py::TestCourseStaff::test_staff_assessment_counts
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:38:04) while time zone support is active.
+    RuntimeWarning)
+
+lms/djangoapps/courseware/tests/test_submitting_problems.py::TestCourseGrader::test_submissions_api_overrides_scores
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/completion/api/urls.py:10: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('completion.api.v1.urls', namespace='v1')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:112: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/completion/', include('completion.api.urls', namespace='completion_api')),
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/organizations/urls.py:8: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v0/', include('organizations.v0.urls', namespace='v0')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:130: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/organizations/', include('organizations.urls', namespace='organizations')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:152: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/extended/', include('extended_api.urls', namespace='extended_api')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:208: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^notify/', include(notify_pattern())),
+  /edx/app/edxapp/edx-platform/lms/urls.py:792: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^triboo-guanli/', include(admin.site.urls)),
+  /edx/app/edxapp/edx-platform/lms/urls.py:803: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^oauth2/', include('edx_oauth2_provider.urls', namespace='oauth2')),
+  /edx/app/edxapp/edx-platform/lms/djangoapps/grades/api/urls.py:26: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('grades.api.v1.urls', namespace='v1'))
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/plugins/plugin_urls.py:23: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    for url_module_path, url_config in _iter_plugins(project_type)
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/handlers/base.py:52: RemovedInDjango20Warning: Old-style middleware using settings.MIDDLEWARE_CLASSES is deprecated. Update your middleware and use settings.MIDDLEWARE instead.
+    "instead.", RemovedInDjango20Warning
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/middleware.py:54: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    if request.user.is_authenticated() is False:
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/views/management.py:1101: DeprecationWarning: Please use RegistrationView instead.
+    warnings.warn("Please use RegistrationView instead.", DeprecationWarning)
+
+-- Docs: http://doc.pytest.org/en/latest/warnings.html
+197 passed, 24 warnings in 14.85 seconds

@@ -1,0 +1,220 @@
+{
+  "assessment": {
+    "criterion": "response_quality",
+    "feedback": "ORA2_FEEDBACK_py36_A1",
+    "id": 1,
+    "option": "meets_requirement",
+    "points_earned": 2,
+    "points_possible": 2,
+    "score_type": "ST",
+    "scored_at": "2026-10-10 08:27:03.942267+00:00",
+    "scorer_id": "a342bac25571669c1b06c3307dadbde3"
+  },
+  "attempt": 1,
+  "business_log_findings": [],
+  "completion": {
+    "id": 20,
+    "modified": "2026-10-10 08:27:03.967819+00:00",
+    "value": 1.0
+  },
+  "course_grade": {
+    "grading_policy_hash": "z9TLT0kWbxYf2HFm6Xr2N1QJBbg=",
+    "id": 33,
+    "letter_grade": "Pass",
+    "modified": "2026-10-10 08:27:06.014724+00:00",
+    "percent_grade": 1.0
+  },
+  "course_progress": {
+    "id": 17,
+    "modified": "2026-10-10 08:27:04.252140+00:00",
+    "percent_progress": 1.0
+  },
+  "enrollment_completion_date": "2026-10-10 08:27:04.247142+00:00",
+  "feedback_marker": "ORA2_FEEDBACK_py36_A1",
+  "queue_state": {
+    "default": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.default"
+    },
+    "grade": {
+      "consumers": 1,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.grade"
+    },
+    "high": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.high"
+    },
+    "high_mem": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.high_mem"
+    },
+    "low": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.low"
+    },
+    "progress": {
+      "consumers": 1,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py36.progress"
+    }
+  },
+  "response_marker": "ORA2_RESPONSE_py36_A1",
+  "row_counts": {
+    "assessment": 1,
+    "assessment_part": 1,
+    "assessment_workflow": 1,
+    "assessment_workflow_cancellation": 0,
+    "assessment_workflow_step": 1,
+    "block_completion": 1,
+    "certificate": 0,
+    "course_grade": 1,
+    "course_progress": 1,
+    "criterion": 1,
+    "criterion_option": 2,
+    "enrollment": 1,
+    "enrollment_completion_date": "2026-10-10 08:27:04.247142+00:00",
+    "enrollment_mode": "audit",
+    "learner_anonymous_id": "697aa673fd4f3bde34bfa48db32d060b",
+    "rubric": 1,
+    "score_annotation": 1,
+    "score_current_non_reset": 1,
+    "score_reset": 1,
+    "score_total": 2,
+    "staff_anonymous_id": "a342bac25571669c1b06c3307dadbde3",
+    "staff_workflow": 1,
+    "student_item": 1,
+    "student_module": 1,
+    "submission_active": 1,
+    "submission_total": 1,
+    "subsection_grade": 1,
+    "subsection_override": 0
+  },
+  "runtime": "py36",
+  "score": {
+    "annotation_creator": "a342bac25571669c1b06c3307dadbde3",
+    "annotation_reason": "A staff member has defined the score for this submission",
+    "annotation_type": "staff_defined",
+    "created_at": "2026-10-10 08:27:03.954986+00:00",
+    "id": 2,
+    "points_earned": 2,
+    "points_possible": 2
+  },
+  "staff_workflow": {
+    "assessment_id": "1",
+    "grading_completed_at": "2026-10-10 08:27:03.944141+00:00",
+    "grading_started_at": "2026-10-10 08:26:43.651311+00:00",
+    "id": 1,
+    "scorer_id": "a342bac25571669c1b06c3307dadbde3"
+  },
+  "statistics": {
+    "graded": 1,
+    "in-progress": 0,
+    "ungraded": 0
+  },
+  "submission": {
+    "answer": {
+      "parts": [
+        {
+          "text": "ORA2_RESPONSE_py36_A1"
+        }
+      ]
+    },
+    "attempt_number": 1,
+    "id": 1,
+    "submitted_at": "2026-10-10 08:26:20.671087+00:00",
+    "uuid": "44a5b3e0-97b1-488e-b68f-b5f0c0a9a9f5"
+  },
+  "subsection_grade": {
+    "earned_all": 2.0,
+    "earned_graded": 2.0,
+    "id": 17,
+    "modified": "2026-10-10 08:27:06.004619+00:00",
+    "possible_all": 2.0,
+    "possible_graded": 2.0
+  },
+  "task_summary": {
+    "grade": {
+      "received": [
+        {
+          "prefix": "2026-10-10 04:27:03,966 INFO 1 [celery.worker.strategy] strategy.py:60 -",
+          "task_id": "c877c3bd-9008-46d7-8a35-fe2ca19c675f"
+        }
+      ],
+      "received_records": 1,
+      "retry_records": 0,
+      "succeeded": [
+        {
+          "prefix": "2026-10-10 04:27:06,022 INFO 1 [celery.worker.job] job.py:402 -",
+          "task_id": "c877c3bd-9008-46d7-8a35-fe2ca19c675f"
+        }
+      ],
+      "successes": 1,
+      "task_ids": [
+        "c877c3bd-9008-46d7-8a35-fe2ca19c675f"
+      ],
+      "task_name": "lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3"
+    },
+    "path": "/edx/var/log/worker.log",
+    "progress": {
+      "received": [
+        {
+          "prefix": "2026-10-10 04:27:03,977 INFO 1 [celery.worker.strategy] strategy.py:60 -",
+          "task_id": "7f5fb9e4-c1a1-4294-b258-681dafd25094"
+        }
+      ],
+      "received_records": 1,
+      "retry_records": 0,
+      "succeeded": [
+        {
+          "prefix": "2026-10-10 04:27:04,264 INFO 1 [celery.worker.job] job.py:402 -",
+          "task_id": "7f5fb9e4-c1a1-4294-b258-681dafd25094"
+        }
+      ],
+      "successes": 1,
+      "task_ids": [
+        "7f5fb9e4-c1a1-4294-b258-681dafd25094"
+      ],
+      "task_name": "lms.djangoapps.grades.tasks.calculate_course_progress"
+    },
+    "window_bytes": 2831
+  },
+  "worker_state": {
+    "active": {
+      "py36-r2-e6-py36-worker@c96e8ba3b57d": []
+    },
+    "ping": [
+      {
+        "py36-r2-e6-py36-worker@c96e8ba3b57d": {
+          "ok": "pong"
+        }
+      }
+    ],
+    "registered_count": 42,
+    "registered_required": {
+      "lms.djangoapps.grades.tasks.calculate_course_progress": true,
+      "lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3": true
+    },
+    "reserved": {
+      "py36-r2-e6-py36-worker@c96e8ba3b57d": []
+    },
+    "scheduled": {
+      "py36-r2-e6-py36-worker@c96e8ba3b57d": []
+    }
+  },
+  "workflow": {
+    "assessment_completed_at": "2026-10-10 08:27:03.978164+00:00",
+    "id": 1,
+    "status": "done",
+    "step": "staff",
+    "submitter_completed_at": "2026-10-10 08:26:20.676647+00:00"
+  },
+  "xblock_state": {
+    "submission_uuid": "44a5b3e0-97b1-488e-b68f-b5f0c0a9a9f5"
+  },
+  "status": "POSTCONDITION_OK"
+}

@@ -1,0 +1,7 @@
+# filtered from docker logs of py36-r2-e6-py27-{lms,cms,forum} since 2026-10-10T08:32:30Z: lines matching Traceback|ERROR|Exception| 5xx status
+== py36-r2-e6-py27-lms
+559:2026-10-10 04:33:22,470 INFO 1 [openedx.core.djangoapps.course_groups.cohorts] cohorts.py:477 - Exception occurs ( user_id:32 ) in clean_cohort_cache() caller: task_evaluate_subsection_completion_milestones : CohortMembership matching query does not exist.
+748:2026-10-10 04:33:46,207 ERROR 1 [submissions.api] api.py:579 - Number of top scores must be a number between 1 and 100.
+927:2026-10-10 04:33:47,875 ERROR 1 [submissions.api] api.py:579 - Number of top scores must be a number between 1 and 100.
+== py36-r2-e6-py27-cms
+== py36-r2-e6-py27-worker (whole log; the worker starts with the stack)

@@ -1,0 +1,63 @@
+2026-10-10 04:25:51,575 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-10 04:25:51,610 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rules/predicates.py:70: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = inspect.getargspec(fn)
+
+2026-10-10 04:25:51,699 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+
+2026-10-10 04:25:51,718 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-10 04:25:51,890 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-10 04:25:51,893 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-10 04:25:52,111 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 04:25:52,169 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 04:25:52,390 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:485: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  getargspec(func)
+
+2026-10-10 04:25:52,390 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:463: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(matcher)
+
+2026-10-10 04:25:52,391 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:497: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = getargspec(func)
+
+2026-10-10 04:25:52,392 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:509: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(func)
+
+2026-10-10 04:25:52,393 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:246: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(self.factory)
+
+2026-10-10 04:25:52,397 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/lepl/matchers/support.py:244: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  spec = getargspec(empty)
+
+2026-10-10 04:25:52,476 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/rules/predicates.py:70: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  argspec = inspect.getargspec(fn)
+
+2026-10-10 04:25:52,600 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  username_match = re.search('(www\.)?' + url_stub + '(?P<username>.*?)[/]?$', url_domain_and_path, re.IGNORECASE)
+
+2026-10-10 04:25:52,709 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:20: DeprecationWarning: invalid escape sequence \d
+  field=models.CharField(blank=True, default=b'', max_length=255, validators=[django.core.validators.RegexValidator(re.compile('^\d+(?:\,\d+)*\Z'), code='invalid', message='Enter only digits separated by commas.')]),
+
+2026-10-10 04:25:52,709 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:25: DeprecationWarning: invalid escape sequence \d
+  field=models.CharField(blank=True, default=b'', max_length=255, validators=[django.core.validators.RegexValidator(re.compile('^\d+(?:\,\d+)*\Z'), code='invalid', message='Enter only digits separated by commas.')]),
+
+2026-10-10 04:25:53,243 INFO 1 [elasticsearch] base.py:63 - HEAD http://py36-r2-e6-py36-es:9200/ [status:200 request:0.002s]
+2026-10-10 04:25:53,244 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/elasticsearch/connection/http_urllib3.py:98: DeprecationWarning: HTTPResponse.getheaders() is deprecated and will be removed in urllib3 v2.1.0. Instead access HTTPResponse.headers directly.
+  return response.status, response.getheaders(), raw_data
+
+[10/Oct/2026 04:25:53] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-10 04:25:53,246 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 36808), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:25:53,247 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 36822), raddr=('192.168.148.14', 11211)>
+

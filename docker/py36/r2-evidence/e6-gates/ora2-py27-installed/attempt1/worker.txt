@@ -1,0 +1,2 @@
+PY36_R2_E6_WORKER_READY queues={u'default': u'py36-r2-e6-py27.default', u'high': u'py36-r2-e6-py27.high', u'grade': u'py36-r2-e6-py27.grade', u'low': u'py36-r2-e6-py27.low', u'progress': u'py36-r2-e6-py27.progress', u'high_mem': u'py36-r2-e6-py27.high_mem'} required=('lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3', 'lms.djangoapps.grades.tasks.calculate_course_progress') broker_heartbeat=30.0
+2026-10-10 04:22:04,606 INFO 1 [celery.worker.consumer] consumer.py:526 - Connected to amqp://py36r2e6:**@py36-r2-e6-py27-rabbitmq:5672/py36-r2-e6-py27

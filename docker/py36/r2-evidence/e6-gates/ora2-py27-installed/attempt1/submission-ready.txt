@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/opt/r2-scripts/r2-e6-ora2.py", line 101, in <module>
+    R1.main()
+  File "/opt/r2-scripts/provision-p1b-ora2-assessment.py", line 1545, in main
+    actions[action](fixture)
+  File "/opt/r2-scripts/provision-p1b-ora2-assessment.py", line 1153, in submission_ready
+    raise RuntimeError('ORA2 submission-ready row cardinality is invalid: {!r}'.format(mismatched))
+RuntimeError: ORA2 submission-ready row cardinality is invalid: {u'course_progress': (0, 1)}

@@ -1,0 +1,28 @@
+runtime=py36 netns=py36-r2-e6-py36-lms image=sha256:7f1bf1cd7be236362aff6ee97af595de0b4b16155ba02235495c73495be97022
+harness_head=68255fc7742c9486b760e026bd5cb5b1e5f75bf6
+harness_code_clean=0_changes
+playwright_image=mcr.microsoft.com/playwright@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48
+playwright_test=1.61.1
+test_timeout_ms=300000
+spec=tests/ora2_assessment.spec.ts sha256=c6d809d0bba64e24029520fb0226cd3c7aea4360bd153daa9c5c7a13ae465cb9
+env BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000
+env BROWSER_ORA2_ATTEMPT=1
+env BROWSER_ORA2_BLOCK_ID=p1b_ora2_staff_py36
+env BROWSER_ORA2_COURSE_KEY=course-v1:QA+ORA2Assessment+Py36
+env BROWSER_ORA2_EMAIL=qaora2_py36@example.com
+env BROWSER_ORA2_EVIDENCE_DIR=/work/out/evidence
+env BROWSER_ORA2_FEEDBACK_MARKER=ORA2_FEEDBACK_py36_A1
+env BROWSER_ORA2_LEASE_RELEASE=/work/out/evidence/lease-release.json
+env BROWSER_ORA2_LEASE_REQUEST=/work/out/evidence/lease-request.json
+env BROWSER_ORA2_POST_RELEASE=/work/out/evidence/postcondition-release.json
+env BROWSER_ORA2_POST_REQUEST=/work/out/evidence/postcondition-request.json
+env BROWSER_ORA2_RESPONSE_MARKER=ORA2_RESPONSE_py36_A1
+env BROWSER_ORA2_RUNTIME=py36
+env BROWSER_ORA2_STAFF_EMAIL=qaora2staff_py36@example.com
+env BROWSER_ORA2_STAFF_USERNAME=qaora2staff_py36
+env BROWSER_ORA2_STATE_FILE=/work/out/evidence/state.json
+env BROWSER_ORA2_SUBMISSION_RELEASE=/work/out/evidence/submission-release.json
+env BROWSER_ORA2_SUBMISSION_REQUEST=/work/out/evidence/submission-request.json
+env BROWSER_ORA2_USERNAME=qaora2_py36
+started=2026-10-10T08:26:16Z
+finished=2026-10-10T08:27:28Z exit=0

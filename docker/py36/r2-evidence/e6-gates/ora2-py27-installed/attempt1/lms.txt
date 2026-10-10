@@ -1,0 +1,367 @@
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 2 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): certificates, student.
+Run 'python manage.py migrate' to apply them.
+October 10, 2026 - 04:21:59
+Django version 1.11.15, using settings 'py36_r2_e6_settings'
+Starting development server at http://0.0.0.0:18000/
+Quit the server with CONTROL-C.
+2026-10-10 04:21:59,643 WARNING 1 [py.warnings] mongo_client.py:1133 - /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/mongodb_proxy.py:115: DeprecationWarning: alive is deprecated in this version of PyMongo and removed in PyMongo 3.
+  return self.proxied_object(*args, **kwargs)
+
+2026-10-10 04:21:59,648 INFO 1 [elasticsearch] base.py:63 - HEAD http://py36-r2-e6-py27-es:9200/ [status:200 request:0.004s]
+No handlers could be found for logger "elasticsearch.trace"
+[10/Oct/2026 04:21:59] "GET /heartbeat HTTP/1.1" 200 193
+2026-10-10 04:22:31,875 INFO 1 [tracking] logger.py:50 - {"username": "", "event_type": "/auto_auth", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {\"username\": [\"qaora2_py27\"], \"email\": [\"qaora2_py27@example.com\"]}}", "user_id": null, "context": {"user_id": null, "org_id": "", "course_id": "", "path": "/auto_auth"}, "time": "2026-10-10T08:22:31.875536+00:00", "page": null}
+2026-10-10 04:22:31,898 INFO 1 [tracking] logger.py:42 - {"username": "", "event_source": "server", "name": "edx.user.settings.changed", "accept_language": "en-US", "time": "2026-10-10T08:22:31.898009+00:00", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "host": "dc7df805af86", "session": "", "referer": "", "context": {"user_id": null, "org_id": "", "course_id": "", "path": "/auto_auth"}, "ip": "127.0.0.1", "event": {"user_id": 32, "truncated": [], "old": null, "setting": "password", "table": "auth_user", "new": null}, "event_type": "edx.user.settings.changed"}
+2026-10-10 04:22:31,901 INFO 1 [student.models] models.py:583 - User qaora2_py27 (qaora2_py27@example.com) account is successfully activated.
+2026-10-10 04:22:31,903 INFO 1 [tracking] logger.py:42 - {"username": "", "event_source": "server", "name": "edx.user.settings.changed", "accept_language": "en-US", "time": "2026-10-10T08:22:31.903389+00:00", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "host": "dc7df805af86", "session": "", "referer": "", "context": {"user_id": null, "org_id": "", "course_id": "", "path": "/auto_auth"}, "ip": "127.0.0.1", "event": {"user_id": 32, "truncated": [], "old": null, "setting": "year_of_birth", "table": "auth_userprofile", "new": 2012}, "event_type": "edx.user.settings.changed"}
+2026-10-10 04:22:31,923 INFO 1 [audit] models.py:2241 - Login success - qaora2_py27 (qaora2_py27@example.com)
+[10/Oct/2026 04:22:31] "GET /auto_auth?username=qaora2_py27&email=qaora2_py27%40example.com HTTP/1.1" 200 208
+2026-10-10 04:22:31,959 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/dashboard", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/dashboard"}, "time": "2026-10-10T08:22:31.959758+00:00", "page": null}
+[10/Oct/2026 04:22:32] "GET /dashboard HTTP/1.1" 200 31472
+[10/Oct/2026 04:22:32] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:22:32] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:22:32] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:22:32] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:22:32] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:22:32] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:22:32] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:22:32] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:22:32] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:22:32] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:22:32] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:22:32] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:22:32] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:22:32] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+[10/Oct/2026 04:22:32] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:22:32] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:22:32] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:22:32] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:22:32] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:22:32] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:22:32] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:22:32] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:22:32] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:22:32] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:22:32] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:22:32] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:22:32] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:22:32] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:22:32] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:22:32] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:22:32] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:22:32] "GET /static/js/vendor/swiper.min.js HTTP/1.1" 200 127935
+[10/Oct/2026 04:22:32] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:22:32] "GET /asset-v1:QA+ORA2Assessment+Py27+type@asset+block@p1b_ora2_assessment_py27_r2.jpg HTTP/1.1" 200 12399
+[10/Oct/2026 04:22:32] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:22:32] "GET /static/bundles/UnenrollmentFactory.js HTTP/1.1" 200 6621
+[10/Oct/2026 04:22:32] "GET /static/bundles/QuestionMark.js HTTP/1.1" 200 2309
+[10/Oct/2026 04:22:32] "GET /static/bundles/Dashboard.js HTTP/1.1" 200 10514
+[10/Oct/2026 04:22:32] "GET /static/js/dashboard/ics.deps.min.js HTTP/1.1" 200 5880
+[10/Oct/2026 04:22:32] "GET /static/js/dashboard/ilt_calendar.js HTTP/1.1" 200 32169
+[10/Oct/2026 04:22:32] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:22:32] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:22:32] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:22:32] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:22:32] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+[10/Oct/2026 04:22:32] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+2026-10-10 04:22:32,812 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/analytics/check_my_downloads/", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/analytics/check_my_downloads/"}, "time": "2026-10-10T08:22:32.812764+00:00", "page": null}
+[10/Oct/2026 04:22:32] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+[10/Oct/2026 04:22:32] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+2026-10-10 04:22:32,825 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/enrolled_ilt_sessions", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/enrolled_ilt_sessions"}, "time": "2026-10-10T08:22:32.825747+00:00", "page": null}
+[10/Oct/2026 04:22:32] "GET /enrolled_ilt_sessions HTTP/1.1" 200 54
+2026-10-10 04:22:32,914 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/course/", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/course/"}, "time": "2026-10-10T08:22:32.914381+00:00", "page": null}
+2026-10-10 04:22:33,027 INFO 1 [openedx.core.djangoapps.content.block_structure.store] store.py:179 - BlockStructure: Read from cache; <openedx.core.djangoapps.content.block_structure.store.StubModel object at 0x7fffd7087ed0>, size: 2477
+2026-10-10 04:22:33,102 INFO 1 [lms.djangoapps.grades.models] models.py:180 - ============== using cache ==============
+2026-10-10 04:22:33,105 INFO 1 [tracking] logger.py:42 - {"username": "qaora2_py27", "event_source": "server", "name": "edx.grades.subsection.grade_calculated", "accept_language": "en-US", "time": "2026-10-10T08:22:33.105639+00:00", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "host": "dc7df805af86", "session": "79aa904996c9cc80af62a4a51b90398b", "referer": "http://localhost:18000/dashboard", "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/course/"}, "ip": "127.0.0.1", "event": {"block_id": "block-v1:QA+ORA2Assessment+Py27+type@sequential+block@ora2_subsection", "weighted_total_possible": 1.0, "event_transaction_type": "None", "weighted_total_earned": 0.0, "first_attempted": "None", "visible_blocks_hash": "ij+UtZhvnSlhJU5Ae8x95FnR8Bc=", "course_id": "course-v1:QA+ORA2Assessment+Py27", "weighted_graded_possible": 1.0, "user_id": "32", "subtree_edited_timestamp": "2026-10-10 08:21:53.418000+00:00", "weighted_graded_earned": 0.0, "event_transaction_id": "None", "course_version": "6ac9f5a1c869dd00019aca7f"}, "event_type": "edx.grades.subsection.grade_calculated"}
+2026-10-10 04:22:33,107 INFO 1 [tracking] logger.py:42 - {"username": "qaora2_py27", "event_source": "server", "name": "edx.grades.course.grade_calculated", "accept_language": "en-US", "time": "2026-10-10T08:22:33.107602+00:00", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "host": "dc7df805af86", "session": "79aa904996c9cc80af62a4a51b90398b", "referer": "http://localhost:18000/dashboard", "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/course/"}, "ip": "127.0.0.1", "event": {"course_version": "6ac9f5a1c869dd00019aca7f", "percent_grade": 0.0, "grading_policy_hash": "z9TLT0kWbxYf2HFm6Xr2N1QJBbg=", "user_id": "32", "letter_grade": "", "event_transaction_id": "None", "course_id": "course-v1:QA+ORA2Assessment+Py27", "course_edited_timestamp": "2026-10-10 08:21:53.418000+00:00", "event_transaction_type": "None"}, "event_type": "edx.grades.course.grade_calculated"}
+2026-10-10 04:22:33,109 INFO 1 [openedx.core.djangoapps.content.block_structure.store] store.py:179 - BlockStructure: Read from cache; <openedx.core.djangoapps.content.block_structure.store.StubModel object at 0x7fffd6f6b7d0>, size: 2477
+2026-10-10 04:22:33,111 INFO 1 [lms.djangoapps.grades.course_grade_factory] course_grade_factory.py:239 - Grades: Update, Course: course_key: course-v1:QA+ORA2Assessment+Py27, version: 6ac9f5a1c869dd00019aca7f, edited_on: 2026-10-10 08:21:53.418000+00:00, grading_policy: z9TLT0kWbxYf2HFm6Xr2N1QJBbg=, User: 32, Course Grade: percent: 0.0, letter_grade: None, passed: False, persisted: True
+[10/Oct/2026 04:22:33] "GET /courses/course-v1:QA+ORA2Assessment+Py27/course/ HTTP/1.1" 200 34782
+[10/Oct/2026 04:22:33] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:22:33] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:22:33] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:22:33] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:22:33] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:22:33] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:22:33] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:22:33] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:22:33] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:22:33] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:22:33] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:22:33] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:22:33] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:22:33] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+[10/Oct/2026 04:22:33] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:22:33] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:22:33] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:22:33] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:22:33] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:22:33] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:22:33] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:22:33] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:22:33] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:22:33] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:22:33] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:22:33] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:22:33] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:22:33] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:22:33] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:22:33] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:22:33] "GET /static/bundles/RatingStarsEntry.js HTTP/1.1" 200 2131
+[10/Oct/2026 04:22:33] "GET /static/js/courseware/recommend_content_modal.js HTTP/1.1" 200 5050
+[10/Oct/2026 04:22:33] "GET /static/js/courseware/contact_instructor_modal.js HTTP/1.1" 200 3517
+[10/Oct/2026 04:22:33] "GET /static/bundles/ContentRatingEntry.js HTTP/1.1" 200 5408
+[10/Oct/2026 04:22:33] "GET /static/js/course_info.js HTTP/1.1" 200 642
+[10/Oct/2026 04:22:33] "GET /static/js/courseware/course_overview.js HTTP/1.1" 200 1335
+[10/Oct/2026 04:22:33] "GET /static/js/courseware/rating_content_modal.js HTTP/1.1" 200 5151
+[10/Oct/2026 04:22:33] "GET /static/bundles/Courseware.js HTTP/1.1" 200 7001
+[10/Oct/2026 04:22:33] "GET /static/js/utils/scrollUtils.js HTTP/1.1" 200 1365
+[10/Oct/2026 04:22:33] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:22:33] "GET /asset-v1:QA+ORA2Assessment+Py27+type@asset+block@p1b_ora2_assessment_py27_r2.jpg HTTP/1.1" 200 12399
+[10/Oct/2026 04:22:33] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:22:33] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:22:33] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+[10/Oct/2026 04:22:33] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:22:33] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:22:33] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:22:33] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+[10/Oct/2026 04:22:33] "GET /static/js/header_factory.js HTTP/1.1" 200 411
+[10/Oct/2026 04:22:33] "GET /static/js/dateutil_factory.js HTTP/1.1" 200 3864
+2026-10-10 04:22:33,378 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/analytics/check_my_downloads/", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/course/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/analytics/check_my_downloads/"}, "time": "2026-10-10T08:22:33.378084+00:00", "page": null}
+[10/Oct/2026 04:22:33] "GET /static/edx-ui-toolkit/js/dropdown-menu/dropdown-menu-view.js HTTP/1.1" 200 10959
+[10/Oct/2026 04:22:33] "GET /static/edx-ui-toolkit/js/utils/date-utils.js HTTP/1.1" 200 9402
+[10/Oct/2026 04:22:33] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+[10/Oct/2026 04:22:33] "GET /static/edx-ui-toolkit/js/utils/constants.js HTTP/1.1" 200 2104
+[10/Oct/2026 04:22:33] "GET /static/js/vendor/requirejs/text.js HTTP/1.1" 200 15873
+[10/Oct/2026 04:22:33] "GET /static/edx-ui-toolkit/js/dropdown-menu/dropdown.underscore HTTP/1.1" 200 974
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/moment-with-locales.js HTTP/1.1" 200 632739
+[10/Oct/2026 04:22:33] "GET /static/common/js/vendor/moment-timezone-with-data.js HTTP/1.1" 200 208009
+[10/Oct/2026 04:22:33] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+2026-10-10 04:22:34,163 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/course/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/"}, "time": "2026-10-10T08:22:34.163083+00:00", "page": null}
+2026-10-10 04:22:34,180 INFO 1 [edx.courseware.views.index] index.py:130 - Masquerade data is cleaned. Because you have accessed non-courseware page.
+2026-10-10 04:22:34,248 WARNING 1 [py.warnings] fragment.py:23 - /edx/app/edxapp/venvs/edxapp/src/edx-ora2/openassessment/xblock/openassessmentblock.py:497: DeprecationWarning: xblock.fragment is deprecated. Please use web_fragments.fragment instead
+  fragment = Fragment(template.render(context_dict))
+
+[10/Oct/2026 04:22:34] "GET /courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/ HTTP/1.1" 200 50521
+[10/Oct/2026 04:22:34] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:22:34] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:22:34] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:22:34] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:22:34] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:22:34] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:22:34] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/CodeMirror/codemirror.css HTTP/1.1" 200 6703
+[10/Oct/2026 04:22:34] "GET /static/css/vendor/jquery.treeview.css HTTP/1.1" 200 1266
+[10/Oct/2026 04:22:34] "GET /static/css/vendor/ui-lightness/jquery-ui-1.8.22.custom.css HTTP/1.1" 200 33324
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+[10/Oct/2026 04:22:34] "GET /static/css/lms-course.css HTTP/1.1" 200 765917
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:22:34] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:22:34] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:22:34] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+2026-10-10 04:22:34,376 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/css/openassessment-ltr.css", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/css/openassessment-ltr.css"}, "time": "2026-10-10T08:22:34.376429+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/css/openassessment-ltr.css HTTP/1.1" 200 152185
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/swiper.min.js HTTP/1.1" 200 127935
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/json2.js HTTP/1.1" 200 17521
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/notify.min.js HTTP/1.1" 200 13780
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/jquery.qtip.min.js HTTP/1.1" 200 153892
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/jquery-ui.min.js HTTP/1.1" 200 240215
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/timepicker/jquery.timepicker.js HTTP/1.1" 200 51398
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/iziModal.min.js HTTP/1.1" 200 26264
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/datepicker-translation.js HTTP/1.1" 200 2865
+[10/Oct/2026 04:22:34] "GET /static/js/src/jquery.immediateDescendents.js HTTP/1.1" 200 670
+[10/Oct/2026 04:22:34] "GET /static/js/src/ajax_prefix.js HTTP/1.1" 200 791
+[10/Oct/2026 04:22:34] "GET /static/js/src/xproblem.js HTTP/1.1" 200 2296
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/select2.js HTTP/1.1" 200 151816
+[10/Oct/2026 04:22:34] "GET /static/common/js/xblock/core.js HTTP/1.1" 200 6066
+[10/Oct/2026 04:22:34] "GET /static/common/js/xblock/runtime.v1.js HTTP/1.1" 200 1500
+[10/Oct/2026 04:22:34] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:22:34] "GET /static/lms/js/xblock/lms.runtime.v1.js HTTP/1.1" 200 1609
+[10/Oct/2026 04:22:34] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:22:34] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:22:34] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:22:34] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:22:34] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:22:34] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:22:34] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:22:34] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:22:34] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:22:34] "GET /static/js/calculator.js HTTP/1.1" 200 7595
+[10/Oct/2026 04:22:34] "GET /static/js/main.js HTTP/1.1" 200 1557
+[10/Oct/2026 04:22:34] "GET /static/js/sticky_filter.js HTTP/1.1" 200 413
+[10/Oct/2026 04:22:34] "GET /static/js/query-params.js HTTP/1.1" 200 300
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/moment-with-locales.js HTTP/1.1" 200 632739
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/moment-timezone-with-data.js HTTP/1.1" 200 208009
+[10/Oct/2026 04:22:34] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:22:34] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:22:34] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:22:34] "GET /static/bundles/VerticalStudentView.js HTTP/1.1" 200 9340
+[10/Oct/2026 04:22:34] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:22:34] "GET /static/bundles/XModuleShim.js HTTP/1.1" 200 2876
+[10/Oct/2026 04:22:34] "GET /static/bundles/SequenceModule.js HTTP/1.1" 200 1891
+[10/Oct/2026 04:22:34] "GET /static/bundles/CourseSock.js HTTP/1.1" 200 3149
+[10/Oct/2026 04:22:34] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:22:34] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:22:34] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:22:34] "GET /static/bundles/QuestionMark.js HTTP/1.1" 200 2309
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/jquery.scrollTo.js HTTP/1.1" 200 5726
+[10/Oct/2026 04:22:34] "GET /static/js/ajax-error.js HTTP/1.1" 200 544
+[10/Oct/2026 04:22:34] "GET /static/js/histogram.js HTTP/1.1" 200 1739
+[10/Oct/2026 04:22:34] "GET /static/bundles/Courseware.js HTTP/1.1" 200 7001
+[10/Oct/2026 04:22:34] "GET /static/js/navigation.js HTTP/1.1" 200 264
+[10/Oct/2026 04:22:34] "GET /static/js/modules/tab.js HTTP/1.1" 200 1613
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/flot/jquery.flot.js HTTP/1.1" 200 125921
+[10/Oct/2026 04:22:34] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+[10/Oct/2026 04:22:34] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+2026-10-10 04:22:34,571 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/oa_shared.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/oa_shared.js"}, "time": "2026-10-10T08:22:34.569962+00:00", "page": null}
+2026-10-10 04:22:34,573 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/oa_server.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/oa_server.js"}, "time": "2026-10-10T08:22:34.572522+00:00", "page": null}
+2026-10-10 04:22:34,573 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_course_items_listing.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_course_items_listing.js"}, "time": "2026-10-10T08:22:34.573280+00:00", "page": null}
+2026-10-10 04:22:34,574 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_datefactory.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_datefactory.js"}, "time": "2026-10-10T08:22:34.574108+00:00", "page": null}
+2026-10-10 04:22:34,575 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_base.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_base.js"}, "time": "2026-10-10T08:22:34.575261+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+2026-10-10 04:22:34,596 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/analytics/check_my_downloads/", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/analytics/check_my_downloads/"}, "time": "2026-10-10T08:22:34.596558+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_base.js HTTP/1.1" 200 17556
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_course_items_listing.js HTTP/1.1" 200 10118
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/oa_shared.js HTTP/1.1" 200 1222
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_datefactory.js HTTP/1.1" 200 2840
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/oa_server.js HTTP/1.1" 200 26680
+2026-10-10 04:22:34,620 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_file_upload.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_file_upload.js"}, "time": "2026-10-10T08:22:34.620150+00:00", "page": null}
+2026-10-10 04:22:34,626 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_grade.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_grade.js"}, "time": "2026-10-10T08:22:34.626054+00:00", "page": null}
+2026-10-10 04:22:34,627 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_leaderboard.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_leaderboard.js"}, "time": "2026-10-10T08:22:34.627472+00:00", "page": null}
+2026-10-10 04:22:34,630 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_message.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_message.js"}, "time": "2026-10-10T08:22:34.630322+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+2026-10-10 04:22:34,636 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_peer.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_peer.js"}, "time": "2026-10-10T08:22:34.635410+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_file_upload.js HTTP/1.1" 200 1419
+2026-10-10 04:22:34,652 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_response.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_response.js"}, "time": "2026-10-10T08:22:34.651603+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_grade.js HTTP/1.1" 200 9202
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_leaderboard.js HTTP/1.1" 200 1569
+2026-10-10 04:22:34,667 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_self.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_self.js"}, "time": "2026-10-10T08:22:34.667823+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_message.js HTTP/1.1" 200 1003
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_peer.js HTTP/1.1" 200 9159
+2026-10-10 04:22:34,672 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_rubric.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_rubric.js"}, "time": "2026-10-10T08:22:34.672740+00:00", "page": null}
+2026-10-10 04:22:34,673 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_staff.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_staff.js"}, "time": "2026-10-10T08:22:34.672499+00:00", "page": null}
+2026-10-10 04:22:34,683 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_training.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_training.js"}, "time": "2026-10-10T08:22:34.683442+00:00", "page": null}
+2026-10-10 04:22:34,685 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_staff_area.js", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/xblock/resource/openassessment/static/js/src/lms/oa_staff_area.js"}, "time": "2026-10-10T08:22:34.685200+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_response.js HTTP/1.1" 200 31378
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_self.js HTTP/1.1" 200 5102
+[10/Oct/2026 04:22:34] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:22:34] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:22:34] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_staff.js HTTP/1.1" 200 1488
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_rubric.js HTTP/1.1" 200 7692
+[10/Oct/2026 04:22:34] "GET /static/js/dateutil_factory.js HTTP/1.1" 200 3864
+[10/Oct/2026 04:22:34] "GET /static/js/courseware/accordion_events.js HTTP/1.1" 200 648
+[10/Oct/2026 04:22:34] "GET /static/course_bookmarks/js/course_bookmarks_factory.js HTTP/1.1" 200 1699
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/course_search_factory.js HTTP/1.1" 200 2556
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_training.js HTTP/1.1" 200 5360
+[10/Oct/2026 04:22:34] "GET /static/js/courseware/courseware_factory.js HTTP/1.1" 200 724
+[10/Oct/2026 04:22:34] "GET /static/edx-ui-toolkit/js/utils/date-utils.js HTTP/1.1" 200 9402
+[10/Oct/2026 04:22:34] "GET /xblock/resource/openassessment/static/js/src/lms/oa_staff_area.js HTTP/1.1" 200 26855
+[10/Oct/2026 04:22:34] "GET /static/course_bookmarks/js/collections/bookmarks.js HTTP/1.1" 200 859
+[10/Oct/2026 04:22:34] "GET /static/js/views/message_banner.js HTTP/1.1" 200 1269
+[10/Oct/2026 04:22:34] "GET /static/course_bookmarks/js/views/bookmarks_list_button.js HTTP/1.1" 200 426
+[10/Oct/2026 04:22:34] "GET /static/course_bookmarks/js/views/bookmarks_list.js HTTP/1.1" 200 5525
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/views/search_form.js HTTP/1.1" 200 2334
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/search_router.js HTTP/1.1" 200 355
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/collections/search_collection.js HTTP/1.1" 200 4480
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/views/course_search_results_view.js HTTP/1.1" 200 1399
+2026-10-10 04:22:34,765 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_peer_assessment", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_peer_assessment"}, "time": "2026-10-10T08:22:34.765134+00:00", "page": null}
+2026-10-10 04:22:34,768 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_submission", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_submission"}, "time": "2026-10-10T08:22:34.767873+00:00", "page": null}
+2026-10-10 04:22:34,768 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_student_training", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_student_training"}, "time": "2026-10-10T08:22:34.767644+00:00", "page": null}
+2026-10-10 04:22:34,769 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_staff_assessment", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_staff_assessment"}, "time": "2026-10-10T08:22:34.768909+00:00", "page": null}
+2026-10-10 04:22:34,773 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_message", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_message"}, "time": "2026-10-10T08:22:34.773093+00:00", "page": null}
+2026-10-10 04:22:34,773 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_self_assessment", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_self_assessment"}, "time": "2026-10-10T08:22:34.773378+00:00", "page": null}
+2026-10-10 04:22:34,897 WARNING 1 [py.warnings] locator.py:962 - /edx/app/edxapp/venvs/edxapp/src/edx-ora2/openassessment/xblock/openassessmentblock.py:1105: DeprecationWarning: to_deprecated_string is deprecated! Use unicode(key) instead.
+  return key.to_deprecated_string()
+
+[10/Oct/2026 04:22:34] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_peer_assessment HTTP/1.1" 200 0
+[10/Oct/2026 04:22:34] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_student_training HTTP/1.1" 200 0
+[10/Oct/2026 04:22:34] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_message HTTP/1.1" 200 459
+[10/Oct/2026 04:22:34] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_self_assessment HTTP/1.1" 200 0
+[10/Oct/2026 04:22:34] "GET /static/js/vendor/requirejs/text.js HTTP/1.1" 200 15873
+[10/Oct/2026 04:22:34] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_staff_assessment HTTP/1.1" 200 899
+[10/Oct/2026 04:22:34] "GET /static/common/js/components/views/paging_footer.js HTTP/1.1" 200 3582
+[10/Oct/2026 04:22:34] "GET /static/common/js/components/views/paging_header.js HTTP/1.1" 200 2938
+[10/Oct/2026 04:22:34] "GET /static/edx-ui-toolkit/js/pagination/paging-collection.js HTTP/1.1" 200 19254
+2026-10-10 04:22:34,934 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_grade", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_grade"}, "time": "2026-10-10T08:22:34.932502+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /static/templates/fields/message_banner.underscore HTTP/1.1" 200 236
+[10/Oct/2026 04:22:34] "GET /static/course_bookmarks/templates/bookmarks-list.underscore HTTP/1.1" 200 2604
+[10/Oct/2026 04:22:34] "GET /static/course_search/templates/course_search_results.underscore HTTP/1.1" 200 765
+[10/Oct/2026 04:22:34] "GET /static/course_search/templates/course_search_item.underscore HTTP/1.1" 200 327
+[10/Oct/2026 04:22:34] "GET /static/common/templates/components/paging-footer.underscore HTTP/1.1" 200 1424
+2026-10-10 04:22:34,944 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_leaderboard", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_leaderboard"}, "time": "2026-10-10T08:22:34.944422+00:00", "page": null}
+[10/Oct/2026 04:22:34] "GET /static/course_bookmarks/js/models/bookmark.js HTTP/1.1" 200 541
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/models/search_result.js HTTP/1.1" 200 331
+[10/Oct/2026 04:22:34] "GET /static/common/templates/components/paging-header.underscore HTTP/1.1" 200 850
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/views/search_results_view.js HTTP/1.1" 200 4136
+[10/Oct/2026 04:22:34] "GET /static/common/js/vendor/backbone.paginator.js HTTP/1.1" 200 50573
+[10/Oct/2026 04:22:34] "GET /static/course_search/templates/search_error.underscore HTTP/1.1" 200 122
+[10/Oct/2026 04:22:34] "GET /static/course_search/templates/search_loading.underscore HTTP/1.1" 200 95
+[10/Oct/2026 04:22:34] "GET /static/course_search/js/views/search_item_view.js HTTP/1.1" 200 2434
+[10/Oct/2026 04:22:34] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_submission HTTP/1.1" 200 5821
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_grade HTTP/1.1" 200 1314
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_leaderboard HTTP/1.1" 200 1225
+2026-10-10 04:22:35,368 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/submit", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/submit"}, "time": "2026-10-10T08:22:35.368236+00:00", "page": null}
+2026-10-10 04:22:35,388 INFO 1 [submissions.api] api.py:941 - Created submission uuid=8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 for (course_id=course-v1:QA+ORA2Assessment+Py27, item_id=block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27, anonymous_student_id=79e99bc5133c1b24ac9ecdb1e19b61a7)
+2026-10-10 04:22:35,389 INFO 1 [submissions.api] api.py:302 - Get submission 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521
+2026-10-10 04:22:35,391 INFO 1 [submissions.api] api.py:284 - Get submission 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 (cached)
+2026-10-10 04:22:35,395 INFO 1 [openassessment.workflow.models] models.py:389 - Workflow for submission UUID 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 has updated status to waiting
+2026-10-10 04:22:35,396 INFO 1 [openassessment.workflow.api] api.py:72 - Started assessment workflow for submission UUID 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 with steps ['staff']
+2026-10-10 04:22:35,397 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "openassessmentblock.create_submission", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en;q=1.0", "event_source": "server", "event": {"answer": {"parts": [{"text": "ORA2_RESPONSE_py27_A1"}]}, "created_at": "2026-10-10T08:22:35.387561+00:00", "attempt_number": 1, "submission_uuid": "8e063b16-a6d0-4dbd-9b5c-3d1f338a5521", "submitted_at": "2026-10-10T08:22:35.387556+00:00"}, "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "asides": {}, "module": {"usage_key": "block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27", "display_name": "ORA2 Staff Checkpoint"}, "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/submit"}, "time": "2026-10-10T08:22:35.397374+00:00", "page": "x_module"}
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/submit HTTP/1.1" 200 12
+2026-10-10 04:22:35,424 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_submission", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_submission"}, "time": "2026-10-10T08:22:35.424011+00:00", "page": null}
+2026-10-10 04:22:35,426 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_message", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_message"}, "time": "2026-10-10T08:22:35.426291+00:00", "page": null}
+2026-10-10 04:22:35,427 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_peer_assessment", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_peer_assessment"}, "time": "2026-10-10T08:22:35.426882+00:00", "page": null}
+2026-10-10 04:22:35,428 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_student_training", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_student_training"}, "time": "2026-10-10T08:22:35.428368+00:00", "page": null}
+2026-10-10 04:22:35,429 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_self_assessment", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_self_assessment"}, "time": "2026-10-10T08:22:35.429606+00:00", "page": null}
+2026-10-10 04:22:35,431 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_staff_assessment", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_staff_assessment"}, "time": "2026-10-10T08:22:35.431466+00:00", "page": null}
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_peer_assessment HTTP/1.1" 200 0
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_self_assessment HTTP/1.1" 200 0
+2026-10-10 04:22:35,576 INFO 1 [openassessment.workflow.api] api.py:268 - Updated workflow for submission UUID 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 with requirements {'staff': {'required': True}}
+2026-10-10 04:22:35,578 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_grade", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_grade"}, "time": "2026-10-10T08:22:35.577596+00:00", "page": null}
+2026-10-10 04:22:35,589 INFO 1 [tracking] logger.py:50 - {"username": "qaora2_py27", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_leaderboard", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "dc7df805af86", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py27/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+ORA2Assessment+Py27", "path": "/courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_leaderboard"}, "time": "2026-10-10T08:22:35.588771+00:00", "page": null}
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_student_training HTTP/1.1" 200 0
+2026-10-10 04:22:35,596 INFO 1 [openassessment.workflow.api] api.py:268 - Updated workflow for submission UUID 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 with requirements {'staff': {'required': True}}
+2026-10-10 04:22:35,602 INFO 1 [openassessment.workflow.api] api.py:268 - Updated workflow for submission UUID 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 with requirements {'staff': {'required': True}}
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_message HTTP/1.1" 200 372
+2026-10-10 04:22:35,619 INFO 1 [submissions.api] api.py:284 - Get submission 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 (cached)
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_staff_assessment HTTP/1.1" 200 1907
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_submission HTTP/1.1" 200 2685
+2026-10-10 04:22:35,685 INFO 1 [openassessment.workflow.api] api.py:268 - Updated workflow for submission UUID 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 with requirements {'staff': {'required': True}}
+2026-10-10 04:22:35,689 INFO 1 [openassessment.workflow.api] api.py:268 - Updated workflow for submission UUID 8e063b16-a6d0-4dbd-9b5c-3d1f338a5521 with requirements {'staff': {'required': True}}
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_grade HTTP/1.1" 200 1543
+[10/Oct/2026 04:22:35] "POST /courses/course-v1:QA+ORA2Assessment+Py27/xblock/block-v1:QA+ORA2Assessment+Py27+type@openassessment+block@p1b_ora2_staff_py27/handler/render_leaderboard HTTP/1.1" 200 1225

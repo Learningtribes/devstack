@@ -1,0 +1,9 @@
+# filtered from docker logs of py36-r2-e6-py36-{lms,cms,forum} since 2026-10-10T08:15:42Z: lines matching Traceback|ERROR|Exception| 5xx status
+== py36-r2-e6-py36-lms
+432:2026-10-10 04:15:47,830 ERROR 1 [openassessment.workflow.api] api.py:99 - An unexpected error occurred while creating the workflow for submission UUID 74eb91b7-4da8-4196-827f-969e49c07175
+433:Traceback (most recent call last):
+445:2026-10-10 04:15:47,830 ERROR 1 [openassessment.xblock.submission_mixin] submission_mixin.py:149 - An unknown error occurred while submitting a response for the user: {'student_id': '697aa673fd4f3bde34bfa48db32d060b', 'item_id': 'block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36', 'course_id': 'course-v1:QA+ORA2Assessment+Py36', 'item_type': 'openassessment'}
+446:Traceback (most recent call last):
+461:Traceback (most recent call last):
+== py36-r2-e6-py36-cms
+== py36-r2-e6-py36-worker (whole log; the worker starts with the stack)

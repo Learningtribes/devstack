@@ -1,0 +1,48 @@
+# R2-preview Python 3.6 ORA2 test runner: the E5 runner with the patched
+# edx-submissions files of the ORA2 runtime (Dockerfile.r2-ora2-runtime, copied
+# byte for byte) and the ORA2 test dependencies of the R1 ORA2 runner
+# (Dockerfile.p1b-ora2-test-runner), as R1 built that runner from its ORA2
+# runtime.
+# Build: docker build -f Dockerfile.r2-ora2-py36-test-runner -t ltdps/edxapp:py36-r2-ora2-py36-runner-20261010 .
+#   with ltdps/edxapp:py36-r2-py36-runner-20261009 = sha256:004a03ddbb81...
+#   and ltdps/edxapp:py36-r2-ora2-20261010 = sha256:7f1bf1cd7be2...
+FROM ltdps/edxapp:py36-r2-py36-runner-20261009
+
+LABEL description="Open edX Hawthorn Python 3.6 R2-preview ORA2 test runner"
+LABEL base_runner="ltdps/edxapp:py36-r2-py36-runner-20261009 sha256:004a03ddbb81cb7866028f1b4c7233242e39668c529e8022daa5e8798ac3863b"
+LABEL ora2_runtime="ltdps/edxapp:py36-r2-ora2-20261010 sha256:7f1bf1cd7be236362aff6ee97af595de0b4b16155ba02235495c73495be97022"
+LABEL xblock_sdk_source="4b900102d096a977f78de57c804931ad4a4c1ade"
+
+COPY --from=ltdps/edxapp:py36-r2-ora2-20261010 \
+    /usr/local/lib/python3.6/site-packages/submissions/api.py \
+    /usr/local/lib/python3.6/site-packages/submissions/models.py \
+    /usr/local/lib/python3.6/site-packages/submissions/
+COPY p1b-ora2-py36-test-deps.txt /opt/runner/p1b-ora2-py36-test-deps.txt
+COPY p1b-ora2-xblock-sdk-deps.txt /opt/runner/p1b-ora2-xblock-sdk-deps.txt
+COPY xblock-sdk-v0.1.4-workbench-py3.patch /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch
+
+ADD https://codeload.github.com/getmoto/moto/tar.gz/4eaf5d527ef5d619aedbc48c9e09d3364239b41d /opt/runner/moto-0.4.31-4eaf5d5.tar.gz
+ADD https://codeload.github.com/openedx/xblock-sdk/tar.gz/4b900102d096a977f78de57c804931ad4a4c1ade /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz
+
+RUN cd /usr/local/lib/python3.6/site-packages \
+    && echo "a30b76f9f7676c73b57f8a696c6eb1fc101ae4a6cabf80680cc8f1e5380dd319  submissions/api.py" | sha256sum -c - \
+    && echo "0b89c4191af3c9aaeaf41376c3dd44ad194841e95adee964360eb1a79cb68de3  submissions/models.py" | sha256sum -c - \
+    && ! grep -E 'basestring|unicode\(' submissions/api.py submissions/models.py \
+    && cd / \
+    && pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-py36-test-deps.txt \
+    && pip install --no-cache-dir --no-deps --require-hashes -r /opt/runner/p1b-ora2-xblock-sdk-deps.txt \
+    && echo "2732cf43018440d7caa1fe6fb77f7f990f26c857afba703e68d12a805c137cde  /opt/runner/moto-0.4.31-4eaf5d5.tar.gz" | sha256sum -c - \
+    && echo "6b6acf90398ac740add51daa4ba158499a8148763a481c905040f76df889b160  /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz" | sha256sum -c - \
+    && pip install --no-cache-dir --no-deps /opt/runner/moto-0.4.31-4eaf5d5.tar.gz \
+    && pip install --no-cache-dir --no-deps /opt/runner/xblock-sdk-v0.1.4-4b900102.tar.gz \
+    && cd /usr/local/lib/python3.6/site-packages \
+    && echo "aa362758a66e8a39c4e743ce4f3bd86cdccdf198854c29868f8379ac3f7dfc9e  workbench/runtime.py" | sha256sum -c - \
+    && git apply --check /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch \
+    && git apply /opt/runner/xblock-sdk-v0.1.4-workbench-py3.patch \
+    && cd / \
+    && python -m compileall -q \
+        /usr/local/lib/python3.6/site-packages/submissions/api.py \
+        /usr/local/lib/python3.6/site-packages/submissions/models.py \
+        /usr/local/lib/python3.6/site-packages/workbench/runtime.py \
+    && pip check \
+    && python -c "import pkg_resources; expected = {'pytest': '3.6.4', 'pytest-django': '3.1.2', 'ddt': '0.8.0', 'mock': '1.0.1', 'nose': '1.3.7', 'factory-boy': '2.8.1', 'Faker': '0.8.16', 'freezegun': '0.3.10', 'cssselect': '1.0.3', 'pyquery': '1.4.0', 'edx-submissions': '2.1.1', 'moto': '0.4.31', 'httpretty': '0.8.10', 'xmltodict': '0.11.0', 'Werkzeug': '0.14.1', 'xblock-sdk': '0.1.4', 'cookiecutter': '0.9.0', 'binaryornot': '0.4.4', 'django-nose': '1.4.7', 'pypng': '0.0.18'}; actual = {name: pkg_resources.get_distribution(name).version for name in expected}; assert actual == expected, (expected, actual); print('Py3.6 ORA2 test tools OK', actual)"

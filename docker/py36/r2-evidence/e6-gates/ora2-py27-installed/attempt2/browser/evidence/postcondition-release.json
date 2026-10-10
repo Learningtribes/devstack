@@ -1,0 +1,220 @@
+{
+  "assessment": {
+    "criterion": "response_quality",
+    "feedback": "ORA2_FEEDBACK_py27_A1",
+    "id": 1,
+    "option": "meets_requirement",
+    "points_earned": 2,
+    "points_possible": 2,
+    "score_type": "ST",
+    "scored_at": "2026-10-10 08:30:40.241168+00:00",
+    "scorer_id": "918904fad49f4f9667875df34ff666a2"
+  },
+  "attempt": 1,
+  "business_log_findings": [],
+  "completion": {
+    "id": 20,
+    "modified": "2026-10-10 08:30:40.287772+00:00",
+    "value": 1.0
+  },
+  "course_grade": {
+    "grading_policy_hash": "z9TLT0kWbxYf2HFm6Xr2N1QJBbg=",
+    "id": 33,
+    "letter_grade": "Pass",
+    "modified": "2026-10-10 08:30:42.424172+00:00",
+    "percent_grade": 1.0
+  },
+  "course_progress": {
+    "id": 17,
+    "modified": "2026-10-10 08:30:41.071718+00:00",
+    "percent_progress": 1.0
+  },
+  "enrollment_completion_date": "2026-10-10 08:30:41.063192+00:00",
+  "feedback_marker": "ORA2_FEEDBACK_py27_A1",
+  "queue_state": {
+    "default": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py27.default"
+    },
+    "grade": {
+      "consumers": 1,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py27.grade"
+    },
+    "high": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py27.high"
+    },
+    "high_mem": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py27.high_mem"
+    },
+    "low": {
+      "consumers": 0,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py27.low"
+    },
+    "progress": {
+      "consumers": 1,
+      "messages_ready": 0,
+      "queue": "py36-r2-e6-py27.progress"
+    }
+  },
+  "response_marker": "ORA2_RESPONSE_py27_A1",
+  "row_counts": {
+    "assessment": 1,
+    "assessment_part": 1,
+    "assessment_workflow": 1,
+    "assessment_workflow_cancellation": 0,
+    "assessment_workflow_step": 1,
+    "block_completion": 1,
+    "certificate": 0,
+    "course_grade": 1,
+    "course_progress": 1,
+    "criterion": 1,
+    "criterion_option": 2,
+    "enrollment": 1,
+    "enrollment_completion_date": "2026-10-10 08:30:41.063192+00:00",
+    "enrollment_mode": "audit",
+    "learner_anonymous_id": "79e99bc5133c1b24ac9ecdb1e19b61a7",
+    "rubric": 1,
+    "score_annotation": 1,
+    "score_current_non_reset": 1,
+    "score_reset": 1,
+    "score_total": 2,
+    "staff_anonymous_id": "918904fad49f4f9667875df34ff666a2",
+    "staff_workflow": 1,
+    "student_item": 1,
+    "student_module": 1,
+    "submission_active": 1,
+    "submission_total": 1,
+    "subsection_grade": 1,
+    "subsection_override": 0
+  },
+  "runtime": "py27",
+  "score": {
+    "annotation_creator": "918904fad49f4f9667875df34ff666a2",
+    "annotation_reason": "A staff member has defined the score for this submission",
+    "annotation_type": "staff_defined",
+    "created_at": "2026-10-10 08:30:40.263057+00:00",
+    "id": 2,
+    "points_earned": 2,
+    "points_possible": 2
+  },
+  "staff_workflow": {
+    "assessment_id": "1",
+    "grading_completed_at": "2026-10-10 08:30:40.245770+00:00",
+    "grading_started_at": "2026-10-10 08:30:17.938348+00:00",
+    "id": 1,
+    "scorer_id": "918904fad49f4f9667875df34ff666a2"
+  },
+  "statistics": {
+    "graded": 1,
+    "in-progress": 0,
+    "ungraded": 0
+  },
+  "submission": {
+    "answer": {
+      "parts": [
+        {
+          "text": "ORA2_RESPONSE_py27_A1"
+        }
+      ]
+    },
+    "attempt_number": 1,
+    "id": 1,
+    "submitted_at": "2026-10-10 08:29:52.278926+00:00",
+    "uuid": "c6063f3f-c104-4619-8cc2-c716a4f92ae9"
+  },
+  "subsection_grade": {
+    "earned_all": 2.0,
+    "earned_graded": 2.0,
+    "id": 17,
+    "modified": "2026-10-10 08:30:42.402615+00:00",
+    "possible_all": 2.0,
+    "possible_graded": 2.0
+  },
+  "task_summary": {
+    "grade": {
+      "received": [
+        {
+          "prefix": "2026-10-10 04:30:40,285 INFO 1 [celery.worker.strategy] strategy.py:60 -",
+          "task_id": "2d7b1f53-1cd0-4296-9565-a7fb0b9002b4"
+        }
+      ],
+      "received_records": 1,
+      "retry_records": 0,
+      "succeeded": [
+        {
+          "prefix": "2026-10-10 04:30:42,437 INFO 1 [celery.worker.job] job.py:402 -",
+          "task_id": "2d7b1f53-1cd0-4296-9565-a7fb0b9002b4"
+        }
+      ],
+      "successes": 1,
+      "task_ids": [
+        "2d7b1f53-1cd0-4296-9565-a7fb0b9002b4"
+      ],
+      "task_name": "lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3"
+    },
+    "path": "/edx/var/log/worker.log",
+    "progress": {
+      "received": [
+        {
+          "prefix": "2026-10-10 04:30:40,302 INFO 1 [celery.worker.strategy] strategy.py:60 -",
+          "task_id": "e4ac3c3e-77e2-4eed-9ebf-f3aba9b4aea0"
+        }
+      ],
+      "received_records": 1,
+      "retry_records": 0,
+      "succeeded": [
+        {
+          "prefix": "2026-10-10 04:30:41,100 INFO 1 [celery.worker.job] job.py:402 -",
+          "task_id": "e4ac3c3e-77e2-4eed-9ebf-f3aba9b4aea0"
+        }
+      ],
+      "successes": 1,
+      "task_ids": [
+        "e4ac3c3e-77e2-4eed-9ebf-f3aba9b4aea0"
+      ],
+      "task_name": "lms.djangoapps.grades.tasks.calculate_course_progress"
+    },
+    "window_bytes": 2828
+  },
+  "worker_state": {
+    "active": {
+      "py36-r2-e6-py27-worker@b09a899be213": []
+    },
+    "ping": [
+      {
+        "py36-r2-e6-py27-worker@b09a899be213": {
+          "ok": "pong"
+        }
+      }
+    ],
+    "registered_count": 43,
+    "registered_required": {
+      "lms.djangoapps.grades.tasks.calculate_course_progress": true,
+      "lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3": true
+    },
+    "reserved": {
+      "py36-r2-e6-py27-worker@b09a899be213": []
+    },
+    "scheduled": {
+      "py36-r2-e6-py27-worker@b09a899be213": []
+    }
+  },
+  "workflow": {
+    "assessment_completed_at": "2026-10-10 08:30:40.304912+00:00",
+    "id": 1,
+    "status": "done",
+    "step": "staff",
+    "submitter_completed_at": "2026-10-10 08:29:52.286562+00:00"
+  },
+  "xblock_state": {
+    "submission_uuid": "c6063f3f-c104-4619-8cc2-c716a4f92ae9"
+  },
+  "status": "POSTCONDITION_OK"
+}

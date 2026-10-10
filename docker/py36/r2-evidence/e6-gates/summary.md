@@ -169,6 +169,131 @@ both runtimes.** One Python 3.6 warning worth tracking (master line, not R2):
 Mako context name, so the compiled template assigns `async = context.get(...)`,
 a `SyntaxError` from Python 3.7 on. It does not affect the 3.6 floor.
 
+## ORA2 staff assessment (2026-10-10) - PASS on both runtimes
+
+Port of the R1 `p1b-ora2-assessment` gate: a learner submits an ORA2
+response, staff assesses it from the staff area, and the grade and progress
+workers write one persistent grade and one 100% progress row. The browser spec
+is `tests/ora2_assessment.spec.ts` with its three file handshakes
+(submission-ready, staff-lease, postflight); the R1 provisioner
+`provision-p1b-ora2-assessment.py` does the fixture and the database checks.
+
+- `r2-e6-ora2.sh <rt> <out> [installed|source]` starts the E6 stack with the
+  broker (`PY36_R2_E6_WITH_BROKER=1`), provisions as `PY36_R2_E6_PRESTART`,
+  runs identity and preflight, runs the browser in the background and answers
+  each handshake with the matching provisioner step. Each step must print its
+  marker exactly once.
+- `r2-e6-ora2.py` loads the R1 provisioner unchanged except for the R2 site
+  (`localhost:18000`), namespace, expected ORA2 commit, Platform identity
+  from host git (`platform-r2-py36-src`), and the overrides below.
+- The E6 LMS logs only to `docker logs`; before every step the wrapper writes
+  that log to the path R1 redirected the LMS log to (`/edx/var/log/lms.log`),
+  which the provisioner scans for business-log findings.
+
+| Run | Runtime image | ORA2 | edx-submissions | Browser | Learner / staff diagnostics | Postflight |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ora2-py36/attempt4` | `py36-r2-ora2-20261010` (`7f1bf1cd`) | `d3f24a9c` installed | 2.1.1 + Py3 patch | 1 passed | 0 / 0 (657 / 130 assets) | grade 1, progress 1 at 1.0 |
+| `ora2-py27-installed/attempt2` | `py36-r2-py27-runner-20261009` (`e5ecccf9`, control) | `4fcfa234` installed | 2.0.12 | 1 passed | 0 / 0 (657 / 130 assets) | grade 1, progress 1 at 1.0 |
+| `ora2-py27-source/attempt1` | same, plus a read-only `d3f24a9c` overlay | `d3f24a9c` source | 2.0.12 | 1 passed | 0 / 0 (655 / 130 assets) | grade 1, progress 1 at 1.0 |
+
+Diagnostics are console errors, page errors, failed requests and HTTP errors
+per actor. The two-asset learner difference is `moment-with-locales.js` and
+`moment-timezone-with-data.js` loaded 7 times instead of 8; the distinct URL
+set is the same. In every postflight the grade and progress tasks each
+succeeded once with no retry, business-log findings were empty, the grade and
+progress queues each had one consumer and no ready message, and the worker
+log had no Traceback, ERROR or CRITICAL line.
+
+Python 2.7 ran twice by owner decision: the installed ORA2 of the control
+image, then the frozen `../edx-ora2` checkout (`d3f24a9c`, clean) mounted
+read-only at `/runner/edx-ora2` ahead of the editable install
+(`PY36_R2_E6_ORA2_SOURCE`). The live LMS and worker imported
+`/runner/edx-ora2/openassessment`. The editable install metadata stays valid:
+`setup.py` and the requirements files are identical between `4fcfa234` and
+`d3f24a9c`, and the range changes no static file.
+
+### R1 to R2 deltas
+
+1. **edx-submissions Python 3 patch.** R1 applied
+   `edx-submissions-2.1.1-py3.patch` (sha256 `00b289b4...`, equivalent to
+   upstream `40cb956` + `497794b`) in its ORA2 and C2 runtime layers. The R2
+   E2 image builds only the main Dockerfile, so it ships the unpatched
+   2.1.1. Attempt 2 failed on learner submit with
+   `NameError: name 'basestring' is not defined` (`submissions/api.py:265`,
+   raised as `AssessmentWorkflowInternalError`). `Dockerfile.r2-ora2-runtime`
+   adds the same patch as one layer on `py36-r2-20261009` with pre- and
+   post-patch hashes of `api.py` and `models.py`, a compile, a no-`basestring`
+   check and `pip check` (`ora2-runtime/build.txt`).
+   `PY36_R2_E6_ORA2_RUNTIME=1` selects it; asset provenance is still checked
+   against the base image. Where the patch belongs in the delivered image is
+   a delivery decision (handoff §7).
+2. **Pending progress row (Platform #2369, owner-accepted).** R1 expected one
+   0% `PersistentCourseProgress` row at submission-ready and staff-lease,
+   written by the `COURSE_GRADE_CHANGED` receiver on the first grade read.
+   #2369 (`bcc47484d98`, on master, not in the R1 base) stopped that write;
+   only the `calculate_course_progress` task writes the row. py36 attempt 3
+   and py27-installed attempt 1 failed with
+   `submission-ready row cardinality is invalid: {'course_progress': (0, 1)}`.
+   The provisioner now takes `PENDING_COURSE_PROGRESS_ROWS` (R1 default 1);
+   the E6 wrapper sets 0. Postflight is unchanged.
+3. **Identity under Platform ORA2 defaults.** R1's gate settings defined
+   `ORA2_ASSESSMENTS`; the Platform sets neither it nor
+   `ORA2_ASSESSMENT_SCORE_PRIORITY`. ORA2 adds the `staff` step to
+   `AssessmentWorkflow.STEPS` on first instantiation, so attempt 1 failed
+   with `AssessmentWorkflow status values are incomplete`. The R2 identity
+   records the steps before and after one instantiation and reports both
+   settings as `unset (ORA2 default)`.
+
+The canonical `localhost:18000` site gets the course org filter and
+`ENABLE_LAST_ACTIVITY` merged into its configuration, and its SiteTheme is
+deleted in the private clone (the grading precedent).
+
+### Service logs
+
+Identical on all three runs: CMS and worker logs are empty of errors. The LMS
+has the accepted INFO cohort-cache line and two
+`ERROR [submissions.api] Number of top scores must be a number between 1 and 100.`
+lines (`api.py:582` on 2.1.1, `api.py:579` on 2.0.12). They come from ORA2's
+`render_leaderboard` handler, which the page requests even with
+`leaderboard_show=0`. Once the workflow is done it calls
+`get_top_submissions(..., 0)`, which logs and raises; ORA2 catches the error,
+and there is no leaderboard UI when `leaderboard_show` is 0. This is upstream
+behavior on both runtimes and both ORA2 commits, not an R2 change
+(handoff §7).
+
+### Runner target
+
+The R1 profile needs ORA2 test dependencies (`xblock-sdk` with the workbench
+Python 3 patch, `moto`, `django-nose`, ...) that the E5 runners do not have:
+the first py36 run stopped at `No module named 'workbench'`. Two local
+runners mirror R1's ORA2 runners on top of the E5 runners:
+
+| Runner | Image | Base layers kept | Contents |
+| --- | --- | --- | --- |
+| py36 | `py36-r2-ora2-py36-runner-20261010` (`ef76a359`, arm64) | 35 of 42 | patched `submissions/{api,models}.py` copied from `7f1bf1cd`, R1 `p1b-ora2-py36-test-deps.txt` + `p1b-ora2-xblock-sdk-deps.txt` (hash-locked), `moto` and `xblock-sdk` source tarballs (sha256-checked), workbench patch; `pip check` clean |
+| py27 | `py36-r2-ora2-py27-runner-20261010` (`dd7dfd8b`, amd64) | 21 of 25 | R1 `p1b-ora2-xblock-sdk-deps.txt`, `xblock-sdk` tarball, workbench patch; `pip check` output identical to the E5 runner |
+
+| Runtime | `p1b-ora2-assessment` | Collected | Canonical groups |
+| --- | --- | --- | --- |
+| py36 | 197 passed, 531 warnings | 197 | 137 |
+| py27 | 197 passed, 24 warnings | 197 | 137 |
+
+Both runs used the frozen `d3f24a9c` source. Raw node IDs differ only in DDT
+suffixes (dict order, lambda addresses, `IOError` as `OSError`); dropping the
+DDT suffix gives the same 137 groups with the same counts, as in R1 (197
+passed on each runtime, 531 / 22 warnings). R1's raw logs are gone, so the
+two extra Python 2.7 warnings were not compared line by line; warnings are
+not a pass criterion. Evidence: `ora2-runner/`, builds in `ora2-runtime/`.
+
+**ORA2 PASS on both runtimes.** Failed attempts, kept as evidence:
+`ora2-py36/attempt1` (identity, delta 3), `attempt2` (`basestring`,
+delta 1), `attempt3` and `ora2-py27-installed/attempt1` (pending progress,
+delta 2). After a handshake failure one Playwright container outlived the
+wrapper; the wrapper now removes every `io.openedx.py36-r2.gate=e6-browser`
+container on failure. The two interrupted attempts left a harness staging copy
+(`browser/harness/`, not committed); their `state.json`, screenshots and
+results were copied into `browser/`.
+
 ## Harness fix: static files served ahead of Django
 
 After the toolbar removal, the py27 group 1 control showed bursts of LMS
@@ -230,3 +355,12 @@ started, stopped or written. A secret scan of `docker/py36` (scripts and
 evidence) and the gate log root for the MySQL, forum and broker secrets found
 no match; the same scan with the Studio author/learner passwords added found
 no match in the Studio evidence, which contains no Playwright trace archive.
+
+After the ORA2 gates and runner targets the shared Elasticsearch again matched
+the pre-gate snapshot (indices, counts, `index_total=0`, `delete_total=0`),
+no E6 or gate-labelled container remained, the dangling-volume count stayed at
+82 and `../edx-ora2` was clean at `d3f24a9c`. A scan of `docker/py36` with
+every value of eight characters or more from the config env files matched only
+two non-credentials: the devstack default login email in the E4 CMS logs
+(already committed) and the fixed RabbitMQ user name in
+`run-r2-e6-services.sh`. No password or key matched.

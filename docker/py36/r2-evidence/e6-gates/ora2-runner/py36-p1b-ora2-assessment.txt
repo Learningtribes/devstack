@@ -1,0 +1,1256 @@
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+........................................................................ [ 36%]
+........................................................................ [ 73%]
+.....................................................                    [100%]
+=============================== warnings summary ===============================
+test_api.py::TestAssessmentWorkflowApi::test_assessment_module_rollback_update_workflow
+  /runner/edx-ora2-source/openassessment/workflow/test/test_api.py:133: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("self", workflow['status'])
+  /runner/edx-ora2-source/openassessment/workflow/test/test_api.py:141: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("waiting", workflow['status'])
+
+test_staff.py::TestStaffAssessment::test_fetch_next_submission
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:35) while time zone support is active.
+    RuntimeWarning)
+
+test_staff.py::TestStaffAssessment::test_fetch_same_submission
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:35) while time zone support is active.
+    RuntimeWarning)
+
+test_staff.py::TestStaffAssessment::test_fetch_submission_delayed
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:35) while time zone support is active.
+    RuntimeWarning)
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-09 23:37:35) while time zone support is active.
+    RuntimeWarning)
+
+test_staff.py::TestStaffAssessment::test_grading_statistics
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:35) while time zone support is active.
+    RuntimeWarning)
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-09 23:37:35) while time zone support is active.
+    RuntimeWarning)
+
+test_staff.py::TestStaffAssessment::test_next_submission_error
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:35) while time zone support is active.
+    RuntimeWarning)
+
+test_staff.py::TestStaffAssessment::test_no_available_submissions
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:35) while time zone support is active.
+    RuntimeWarning)
+
+test_submission.py::SubmissionTest::test_ability_to_submit_blank_answer_if_text_response_none
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_ability_to_submit_blank_answer_if_text_response_optional
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_cannot_submit_in_preview_mode
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_closed_submissions
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionTest::test_download_url
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_download_url_non_existing_file
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_prompt_html_to_text
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionTest::test_prompt_line_breaks
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionTest::test_remove_all_uploaded_files
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_submission_API_failure
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_submission_general_failure
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_submission_multisubmit_failure
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_submit_answer_too_long
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_submit_submission
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_upload_files_with_uppercase_ext
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionTest::test_upload_url
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_submission.py::SubmissionRenderTest::test_cancelled_submission
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_closed_graded
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_closed_incomplete
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_closed_submitted
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_integration
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_open_graded
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_open_no_deadline
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_open_saved_response
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_open_saved_response_old_format
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_open_submitted
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_open_submitted_old_format
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_open_unanswered
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_unavailable
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_submission.py::SubmissionRenderTest::test_unavailable_submitted
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff.py::TestStaffAssessmentRender::test_staff_grade_templates
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff.py::TestStaffAssessmentRender::test_staff_grade_templates_closed
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff.py::TestStaffAssessmentRender::test_staff_grade_templates_no_peer
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff.py::TestStaffAssessment::test_assessment_error
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_staff.py::TestStaffAssessment::test_invalid_options
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_staff.py::TestStaffAssessment::test_permission_error
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff.py::TestStaffAssessment::test_staff_assess_handler
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_staff.py::TestStaffAssessment::test_staff_assess_handler_regrade
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_staff_area.py::TestCourseStaff::test_cancel_submission_full_flow
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_staff_area.py::TestCourseStaff::test_cancel_submission_without_reason
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_staff_area.py::TestCourseStaff::test_cancelled_submission_peer_assessment_render_path
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:382: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("openassessmentblock/peer/oa_peer_cancelled.html", path)
+
+test_staff_area.py::TestCourseStaff::test_course_staff_area
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_course_student_debug_info
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_hide_course_staff_area_in_studio_preview
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:500: DeprecationWarning: xblock.fragment is deprecated. Please use web_fragments.fragment instead
+    fragment = Fragment(template.render(context_dict))
+
+test_staff_area.py::TestCourseStaff::test_is_course_staff
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_staff_area.py::TestCourseStaff::test_staff_area_dates_distant_past_and_future
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_dates_table
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_file_download_url_error
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_full_workflow
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_image_submission
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:414: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals([('http://www.example.com/image.jpeg', 'test_description')], context['staff_file_urls'])
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:415: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals('image', context['file_upload_type'])
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_many_images_submission
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:464: DeprecationWarning: Please use assertEqual instead.
+    context['staff_file_urls'])
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:465: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals('image', context['file_upload_type'])
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_no_submission
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_peer_only
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:206: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:210: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_self_only
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:240: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:244: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:247: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(1, len(grade_details['criteria'][0]['assessments']))
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:248: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals('Self Assessment Grade', grade_details['criteria'][0]['assessments'][0]['title'])
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_staff_only
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:309: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:313: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:316: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(1, len(grade_details['criteria'][0]['assessments']))
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:317: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals('Staff Grade', grade_details['criteria'][0]['assessments'][0]['title'])
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_staff_only_no_options
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_area_student_info_with_cancelled_submission
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:349: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:351: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+
+test_staff_area.py::TestCourseStaff::test_staff_assessment_counts
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:39) while time zone support is active.
+    RuntimeWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:727: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(required, context['staff_assessment_required'])
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:39) while time zone support is active.
+    RuntimeWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:727: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(required, context['staff_assessment_required'])
+
+test_staff_area.py::TestCourseStaff::test_staff_assessment_counts_not_required
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_staff_area.py:727: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(required, context['staff_assessment_required'])
+
+test_staff_area.py::TestCourseStaff::test_staff_assessment_form
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1451: RuntimeWarning: DateTimeField StaffWorkflow.grading_started_at received a naive datetime (2026-10-10 00:37:39) while time zone support is active.
+    RuntimeWarning)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_staff_area.py::TestCourseStaff::test_staff_delete_student_state
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_assessment_does_not_match_rubric
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_grade_display_assigns_labels
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_grade.py::TestGrade::test_grade_incomplete_missing_both
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_grade_incomplete_missing_peer
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_grade_incomplete_missing_self
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_grade_waiting_1_waiting_for_peer
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_grade_waiting_2_not_waiting
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_peer_update_after_override
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_grade.py::TestGrade::test_render_grade
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_render_grade_details
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:201: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(criteria[0]['assessments'][0]['option']['label'], u'Ġööḋ / ﻉซƈﻉɭɭﻉกՇ')
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:202: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(criteria[1]['assessments'][0]['option']['label'], u'Fair / Good')
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:203: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(criteria[0]['assessments'][0]['points'], 3)
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:204: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(criteria[1]['assessments'][0]['points'], 3)
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:207: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(criteria[0]['assessments'][1]['option']['label'], u'ﻉซƈﻉɭɭﻉกՇ')
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:208: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(criteria[1]['assessments'][1]['option']['label'], u'Fair')
+
+test_grade.py::TestGrade::test_render_grade_feedback
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_render_grade_feedback_only_criterion
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_render_grade_self_only
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/base.py:1040: RemovedInDjango20Warning: escape isn't the last filter in ['escape_filter', 'link_and_linebreak'] and will be applied immediately in Django 2.0 so the output may change.
+    output = self.filter_expression.resolve(context)
+  /usr/local/lib/python3.6/site-packages/django/template/loaders/filesystem.py:61: RemovedInDjango20Warning: The load_template_sources() method is deprecated. Use get_template() or get_contents() instead.
+    RemovedInDjango20Warning,
+
+test_grade.py::TestGrade::test_render_staff_grades_1____options_selected_____𝓒𝓸𝓷𝓬𝓲𝓼𝓮____ﻉซƈﻉɭɭﻉกՇ____Form____Fair_____criterion_feedback_____𝓒𝓸𝓷𝓬𝓲𝓼𝓮____Staff__ฝﻉɭɭ_ɗѻกﻉ_____Form____Staff__ƒαιя_נσв_____overall_feedback____Staff__good_job_____assess_type____full_grade_____4__3__
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:236: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(assessment['points'], scores[criterion_index])
+
+test_grade.py::TestGrade::test_render_staff_grades_2____options_selected_____𝓒𝓸𝓷𝓬𝓲𝓼𝓮____ק__г____Form____Poor_____criterion_feedback_____𝓒𝓸𝓷𝓬𝓲𝓼𝓮____Staff__ק__г_נσв____Form____Staff__ק__г_נσв_____overall_feedback____Staff__very_poor____assess_type____full_grade_____1__1__
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+  /runner/edx-ora2-source/openassessment/xblock/test/test_grade.py:236: DeprecationWarning: Please use assertEqual instead.
+    self.assertEquals(assessment['points'], scores[criterion_index])
+
+test_grade.py::TestGrade::test_submit_feedback
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_grade.py::TestGrade::test_submit_feedback_invalid_options
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_grade.py::TestGrade::test_submit_feedback_no_options
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_lms.py::LmsMixinTest::test_max_score
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_lms.py::LmsMixinTest::test_max_score_zero_option_criteria
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+test_lms.py::LmsMixinTest::test_simple_methods
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:579: FutureWarning: IdGenerator will be required in the future in order to support XBlockAsides
+    warnings.warn("IdGenerator will be required in the future in order to support XBlockAsides", FutureWarning)
+  /runner/edx-ora2-source/openassessment/xblock/test/base.py:163: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    self.load_fixture_str(xml_path), self.runtime.id_generator
+  /usr/local/lib/python3.6/site-packages/xblock/runtime.py:708: DeprecationWarning: Passing an id_generator directly is deprecated in favor of constructing the Runtime with the id_generator
+    return self.parse_xml_file(io_type(xml), id_generator)
+  /runner/edx-ora2-source/openassessment/xblock/openassessmentblock.py:713: ModifyingEnforceTypeWarning: The value None would be enforced to False
+    block.allow_file_upload = config['allow_file_upload']
+
+lms/lib/xblock/test/test_mixin.py::OpenAssessmentBlockMixinTestCase::test_has_score
+  /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1337: DeprecationWarning: count is deprecated. Use Collection.count_documents instead.
+    if courses.count() > 0:
+  /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+    self, resource_name
+  /usr/local/lib/python3.6/site-packages/mongodb_proxy.py:117: DeprecationWarning: update is deprecated. Use replace_one, update_one or update_many instead.
+    return self.proxied_object(*args, **kwargs)
+  /usr/local/lib/python3.6/site-packages/mongodb_proxy.py:117: DeprecationWarning: remove is deprecated. Use delete_one or delete_many instead.
+    return self.proxied_object(*args, **kwargs)
+
+lms/djangoapps/courseware/tests/test_submitting_problems.py::TestCourseGrader::test_submissions_api_overrides_scores
+  /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1337: DeprecationWarning: count is deprecated. Use Collection.count_documents instead.
+    if courses.count() > 0:
+  /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+    self, resource_name
+  /usr/local/lib/python3.6/site-packages/mongodb_proxy.py:117: DeprecationWarning: update is deprecated. Use replace_one, update_one or update_many instead.
+    return self.proxied_object(*args, **kwargs)
+  /usr/local/lib/python3.6/site-packages/completion/api/urls.py:10: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('completion.api.v1.urls', namespace='v1')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:112: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/completion/', include('completion.api.urls', namespace='completion_api')),
+  /usr/local/lib/python3.6/site-packages/organizations/urls.py:8: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v0/', include('organizations.v0.urls', namespace='v0')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:130: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/organizations/', include('organizations.urls', namespace='organizations')),
+  /edx/app/edxapp/edx-platform/lms/djangoapps/triboo_analytics/views.py:1913: DeprecationWarning: invalid escape sequence \ 
+    "message": _("Error while sending mail\ please try again later.")})
+  /edx/app/edxapp/edx-platform/lms/urls.py:152: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/extended/', include('extended_api.urls', namespace='extended_api')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:792: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^triboo-guanli/', include(admin.site.urls)),
+  /edx/app/edxapp/edx-platform/lms/urls.py:803: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^oauth2/', include('edx_oauth2_provider.urls', namespace='oauth2')),
+  /edx/app/edxapp/edx-platform/lms/djangoapps/grades/api/urls.py:26: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('grades.api.v1.urls', namespace='v1'))
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/plugins/plugin_urls.py:23: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    for url_module_path, url_config in _iter_plugins(project_type)
+  /usr/local/lib/python3.6/site-packages/django/core/handlers/base.py:52: RemovedInDjango20Warning: Old-style middleware using settings.MIDDLEWARE_CLASSES is deprecated. Update your middleware and use settings.MIDDLEWARE instead.
+    "instead.", RemovedInDjango20Warning
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/middleware.py:54: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    if request.user.is_authenticated() is False:
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/views/management.py:1101: DeprecationWarning: Please use RegistrationView instead.
+    warnings.warn("Please use RegistrationView instead.", DeprecationWarning)
+  /usr/local/lib/python3.6/site-packages/mongodb_proxy.py:117: DeprecationWarning: remove is deprecated. Use delete_one or delete_many instead.
+    return self.proxied_object(*args, **kwargs)
+  /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/graders.py:152: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+    args, _, keywords, _ = inspect.getargspec(func)
+  /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:133: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+    text
+  /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:97: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+    return re.sub(_url_replace_regex('/course/'), replace_course_url, text)
+  /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:77: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+    return re.sub(_url_replace_regex('/jump_to_id/'), replace_jump_to_id_url, text)
+
+lms/djangoapps/courseware/tests/test_submitting_problems.py::TestCourseGrader::test_submissions_api_anonymous_student_id
+  /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/modulestore/mongo/base.py:1337: DeprecationWarning: count is deprecated. Use Collection.count_documents instead.
+    if courses.count() > 0:
+  /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+    self, resource_name
+  /usr/local/lib/python3.6/site-packages/mongodb_proxy.py:117: DeprecationWarning: update is deprecated. Use replace_one, update_one or update_many instead.
+    return self.proxied_object(*args, **kwargs)
+  /usr/local/lib/python3.6/site-packages/django/core/handlers/base.py:52: RemovedInDjango20Warning: Old-style middleware using settings.MIDDLEWARE_CLASSES is deprecated. Update your middleware and use settings.MIDDLEWARE instead.
+    "instead.", RemovedInDjango20Warning
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/middleware.py:54: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    if request.user.is_authenticated() is False:
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/views/management.py:1101: DeprecationWarning: Please use RegistrationView instead.
+    warnings.warn("Please use RegistrationView instead.", DeprecationWarning)
+  /usr/local/lib/python3.6/site-packages/mongodb_proxy.py:117: DeprecationWarning: remove is deprecated. Use delete_one or delete_many instead.
+    return self.proxied_object(*args, **kwargs)
+  /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/graders.py:152: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+    args, _, keywords, _ = inspect.getargspec(func)
+
+-- Docs: http://doc.pytest.org/en/latest/warnings.html
+197 passed, 531 warnings in 10.55 seconds

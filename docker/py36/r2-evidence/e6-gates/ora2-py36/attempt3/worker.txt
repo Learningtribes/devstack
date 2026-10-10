@@ -1,0 +1,14 @@
+/usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+PY36_R2_E6_WORKER_READY queues={'high': 'py36-r2-e6-py36.high', 'low': 'py36-r2-e6-py36.low', 'default': 'py36-r2-e6-py36.default', 'high_mem': 'py36-r2-e6-py36.high_mem', 'grade': 'py36-r2-e6-py36.grade', 'progress': 'py36-r2-e6-py36.progress'} required=('lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3', 'lms.djangoapps.grades.tasks.calculate_course_progress') broker_heartbeat=30.0
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+2026-10-10 04:19:05,025 INFO 1 [celery.worker.consumer] consumer.py:526 - Connected to amqp://py36r2e6:**@py36-r2-e6-py36-rabbitmq:5672/py36-r2-e6-py36

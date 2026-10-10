@@ -1,0 +1,21 @@
+/usr/local/lib/python3.6/site-packages/OpenSSL/_util.py:6: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.6.
+  from cryptography.hazmat.bindings.openssl.binding import Binding
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+PY36_R2_E6_WORKER_READY queues={'high': 'py36-r2-e6-py36.high', 'low': 'py36-r2-e6-py36.low', 'default': 'py36-r2-e6-py36.default', 'high_mem': 'py36-r2-e6-py36.high_mem', 'grade': 'py36-r2-e6-py36.grade', 'progress': 'py36-r2-e6-py36.progress'} required=('lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3', 'lms.djangoapps.grades.tasks.calculate_course_progress') broker_heartbeat=30.0
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+2026-10-10 04:25:55,204 INFO 1 [celery.worker.consumer] consumer.py:526 - Connected to amqp://py36r2e6:**@py36-r2-e6-py36-rabbitmq:5672/py36-r2-e6-py36
+2026-10-10 04:27:03,966 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3[c877c3bd-9008-46d7-8a35-fe2ca19c675f] eta:[2026-10-10 04:27:05.964252-04:00]
+2026-10-10 04:27:03,977 INFO 1 [celery.worker.strategy] strategy.py:60 - Received task: lms.djangoapps.grades.tasks.calculate_course_progress[7f5fb9e4-c1a1-4294-b258-681dafd25094]
+2026-10-10 04:27:04,264 INFO 1 [celery.worker.job] job.py:402 - Task lms.djangoapps.grades.tasks.calculate_course_progress[7f5fb9e4-c1a1-4294-b258-681dafd25094] succeeded in 0.28651581332087517s: None
+2026-10-10 04:27:06,005 INFO 30 [tracking] logger.py:42 - {"name": "edx.grades.subsection.grade_calculated", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "org_id": "QA"}, "username": "", "session": "", "ip": "", "agent": "", "host": "", "referer": "", "accept_language": "", "event": {"user_id": "32", "course_id": "course-v1:QA+ORA2Assessment+Py36", "block_id": "block-v1:QA+ORA2Assessment+Py36+type@sequential+block@ora2_subsection", "course_version": "6ac9f68d4eaa8302c1b95a47", "weighted_total_earned": 2.0, "weighted_total_possible": 2.0, "weighted_graded_earned": 2.0, "weighted_graded_possible": 2.0, "first_attempted": "2026-10-10 08:27:03.954986+00:00", "subtree_edited_timestamp": "2026-10-10 08:25:49.521000+00:00", "event_transaction_id": "bcf55fdc-124b-456f-b4db-0571746f81ba", "event_transaction_type": "edx.grades.problem.submitted", "visible_blocks_hash": "F9GCZs4wcg1G9dE8q2AwDJJFDhQ="}, "time": "2026-10-10T08:27:06.005256+00:00", "event_type": "edx.grades.subsection.grade_calculated", "event_source": "server", "page": null}
+2026-10-10 04:27:06,012 WARNING 30 [edx.courseware] graders.py:181 - Invalid arguments for a subgrader: {'available_count'}
+2026-10-10 04:27:06,015 INFO 30 [tracking] logger.py:42 - {"name": "edx.grades.course.grade_calculated", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "org_id": "QA"}, "username": "", "session": "", "ip": "", "agent": "", "host": "", "referer": "", "accept_language": "", "event": {"user_id": "32", "course_id": "course-v1:QA+ORA2Assessment+Py36", "course_version": "6ac9f68d4eaa8302c1b95a47", "percent_grade": 1.0, "letter_grade": "Pass", "course_edited_timestamp": "2026-10-10 08:25:49.521000+00:00", "event_transaction_id": "bcf55fdc-124b-456f-b4db-0571746f81ba", "event_transaction_type": "edx.grades.problem.submitted", "grading_policy_hash": "z9TLT0kWbxYf2HFm6Xr2N1QJBbg="}, "time": "2026-10-10T08:27:06.015424+00:00", "event_type": "edx.grades.course.grade_calculated", "event_source": "server", "page": null}
+2026-10-10 04:27:06,022 INFO 1 [celery.worker.job] job.py:402 - Task lms.djangoapps.grades.tasks.recalculate_subsection_grade_v3[c877c3bd-9008-46d7-8a35-fe2ca19c675f] succeeded in 0.057181666139513254s: None

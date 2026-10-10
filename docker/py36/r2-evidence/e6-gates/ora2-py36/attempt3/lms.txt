@@ -1,0 +1,532 @@
+2026-10-10 04:19:01,305 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-10 04:19:01,402 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-10 04:19:01,527 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-10 04:19:01,555 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-10 04:19:01,807 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  username_match = re.search('(www\.)?' + url_stub + '(?P<username>.*?)[/]?$', url_domain_and_path, re.IGNORECASE)
+
+2026-10-10 04:19:01,855 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 04:19:01,945 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 04:19:02,074 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/triboo_analytics/views.py:1913: DeprecationWarning: invalid escape sequence \ 
+  "message": _("Error while sending mail\ please try again later.")})
+
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+
+System check identified 2 issues (0 silenced).
+2026-10-10 04:19:02,334 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:20: DeprecationWarning: invalid escape sequence \d
+  field=models.CharField(blank=True, default=b'', max_length=255, validators=[django.core.validators.RegexValidator(re.compile('^\d+(?:\,\d+)*\Z'), code='invalid', message='Enter only digits separated by commas.')]),
+
+2026-10-10 04:19:02,334 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:25: DeprecationWarning: invalid escape sequence \d
+  field=models.CharField(blank=True, default=b'', max_length=255, validators=[django.core.validators.RegexValidator(re.compile('^\d+(?:\,\d+)*\Z'), code='invalid', message='Enter only digits separated by commas.')]),
+
+2026-10-10 04:19:02,990 INFO 1 [elasticsearch] base.py:63 - HEAD http://py36-r2-e6-py36-es:9200/ [status:200 request:0.004s]
+2026-10-10 04:19:02,991 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/elasticsearch/connection/http_urllib3.py:98: DeprecationWarning: HTTPResponse.getheaders() is deprecated and will be removed in urllib3 v2.1.0. Instead access HTTPResponse.headers directly.
+  return response.status, response.getheaders(), raw_data
+
+[10/Oct/2026 04:19:02] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-10 04:19:02,993 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 40836), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:26,755 INFO 1 [tracking] logger.py:50 - {"user_id": null, "username": "", "ip": "127.0.0.1", "referer": "", "accept_language": "en-US", "event_source": "server", "event_type": "/auto_auth", "event": "{\"GET\": {\"username\": [\"qaora2_py36\"], \"email\": [\"qaora2_py36@example.com\"]}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:26.754956+00:00", "host": "2a2b433848d8", "context": {"user_id": null, "path": "/auto_auth", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:26,762 INFO 1 [tracking] logger.py:42 - {"name": "edx.user.settings.changed", "context": {"user_id": null, "path": "/auto_auth", "course_id": "", "org_id": ""}, "username": "", "session": "", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "2a2b433848d8", "referer": "", "accept_language": "en-US", "event": {"old": null, "new": null, "truncated": [], "setting": "password", "user_id": 32, "table": "auth_user"}, "time": "2026-10-10T08:19:26.762809+00:00", "event_type": "edx.user.settings.changed", "event_source": "server", "page": null}
+2026-10-10 04:19:26,764 INFO 1 [student.models] models.py:583 - User qaora2_py36 (qaora2_py36@example.com) account is successfully activated.
+2026-10-10 04:19:26,766 INFO 1 [tracking] logger.py:42 - {"name": "edx.user.settings.changed", "context": {"user_id": null, "path": "/auto_auth", "course_id": "", "org_id": ""}, "username": "", "session": "", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "2a2b433848d8", "referer": "", "accept_language": "en-US", "event": {"old": null, "new": 2012, "truncated": [], "setting": "year_of_birth", "user_id": 32, "table": "auth_userprofile"}, "time": "2026-10-10T08:19:26.766127+00:00", "event_type": "edx.user.settings.changed", "event_source": "server", "page": null}
+2026-10-10 04:19:26,772 INFO 1 [audit] models.py:2241 - Login success - qaora2_py36 (qaora2_py36@example.com)
+[10/Oct/2026 04:19:26] "GET /auto_auth?username=qaora2_py36&email=qaora2_py36%40example.com HTTP/1.1" 200 203
+2026-10-10 04:19:26,776 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47494), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:26,776 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=16, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47496), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:26,797 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "", "accept_language": "en-US", "event_source": "server", "event_type": "/dashboard", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:26.797935+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/dashboard", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:26,807 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+  self, resource_name
+
+2026-10-10 04:19:26,871 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/program_enrollments/persistance/persistent_object.py:174: DeprecationWarning: count is deprecated. Use Collection.count_documents instead.
+  *args, **kwargs
+
+2026-10-10 04:19:26,921 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/program_enrollments/persistance/programs.py:352: DeprecationWarning: count is deprecated. Use Collection.count_documents instead.
+  'visibility': {'$in': [0]}
+
+2026-10-10 04:19:26,956 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/plural.py:285: DeprecationWarning: Flags not at the start of the expression '\\s+(?u)'
+  (None, re.compile(r'\s+(?u)')),
+
+[10/Oct/2026 04:19:26] "GET /dashboard HTTP/1.1" 200 31473
+2026-10-10 04:19:26,974 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47522), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:26,974 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=16, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47530), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:26] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:19:26] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:19:26] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:19:26] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:19:26] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:19:26] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:19:26] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:19:26] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:19:26] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:19:26] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:19:26] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:19:26] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:19:26] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+[10/Oct/2026 04:19:26] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:19:26] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:19:27] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:19:27] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:19:27] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:19:27] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:19:27] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:19:27] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:19:27] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:19:27] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:19:27] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:19:27] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:19:27] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:19:27] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:19:27] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:19:27] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:19:27] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:19:27] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/swiper.min.js HTTP/1.1" 200 127935
+[10/Oct/2026 04:19:27] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:19:27] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:19:27] "GET /static/bundles/UnenrollmentFactory.js HTTP/1.1" 200 6621
+[10/Oct/2026 04:19:27] "GET /asset-v1:QA+ORA2Assessment+Py36+type@asset+block@p1b_ora2_assessment_py36_r17.jpg HTTP/1.1" 200 12399
+2026-10-10 04:19:27,063 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=8, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47568), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:27,063 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=17, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47578), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:27] "GET /static/bundles/QuestionMark.js HTTP/1.1" 200 2309
+[10/Oct/2026 04:19:27] "GET /static/bundles/Dashboard.js HTTP/1.1" 200 10514
+[10/Oct/2026 04:19:27] "GET /static/js/dashboard/ics.deps.min.js HTTP/1.1" 200 5880
+[10/Oct/2026 04:19:27] "GET /static/js/dashboard/ilt_calendar.js HTTP/1.1" 200 32169
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:19:27] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:19:27] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:19:27] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:19:27] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+[10/Oct/2026 04:19:27] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+2026-10-10 04:19:27,437 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event_source": "server", "event_type": "/analytics/check_my_downloads/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:27.437882+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/analytics/check_my_downloads/", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:27] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+2026-10-10 04:19:27,443 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47590), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:27,445 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event_source": "server", "event_type": "/enrolled_ilt_sessions", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:27.445044+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/enrolled_ilt_sessions", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:27] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+[10/Oct/2026 04:19:27] "GET /enrolled_ilt_sessions HTTP/1.1" 200 54
+2026-10-10 04:19:27,453 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47602), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:27,521 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/course/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:27.521435+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/course/", "org_id": "QA"}}
+2026-10-10 04:19:27,598 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/graders.py:152: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  args, _, keywords, _ = inspect.getargspec(func)
+
+2026-10-10 04:19:27,599 INFO 1 [openedx.core.djangoapps.content.block_structure.store] store.py:179 - BlockStructure: Read from cache; <openedx.core.djangoapps.content.block_structure.store.StubModel object at 0xffff8cfd63c8>, size: 1721
+2026-10-10 04:19:27,616 INFO 1 [lms.djangoapps.grades.models] models.py:180 - ============== using cache ==============
+2026-10-10 04:19:27,618 INFO 1 [tracking] logger.py:42 - {"name": "edx.grades.subsection.grade_calculated", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/course/", "org_id": "QA"}, "username": "qaora2_py36", "session": "a5f271c1d1f32ecc78dbdeeedafbf805", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "2a2b433848d8", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event": {"user_id": "32", "course_id": "course-v1:QA+ORA2Assessment+Py36", "block_id": "block-v1:QA+ORA2Assessment+Py36+type@sequential+block@ora2_subsection", "course_version": "6ac9f4f3c8cc12cd5709683c", "weighted_total_earned": 0.0, "weighted_total_possible": 1.0, "weighted_graded_earned": 0.0, "weighted_graded_possible": 1.0, "first_attempted": "None", "subtree_edited_timestamp": "2026-10-10 08:18:59.316000+00:00", "event_transaction_id": "None", "event_transaction_type": "None", "visible_blocks_hash": "BY3cQ3Z5Wzuswd/yfvnTlwbK/ro="}, "time": "2026-10-10T08:19:27.618677+00:00", "event_type": "edx.grades.subsection.grade_calculated", "event_source": "server", "page": null}
+2026-10-10 04:19:27,619 INFO 1 [tracking] logger.py:42 - {"name": "edx.grades.course.grade_calculated", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/course/", "org_id": "QA"}, "username": "qaora2_py36", "session": "a5f271c1d1f32ecc78dbdeeedafbf805", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "2a2b433848d8", "referer": "http://localhost:18000/dashboard", "accept_language": "en-US", "event": {"user_id": "32", "course_id": "course-v1:QA+ORA2Assessment+Py36", "course_version": "6ac9f4f3c8cc12cd5709683c", "percent_grade": 0.0, "letter_grade": "", "course_edited_timestamp": "2026-10-10 08:18:59.316000+00:00", "event_transaction_id": "None", "event_transaction_type": "None", "grading_policy_hash": "z9TLT0kWbxYf2HFm6Xr2N1QJBbg="}, "time": "2026-10-10T08:19:27.619630+00:00", "event_type": "edx.grades.course.grade_calculated", "event_source": "server", "page": null}
+2026-10-10 04:19:27,620 INFO 1 [openedx.core.djangoapps.content.block_structure.store] store.py:179 - BlockStructure: Read from cache; <openedx.core.djangoapps.content.block_structure.store.StubModel object at 0xffff584372e8>, size: 1721
+2026-10-10 04:19:27,621 INFO 1 [lms.djangoapps.grades.course_grade_factory] course_grade_factory.py:239 - Grades: Update, Course: course_key: course-v1:QA+ORA2Assessment+Py36, version: 6ac9f4f3c8cc12cd5709683c, edited_on: 2026-10-10 08:18:59.316000+00:00, grading_policy: z9TLT0kWbxYf2HFm6Xr2N1QJBbg=, User: 32, <lms.djangoapps.grades.course_grade.CourseGrade object at 0xffff8cfc2550>, persisted: True
+2026-10-10 04:19:27,628 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:133: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+  text
+
+2026-10-10 04:19:27,629 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:97: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+  return re.sub(_url_replace_regex('/course/'), replace_course_url, text)
+
+2026-10-10 04:19:27,629 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:77: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+  return re.sub(_url_replace_regex('/jump_to_id/'), replace_jump_to_id_url, text)
+
+[10/Oct/2026 04:19:27] "GET /courses/course-v1:QA+ORA2Assessment+Py36/course/ HTTP/1.1" 200 34783
+2026-10-10 04:19:27,674 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=17, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47630), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:27,674 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=19, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47646), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:27] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:19:27] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:19:27] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:19:27] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:19:27] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:19:27] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:19:27] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:19:27] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:19:27] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:19:27] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:19:27] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:19:27] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:19:27] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:19:27] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:19:27] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:19:27] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:19:27] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:19:27] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:19:27] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:19:27] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:19:27] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:19:27] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:19:27] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:19:27] "GET /static/bundles/RatingStarsEntry.js HTTP/1.1" 200 2131
+[10/Oct/2026 04:19:27] "GET /static/js/courseware/contact_instructor_modal.js HTTP/1.1" 200 3517
+[10/Oct/2026 04:19:27] "GET /static/js/courseware/recommend_content_modal.js HTTP/1.1" 200 5050
+[10/Oct/2026 04:19:27] "GET /static/bundles/ContentRatingEntry.js HTTP/1.1" 200 5408
+[10/Oct/2026 04:19:27] "GET /static/js/course_info.js HTTP/1.1" 200 642
+[10/Oct/2026 04:19:27] "GET /static/js/courseware/course_overview.js HTTP/1.1" 200 1335
+[10/Oct/2026 04:19:27] "GET /static/js/courseware/rating_content_modal.js HTTP/1.1" 200 5151
+[10/Oct/2026 04:19:27] "GET /static/js/utils/scrollUtils.js HTTP/1.1" 200 1365
+[10/Oct/2026 04:19:27] "GET /static/bundles/Courseware.js HTTP/1.1" 200 7001
+[10/Oct/2026 04:19:27] "GET /asset-v1:QA+ORA2Assessment+Py36+type@asset+block@p1b_ora2_assessment_py36_r17.jpg HTTP/1.1" 200 12399
+2026-10-10 04:19:27,832 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=8, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47666), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:27,832 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=17, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47668), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:27] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:19:27] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:19:27] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+[10/Oct/2026 04:19:27] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:19:27] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:19:27] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:19:27] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+2026-10-10 04:19:27,859 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/course/", "accept_language": "en-US", "event_source": "server", "event_type": "/analytics/check_my_downloads/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:27.858976+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/analytics/check_my_downloads/", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:27] "GET /static/js/header_factory.js HTTP/1.1" 200 411
+[10/Oct/2026 04:19:27] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+[10/Oct/2026 04:19:27] "GET /static/js/dateutil_factory.js HTTP/1.1" 200 3864
+2026-10-10 04:19:27,865 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=8, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47692), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/dropdown-menu/dropdown-menu-view.js HTTP/1.1" 200 10959
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/date-utils.js HTTP/1.1" 200 9402
+[10/Oct/2026 04:19:27] "GET /static/js/vendor/requirejs/text.js HTTP/1.1" 200 15873
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/utils/constants.js HTTP/1.1" 200 2104
+[10/Oct/2026 04:19:27] "GET /static/edx-ui-toolkit/js/dropdown-menu/dropdown.underscore HTTP/1.1" 200 974
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/moment-with-locales.js HTTP/1.1" 200 632739
+[10/Oct/2026 04:19:27] "GET /static/common/js/vendor/moment-timezone-with-data.js HTTP/1.1" 200 208009
+[10/Oct/2026 04:19:28] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+2026-10-10 04:19:28,760 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/course/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:28.760389+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "org_id": "QA"}}
+2026-10-10 04:19:28,774 INFO 1 [edx.courseware.views.index] index.py:130 - Masquerade data is cleaned. Because you have accessed non-courseware page.
+2026-10-10 04:19:28,815 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/openassessment/xblock/openassessmentblock.py:500: DeprecationWarning: xblock.fragment is deprecated. Please use web_fragments.fragment instead
+  fragment = Fragment(template.render(context_dict))
+
+[10/Oct/2026 04:19:28] "GET /courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/ HTTP/1.1" 200 50521
+2026-10-10 04:19:28,870 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=17, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47716), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:28,870 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=19, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47726), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:28,870 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=20, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47734), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:28] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:19:28] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:19:28] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:19:28] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:19:28] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:19:28] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:19:28] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/CodeMirror/codemirror.css HTTP/1.1" 200 6703
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:19:28] "GET /static/css/vendor/jquery.treeview.css HTTP/1.1" 200 1266
+[10/Oct/2026 04:19:28] "GET /static/css/vendor/ui-lightness/jquery-ui-1.8.22.custom.css HTTP/1.1" 200 33324
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+2026-10-10 04:19:28,912 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/css/openassessment-ltr.css", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:28.912041+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/css/openassessment-ltr.css", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:19:28] "GET /static/css/lms-course.css HTTP/1.1" 200 765917
+[10/Oct/2026 04:19:28] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:19:28] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:19:28] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:19:28] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:19:28] "GET /xblock/resource/openassessment/static/css/openassessment-ltr.css HTTP/1.1" 200 152185
+2026-10-10 04:19:28,922 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=6, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47756), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/json2.js HTTP/1.1" 200 17521
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/swiper.min.js HTTP/1.1" 200 127935
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/timepicker/jquery.timepicker.js HTTP/1.1" 200 51398
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/notify.min.js HTTP/1.1" 200 13780
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/iziModal.min.js HTTP/1.1" 200 26264
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/jquery.qtip.min.js HTTP/1.1" 200 153892
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/jquery-ui.min.js HTTP/1.1" 200 240215
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/datepicker-translation.js HTTP/1.1" 200 2865
+[10/Oct/2026 04:19:28] "GET /static/js/src/jquery.immediateDescendents.js HTTP/1.1" 200 670
+[10/Oct/2026 04:19:28] "GET /static/js/src/xproblem.js HTTP/1.1" 200 2296
+[10/Oct/2026 04:19:28] "GET /static/js/src/ajax_prefix.js HTTP/1.1" 200 791
+[10/Oct/2026 04:19:28] "GET /static/common/js/xblock/runtime.v1.js HTTP/1.1" 200 1500
+[10/Oct/2026 04:19:28] "GET /static/common/js/xblock/core.js HTTP/1.1" 200 6066
+[10/Oct/2026 04:19:28] "GET /static/lms/js/xblock/lms.runtime.v1.js HTTP/1.1" 200 1609
+[10/Oct/2026 04:19:28] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:19:28] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:19:28] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:19:28] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:19:28] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:19:28] "GET /static/js/vendor/select2.js HTTP/1.1" 200 151816
+[10/Oct/2026 04:19:28] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:19:28] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:19:28] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:19:28] "GET /static/js/calculator.js HTTP/1.1" 200 7595
+[10/Oct/2026 04:19:28] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:19:28] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:19:28] "GET /static/js/main.js HTTP/1.1" 200 1557
+[10/Oct/2026 04:19:28] "GET /static/js/sticky_filter.js HTTP/1.1" 200 413
+[10/Oct/2026 04:19:28] "GET /static/js/query-params.js HTTP/1.1" 200 300
+[10/Oct/2026 04:19:28] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:19:28] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:19:28] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/moment-with-locales.js HTTP/1.1" 200 632739
+[10/Oct/2026 04:19:28] "GET /static/common/js/vendor/moment-timezone-with-data.js HTTP/1.1" 200 208009
+[10/Oct/2026 04:19:28] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:19:28] "GET /static/bundles/VerticalStudentView.js HTTP/1.1" 200 9340
+[10/Oct/2026 04:19:28] "GET /static/bundles/XModuleShim.js HTTP/1.1" 200 2876
+[10/Oct/2026 04:19:28] "GET /static/bundles/SequenceModule.js HTTP/1.1" 200 1891
+[10/Oct/2026 04:19:28] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:19:28] "GET /static/bundles/CourseSock.js HTTP/1.1" 200 3149
+[10/Oct/2026 04:19:28] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:19:28] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:19:29] "GET /static/bundles/QuestionMark.js HTTP/1.1" 200 2309
+[10/Oct/2026 04:19:29] "GET /static/common/js/vendor/jquery.scrollTo.js HTTP/1.1" 200 5726
+[10/Oct/2026 04:19:29] "GET /static/js/ajax-error.js HTTP/1.1" 200 544
+[10/Oct/2026 04:19:29] "GET /static/js/navigation.js HTTP/1.1" 200 264
+[10/Oct/2026 04:19:29] "GET /static/js/histogram.js HTTP/1.1" 200 1739
+[10/Oct/2026 04:19:29] "GET /static/bundles/Courseware.js HTTP/1.1" 200 7001
+[10/Oct/2026 04:19:29] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+[10/Oct/2026 04:19:29] "GET /static/js/modules/tab.js HTTP/1.1" 200 1613
+[10/Oct/2026 04:19:29] "GET /static/js/vendor/flot/jquery.flot.js HTTP/1.1" 200 125921
+[10/Oct/2026 04:19:29] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+[10/Oct/2026 04:19:29] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+2026-10-10 04:19:29,096 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/oa_server.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.096148+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/oa_server.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,097 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_base.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.097204+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_base.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,097 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/oa_shared.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.097922+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/oa_shared.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,102 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_datefactory.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.102326+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_datefactory.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,103 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/analytics/check_my_downloads/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.103419+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/analytics/check_my_downloads/", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,104 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_course_items_listing.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.104563+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_course_items_listing.js", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/oa_server.js HTTP/1.1" 200 26680
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/oa_shared.js HTTP/1.1" 200 1222
+2026-10-10 04:19:29,115 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=34, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47798), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+2026-10-10 04:19:29,117 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=33, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47796), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_base.js HTTP/1.1" 200 17556
+2026-10-10 04:19:29,123 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=36, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47808), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,123 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_file_upload.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.123532+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_file_upload.js", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_course_items_listing.js HTTP/1.1" 200 10118
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_datefactory.js HTTP/1.1" 200 2840
+2026-10-10 04:19:29,127 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_grade.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.127132+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_grade.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,129 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=35, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47802), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,130 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_message.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.130399+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_message.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,131 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=38, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47820), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,132 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_leaderboard.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.132473+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_leaderboard.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,133 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=37, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47816), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,134 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_peer.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.134402+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_peer.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,136 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_response.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.136375+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_response.js", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_file_upload.js HTTP/1.1" 200 1419
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_message.js HTTP/1.1" 200 1003
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_grade.js HTTP/1.1" 200 9202
+2026-10-10 04:19:29,145 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=26, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47870), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_leaderboard.js HTTP/1.1" 200 1569
+2026-10-10 04:19:29,147 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=35, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47910), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,152 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_self.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.152718+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_self.js", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_peer.js HTTP/1.1" 200 9159
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_response.js HTTP/1.1" 200 31378
+2026-10-10 04:19:29,154 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=36, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47926), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,154 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=33, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47908), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,155 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_staff.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.155022+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_staff.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,155 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_rubric.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.155175+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_rubric.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,156 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=38, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47934), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,156 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47944), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,156 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_staff_area.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.156812+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_staff_area.js", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:19:29] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:19:29] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_self.js HTTP/1.1" 200 5102
+2026-10-10 04:19:29,168 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/xblock/resource/openassessment/static/js/src/lms/oa_training.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.168343+00:00", "host": "2a2b433848d8", "context": {"user_id": 32, "path": "/xblock/resource/openassessment/static/js/src/lms/oa_training.js", "course_id": "", "org_id": ""}}
+2026-10-10 04:19:29,170 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=22, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 47986), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_staff.js HTTP/1.1" 200 1488
+[10/Oct/2026 04:19:29] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:19:29] "GET /static/js/dateutil_factory.js HTTP/1.1" 200 3864
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_rubric.js HTTP/1.1" 200 7692
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_staff_area.js HTTP/1.1" 200 26855
+2026-10-10 04:19:29,177 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=32, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48002), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/js/courseware/accordion_events.js HTTP/1.1" 200 648
+2026-10-10 04:19:29,180 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48010), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,180 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=34, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48026), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /xblock/resource/openassessment/static/js/src/lms/oa_training.js HTTP/1.1" 200 5360
+2026-10-10 04:19:29,181 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=22, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48032), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/edx-ui-toolkit/js/utils/date-utils.js HTTP/1.1" 200 9402
+[10/Oct/2026 04:19:29] "GET /static/js/courseware/courseware_factory.js HTTP/1.1" 200 724
+[10/Oct/2026 04:19:29] "GET /static/course_bookmarks/js/course_bookmarks_factory.js HTTP/1.1" 200 1699
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/course_search_factory.js HTTP/1.1" 200 2556
+2026-10-10 04:19:29,232 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_submission", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.232762+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_submission", "org_id": "QA"}}
+2026-10-10 04:19:29,233 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_student_training", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.233911+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_student_training", "org_id": "QA"}}
+2026-10-10 04:19:29,235 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_peer_assessment", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.235015+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_peer_assessment", "org_id": "QA"}}
+2026-10-10 04:19:29,236 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_self_assessment", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.236967+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_self_assessment", "org_id": "QA"}}
+2026-10-10 04:19:29,237 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_message", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.237161+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_message", "org_id": "QA"}}
+2026-10-10 04:19:29,238 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_staff_assessment", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.237997+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_staff_assessment", "org_id": "QA"}}
+2026-10-10 04:19:29,280 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/openassessment/xblock/openassessmentblock.py:1108: DeprecationWarning: to_deprecated_string is deprecated! Use unicode(key) instead.
+  return key.to_deprecated_string()
+
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_peer_assessment HTTP/1.1" 200 0
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_student_training HTTP/1.1" 200 0
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_self_assessment HTTP/1.1" 200 0
+2026-10-10 04:19:29,297 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=44, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48206), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/js/views/message_banner.js HTTP/1.1" 200 1269
+2026-10-10 04:19:29,301 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=42, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48190), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_staff_assessment HTTP/1.1" 200 899
+2026-10-10 04:19:29,303 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=43, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48184), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/course_bookmarks/js/collections/bookmarks.js HTTP/1.1" 200 859
+2026-10-10 04:19:29,305 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_grade", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.305251+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_grade", "org_id": "QA"}}
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_message HTTP/1.1" 200 459
+[10/Oct/2026 04:19:29] "GET /static/course_bookmarks/js/views/bookmarks_list.js HTTP/1.1" 200 5525
+2026-10-10 04:19:29,310 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=46, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48218), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/course_bookmarks/js/views/bookmarks_list_button.js HTTP/1.1" 200 426
+2026-10-10 04:19:29,316 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_leaderboard", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.316896+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_leaderboard", "org_id": "QA"}}
+2026-10-10 04:19:29,317 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=47, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48238), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/collections/search_collection.js HTTP/1.1" 200 4480
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/views/search_form.js HTTP/1.1" 200 2334
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/search_router.js HTTP/1.1" 200 355
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_submission HTTP/1.1" 200 5821
+[10/Oct/2026 04:19:29] "GET /static/edx-ui-toolkit/js/pagination/paging-collection.js HTTP/1.1" 200 19254
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/views/course_search_results_view.js HTTP/1.1" 200 1399
+[10/Oct/2026 04:19:29] "GET /static/js/vendor/requirejs/text.js HTTP/1.1" 200 15873
+2026-10-10 04:19:29,330 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=45, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48230), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/course_bookmarks/js/models/bookmark.js HTTP/1.1" 200 541
+[10/Oct/2026 04:19:29] "GET /static/common/js/components/views/paging_footer.js HTTP/1.1" 200 3582
+[10/Oct/2026 04:19:29] "GET /static/common/js/components/views/paging_header.js HTTP/1.1" 200 2938
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/models/search_result.js HTTP/1.1" 200 331
+[10/Oct/2026 04:19:29] "GET /static/templates/fields/message_banner.underscore HTTP/1.1" 200 236
+[10/Oct/2026 04:19:29] "GET /static/course_search/templates/course_search_item.underscore HTTP/1.1" 200 327
+[10/Oct/2026 04:19:29] "GET /static/course_bookmarks/templates/bookmarks-list.underscore HTTP/1.1" 200 2604
+[10/Oct/2026 04:19:29] "GET /static/course_search/templates/course_search_results.underscore HTTP/1.1" 200 765
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/views/search_results_view.js HTTP/1.1" 200 4136
+[10/Oct/2026 04:19:29] "GET /static/common/templates/components/paging-footer.underscore HTTP/1.1" 200 1424
+[10/Oct/2026 04:19:29] "GET /static/common/templates/components/paging-header.underscore HTTP/1.1" 200 850
+[10/Oct/2026 04:19:29] "GET /static/common/js/vendor/backbone.paginator.js HTTP/1.1" 200 50573
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_grade HTTP/1.1" 200 1314
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_leaderboard HTTP/1.1" 200 1225
+2026-10-10 04:19:29,360 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=20, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48310), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,360 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=34, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48324), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "GET /static/course_search/templates/search_error.underscore HTTP/1.1" 200 122
+[10/Oct/2026 04:19:29] "GET /static/course_search/templates/search_loading.underscore HTTP/1.1" 200 95
+[10/Oct/2026 04:19:29] "GET /static/course_search/js/views/search_item_view.js HTTP/1.1" 200 2434
+2026-10-10 04:19:29,823 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/submit", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.823596+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/submit", "org_id": "QA"}}
+2026-10-10 04:19:29,837 INFO 1 [submissions.api] api.py:944 - Created submission uuid=cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 for (course_id=course-v1:QA+ORA2Assessment+Py36, item_id=block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36, anonymous_student_id=697aa673fd4f3bde34bfa48db32d060b)
+2026-10-10 04:19:29,838 INFO 1 [submissions.api] api.py:305 - Get submission cb4aa7a7-3269-4560-bdc1-dd4e8221dea0
+2026-10-10 04:19:29,840 INFO 1 [submissions.api] api.py:287 - Get submission cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 (cached)
+2026-10-10 04:19:29,842 INFO 1 [openassessment.workflow.models] models.py:389 - Workflow for submission UUID cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 has updated status to waiting
+2026-10-10 04:19:29,843 INFO 1 [openassessment.workflow.api] api.py:74 - Started assessment workflow for submission UUID cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 with steps ['staff']
+2026-10-10 04:19:29,844 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en;q=1.0", "event_source": "server", "event_type": "openassessmentblock.create_submission", "event": {"submission_uuid": "cb4aa7a7-3269-4560-bdc1-dd4e8221dea0", "attempt_number": 1, "created_at": "2026-10-10T08:19:29.837020+00:00", "submitted_at": "2026-10-10T08:19:29.837018+00:00", "answer": {"parts": [{"text": "ORA2_RESPONSE_py36_A1"}]}}, "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": "x_module", "time": "2026-10-10T08:19:29.844025+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/submit", "org_id": "QA", "module": {"display_name": "ORA2 Staff Checkpoint", "usage_key": "block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36"}, "asides": {}}}
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/submit HTTP/1.1" 200 12
+2026-10-10 04:19:29,846 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=17, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48350), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,846 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=19, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48352), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,861 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_submission", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.861390+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_submission", "org_id": "QA"}}
+2026-10-10 04:19:29,862 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_student_training", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.861969+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_student_training", "org_id": "QA"}}
+2026-10-10 04:19:29,862 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_peer_assessment", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.862827+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_peer_assessment", "org_id": "QA"}}
+2026-10-10 04:19:29,863 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_staff_assessment", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.863774+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_staff_assessment", "org_id": "QA"}}
+2026-10-10 04:19:29,864 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_message", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.864286+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_message", "org_id": "QA"}}
+2026-10-10 04:19:29,865 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_self_assessment", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.865568+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_self_assessment", "org_id": "QA"}}
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_student_training HTTP/1.1" 200 0
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_peer_assessment HTTP/1.1" 200 0
+2026-10-10 04:19:29,927 INFO 1 [openassessment.workflow.api] api.py:270 - Updated workflow for submission UUID cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 with requirements {'staff': {'required': True}}
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_self_assessment HTTP/1.1" 200 0
+2026-10-10 04:19:29,936 INFO 1 [openassessment.workflow.api] api.py:270 - Updated workflow for submission UUID cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 with requirements {'staff': {'required': True}}
+2026-10-10 04:19:29,940 INFO 1 [openassessment.workflow.api] api.py:270 - Updated workflow for submission UUID cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 with requirements {'staff': {'required': True}}
+2026-10-10 04:19:29,942 INFO 1 [submissions.api] api.py:287 - Get submission cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 (cached)
+2026-10-10 04:19:29,942 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=44, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48498), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,943 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_leaderboard", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.943309+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_leaderboard", "org_id": "QA"}}
+2026-10-10 04:19:29,945 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qaora2_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+ORA2Assessment+Py36/courseware/ora2_section/ora2_subsection/", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_grade", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:19:29.945108+00:00", "host": "2a2b433848d8", "context": {"course_id": "course-v1:QA+ORA2Assessment+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_grade", "org_id": "QA"}}
+2026-10-10 04:19:29,945 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=43, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48492), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,945 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=37, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48484), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_staff_assessment HTTP/1.1" 200 1907
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_message HTTP/1.1" 200 372
+2026-10-10 04:19:29,960 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=47, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48532), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,962 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=46, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48526), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:19:29,968 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+  self, resource_name
+
+2026-10-10 04:19:29,972 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+  self, resource_name
+
+2026-10-10 04:19:29,980 INFO 1 [openassessment.workflow.api] api.py:270 - Updated workflow for submission UUID cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 with requirements {'staff': {'required': True}}
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_submission HTTP/1.1" 200 2685
+2026-10-10 04:19:29,981 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/openassessment/xblock/openassessmentblock.py:1108: DeprecationWarning: to_deprecated_string is deprecated! Use unicode(key) instead.
+  return key.to_deprecated_string()
+
+2026-10-10 04:19:29,986 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=45, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48510), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_leaderboard HTTP/1.1" 200 1225
+2026-10-10 04:19:29,987 INFO 1 [openassessment.workflow.api] api.py:270 - Updated workflow for submission UUID cb4aa7a7-3269-4560-bdc1-dd4e8221dea0 with requirements {'staff': {'required': True}}
+2026-10-10 04:19:29,990 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=20, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48570), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:19:29] "POST /courses/course-v1:QA+ORA2Assessment+Py36/xblock/block-v1:QA+ORA2Assessment+Py36+type@openassessment+block@p1b_ora2_staff_py36/handler/render_grade HTTP/1.1" 200 1543
+2026-10-10 04:19:29,990 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=22, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.18', 48576), raddr=('192.168.148.14', 11211)>
+

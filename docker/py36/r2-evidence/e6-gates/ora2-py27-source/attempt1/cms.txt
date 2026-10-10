@@ -1,0 +1,16 @@
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): student.
+Run 'python manage.py migrate' to apply them.
+October 10, 2026 - 04:31:57
+Django version 1.11.15, using settings 'py36_r2_e6_settings'
+Starting development server at http://0.0.0.0:18010/
+Quit the server with CONTROL-C.
+2026-10-10 04:31:58,857 WARNING 1 [py.warnings] mongo_client.py:1133 - /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/mongodb_proxy.py:115: DeprecationWarning: alive is deprecated in this version of PyMongo and removed in PyMongo 3.
+  return self.proxied_object(*args, **kwargs)
+
+2026-10-10 04:31:58,859 INFO 1 [elasticsearch] base.py:63 - HEAD http://py36-r2-e6-py27-es:9200/ [status:200 request:0.001s]
+No handlers could be found for logger "elasticsearch.trace"
+[10/Oct/2026 04:31:58] "GET /heartbeat HTTP/1.1" 200 193
