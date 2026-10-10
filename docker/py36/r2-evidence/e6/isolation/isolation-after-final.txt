@@ -1,0 +1,22 @@
+captured=2026-10-10T03:08:49Z (after final runs)
+== shared edx.devstack.mysql
+qacert	2026-09-28 06:44:30.006379
+qastaff	2026-09-28 06:44:36.277176
+localhost:18000	course_org_filter":"edX"
+session_rows	501
+siteconfig_history_rows	66
+blockcompletion_rows	5
+== private py36-r2-e6-py36-mysql
+qacert	2026-10-10 03:06:57.933622
+qastaff	2026-10-10 03:07:01.804873
+localhost:18000	course_org_filter":"QA",
+session_rows	509
+siteconfig_history_rows	67
+blockcompletion_rows	6
+== private py36-r2-e6-py27-mysql
+qacert	2026-10-10 03:08:05.695586
+qastaff	2026-10-10 03:08:11.710639
+localhost:18000	course_org_filter":"QA",
+session_rows	509
+siteconfig_history_rows	67
+blockcompletion_rows	6

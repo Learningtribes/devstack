@@ -1,0 +1,28 @@
+2026-10-09 23:05:36,458 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-09 23:05:36,580 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-09 23:05:36,747 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-09 23:05:36,803 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-09 23:05:37,107 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  username_match = re.search('(www\.)?' + url_stub + '(?P<username>.*?)[/]?$', url_domain_and_path, re.IGNORECASE)
+
+2026-10-09 23:05:37,166 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-09 23:05:37,190 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/django/core/management/commands/shell.py:1: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/r2_e6_fixture.py' mode='r' encoding='UTF-8'>
+  import os
+
+2026-10-09 23:05:37,451 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+  self, resource_name
+
+2026-10-09 23:05:37,455 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+E6_FIXTURE_OK user_id=17 course=course-v1:QA+Acceptance+Test site=localhost:18000 course_org_filter=edX->QA enable_last_activity=True

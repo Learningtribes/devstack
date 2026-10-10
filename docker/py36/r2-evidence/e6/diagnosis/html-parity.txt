@@ -1,0 +1,10 @@
+# captured 2026-10-10T03:10:21Z; same request, py36 (18300) vs py27 (18400), private clones with identical fixture
+# dynamic tokens normalized: data-store-id, csrf; remaining diffs are dict/JSON key order (Py3.6 insertion order vs Py2 hash order) and random alnum tokens
+cms_course_course-v1_QA_Acceptance_Test.html bytes 110366 110367 char-diff-total 11 non-alnum-char-diff 0
+cms_course_team_course-v1_QA_Acceptance_Test.html bytes 56028 56028 char-diff-total 14 non-alnum-char-diff 0
+cms_home_.html bytes 57762 57762 char-diff-total 10 non-alnum-char-diff 0
+lms_courses_course-v1_QA_Acceptance_Test_about.html bytes 38109 38110 char-diff-total 79 non-alnum-char-diff 0
+lms_courses_course-v1_QA_Acceptance_Test_course_.html bytes 41121 41121 char-diff-total 72 non-alnum-char-diff 0
+lms_courses_course-v1_QA_Acceptance_Test_courseware_qa_chapter2_qa_seq_.html bytes 58561 58561 char-diff-total 152 non-alnum-char-diff 0
+lms_courses_course-v1_QA_Acceptance_Test_progress.html bytes 38917 38918 char-diff-total 77 non-alnum-char-diff 0
+lms_dashboard.html bytes 39059 39059 char-diff-total 68 non-alnum-char-diff 0

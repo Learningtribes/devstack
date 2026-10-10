@@ -1,0 +1,13 @@
+runtime=py27 netns=py36-r2-e6-py27-lms image=sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89
+harness_head=68255fc7742c9486b760e026bd5cb5b1e5f75bf6
+harness_code_clean=0_changes
+playwright_image=mcr.microsoft.com/playwright@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48
+playwright_test=1.61.1
+test_timeout_ms=30000
+checklist=p1b-dashboard.yml sha256=7512b00ec6fd060913c40d66375a36d47740b068a6d65953d36f91ba26fa5a30
+checklist=pr-2395.yml sha256=0348b7bb8b022fbf9af8ae1f751e6a01a215b123888a756901381b8f9bb13286
+checklist=pr-2396.yml sha256=9f9a9e00faa4e218f6513544ec77080d2bcc2a168a93d8d426463e10291142b1
+checklist=pr-2397.yml sha256=777c8d420e42227532a61001a2a03910ad7cbf72e7ca6f2ff0fa1652bb638470
+checklist=r2-py3-templates.yml sha256=ae33224c1fad420943a1737e87984ae6f2e0cbdb8f1319b9b111f205b7280db4
+started=2026-10-10T03:07:04Z
+finished=2026-10-10T03:08:14Z exit=1

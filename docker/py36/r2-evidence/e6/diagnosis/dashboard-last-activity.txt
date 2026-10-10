@@ -1,0 +1,23 @@
+# captured 2026-10-10T03:10:21Z
+## why p1b-dashboard surfaces #1/#3 fail on both runtimes
+- fork dashboard filters enrollments by a single course_org_filter string (student/views/dashboard.py get_course_enrollments: location.org != site_org); canonical localhost:18000 has 'edX', QA course org is 'QA' -> empty dashboard until the E6 fixture sets 'QA' (same value as R1 provision-p1b-dashboard-browser.py)
+- R2 removed the template fallback because get_last_accessed_courseware owns it:
+    chapter_module = get_current_child(course_module)
+    if chapter_module is not None:
+        section_module = get_current_child(chapter_module)
+        if section_module is not None:
+            url = reverse('courseware_section', kwargs={
+                'course_id': text_type(course.id),
+                'chapter': chapter_module.url_name,
+                'section': section_module.url_name
+            })
+            return url
+    return reverse(course_home_url_name(course.id), args=[text_type(course.id)])
+- get_current_child returns the first child when no position is stored, so course home is reached only for a course without displayable children (R1 fixture: freshly created empty course); shared QA course has chapters and qacert positions:
+module_type	module_id	state
+chapter	block-v1:QA+Acceptance+Test+type@chapter+block@qa_chapter2	{"position": 1}
+course	block-v1:QA+Acceptance+Test+type@course+block@course	{"position": 1}
+sequential	block-v1:QA+Acceptance+Test+type@sequential+block@qa_seq	{"position": 1}
+## rendered last-activity item
+port 18300: <li class="last-activity-item" onclick="javascript:window.location.href='/courses/course-v1:QA+Acceptance+Test/courseware/qa_chapter2/qa_seq/'">
+port 18400: <li class="last-activity-item" onclick="javascript:window.location.href='/courses/course-v1:QA+Acceptance+Test/courseware/qa_chapter2/qa_seq/'">

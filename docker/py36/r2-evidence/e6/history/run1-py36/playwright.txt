@@ -1,0 +1,161 @@
+
+Running 23 tests using 1 worker
+
+  ✘   1 [chromium] › tests/checklist.spec.ts:44:25 › PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate › auth: qacert › dashboard — QA last activity item renders (15.8s)
+  ✓   2 [chromium] › tests/checklist.spec.ts:44:25 › PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate › auth: qacert › QA course home — authenticated learner reaches course target (11.2s)
+  ✘   3 [chromium] › tests/checklist.spec.ts:44:25 › PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate › auth: qacert › dashboard last-activity click reaches QA course home (26.1s)
+  ✓   4 [chromium] › tests/checklist.spec.ts:44:25 › PR #2395 — course mode chooser PARTIAL removal › auth: none › course mode chooser route removed (369ms)
+  ✓   5 [chromium] › tests/checklist.spec.ts:44:25 › PR #2395 — course mode chooser PARTIAL removal › auth: qacert › LMS homepage — no import error (10.7s)
+  ✓   6 [chromium] › tests/checklist.spec.ts:44:25 › PR #2395 — course mode chooser PARTIAL removal › auth: qacert › learner Dashboard — course mode info still renders (10.6s)
+  ✘   7 [chromium] › tests/checklist.spec.ts:44:25 › PR #2395 — course mode chooser PARTIAL removal › auth: qastaff › Studio home — no import error (30.0s)
+  ✓   8 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: none › start-flow route removed (356ms)
+  ✓   9 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: none › reverify route removed (330ms)
+  ✓  10 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: none › submit-photos route removed (322ms)
+  ✓  11 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: none › results_callback route removed (320ms)
+  ✓  12 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: qacert › LMS homepage — no import error (10.5s)
+  ✓  13 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: qacert › learner Dashboard — KEEP IDVerificationService (10.6s)
+  ✘  14 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: qacert › course_modes chooser still routed (KEEP) (334ms)
+  ✓  15 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: qastaff › Django admin — photo verification KEEP (502ms)
+  ✓  16 [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: qastaff › Studio home — no import error (20.7s)
+  ✓  17 [chromium] › tests/checklist.spec.ts:44:25 › PR #2397 — edx-enterprise DELETE › auth: qastaff › admin — EnterpriseCustomer model removed (334ms)
+  ✓  18 [chromium] › tests/checklist.spec.ts:44:25 › PR #2397 — edx-enterprise DELETE › auth: qastaff › admin — DataSharingConsent model removed (334ms)
+  ✓  19 [chromium] › tests/checklist.spec.ts:44:25 › PR #2397 — edx-enterprise DELETE › auth: qastaff › Studio home — no import error (15.9s)
+  ✓  20 [chromium] › tests/checklist.spec.ts:44:25 › PR #2397 — edx-enterprise DELETE › auth: qacert › LMS homepage — no import error (5.7s)
+  ✓  21 [chromium] › tests/checklist.spec.ts:44:25 › PR #2397 — edx-enterprise DELETE › auth: qacert › learner Dashboard — consent banner helper gone (552ms)
+  ✓  22 [chromium] › tests/checklist.spec.ts:44:25 › PR #2397 — edx-enterprise DELETE › auth: qacert › account settings — enterprise_name stubbed (10.6s)
+  ✓  23 [chromium] › tests/checklist.spec.ts:44:25 › PR #2397 — edx-enterprise DELETE › auth: none › login page — enterprise_sidebar template gone (551ms)
+
+
+  1) [chromium] › tests/checklist.spec.ts:44:25 › PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate › auth: qacert › dashboard — QA last activity item renders 
+
+    Error: visible: .last-activity-item
+
+    expect(locator).toBeVisible() failed
+
+    Locator: locator('.last-activity-item')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - visible: .last-activity-item with timeout 5000ms
+      - waiting for locator('.last-activity-item')
+
+
+      146 |                             }
+      147 |                             for (const sel of a.visible ?? []) {
+    > 148 |                                 await expect(page.locator(sel), `visible: ${sel}`).toBeVisible();
+          |                                                                                    ^
+      149 |                             }
+      150 |                             for (const sel of a.absent ?? []) {
+      151 |                                 await expect(page.locator(sel), `absent: ${sel}`).toHaveCount(0);
+        at /work/tests/checklist.spec.ts:148:84
+
+    Error Context: out/test-results/checklist-PR-py36-p1b-dash-e2424--last-activity-item-renders-chromium/error-context.md
+
+    Error Context: out/test-results/checklist-PR-py36-p1b-dash-e2424--last-activity-item-renders-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    out/test-results/checklist-PR-py36-p1b-dash-e2424--last-activity-item-renders-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace out/test-results/checklist-PR-py36-p1b-dash-e2424--last-activity-item-renders-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/checklist.spec.ts:44:25 › PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate › auth: qacert › dashboard last-activity click reaches QA course home 
+
+    TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event "response"
+
+      121 |                                 );
+      122 |                                 const [followResponse] = await Promise.all([
+    > 123 |                                     page.waitForResponse((response) => {
+          |                                          ^
+      124 |                                         const responseUrl = new URL(response.url());
+      125 |                                         return response.request().isNavigationRequest()
+      126 |                                             && responseUrl.origin === followUrl.origin
+        at /work/tests/checklist.spec.ts:123:42
+
+    Error Context: out/test-results/checklist-PR-py36-p1b-dash-6a1ef-lick-reaches-QA-course-home-chromium/error-context.md
+
+    Error Context: out/test-results/checklist-PR-py36-p1b-dash-6a1ef-lick-reaches-QA-course-home-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    out/test-results/checklist-PR-py36-p1b-dash-6a1ef-lick-reaches-QA-course-home-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace out/test-results/checklist-PR-py36-p1b-dash-6a1ef-lick-reaches-QA-course-home-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests/checklist.spec.ts:44:25 › PR #2395 — course mode chooser PARTIAL removal › auth: qastaff › Studio home — no import error 
+
+    Test timeout of 30000ms exceeded.
+
+    TimeoutError: page.goto: Timeout 30000ms exceeded.
+    Call log:
+      - navigating to "http://localhost:18010/home/", waiting until "load"
+
+
+      111 |                         });
+      112 |                         try {
+    > 113 |                             const resp = await page.goto(url);
+          |                                                     ^
+      114 |                             if (a.status != null) {
+      115 |                                 expect(resp?.status(), `status for ${url}`).toBe(a.status);
+      116 |                             }
+        at /work/tests/checklist.spec.ts:113:53
+
+    Error Context: out/test-results/checklist-PR-2395-—-course-96dcc-udio-home-—-no-import-error-chromium/error-context.md
+
+    Error Context: out/test-results/checklist-PR-2395-—-course-96dcc-udio-home-—-no-import-error-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    out/test-results/checklist-PR-2395-—-course-96dcc-udio-home-—-no-import-error-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace out/test-results/checklist-PR-2395-—-course-96dcc-udio-home-—-no-import-error-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: qacert › course_modes chooser still routed (KEEP) 
+
+    Error: status for /course_modes/choose/course-v1:QA+Acceptance+Test/
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+      55 |                             const resp = await ctx.request.get(url, {headers});
+      56 |                             if (a.status != null) {
+    > 57 |                                 expect(resp.status(), `status for ${url}`).toBe(a.status);
+         |                                                                            ^
+      58 |                             }
+      59 |                             if ((a.visible?.length ?? 0) + (a.absent?.length ?? 0) > 0) {
+      60 |                                 throw new Error(`surface "${surface.id}": visible/absent need the DOM — remove request:true`);
+        at /work/tests/checklist.spec.ts:57:76
+
+    Error Context: out/test-results/checklist-PR-2396-—-verify-87c1b--chooser-still-routed-KEEP--chromium/error-context.md
+
+    Error Context: out/test-results/checklist-PR-2396-—-verify-87c1b--chooser-still-routed-KEEP--chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    out/test-results/checklist-PR-2396-—-verify-87c1b--chooser-still-routed-KEEP--chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace out/test-results/checklist-PR-2396-—-verify-87c1b--chooser-still-routed-KEEP--chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [chromium] › tests/checklist.spec.ts:44:25 › PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate › auth: qacert › dashboard — QA last activity item renders 
+    [chromium] › tests/checklist.spec.ts:44:25 › PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate › auth: qacert › dashboard last-activity click reaches QA course home 
+    [chromium] › tests/checklist.spec.ts:44:25 › PR #2395 — course mode chooser PARTIAL removal › auth: qastaff › Studio home — no import error 
+    [chromium] › tests/checklist.spec.ts:44:25 › PR #2396 — verify_student pay/photo UI PARTIAL removal › auth: qacert › course_modes chooser still routed (KEEP) 
+  19 passed (3.1m)
+npm notice
+npm notice New major version of npm available! 11.13.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

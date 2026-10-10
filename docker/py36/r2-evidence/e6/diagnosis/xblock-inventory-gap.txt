@@ -1,0 +1,26 @@
+# captured 2026-10-10T03:09:39Z on final E6 stacks
+## GET /enrolled_ilt_sessions as qacert (Host localhost:18000)
+port 18300 -> {"error": "ILT is disabled"} [500]
+port 18400 -> {"open_ilt_sessions": [], "enrolled_ilt_sessions": []} [200]
+## view: common/djangoapps/student/views/dashboard.py get_enrolled_ilt -> 'from ilt import ILTXBlock' except ImportError -> 500 'ILT is disabled'
+## import ilt
+py36: ModuleNotFoundError: No module named 'ilt'
+## /edx/src XBlock installs
+py36:
+scormxblock-xblock            0.2
+xblock-drag-and-drop-v2       2.1.6
+xblock-poll                   1.5.1
+xblock-utils                  1.2.0
+py27:
+ilt-xblock (0.3, /edx/src/xblock-ilt)
+scormxblock-xblock (0.2, /edx/src/xblock-scorm)
+xblock-drag-and-drop-v2 (2.1.6, /edx/app/edxapp/venvs/edxapp/src/xblock-drag-and-drop-v2)
+xblock-pdf (v1.0.2-rg, /edx/src/xblock-pdf)
+xblock-poll (1.5.1, /edx/app/edxapp/venvs/edxapp/src/xblock-poll)
+xblock-utils (1.2.0, /edx/app/edxapp/venvs/edxapp/src/xblock-utils)
+## xblock.v1 entry points
+py36 45 py27 95
+py27-only ['acid', 'acid_parent', 'activetable', 'animation', 'audio', 'concept', 'crowdsourcehinter', 'discussion', 'done', 'edx_sga', 'externality', 'google-calendar', 'google-document', 'iframe', 'ilt', 'officemix', 'oppia', 'pb-answer', 'pb-answer-recap', 'pb-choice', 'pb-column', 'pb-completion', 'pb-dashboard', 'pb-data-export', 'pb-instructor-tool', 'pb-mcq', 'pb-message', 'pb-mrq', 'pb-rating', 'pb-slider', 'pb-swipe', 'pb-table', 'pb-tip', 'pdf', 'problem-builder', 'rate', 'recommender', 'review', 'sb-conditional-message', 'sb-plot', 'sb-plot-overlay', 'sb-review-per-question-feedback', 'sb-review-score', 'sb-review-step', 'sb-step', 'schoolyourself_lesson', 'schoolyourself_review', 'step-builder', 'ubcpi', 'vectordraw']
+py36-only []
+## Platform requirements/edx/base.txt declares xblock-pdf (absent from py36-git-requirements.txt); ilt-xblock is declared nowhere in Platform requirements (devstack installs /edx/src/xblock-ilt editable)
+38:-e git+https://github.com/Learningtribes/xblock-pdf@hawthorn#egg=xblock-pdf

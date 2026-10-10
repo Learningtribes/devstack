@@ -1,0 +1,16 @@
+# captured 2026-10-10T03:10:21Z
+## /static/bundles/IltGlobals.js 404 + FeedbackForm ReferenceError on both runtimes
+shared devstack (finders over the master worktree): 200
+E6 18300 (collected volume): 404
+E6 18400 (collected volume): 404
+volume bundles/ matching ilt:
+ILTGlobalReport.js
+ILTGlobalReport.js.map
+ILTLearnerReport.js
+ILTLearnerReport.js.map
+ILTReport.js
+ILTReport.js.map
+webpack-stats.json names IltGlobals: 1
+2026-08-14 04:28:30.260076906 +0000 /a/bundles
+2026-10-09 08:34:56.590028592 +0000 /a/webpack-stats.json
+IltGlobals entry added to webpack.common.config.js by 414fd9a64f0 (2026-09-21, New ILT #2224); volume bundles/ last written 2026-08-14

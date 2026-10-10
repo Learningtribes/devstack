@@ -1,0 +1,15 @@
+# filtered from docker logs of py36-r2-e6-py36-{lms,cms}: lines matching Traceback|ERROR|Exception| 5xx status
+1:== py36-r2-e6-py36-lms
+461:[09/Oct/2026 23:06:11] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+1439:[09/Oct/2026 23:06:20] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+2070:2026-10-09 23:06:21,459 INFO 1 [openedx.core.djangoapps.course_groups.cohorts] cohorts.py:477 - Exception occurs ( user_id:17 ) in clean_cohort_cache() caller: task_evaluate_subsection_completion_milestones : CohortMembership matching query does not exist.
+2697:[09/Oct/2026 23:06:37] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+3129:[09/Oct/2026 23:06:38] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+3577:[09/Oct/2026 23:06:42] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+4027:[09/Oct/2026 23:06:43] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+4533:[09/Oct/2026 23:06:49] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+4594:[09/Oct/2026 23:06:50] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+4965:[09/Oct/2026 23:06:52] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+5395:[09/Oct/2026 23:06:53] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+5830:[09/Oct/2026 23:06:54] "GET /enrolled_ilt_sessions HTTP/1.1" 500 28
+7830:== py36-r2-e6-py36-cms

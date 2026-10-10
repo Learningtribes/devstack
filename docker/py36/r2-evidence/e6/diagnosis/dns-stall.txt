@@ -1,0 +1,30 @@
+# captured 2026-10-10T03:09:40Z; 300 MySQLdb connect/close per row against the private E6 MySQL
+client=py36 RES_OPTIONS='': py36-r2-e6-py36-mysql client 1.4.6 total 5.21 slow [(11, 5.01)]
+client=py27 RES_OPTIONS='': py36-r2-e6-py27-mysql client 1.2.5 total 0.07 slow []
+client=py36 RES_OPTIONS='single-request': py36-r2-e6-py36-mysql client 1.4.6 total 0.26 slow []
+client=py27 RES_OPTIONS='single-request': py36-r2-e6-py27-mysql client 1.2.5 total 0.09 slow []
+## getaddrinfo AF_UNSPEC vs AF_INET in py36 LMS, RES_OPTIONS unset
+AF_UNSPEC n=1500 slow>1s 1 total 5.07
+AF_INET n=1500 slow>1s 0 total 0.03
+## before the fix: py-spy of the stalled request thread (excerpt from run4 stack)
+Thread 0xFFFF537FE1E0 (active): "Thread-5455"
+    __init__ (MySQLdb/connections.py:179)
+    Connect (MySQLdb/__init__.py:84)
+    get_new_connection (django/db/backends/mysql/base.py:274)
+    connect (django/db/backends/base/base.py:189)
+    ensure_connection (django/db/backends/base/base.py:213)
+    _cursor (django/db/backends/base/base.py:229)
+    cursor (django/db/backends/base/base.py:254)
+    execute_sql (django/db/models/sql/compiler.py:887)
+    __iter__ (django/db/models/query.py:53)
+    _fetch_all (django/db/models/query.py:1121)
+    __len__ (django/db/models/query.py:232)
+    get (django/db/models/query.py:374)
+    manager_method (django/db/models/manager.py:85)
+    process_request (common/djangoapps/student/middleware.py:28)
+## browser wall time: run3/run4 py36 (no fix) vs final py36 (fix), py27 control
+run3-py36:   26 passed (5.3m)
+run4-py36:   26 passed (5.0m)
+run1-py27:   26 passed (1.2m)
+final-py36:   26 passed (54.8s)
+final-py27:   26 passed (1.2m)

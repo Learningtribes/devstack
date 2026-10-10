@@ -1,0 +1,45 @@
+pr: py36-p1b-dashboard
+title: Python 3 LMS dashboard last-activity gate
+base: py36-integration-r1
+
+# Authenticated, disposable qacert must see the QA course in the last-activity
+# section and be able to follow its helper-owned course-home link.
+surfaces:
+  - id: dashboard — QA last activity item renders
+    url: /dashboard
+    auth: qacert
+    derived_from:
+      - common/djangoapps/student/views/dashboard.py
+      - lms/templates/dashboard/_dashboard_last_activity.html
+    assert:
+      status: 200
+      visible:
+        - .last-activity-item
+        - '.last-activity-item[onclick*="/courses/course-v1:QA+Acceptance+Test/course/"]'
+
+  - id: QA course home — authenticated learner reaches course target
+    url: "/courses/course-v1:QA+Acceptance+Test/course/"
+    auth: qacert
+    derived_from:
+      - openedx/features/course_experience/urls.py
+    assert:
+      status: 200
+      visible:
+        - "#content"
+
+  - id: dashboard last-activity click reaches QA course home
+    url: /dashboard
+    auth: qacert
+    follow:
+      click: .last-activity-item
+      url: "/courses/course-v1:QA+Acceptance+Test/course/"
+      status: 200
+      visible:
+        - "#content"
+    derived_from:
+      - lms/templates/dashboard/_dashboard_last_activity.html
+      - openedx/features/course_experience/urls.py
+    assert:
+      status: 200
+      no_console_errors: true
+      no_failed_requests: true

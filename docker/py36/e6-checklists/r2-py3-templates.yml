@@ -1,0 +1,98 @@
+pr: r2-py3-templates
+title: R2-preview Py3-converted Mako templates on real QA course data
+base: master
+
+# Surfaces whose templates PR #2401 rewrote for Python 3 (unicode -> text_type,
+# footer year, user_metadata, dashboard last-activity fallback, Studio header,
+# footer, index and course team). The shared QA course has content and stored
+# positions, so last activity resolves to a courseware section rather than the
+# course-home fallback that the R1 p1b fixture (an empty course) exercised.
+surfaces:
+  - id: dashboard — last activity links to courseware section
+    url: /dashboard
+    auth: qacert
+    derived_from:
+      - lms/templates/dashboard/_dashboard_last_activity.html
+      - lms/djangoapps/courseware/views/views.py
+      - lms/templates/footer.html
+    assert:
+      status: 200
+      visible:
+        - '.last-activity-item[onclick*="/courses/course-v1:QA+Acceptance+Test/courseware/qa_chapter2/qa_seq/"]'
+        - .copyright
+
+  - id: dashboard last-activity click reaches courseware section
+    url: /dashboard
+    auth: qacert
+    follow:
+      click: .last-activity-item
+      url: "/courses/course-v1:QA+Acceptance+Test/courseware/qa_chapter2/qa_seq/"
+      status: 200
+      visible:
+        - "#content"
+    derived_from:
+      - lms/templates/dashboard/_dashboard_last_activity.html
+      - lms/templates/courseware/xqa_interface.html
+      - common/lib/capa/capa/templates/choicegroup.html
+    assert:
+      status: 200
+      no_console_errors: true
+      no_failed_requests: true
+
+  - id: course home — Py3 course-home fragment renders
+    url: "/courses/course-v1:QA+Acceptance+Test/course/"
+    auth: qacert
+    derived_from:
+      - openedx/features/course_experience/templates/course_experience/course-home-fragment.html
+      - lms/templates/user_metadata.html
+    assert:
+      status: 200
+      visible:
+        - "#content"
+
+  - id: progress — Py3 progress template renders
+    url: "/courses/course-v1:QA+Acceptance+Test/progress"
+    auth: qacert
+    derived_from:
+      - lms/templates/courseware/progress.html
+      - lms/templates/courseware/progress_badges.html
+    assert:
+      status: 200
+      visible:
+        - "#content"
+        - .copyright
+
+  - id: course about — Py3 course_about template renders
+    url: "/courses/course-v1:QA+Acceptance+Test/about"
+    auth: qacert
+    derived_from:
+      - lms/templates/courseware/course_about.html
+    assert:
+      status: 200
+      visible:
+        - .course-info
+
+  - id: Studio course team — Py3 manage_users template renders
+    url: "http://localhost:18010/course_team/course-v1:QA+Acceptance+Test"
+    auth: qastaff
+    derived_from:
+      - cms/templates/manage_users.html
+      - cms/templates/widgets/header.html
+      - cms/templates/widgets/footer.html
+    assert:
+      status: 200
+      visible:
+        - ".user-list >> nth=0"
+        - .wrapper-footer
+
+  - id: Studio course outline — Py3 Studio base and header render
+    url: "http://localhost:18010/course/course-v1:QA+Acceptance+Test"
+    auth: qastaff
+    derived_from:
+      - cms/templates/base.html
+      - cms/templates/widgets/header.html
+    assert:
+      status: 200
+      visible:
+        - ".outline >> nth=0"
+        - .wrapper-footer

@@ -1,0 +1,140 @@
+pr: 2396
+title: verify_student pay/photo UI PARTIAL removal
+base: master
+# DCC — PARTIAL DELETE of verify_student pay/photo/Software Secure UI.
+# Branch dcc-verify-student-ui-removal @ e077541273b. 83 files, +100/−8116.
+#
+# DELETE  PayAndVerifyView URLs (start-flow / begin-flow / upgrade /
+#         verify-now / payment-confirmation), SubmitPhotosView,
+#         results_callback, ReverifyView, fake Software Secure, templates/JS
+# KEEP    models / admin / INSTALLED_APPS / IDVerificationService /
+#         VerificationDeadline / user_api.verification_api / CourseMode
+#
+# This is NOT a full app DELETE. Admin + verification_status stay.
+#
+# DISCRIMINATOR surfaces (pass on PR AND fail on master — master probe
+# 2026-09-22 on this local Py2 destack, unauth request:true follows redirects):
+#   Surface 1 — start-flow 404 vs 200 (login_required 302→login)
+#   Surface 2 — reverify 404 vs 200 (same)
+#   Surface 3 — submit-photos 404 vs 405 (POST-only view still routed)
+#   Surface 4 — results_callback 404 vs 405
+#
+# GATE surfaces (prove KEEP pieces and no import crash):
+#   Surface 5 — LMS home 200
+#   Surface 6 — learner dashboard 200 (KEEP IDVerificationService import;
+#               reverify CTA reverse() removed from the Mako include)
+#   Surface 7 — course_modes chooser still routed (retargeted to dashboard;
+#               chooser itself is #2395)
+#   Surface 8 — Django admin photo-verification changelist still routed
+#               (KEEP models/admin). Env-gated: ENABLE_DJANGO_ADMIN_SITE.
+#   Surface 9 — Studio home 200
+#
+# VACUOUS (excluded):
+#   /verify_student/create_order — 404 on master already (not in urls.py).
+#   Dashboard .action-reverify absence — gated on verification_display
+#   (photo rows). Empty identity tables → both branches omit the CTA.
+#   /api/user/v1/accounts/{user}/verification_status/ — no-row 404 on
+#   both branches, indistinguishable from a missing route.
+#   software-secure-fake-response — env-gated ENABLE_SOFTWARE_SECURE_FAKE.
+
+surfaces:
+  # ── Discriminators: pay/photo URL routes removed ──
+  # auth:none first — shared BrowserContext would otherwise reuse qacert
+  # cookies and master login_required would 200 the PayAndVerify page
+  # (or 302 it into the dashboard) instead of proving route existence.
+
+  - id: start-flow route removed
+    url: /verify_student/start-flow/{course_key}/
+    auth: none
+    request: true
+    derived_from:
+      - lms/urls.py
+      - lms/djangoapps/verify_student/urls.py
+      - lms/djangoapps/verify_student/views.py
+    assert:
+      status: 404
+
+  - id: reverify route removed
+    url: /verify_student/reverify
+    auth: none
+    request: true
+    derived_from:
+      - lms/urls.py
+      - lms/djangoapps/verify_student/urls.py
+      - lms/djangoapps/verify_student/views.py
+      - lms/templates/dashboard/_dashboard_status_verification.html
+    assert:
+      status: 404
+
+  - id: submit-photos route removed
+    url: /verify_student/submit-photos/
+    auth: none
+    request: true
+    derived_from:
+      - lms/urls.py
+      - lms/djangoapps/verify_student/urls.py
+      - lms/djangoapps/verify_student/views.py
+    assert:
+      status: 404
+
+  - id: results_callback route removed
+    url: /verify_student/results_callback
+    auth: none
+    request: true
+    derived_from:
+      - lms/urls.py
+      - lms/djangoapps/verify_student/urls.py
+      - lms/djangoapps/verify_student/views.py
+    assert:
+      status: 404
+
+  # ── Gates: process boot + KEEP chooser + KEEP admin ──
+
+  - id: LMS homepage — no import error
+    url: /
+    auth: qacert
+    derived_from:
+      - lms/envs/common.py
+      - lms/urls.py
+    assert:
+      status: 200
+
+  - id: learner Dashboard — KEEP IDVerificationService
+    url: /dashboard
+    auth: qacert
+    derived_from:
+      - common/djangoapps/student/views/dashboard.py
+      - lms/djangoapps/verify_student/services.py
+      - lms/templates/dashboard/_dashboard_status_verification.html
+    assert:
+      status: 200
+
+  - id: course_modes chooser still routed (KEEP)
+    url: /course_modes/choose/{course_key}/
+    auth: qacert
+    request: true
+    derived_from:
+      - common/djangoapps/course_modes/views.py
+      - lms/urls.py
+    assert:
+      status: 200
+
+  - id: Django admin — photo verification KEEP
+    url: /triboo-guanli/verify_student/softwaresecurephotoverification/
+    auth: qastaff
+    request: true
+    derived_from:
+      - lms/djangoapps/verify_student/admin.py
+      - lms/djangoapps/verify_student/models.py
+      - lms/envs/common.py
+    assert:
+      status: 200
+
+  - id: Studio home — no import error
+    url: http://localhost:18010/home/
+    auth: qastaff
+    derived_from:
+      - cms/envs/common.py
+      - cms/urls.py
+    assert:
+      status: 200

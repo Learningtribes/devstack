@@ -1,0 +1,67 @@
+pr: 2395
+title: course mode chooser PARTIAL removal
+base: master
+# DCC — PARTIAL DELETE of track selection. Branch dcc-course-mode-chooser-removal
+# @ dcd5605155a. PR https://github.com/Learningtribes/platform/pull/2395
+#
+# DELETE  ChooseModeView + /course_modes/choose/ + choose.html
+#         change_enrollment course_modes_choose redirect
+#         VerifiedUpgradeTool entry point
+#         dashboard verified show_upsell branch
+# KEEP    course_modes app, CourseMode, create_mode (MODE_CREATION_FOR_TESTING),
+#         CourseEnrollment.mode
+#
+# DISCRIMINATOR (pass on PR, fail on master — unauth request:true follows
+# redirects, so master login_required lands on the login page at 200):
+#   Surface 1 — /course_modes/choose/{course_key}/ 404 vs 200
+#
+# GATE:
+#   Surface 2 — LMS home 200
+#   Surface 3 — learner dashboard 200 (complete_course_mode_info still returns)
+#   Surface 4 — Studio home 200
+#
+# VACUOUS (excluded):
+#   change_enrollment body no longer contains course_modes_choose — honor-only
+#   courses already returned an empty body on master (has_verified_mode False).
+#   Dashboard upsell markup — no verified CourseMode in this devstack, so both
+#   branches omit it.
+#   VerifiedUpgradeTool — disabled on master too without a verified mode.
+#   /course_modes/create_mode/ — MODE_CREATION_FOR_TESTING is False on both.
+
+surfaces:
+  - id: course mode chooser route removed
+    url: /course_modes/choose/{course_key}/
+    auth: none
+    request: true
+    derived_from:
+      - common/djangoapps/course_modes/urls.py
+      - common/djangoapps/course_modes/views.py
+      - lms/urls.py
+    assert:
+      status: 404
+
+  - id: LMS homepage — no import error
+    url: /
+    auth: qacert
+    derived_from:
+      - lms/urls.py
+      - common/djangoapps/course_modes/views.py
+    assert:
+      status: 200
+
+  - id: learner Dashboard — course mode info still renders
+    url: /dashboard
+    auth: qacert
+    derived_from:
+      - common/djangoapps/student/views/dashboard.py
+    assert:
+      status: 200
+
+  - id: Studio home — no import error
+    url: http://localhost:18010/home/
+    auth: qastaff
+    derived_from:
+      - cms/urls.py
+      - setup.py
+    assert:
+      status: 200
