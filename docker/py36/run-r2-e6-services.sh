@@ -52,6 +52,13 @@ RABBIT_IMAGE=rabbitmq@sha256:4206c16c09a58d0a604668e91227c32f4a222368e796bfb7bf2
 # 4fcfa234, so the installed ora2 metadata (entry points, requirements) holds.
 ORA2_SOURCE=${PY36_R2_E6_ORA2_SOURCE:-}
 ORA2_SOURCE_COMMIT=d3f24a9c539528e960c8dcc9aef200cea0c49baf
+# Python 2.7 only, opt-in: PY36_R2_E6_SCORM_SOURCE is a clean checkout of
+# SCORM_SOURCE_COMMIT (the R2 requirements pin, installed on Python 3.6),
+# mounted read-only ahead of the image's editable scormxblock. Against the
+# installed 841e1630 it changes scormxblock.py only and adds the installed
+# `six` to install_requires, so the installed metadata holds.
+SCORM_SOURCE=${PY36_R2_E6_SCORM_SOURCE:-}
+SCORM_SOURCE_COMMIT=8a6c07d562217500fa8236f555343c9921ef4907
 NETWORK=devstack_default
 LABEL=io.openedx.py36-r2.gate=e6
 # Gate containers share the Docker VM with edx.devstack.*; without a cgroup
@@ -169,6 +176,8 @@ service_args() {
         --mount "type=bind,src=${SCRIPT_DIR}/py36_r2_e6_settings.py,dst=/edx/app/edxapp/py36_r2_e6_settings.py,readonly" \
         --mount "type=bind,src=${SCRIPT_DIR}/r2_e6_wsgi.py,dst=/edx/app/edxapp/r2_e6_wsgi.py,readonly" \
         --mount "type=bind,src=${LOG_ROOT}/${svc},dst=/edx/var/log" \
+        --mount "type=bind,src=${LOG_ROOT}/djpyfs,dst=/edx/var/r2-djpyfs" \
+        --env PY36_R2_E6_DJFS_ROOT=/edx/var/r2-djpyfs \
         --mount type=tmpfs,dst=/edx/var/edxapp/data \
         --mount type=tmpfs,dst=/runner \
         --env-file "${MYSQL_ENV}" \
@@ -189,6 +198,9 @@ service_args() {
     fi
     if [ -n "${ORA2_SOURCE}" ]; then
         printf '%s\n' --mount "type=bind,src=${ORA2_SOURCE},dst=/runner/edx-ora2,readonly"
+    fi
+    if [ -n "${SCORM_SOURCE}" ]; then
+        printf '%s\n' --mount "type=bind,src=${SCORM_SOURCE},dst=/runner/scormxblock,readonly"
     fi
 }
 
@@ -224,7 +236,7 @@ start() {
     for port in ${LMS_PORT} ${CMS_PORT}; do
         if lsof -nP -iTCP:"${port}" -sTCP:LISTEN >/dev/null 2>&1; then echo "port ${port} in use" >&2; exit 2; fi
     done
-    mkdir -p "${LOG_ROOT}/lms/lms" "${LOG_ROOT}/lms/cms" "${LOG_ROOT}/cms/lms" "${LOG_ROOT}/cms/cms"
+    mkdir -p "${LOG_ROOT}/lms/lms" "${LOG_ROOT}/lms/cms" "${LOG_ROOT}/cms/lms" "${LOG_ROOT}/cms/cms" "${LOG_ROOT}/djpyfs"
 
     docker run -d --name "${MYSQL}" --network "${NETWORK}" --label "${LABEL}" \
         --label "io.openedx.py36-r2.runtime=${RUNTIME}" --platform linux/amd64 --memory "${MYSQL_MEMORY}" \
@@ -361,12 +373,13 @@ run_script() {
         -c "${METADATA}exec ${PYTHON} /opt/r2-scripts/${script} $*"
 }
 
-# A running stack keeps the forum, broker and ORA2 source modes it was started with.
+# A running stack keeps the forum, broker and source-overlay modes it was started with.
 if [ "${2:-}" != start ] && exists "${FORUM}"; then WITH_FORUM=1; fi
 if [ "${2:-}" != start ] && exists "${RABBIT}"; then WITH_BROKER=1; fi
 ORA2_RUNTIME=${PY36_R2_E6_ORA2_RUNTIME:-0}
 if [ "${2:-}" != start ] && exists "${LMS}"; then
     ORA2_SOURCE=$(docker inspect "${LMS}" --format '{{range .Mounts}}{{if eq .Destination "/runner/edx-ora2"}}{{.Source}}{{end}}{{end}}')
+    SCORM_SOURCE=$(docker inspect "${LMS}" --format '{{range .Mounts}}{{if eq .Destination "/runner/scormxblock"}}{{.Source}}{{end}}{{end}}')
     if [ "$(docker inspect "${LMS}" --format '{{.Image}}')" = "${ORA2_RUNTIME_IMAGE_ID}" ]; then ORA2_RUNTIME=1; else ORA2_RUNTIME=0; fi
 fi
 if [ "${ORA2_RUNTIME}" = 1 ]; then
@@ -382,6 +395,15 @@ if [ -n "${ORA2_SOURCE}" ]; then
         exit 2
     fi
     PYTHONPATH_VALUE=/edx/app/edxapp:/runner/source-metadata:/runner/edx-ora2:${PYTHONPATH_VALUE#/edx/app/edxapp:/runner/source-metadata:}
+fi
+if [ -n "${SCORM_SOURCE}" ]; then
+    if [ "${RUNTIME}" != py27 ] ||
+       [ "$(git -C "${SCORM_SOURCE}" rev-parse HEAD)" != "${SCORM_SOURCE_COMMIT}" ] ||
+       [ -n "$(git -C "${SCORM_SOURCE}" status --porcelain)" ]; then
+        echo "PY36_R2_E6_SCORM_SOURCE must be a clean ${SCORM_SOURCE_COMMIT} checkout (py27 only): ${SCORM_SOURCE}" >&2
+        exit 2
+    fi
+    PYTHONPATH_VALUE=/edx/app/edxapp:/runner/source-metadata:/runner/scormxblock:${PYTHONPATH_VALUE#/edx/app/edxapp:/runner/source-metadata:}
 fi
 
 case "${2:-}" in

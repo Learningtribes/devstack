@@ -76,6 +76,20 @@ if 'EDX_OBJECTS_MONGODB_SETTINGS' in globals():
 
 ELASTIC_SEARCH_CONFIG = [{'use_ssl': False, 'host': E6_ES_HOST, 'port': 9200}]
 
+# devstack's DJFS root is relative to the read-only source mount, and gate
+# scripts run in their own containers, so the stack mounts one writable root
+# into all of them; r2_e6_wsgi serves it at the unchanged DJFS url_root.
+E6_DJFS_ROOT = os.environ.get('PY36_R2_E6_DJFS_ROOT')
+if E6_DJFS_ROOT:
+    DJFS = dict(DJFS, type='osfs', directory_root=E6_DJFS_ROOT)
+    # replace_static_urls keeps a /static/ URL in XBlock HTML only if a finder
+    # (DEBUG) or the collected storage has the file, and otherwise rewrites it
+    # to a course asset; R1's gate settings registered the same finder prefix.
+    if DJFS['url_root'].startswith(STATIC_URL):
+        STATICFILES_DIRS = list(STATICFILES_DIRS) + [
+            (DJFS['url_root'][len(STATIC_URL):].strip('/'), E6_DJFS_ROOT),
+        ]
+
 # LMS and CMS share one namespace so the LMS /auto_auth session also
 # authenticates Studio, as on the stock devstack.
 CACHES = copy.deepcopy(CACHES)

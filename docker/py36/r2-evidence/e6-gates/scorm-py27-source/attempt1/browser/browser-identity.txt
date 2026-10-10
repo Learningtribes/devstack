@@ -1,0 +1,17 @@
+runtime=py27 netns=py36-r2-e6-py27-lms image=sha256:e5ecccf98eb9b9f9d7cb04d7f04a08d62cf29ce19a7e8f3c2230e5cf67396b89
+harness_head=68255fc7742c9486b760e026bd5cb5b1e5f75bf6
+harness_code_clean=0_changes
+playwright_image=mcr.microsoft.com/playwright@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48
+playwright_test=1.61.1
+test_timeout_ms=120000
+spec=tests/scorm_render.spec.ts sha256=8fdd960e4f5d4f1da9bdad70339ccaf8ffdd1585eccfd768120a267b8d96b748
+env BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000
+env BROWSER_SCORM_ATTEMPT=2
+env BROWSER_SCORM_COURSE_KEY=course-v1:QA+SCORMRender+Py27
+env BROWSER_SCORM_EMAIL=qascorm_py27@example.com
+env BROWSER_SCORM_EVIDENCE_DIR=/work/out/evidence
+env BROWSER_SCORM_RUNTIME=py27
+env BROWSER_SCORM_STATE_FILE=/work/out/evidence/state.json
+env BROWSER_SCORM_USERNAME=qascorm_py27
+started=2026-10-10T08:59:54Z
+finished=2026-10-10T08:59:59Z exit=0

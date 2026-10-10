@@ -1,0 +1,161 @@
+{
+  "config": {
+    "argv": [
+      "/usr/bin/node",
+      "/work/node_modules/.bin/playwright",
+      "test",
+      "tests/scorm_render.spec.ts",
+      "--reporter=list,json",
+      "--retries=0",
+      "--timeout=120000",
+      "--trace=retain-on-failure",
+      "--output=/work/out/test-results"
+    ],
+    "configFile": "/work/playwright.config.ts",
+    "rootDir": "/work/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/work/out/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/work/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "scorm_render.spec.ts",
+      "file": "scorm_render.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "SCORM 1.2 package renders and initializes the runtime API",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6575,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')\nExpected pattern: \u001b[32m/\\/static\\/djpyfs\\/.+\\/p1b-scorm-render-package\\/index\\.html$/\u001b[39m\nReceived string:  \u001b[31m\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')\u001b[22m\n\u001b[2m    5 × locator resolved to <iframe class=\"scorm_object\" id=\"scorm-object-frame\" data-src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"></iframe>\u001b[22m\n\u001b[2m      - unexpected value \"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[22m\n\u001b[2m    9 × locator resolved to <iframe class=\"scorm_object\" id=\"scorm-object-frame\" src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\" data-src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"></iframe>\u001b[22m\n\u001b[2m      - unexpected value \"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')\nExpected pattern: \u001b[32m/\\/static\\/djpyfs\\/.+\\/p1b-scorm-render-package\\/index\\.html$/\u001b[39m\nReceived string:  \u001b[31m\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')\u001b[22m\n\u001b[2m    5 × locator resolved to <iframe class=\"scorm_object\" id=\"scorm-object-frame\" data-src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"></iframe>\u001b[22m\n\u001b[2m      - unexpected value \"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[22m\n\u001b[2m    9 × locator resolved to <iframe class=\"scorm_object\" id=\"scorm-object-frame\" src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\" data-src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"></iframe>\u001b[22m\n\u001b[2m      - unexpected value \"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[22m\n\n    at /work/tests/scorm_render.spec.ts:122:30",
+                    "location": {
+                      "file": "/work/tests/scorm_render.spec.ts",
+                      "column": 30,
+                      "line": 122
+                    },
+                    "snippet": "  120 |         const iframe = block.locator('iframe.scorm_object');\n  121 |         await expect(iframe).toBeVisible();\n> 122 |         await expect(iframe).toHaveAttribute(\n      |                              ^\n  123 |             'data-src',\n  124 |             /\\/static\\/djpyfs\\/.+\\/p1b-scorm-render-package\\/index\\.html$/,\n  125 |         );"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/work/tests/scorm_render.spec.ts",
+                        "column": 30,
+                        "line": 122
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')\nExpected pattern: \u001b[32m/\\/static\\/djpyfs\\/.+\\/p1b-scorm-render-package\\/index\\.html$/\u001b[39m\nReceived string:  \u001b[31m\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')\u001b[22m\n\u001b[2m    5 × locator resolved to <iframe class=\"scorm_object\" id=\"scorm-object-frame\" data-src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"></iframe>\u001b[22m\n\u001b[2m      - unexpected value \"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[22m\n\u001b[2m    9 × locator resolved to <iframe class=\"scorm_object\" id=\"scorm-object-frame\" src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\" data-src=\"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"></iframe>\u001b[22m\n\u001b[2m      - unexpected value \"/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html\"\u001b[22m\n\n\n  120 |         const iframe = block.locator('iframe.scorm_object');\n  121 |         await expect(iframe).toBeVisible();\n> 122 |         await expect(iframe).toHaveAttribute(\n      |                              ^\n  123 |             'data-src',\n  124 |             /\\/static\\/djpyfs\\/.+\\/p1b-scorm-render-package\\/index\\.html$/,\n  125 |         );\n    at /work/tests/scorm_render.spec.ts:122:30"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-10T08:54:34.526Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/work/out/test-results/scorm_render-SCORM-1-2-pac-fa0d2-initializes-the-runtime-API-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/work/out/test-results/scorm_render-SCORM-1-2-pac-fa0d2-initializes-the-runtime-API-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/work/out/test-results/scorm_render-SCORM-1-2-pac-fa0d2-initializes-the-runtime-API-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/work/tests/scorm_render.spec.ts",
+                    "column": 30,
+                    "line": 122
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b66d4e60f8902daf4c48-12517dd8fc59392f585b",
+          "file": "scorm_render.spec.ts",
+          "line": 26,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T08:54:34.295Z",
+    "duration": 7141.178,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

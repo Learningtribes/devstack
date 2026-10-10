@@ -12,6 +12,10 @@ stack and its MySQL queries, and Django 1.11 hands `FileResponse` bodies to
 `wsgi.file_wrapper` without ever closing the response, so `request_finished`
 never fires and each request thread's connections stay open until cyclic GC.
 A page's burst of asset requests then exhausts `max_connections`.
+
+An osfs DJFS (XBlock file storage, e.g. SCORM packages) is served at its
+url_root from its directory_root; R1's gate runserver served it through the
+static finder the E6 settings also register.
 """
 from __future__ import absolute_import, unicode_literals
 
@@ -30,6 +34,10 @@ class CollectedStaticHandler(StaticFilesHandler):
         return NGINX_STATIC_URL
 
     def serve(self, request):
+        djfs = getattr(settings, 'DJFS', {})
+        djfs_url = djfs.get('url_root', '').rstrip('/') + '/'
+        if djfs.get('type') == 'osfs' and djfs_url != '/' and request.path.startswith(djfs_url):
+            return serve(request, request.path[len(djfs_url):], document_root=djfs['directory_root'])
         return serve(request, request.path[len(NGINX_STATIC_URL):], document_root=settings.STATIC_ROOT_BASE)
 
 

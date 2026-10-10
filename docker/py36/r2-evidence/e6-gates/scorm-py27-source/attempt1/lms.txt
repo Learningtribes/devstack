@@ -1,0 +1,155 @@
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 2 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): certificates, student.
+Run 'python manage.py migrate' to apply them.
+October 10, 2026 - 04:59:42
+Django version 1.11.15, using settings 'py36_r2_e6_settings'
+Starting development server at http://0.0.0.0:18000/
+Quit the server with CONTROL-C.
+2026-10-10 04:59:44,019 WARNING 1 [py.warnings] mongo_client.py:1133 - /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/mongodb_proxy.py:115: DeprecationWarning: alive is deprecated in this version of PyMongo and removed in PyMongo 3.
+  return self.proxied_object(*args, **kwargs)
+
+2026-10-10 04:59:44,024 INFO 1 [elasticsearch] base.py:63 - HEAD http://py36-r2-e6-py27-es:9200/ [status:200 request:0.004s]
+No handlers could be found for logger "elasticsearch.trace"
+[10/Oct/2026 04:59:44] "GET /heartbeat HTTP/1.1" 200 193
+2026-10-10 04:59:55,904 INFO 1 [tracking] logger.py:50 - {"username": "", "event_type": "/auto_auth", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "3bed07898f0f", "referer": "", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {\"username\": [\"qascorm_py27\"], \"email\": [\"qascorm_py27@example.com\"]}}", "user_id": null, "context": {"user_id": null, "org_id": "", "course_id": "", "path": "/auto_auth"}, "time": "2026-10-10T08:59:55.904557+00:00", "page": null}
+2026-10-10 04:59:55,926 INFO 1 [tracking] logger.py:42 - {"username": "", "event_source": "server", "name": "edx.user.settings.changed", "accept_language": "en-US", "time": "2026-10-10T08:59:55.926599+00:00", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "host": "3bed07898f0f", "session": "", "referer": "", "context": {"user_id": null, "org_id": "", "course_id": "", "path": "/auto_auth"}, "ip": "127.0.0.1", "event": {"user_id": 32, "truncated": [], "old": null, "setting": "password", "table": "auth_user", "new": null}, "event_type": "edx.user.settings.changed"}
+2026-10-10 04:59:55,930 INFO 1 [student.models] models.py:583 - User qascorm_py27 (qascorm_py27@example.com) account is successfully activated.
+2026-10-10 04:59:55,931 INFO 1 [tracking] logger.py:42 - {"username": "", "event_source": "server", "name": "edx.user.settings.changed", "accept_language": "en-US", "time": "2026-10-10T08:59:55.931874+00:00", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "host": "3bed07898f0f", "session": "", "referer": "", "context": {"user_id": null, "org_id": "", "course_id": "", "path": "/auto_auth"}, "ip": "127.0.0.1", "event": {"user_id": 32, "truncated": [], "old": null, "setting": "year_of_birth", "table": "auth_userprofile", "new": 2012}, "event_type": "edx.user.settings.changed"}
+2026-10-10 04:59:55,954 INFO 1 [audit] models.py:2241 - Login success - qascorm_py27 (qascorm_py27@example.com)
+[10/Oct/2026 04:59:55] "GET /auto_auth?username=qascorm_py27&email=qascorm_py27%40example.com HTTP/1.1" 200 210
+2026-10-10 04:59:55,999 INFO 1 [tracking] logger.py:50 - {"username": "qascorm_py27", "event_type": "/courses/course-v1:QA+SCORMRender+Py27/jump_to/block-v1:QA+SCORMRender+Py27+type@vertical+block@scorm_render_unit", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "3bed07898f0f", "referer": "", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+SCORMRender+Py27", "path": "/courses/course-v1:QA+SCORMRender+Py27/jump_to/block-v1:QA+SCORMRender+Py27+type@vertical+block@scorm_render_unit"}, "time": "2026-10-10T08:59:55.999634+00:00", "page": null}
+[10/Oct/2026 04:59:56] "GET /courses/course-v1:QA+SCORMRender+Py27/jump_to/block-v1:QA+SCORMRender+Py27+type@vertical+block@scorm_render_unit HTTP/1.1" 302 0
+2026-10-10 04:59:56,124 INFO 1 [tracking] logger.py:50 - {"username": "qascorm_py27", "event_type": "/courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "3bed07898f0f", "referer": "", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {\"activate_block_id\": [\"block-v1:QA+SCORMRender+Py27+type@vertical+block@scorm_render_unit\"]}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+SCORMRender+Py27", "path": "/courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1"}, "time": "2026-10-10T08:59:56.124149+00:00", "page": null}
+2026-10-10 04:59:56,143 INFO 1 [edx.courseware.views.index] index.py:130 - Masquerade data is cleaned. Because you have accessed non-courseware page.
+[10/Oct/2026 04:59:56] "GET /courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy27%2Btype%40vertical%2Bblock%40scorm_render_unit HTTP/1.1" 200 69325
+[10/Oct/2026 04:59:56] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:59:56] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:59:56] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:59:56] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:59:56] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/CodeMirror/codemirror.css HTTP/1.1" 200 6703
+[10/Oct/2026 04:59:56] "GET /static/css/vendor/jquery.treeview.css HTTP/1.1" 200 1266
+[10/Oct/2026 04:59:56] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:59:56] "GET /static/css/vendor/ui-lightness/jquery-ui-1.8.22.custom.css HTTP/1.1" 200 33324
+[10/Oct/2026 04:59:56] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:59:56] "GET /static/css/lms-course.css HTTP/1.1" 200 765917
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:59:56] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:59:56] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:59:56] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+[10/Oct/2026 04:59:56] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/json2.js HTTP/1.1" 200 17521
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/swiper.min.js HTTP/1.1" 200 127935
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/jquery-ui.min.js HTTP/1.1" 200 240215
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/timepicker/jquery.timepicker.js HTTP/1.1" 200 51398
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/jquery.qtip.min.js HTTP/1.1" 200 153892
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/iziModal.min.js HTTP/1.1" 200 26264
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/notify.min.js HTTP/1.1" 200 13780
+[10/Oct/2026 04:59:56] "GET /static/js/src/ajax_prefix.js HTTP/1.1" 200 791
+[10/Oct/2026 04:59:56] "GET /static/js/src/jquery.immediateDescendents.js HTTP/1.1" 200 670
+[10/Oct/2026 04:59:56] "GET /static/js/src/xproblem.js HTTP/1.1" 200 2296
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/datepicker-translation.js HTTP/1.1" 200 2865
+[10/Oct/2026 04:59:56] "GET /static/common/js/xblock/core.js HTTP/1.1" 200 6066
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/select2.js HTTP/1.1" 200 151816
+[10/Oct/2026 04:59:56] "GET /static/common/js/xblock/runtime.v1.js HTTP/1.1" 200 1500
+[10/Oct/2026 04:59:56] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:59:56] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:59:56] "GET /static/lms/js/xblock/lms.runtime.v1.js HTTP/1.1" 200 1609
+[10/Oct/2026 04:59:56] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:59:56] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:59:56] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:59:56] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:59:56] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:59:56] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:59:56] "GET /static/js/main.js HTTP/1.1" 200 1557
+[10/Oct/2026 04:59:56] "GET /static/js/sticky_filter.js HTTP/1.1" 200 413
+[10/Oct/2026 04:59:56] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:59:56] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:59:56] "GET /static/js/query-params.js HTTP/1.1" 200 300
+[10/Oct/2026 04:59:56] "GET /static/js/calculator.js HTTP/1.1" 200 7595
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/moment-timezone-with-data.js HTTP/1.1" 200 208009
+[10/Oct/2026 04:59:56] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:59:56] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:59:56] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/moment-with-locales.js HTTP/1.1" 200 632739
+[10/Oct/2026 04:59:56] "GET /static/bundles/XModuleShim.js HTTP/1.1" 200 2876
+[10/Oct/2026 04:59:56] "GET /static/bundles/SequenceModule.js HTTP/1.1" 200 1891
+[10/Oct/2026 04:59:56] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:59:56] "GET /static/bundles/VerticalStudentView.js HTTP/1.1" 200 9340
+[10/Oct/2026 04:59:56] "GET /static/bundles/CourseSock.js HTTP/1.1" 200 3149
+[10/Oct/2026 04:59:56] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:59:56] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:59:56] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:59:56] "GET /static/bundles/QuestionMark.js HTTP/1.1" 200 2309
+[10/Oct/2026 04:59:56] "GET /static/common/js/vendor/jquery.scrollTo.js HTTP/1.1" 200 5726
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/flot/jquery.flot.js HTTP/1.1" 200 125921
+[10/Oct/2026 04:59:56] "GET /static/js/ajax-error.js HTTP/1.1" 200 544
+[10/Oct/2026 04:59:56] "GET /static/js/histogram.js HTTP/1.1" 200 1739
+[10/Oct/2026 04:59:56] "GET /static/js/navigation.js HTTP/1.1" 200 264
+[10/Oct/2026 04:59:56] "GET /static/js/modules/tab.js HTTP/1.1" 200 1613
+[10/Oct/2026 04:59:56] "GET /static/bundles/Courseware.js HTTP/1.1" 200 7001
+[10/Oct/2026 04:59:56] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:59:56] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:59:56] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:59:56] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:59:56] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+[10/Oct/2026 04:59:56] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+[10/Oct/2026 04:59:56] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+[10/Oct/2026 04:59:56] "GET /static/js/courseware/accordion_events.js HTTP/1.1" 200 648
+[10/Oct/2026 04:59:56] "GET /static/js/dateutil_factory.js HTTP/1.1" 200 3864
+2026-10-10 04:59:56,982 INFO 1 [tracking] logger.py:50 - {"username": "qascorm_py27", "event_type": "/analytics/check_my_downloads/", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "3bed07898f0f", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy27%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/analytics/check_my_downloads/"}, "time": "2026-10-10T08:59:56.982206+00:00", "page": null}
+[10/Oct/2026 04:59:56] "GET /static/edx-ui-toolkit/js/utils/date-utils.js HTTP/1.1" 200 9402
+[10/Oct/2026 04:59:56] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/course_search_factory.js HTTP/1.1" 200 2556
+[10/Oct/2026 04:59:57] "GET /static/course_bookmarks/js/course_bookmarks_factory.js HTTP/1.1" 200 1699
+[10/Oct/2026 04:59:57] "GET /static/js/courseware/courseware_factory.js HTTP/1.1" 200 724
+[10/Oct/2026 04:59:57] "GET /static/fonts/fontawesome/fa-light-300.woff2 HTTP/1.1" 200 366248
+2026-10-10 04:59:57,360 INFO 1 [tracking] logger.py:50 - {"username": "qascorm_py27", "event_type": "/course-v1:QA+SCORMRender+Py27/batch_completion/", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "3bed07898f0f", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy27%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {\"{\\\"blocks\\\":[]}\": [\"\"]}, \"GET\": {}}", "user_id": 32, "context": {"user_id": 32, "org_id": "", "course_id": "", "path": "/course-v1:QA+SCORMRender+Py27/batch_completion/"}, "time": "2026-10-10T08:59:57.360297+00:00", "page": null}
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/search_router.js HTTP/1.1" 200 355
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/views/search_form.js HTTP/1.1" 200 2334
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/collections/search_collection.js HTTP/1.1" 200 4480
+[10/Oct/2026 04:59:57] "GET /static/course_bookmarks/js/collections/bookmarks.js HTTP/1.1" 200 859
+[10/Oct/2026 04:59:57] "GET /static/js/views/message_banner.js HTTP/1.1" 200 1269
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/views/course_search_results_view.js HTTP/1.1" 200 1399
+[10/Oct/2026 04:59:57] "GET /static/course_bookmarks/js/views/bookmarks_list.js HTTP/1.1" 200 5525
+[10/Oct/2026 04:59:57] "POST /course-v1:QA+SCORMRender+Py27/batch_completion/ HTTP/1.1" 200 0
+[10/Oct/2026 04:59:57] "GET /static/course_bookmarks/js/views/bookmarks_list_button.js HTTP/1.1" 200 426
+2026-10-10 04:59:57,383 INFO 1 [tracking] logger.py:50 - {"username": "qascorm_py27", "event_type": "/courses/course-v1:QA+SCORMRender+Py27/xblock/block-v1:QA+SCORMRender+Py27+type@scormxblock+block@scorm_render_component/handler/sync_runtime_info", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "3bed07898f0f", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy27%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+SCORMRender+Py27", "path": "/courses/course-v1:QA+SCORMRender+Py27/xblock/block-v1:QA+SCORMRender+Py27+type@scormxblock+block@scorm_render_component/handler/sync_runtime_info"}, "time": "2026-10-10T08:59:57.383006+00:00", "page": null}
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/models/search_result.js HTTP/1.1" 200 331
+[10/Oct/2026 04:59:57] "GET /static/edx-ui-toolkit/js/pagination/paging-collection.js HTTP/1.1" 200 19254
+[10/Oct/2026 04:59:57] "GET /static/course_bookmarks/js/models/bookmark.js HTTP/1.1" 200 541
+[10/Oct/2026 04:59:57] "GET /static/common/js/components/views/paging_header.js HTTP/1.1" 200 2938
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/views/search_results_view.js HTTP/1.1" 200 4136
+[10/Oct/2026 04:59:57] "GET /static/js/vendor/requirejs/text.js HTTP/1.1" 200 15873
+[10/Oct/2026 04:59:57] "GET /static/common/js/components/views/paging_footer.js HTTP/1.1" 200 3582
+[10/Oct/2026 04:59:57] "GET /static/course_search/js/views/search_item_view.js HTTP/1.1" 200 2434
+[10/Oct/2026 04:59:57] "GET /static/course_search/templates/course_search_results.underscore HTTP/1.1" 200 765
+[10/Oct/2026 04:59:57] "GET /static/course_bookmarks/templates/bookmarks-list.underscore HTTP/1.1" 200 2604
+[10/Oct/2026 04:59:57] "GET /static/templates/fields/message_banner.underscore HTTP/1.1" 200 236
+[10/Oct/2026 04:59:57] "GET /static/course_search/templates/course_search_item.underscore HTTP/1.1" 200 327
+[10/Oct/2026 04:59:57] "GET /static/common/js/vendor/backbone.paginator.js HTTP/1.1" 200 50573
+[10/Oct/2026 04:59:57] "GET /static/course_search/templates/search_loading.underscore HTTP/1.1" 200 95
+[10/Oct/2026 04:59:57] "GET /static/course_search/templates/search_error.underscore HTTP/1.1" 200 122
+[10/Oct/2026 04:59:57] "GET /static/common/templates/components/paging-header.underscore HTTP/1.1" 200 850
+[10/Oct/2026 04:59:57] "GET /static/common/templates/components/paging-footer.underscore HTTP/1.1" 200 1424
+[10/Oct/2026 04:59:57] "POST /courses/course-v1:QA+SCORMRender+Py27/xblock/block-v1:QA+SCORMRender+Py27+type@scormxblock+block@scorm_render_component/handler/sync_runtime_info HTTP/1.1" 200 2115
+[10/Oct/2026 04:59:58] "GET /static/djpyfs/block--v1-_QA-.SCORMRender-.Py27-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/index.html HTTP/1.1" 200 333
+[10/Oct/2026 04:59:58] "GET /static/djpyfs/block--v1-_QA-.SCORMRender-.Py27-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/runtime.js HTTP/1.1" 200 594
+[10/Oct/2026 04:59:58] "GET /static/djpyfs/block--v1-_QA-.SCORMRender-.Py27-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/package.css HTTP/1.1" 200 242
+2026-10-10 04:59:58,377 INFO 1 [tracking] logger.py:50 - {"username": "qascorm_py27", "event_type": "/courses/course-v1:QA+SCORMRender+Py27/xblock/block-v1:QA+SCORMRender+Py27+type@scormxblock+block@scorm_render_component/handler/ping", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "3bed07898f0f", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy27%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event": "{\"POST\": {}, \"GET\": {}}", "user_id": 32, "context": {"course_user_tags": {}, "user_id": 32, "org_id": "QA", "course_id": "course-v1:QA+SCORMRender+Py27", "path": "/courses/course-v1:QA+SCORMRender+Py27/xblock/block-v1:QA+SCORMRender+Py27+type@scormxblock+block@scorm_render_component/handler/ping"}, "time": "2026-10-10T08:59:58.377006+00:00", "page": null}
+[10/Oct/2026 04:59:58] "GET /courses/course-v1:QA+SCORMRender+Py27/xblock/block-v1:QA+SCORMRender+Py27+type@scormxblock+block@scorm_render_component/handler/ping HTTP/1.1" 200 0

@@ -294,6 +294,74 @@ container on failure. The two interrupted attempts left a harness staging copy
 (`browser/harness/`, not committed); their `state.json`, screenshots and
 results were copied into `browser/`.
 
+## SCORM render (2026-10-10) - PASS on both runtimes
+
+Port of the R1 `p1b-scorm-render` gate: a non-staff learner opens a vertical
+holding one `scormxblock` whose SCORM 1.2 package the fixture wrote through
+the block's DJFS. The page must render the block, load the package iframe from
+`/static/djpyfs/...`, initialize the SCORM API, answer one `ping` and one
+`sync` with 200 and leave no browser diagnostics. The browser spec is
+`tests/scorm_render.spec.ts`; the R1 provisioner `provision-p1b-scorm-render.py`
+does the fixture, identity, preflight and postflight (three `StudentModule`
+rows, no completion, grade or progress row).
+
+- `r2-e6-scorm.sh <rt> <out> [installed|source]` starts the E6 stack without
+  broker or forum, provisions as `PY36_R2_E6_PRESTART`, runs identity and
+  preflight, runs the browser in the foreground, then postflight.
+- `r2-e6-scorm.py` loads the R1 provisioner with the R2 site
+  (`localhost:18000`), namespace and the expected scormxblock identity from
+  the wrapper, and deletes the site's SiteTheme in the private clone (the
+  grading precedent). The R1 provisioner also renames that site to
+  `P1-B SCORM <rt>` and merges its configuration; this only touches the
+  private clone.
+
+| Run | Runtime image | scormxblock | Browser | Diagnostics | Package / ping / sync | Postflight |
+| --- | --- | --- | --- | --- | --- | --- |
+| `scorm-py36/attempt2` | `py36-r2-20261009` (`f02cf5e7`) | `8a6c07d5` installed | 1 passed | 0 | 3 x 200 / [200] / [200] | 3 StudentModule, 0 completion / grade / progress |
+| `scorm-py27-installed/attempt2` | `py36-r2-py27-runner-20261009` (`e5ecccf9`, control) | `841e1630` installed | 1 passed | 0 | 3 x 200 / [200] / [200] | same |
+| `scorm-py27-source/attempt1` | same, plus a read-only `8a6c07d5` overlay | `8a6c07d5` source | 1 passed | 0 | 3 x 200 / [200] / [200] | same |
+
+LMS and CMS logs (`lms.txt`, `cms.txt` per run) have no Traceback, ERROR,
+CRITICAL or 4xx/5xx line.
+
+Python 2.7 ran twice by owner decision. The control image's editable
+scormxblock is the workspace `src/xblock-scorm` checkout at `841e1630`
+(upstream `hawthorn`, master's `@hawthorn` pin; tracked files clean), the
+parent of the R2 pin `8a6c07d5`, which adds only the Python 2/3 fix. The
+second run mounts a standalone clone of `8a6c07d5` (tree `595e291d`, made
+read-only, from the local mirror) at `/runner/scormxblock` ahead of the
+editable install (`PY36_R2_E6_SCORM_SOURCE`); the live LMS imported
+`/runner/scormxblock/scormxblock/scormxblock.py`. The editable metadata stays
+valid: `setup.py` only adds `six`, which is installed, and
+`static/js/src/scormxblock.js` is the same file (`675ed582`) on both commits.
+R1's Python 2.7 control built `8a6c07d5` into a dedicated image instead.
+
+### Harness fix: DJFS storage
+
+Devstack's `DJFS.directory_root` is relative (`lms/static/djpyfs`), which
+resolves inside the read-only source mount, and E6 gate scripts run in their
+own containers. Every E6 service and script now mounts one writable
+`<log root>/<rt>/djpyfs` at `/edx/var/r2-djpyfs`
+(`PY36_R2_E6_DJFS_ROOT`), and the E6 settings point an osfs DJFS at it
+with the unchanged `url_root` `/static/djpyfs`. Two consequences, both
+matching R1's gate settings:
+
+- `replace_static_urls` keeps a `/static/` URL in XBlock HTML only if a
+  static finder (DEBUG) or the collected storage has the file; otherwise it
+  rewrites it to a course asset. `scorm-py36/attempt1` failed on exactly that
+  (`iframe` `data-src` was `/asset-v1:...+type@asset+block/djpyfs_block...`).
+  The LMS settings now register the DJFS root as the `djpyfs` finder prefix,
+  as R1 did. Studio's `STATIC_URL` (`/static/studio/`) does not contain the
+  DJFS `url_root`, so nothing is registered there.
+- `r2_e6_wsgi.py` serves the DJFS `url_root` from `directory_root`, as R1's
+  runserver static handler did through the finder.
+
+Failed attempts, kept as evidence: `scorm-py36/attempt1` (the URL rewrite
+above) and `scorm-py27-installed/attempt1` (provision stopped at
+`SCORM module hash mismatch`: the wrapper expected a wrong control
+identity, corrected to `841e1630`). Directory attempt numbers count gate
+runs; the fixture attempt is 1 for installed and 2 for source mode.
+
 ## Harness fix: static files served ahead of Django
 
 After the toolbar removal, the py27 group 1 control showed bursts of LMS
@@ -364,3 +432,11 @@ every value of eight characters or more from the config env files matched only
 two non-credentials: the devstack default login email in the E4 CMS logs
 (already committed) and the fixed RabbitMQ user name in
 `run-r2-e6-services.sh`. No password or key matched.
+
+After the SCORM gates the shared Elasticsearch still matched that snapshot,
+no E6 container remained, the dangling-volume count was 82, and both
+scormxblock sources were unchanged (`src/xblock-scorm` at `841e1630` with
+only untracked `.DS_Store` files, the `8a6c07d5` clone clean). The same scan
+matched the same two names and nothing in the SCORM scripts or evidence; the
+RabbitMQ user name also appears in the committed ORA2 worker and preflight
+logs.

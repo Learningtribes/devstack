@@ -1,0 +1,54 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 [chromium] › tests/scorm_render.spec.ts:26:5 › SCORM 1.2 package renders and initializes the runtime API (6.6s)
+
+
+  1) [chromium] › tests/scorm_render.spec.ts:26:5 › SCORM 1.2 package renders and initializes the runtime API 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')
+    Expected pattern: /\/static\/djpyfs\/.+\/p1b-scorm-render-package\/index\.html$/
+    Received string:  "/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.xblock-student_view-scormxblock').locator('iframe.scorm_object')
+        5 × locator resolved to <iframe class="scorm_object" id="scorm-object-frame" data-src="/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html"></iframe>
+          - unexpected value "/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html"
+        9 × locator resolved to <iframe class="scorm_object" id="scorm-object-frame" src="/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html" data-src="/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html"></iframe>
+          - unexpected value "/asset-v1:QA+SCORMRender+Py36+type@asset+block/djpyfs_block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component_fs_NONE.NONE_p1b-scorm-render-package_index.html"
+
+
+      120 |         const iframe = block.locator('iframe.scorm_object');
+      121 |         await expect(iframe).toBeVisible();
+    > 122 |         await expect(iframe).toHaveAttribute(
+          |                              ^
+      123 |             'data-src',
+      124 |             /\/static\/djpyfs\/.+\/p1b-scorm-render-package\/index\.html$/,
+      125 |         );
+        at /work/tests/scorm_render.spec.ts:122:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    out/test-results/scorm_render-SCORM-1-2-pac-fa0d2-initializes-the-runtime-API-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: out/test-results/scorm_render-SCORM-1-2-pac-fa0d2-initializes-the-runtime-API-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    out/test-results/scorm_render-SCORM-1-2-pac-fa0d2-initializes-the-runtime-API-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace out/test-results/scorm_render-SCORM-1-2-pac-fa0d2-initializes-the-runtime-API-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/scorm_render.spec.ts:26:5 › SCORM 1.2 package renders and initializes the runtime API 
+npm notice
+npm notice New major version of npm available! 11.13.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

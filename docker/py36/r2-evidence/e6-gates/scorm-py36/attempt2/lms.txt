@@ -1,0 +1,224 @@
+2026-10-10 04:55:51,288 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/safe_exec.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/edx/app/edxapp/edx-platform/common/lib/capa/capa/safe_exec/lazymod.py' mode='r' encoding='UTF-8'>
+  lazymod_py = open(lazymod_py_file).read()
+
+2026-10-10 04:55:51,401 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/botocore/httpsession.py:41: DeprecationWarning: 'urllib3.contrib.pyopenssl' module is deprecated and will be removed in a future release of urllib3 2.x. Read more in this issue: https://github.com/urllib3/urllib3/issues/2680
+  from urllib3.contrib.pyopenssl import orig_util_SSLContext as SSLContext
+
+2026-10-10 04:55:51,527 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/storages/backends/s3boto.py:48: DeprecationWarning: The S3BotoStorage backend is deprecated in favor of the S3Boto3Storage backend and will be removed in django-storages 1.8. This backend is mostly in bugfix only mode and has been for quite a while (in much the same way as its underlying library 'boto'). For performance, security and new feature reasons it is _strongly_ recommended that you update to the S3Boto3Storage backend. Please see the migration docs https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#migrating-boto-to-boto3.
+  DeprecationWarning
+
+2026-10-10 04:55:51,555 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/localtime/_unix.py:8: DeprecationWarning: Flags not at the start of the expression '^Time Zone: (.*)$(?m' (truncated)
+  _systemconfig_tz = re.compile(r'^Time Zone: (.*)$(?m)')
+
+2026-10-10 04:55:51,814 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/openedx/core/djangoapps/user_api/accounts/utils.py:85: DeprecationWarning: invalid escape sequence \.
+  username_match = re.search('(www\.)?' + url_stub + '(?P<username>.*?)[/]?$', url_domain_and_path, re.IGNORECASE)
+
+2026-10-10 04:55:51,863 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 04:55:51,951 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/django_comment_client/utils.py:1118: DeprecationWarning: invalid escape sequence \d
+  "|(?:2131|1800|35\d{3})\d{11})"  # JCB
+
+2026-10-10 04:55:52,077 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/triboo_analytics/views.py:1913: DeprecationWarning: invalid escape sequence \ 
+  "message": _("Error while sending mail\ please try again later.")})
+
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'edx_proctoring' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'edx_proctoring:rest_framework' isn't unique. You may not be able to reverse all URLs in this namespace
+
+System check identified 2 issues (0 silenced).
+2026-10-10 04:55:52,338 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:20: DeprecationWarning: invalid escape sequence \d
+  field=models.CharField(blank=True, default=b'', max_length=255, validators=[django.core.validators.RegexValidator(re.compile('^\d+(?:\,\d+)*\Z'), code='invalid', message='Enter only digits separated by commas.')]),
+
+2026-10-10 04:55:52,338 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/course_modes/migrations/0011_change_regex_for_comma_separated_ints.py:25: DeprecationWarning: invalid escape sequence \d
+  field=models.CharField(blank=True, default=b'', max_length=255, validators=[django.core.validators.RegexValidator(re.compile('^\d+(?:\,\d+)*\Z'), code='invalid', message='Enter only digits separated by commas.')]),
+
+2026-10-10 04:55:53,024 INFO 1 [elasticsearch] base.py:63 - HEAD http://py36-r2-e6-py36-es:9200/ [status:200 request:0.002s]
+2026-10-10 04:55:53,024 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/elasticsearch/connection/http_urllib3.py:98: DeprecationWarning: HTTPResponse.getheaders() is deprecated and will be removed in urllib3 v2.1.0. Instead access HTTPResponse.headers directly.
+  return response.status, response.getheaders(), raw_data
+
+[10/Oct/2026 04:55:53] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-10 04:55:53,026 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 40232), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:55:59,284 INFO 1 [tracking] logger.py:50 - {"user_id": null, "username": "", "ip": "127.0.0.1", "referer": "", "accept_language": "en-US", "event_source": "server", "event_type": "/auto_auth", "event": "{\"GET\": {\"username\": [\"qascorm_py36\"], \"email\": [\"qascorm_py36@example.com\"]}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:55:59.284772+00:00", "host": "15e67b5a7f06", "context": {"user_id": null, "path": "/auto_auth", "course_id": "", "org_id": ""}}
+2026-10-10 04:55:59,292 INFO 1 [tracking] logger.py:42 - {"name": "edx.user.settings.changed", "context": {"user_id": null, "path": "/auto_auth", "course_id": "", "org_id": ""}, "username": "", "session": "", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "15e67b5a7f06", "referer": "", "accept_language": "en-US", "event": {"old": null, "new": null, "truncated": [], "setting": "password", "user_id": 32, "table": "auth_user"}, "time": "2026-10-10T08:55:59.292301+00:00", "event_type": "edx.user.settings.changed", "event_source": "server", "page": null}
+2026-10-10 04:55:59,294 INFO 1 [student.models] models.py:583 - User qascorm_py36 (qascorm_py36@example.com) account is successfully activated.
+2026-10-10 04:55:59,295 INFO 1 [tracking] logger.py:42 - {"name": "edx.user.settings.changed", "context": {"user_id": null, "path": "/auto_auth", "course_id": "", "org_id": ""}, "username": "", "session": "", "ip": "127.0.0.1", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "host": "15e67b5a7f06", "referer": "", "accept_language": "en-US", "event": {"old": null, "new": 2012, "truncated": [], "setting": "year_of_birth", "user_id": 32, "table": "auth_userprofile"}, "time": "2026-10-10T08:55:59.295702+00:00", "event_type": "edx.user.settings.changed", "event_source": "server", "page": null}
+2026-10-10 04:55:59,302 INFO 1 [audit] models.py:2241 - Login success - qascorm_py36 (qascorm_py36@example.com)
+[10/Oct/2026 04:55:59] "GET /auto_auth?username=qascorm_py36&email=qascorm_py36%40example.com HTTP/1.1" 200 205
+2026-10-10 04:55:59,305 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43302), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:55:59,305 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=16, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43318), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:55:59,337 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qascorm_py36", "ip": "127.0.0.1", "referer": "", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+SCORMRender+Py36/jump_to/block-v1:QA+SCORMRender+Py36+type@vertical+block@scorm_render_unit", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:55:59.337881+00:00", "host": "15e67b5a7f06", "context": {"course_id": "course-v1:QA+SCORMRender+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+SCORMRender+Py36/jump_to/block-v1:QA+SCORMRender+Py36+type@vertical+block@scorm_render_unit", "org_id": "QA"}}
+2026-10-10 04:55:59,342 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py:1145: DeprecationWarning: Use of .. or absolute path in a resource path is not allowed and will raise exceptions in a future release.
+  self, resource_name
+
+[10/Oct/2026 04:55:59] "GET /courses/course-v1:QA+SCORMRender+Py36/jump_to/block-v1:QA+SCORMRender+Py36+type@vertical+block@scorm_render_unit HTTP/1.1" 302 0
+2026-10-10 04:55:59,397 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=16, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43340), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:55:59,402 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qascorm_py36", "ip": "127.0.0.1", "referer": "", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+SCORMRender+Py36/courseware/scorm_render_section/scorm_render_subsection/1", "event": "{\"GET\": {\"activate_block_id\": [\"block-v1:QA+SCORMRender+Py36+type@vertical+block@scorm_render_unit\"]}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:55:59.402539+00:00", "host": "15e67b5a7f06", "context": {"course_id": "course-v1:QA+SCORMRender+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+SCORMRender+Py36/courseware/scorm_render_section/scorm_render_subsection/1", "org_id": "QA"}}
+2026-10-10 04:55:59,415 INFO 1 [edx.courseware.views.index] index.py:130 - Masquerade data is cleaned. Because you have accessed non-courseware page.
+2026-10-10 04:55:59,477 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:133: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+  text
+
+2026-10-10 04:55:59,482 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:97: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+  return re.sub(_url_replace_regex('/course/'), replace_course_url, text)
+
+2026-10-10 04:55:59,482 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/common/djangoapps/static_replace/__init__.py:77: DeprecationWarning: Flags not at the start of the expression '\n        (?x)       ' (truncated)
+  return re.sub(_url_replace_regex('/jump_to_id/'), replace_jump_to_id_url, text)
+
+2026-10-10 04:55:59,536 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/program_enrollments/persistance/programs.py:352: DeprecationWarning: count is deprecated. Use Collection.count_documents instead.
+  'visibility': {'$in': [0]}
+
+2026-10-10 04:55:59,538 WARNING 1 [py.warnings] warnings.py:99 - /edx/app/edxapp/edx-platform/lms/djangoapps/program_enrollments/persistance/persistent_object.py:174: DeprecationWarning: count is deprecated. Use Collection.count_documents instead.
+  *args, **kwargs
+
+2026-10-10 04:55:59,572 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/plural.py:285: DeprecationWarning: Flags not at the start of the expression '\\s+(?u)'
+  (None, re.compile(r'\s+(?u)')),
+
+[10/Oct/2026 04:55:59] "GET /courses/course-v1:QA+SCORMRender+Py36/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy36%2Btype%40vertical%2Bblock%40scorm_render_unit HTTP/1.1" 200 69325
+2026-10-10 04:55:59,589 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=16, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43370), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:55:59,589 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=17, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43378), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 04:55:59,590 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=18, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43386), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/timepicker/jquery.timepicker.css HTTP/1.1" 200 1494
+[10/Oct/2026 04:55:59] "GET /static/css/vendor/select2.min.css HTTP/1.1" 200 14966
+[10/Oct/2026 04:55:59] "GET /static/css/vendor/jquery.qtip.min.css HTTP/1.1" 200 1677
+[10/Oct/2026 04:55:59] "GET /static/css/vendor/iziModal.min.css HTTP/1.1" 200 85914
+[10/Oct/2026 04:55:59] "GET /static/css/vendor/swiper.min.css HTTP/1.1" 200 19778
+[10/Oct/2026 04:55:59] "GET /static/css/lms-main-v1.css HTTP/1.1" 200 998574
+[10/Oct/2026 04:55:59] "GET /static/js/ie11_find_array.js HTTP/1.1" 200 1685
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/jquery.cookie.js HTTP/1.1" 200 1941
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/jquery-migrate.js HTTP/1.1" 200 32441
+[10/Oct/2026 04:55:59] "GET /static/js/i18n/en/djangojs.js HTTP/1.1" 200 3217
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/CodeMirror/codemirror.css HTTP/1.1" 200 6703
+[10/Oct/2026 04:55:59] "GET /static/css/vendor/jquery.treeview.css HTTP/1.1" 200 1266
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/url.min.js HTTP/1.1" 200 1711
+[10/Oct/2026 04:55:59] "GET /static/css/vendor/ui-lightness/jquery-ui-1.8.22.custom.css HTTP/1.1" 200 33324
+[10/Oct/2026 04:55:59] "GET /static/css/lms-course.css HTTP/1.1" 200 765917
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/jquery.js HTTP/1.1" 200 285314
+[10/Oct/2026 04:55:59] "GET /static/edx-ui-toolkit/js/utils/global-loader.js HTTP/1.1" 200 2928
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/picturefill.js HTTP/1.1" 200 44683
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/vue-resource.js HTTP/1.1" 200 38219
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/underscore.string.js HTTP/1.1" 200 44948
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/underscore.js HTTP/1.1" 200 68416
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/vue.js HTTP/1.1" 200 342147
+[10/Oct/2026 04:55:59] "GET /static/edx-ui-toolkit/js/utils/string-utils.js HTTP/1.1" 200 2940
+[10/Oct/2026 04:55:59] "GET /static/edx-ui-toolkit/js/utils/html-utils.js HTTP/1.1" 200 9760
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/require.js HTTP/1.1" 200 86482
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/URI.min.js HTTP/1.1" 200 37994
+[10/Oct/2026 04:55:59] "GET /static/js/RequireJS-namespace-undefine.js HTTP/1.1" 200 303
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/backbone.js HTTP/1.1" 200 80390
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/swiper.min.js HTTP/1.1" 200 127935
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/json2.js HTTP/1.1" 200 17521
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/notify.min.js HTTP/1.1" 200 13780
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/datepicker-translation.js HTTP/1.1" 200 2865
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/iziModal.min.js HTTP/1.1" 200 26264
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/jquery.qtip.min.js HTTP/1.1" 200 153892
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/jquery-ui.min.js HTTP/1.1" 200 240215
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/select2.js HTTP/1.1" 200 151816
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/timepicker/jquery.timepicker.js HTTP/1.1" 200 51398
+[10/Oct/2026 04:55:59] "GET /static/js/src/ajax_prefix.js HTTP/1.1" 200 791
+[10/Oct/2026 04:55:59] "GET /static/js/src/jquery.immediateDescendents.js HTTP/1.1" 200 670
+[10/Oct/2026 04:55:59] "GET /static/js/src/xproblem.js HTTP/1.1" 200 2296
+[10/Oct/2026 04:55:59] "GET /static/common/js/xblock/core.js HTTP/1.1" 200 6066
+[10/Oct/2026 04:55:59] "GET /static/common/js/xblock/runtime.v1.js HTTP/1.1" 200 1500
+[10/Oct/2026 04:55:59] "GET /static/lms/js/xblock/lms.runtime.v1.js HTTP/1.1" 200 1609
+[10/Oct/2026 04:55:59] "GET /static/js/src/utility.js HTTP/1.1" 200 2065
+[10/Oct/2026 04:55:59] "GET /static/js/src/logger.js HTTP/1.1" 200 3911
+[10/Oct/2026 04:55:59] "GET /static/js/form.ext.js HTTP/1.1" 200 1574
+[10/Oct/2026 04:55:59] "GET /static/js/user_dropdown_v1.js HTTP/1.1" 200 3672
+[10/Oct/2026 04:55:59] "GET /static/js/src/string_utils.js HTTP/1.1" 200 2268
+[10/Oct/2026 04:55:59] "GET /static/js/dialog_tab_controls.js HTTP/1.1" 200 2499
+[10/Oct/2026 04:55:59] "GET /static/js/src/ie_shim.js HTTP/1.1" 200 818
+[10/Oct/2026 04:55:59] "GET /static/js/src/accessibility_tools.js HTTP/1.1" 200 9886
+[10/Oct/2026 04:55:59] "GET /static/js/sticky_filter.js HTTP/1.1" 200 413
+[10/Oct/2026 04:55:59] "GET /static/js/toggle_login_modal.js HTTP/1.1" 200 4738
+[10/Oct/2026 04:55:59] "GET /static/js/calculator.js HTTP/1.1" 200 7595
+[10/Oct/2026 04:55:59] "GET /static/js/main.js HTTP/1.1" 200 1557
+[10/Oct/2026 04:55:59] "GET /static/js/src/lang_edx.js HTTP/1.1" 200 2382
+[10/Oct/2026 04:55:59] "GET /static/js/query-params.js HTTP/1.1" 200 300
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/moment-with-locales.js HTTP/1.1" 200 632739
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/moment-timezone-with-data.js HTTP/1.1" 200 208009
+[10/Oct/2026 04:55:59] "GET /static/bundles/IltGlobals.js HTTP/1.1" 200 2299
+[10/Oct/2026 04:55:59] "GET /static/lms/js/require-config.js HTTP/1.1" 200 10587
+[10/Oct/2026 04:55:59] "GET /static/bundles/VerticalStudentView.js HTTP/1.1" 200 9340
+[10/Oct/2026 04:55:59] "GET /static/bundles/DSComponents.js HTTP/1.1" 200 1632
+[10/Oct/2026 04:55:59] "GET /static/bundles/SequenceModule.js HTTP/1.1" 200 1891
+[10/Oct/2026 04:55:59] "GET /static/bundles/XModuleShim.js HTTP/1.1" 200 2876
+[10/Oct/2026 04:55:59] "GET /static/bundles/commons.js HTTP/1.1" 200 2804363
+[10/Oct/2026 04:55:59] "GET /static/images/profiles/default_50.png HTTP/1.1" 200 1020
+[10/Oct/2026 04:55:59] "GET /static/bundles/CourseSock.js HTTP/1.1" 200 3149
+[10/Oct/2026 04:55:59] "GET /static/images/logo.png HTTP/1.1" 200 7753
+[10/Oct/2026 04:55:59] "GET /static/bundles/LanguageSelector.js HTTP/1.1" 200 4739
+[10/Oct/2026 04:55:59] "GET /static/bundles/QuestionMark.js HTTP/1.1" 200 2309
+[10/Oct/2026 04:55:59] "GET /static/common/js/vendor/jquery.scrollTo.js HTTP/1.1" 200 5726
+[10/Oct/2026 04:55:59] "GET /static/js/ajax-error.js HTTP/1.1" 200 544
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/flot/jquery.flot.js HTTP/1.1" 200 125921
+[10/Oct/2026 04:55:59] "GET /static/js/histogram.js HTTP/1.1" 200 1739
+[10/Oct/2026 04:55:59] "GET /static/js/navigation.js HTTP/1.1" 200 264
+[10/Oct/2026 04:55:59] "GET /static/js/modules/tab.js HTTP/1.1" 200 1613
+[10/Oct/2026 04:55:59] "GET /static/bundles/Courseware.js HTTP/1.1" 200 7001
+[10/Oct/2026 04:55:59] "GET /static/js/vendor/noreferrer.js HTTP/1.1" 200 1679
+[10/Oct/2026 04:55:59] "GET /static/js/utils/navigation.js HTTP/1.1" 200 4446
+[10/Oct/2026 04:55:59] "GET /static/js/header/header.js HTTP/1.1" 200 8910
+[10/Oct/2026 04:55:59] "GET /static/bundles/Dialog.js HTTP/1.1" 200 4389
+[10/Oct/2026 04:56:00] "GET /analytics/check_my_downloads HTTP/1.1" 301 0
+2026-10-10 04:56:00,077 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qascorm_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py36/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy36%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event_type": "/analytics/check_my_downloads/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:56:00.077792+00:00", "host": "15e67b5a7f06", "context": {"user_id": 32, "path": "/analytics/check_my_downloads/", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:56:00] "GET /analytics/check_my_downloads/ HTTP/1.1" 200 37
+2026-10-10 04:56:00,082 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43404), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:56:00] "GET /static/js/dateutil_factory.js HTTP/1.1" 200 3864
+[10/Oct/2026 04:56:00] "GET /static/js/courseware/accordion_events.js HTTP/1.1" 200 648
+[10/Oct/2026 04:56:00] "GET /static/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 265848
+[10/Oct/2026 04:56:00] "GET /static/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 342108
+[10/Oct/2026 04:56:00] "GET /static/edx-ui-toolkit/js/utils/date-utils.js HTTP/1.1" 200 9402
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/course_search_factory.js HTTP/1.1" 200 2556
+[10/Oct/2026 04:56:00] "GET /static/course_bookmarks/js/course_bookmarks_factory.js HTTP/1.1" 200 1699
+[10/Oct/2026 04:56:00] "GET /static/js/courseware/courseware_factory.js HTTP/1.1" 200 724
+[10/Oct/2026 04:56:00] "GET /static/fonts/fontawesome/fa-light-300.woff2 HTTP/1.1" 200 366248
+2026-10-10 04:56:00,141 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qascorm_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py36/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy36%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event_type": "/course-v1:QA+SCORMRender+Py36/batch_completion/", "event": "{\"GET\": {}, \"POST\": {\"{\\\"blocks\\\":[]}\": [\"\"]}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:56:00.141385+00:00", "host": "15e67b5a7f06", "context": {"user_id": 32, "path": "/course-v1:QA+SCORMRender+Py36/batch_completion/", "course_id": "", "org_id": ""}}
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/search_router.js HTTP/1.1" 200 355
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/collections/search_collection.js HTTP/1.1" 200 4480
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/views/search_form.js HTTP/1.1" 200 2334
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/views/course_search_results_view.js HTTP/1.1" 200 1399
+[10/Oct/2026 04:56:00] "POST /course-v1:QA+SCORMRender+Py36/batch_completion/ HTTP/1.1" 200 0
+2026-10-10 04:56:00,151 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qascorm_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py36/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy36%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+SCORMRender+Py36/xblock/block-v1:QA+SCORMRender+Py36+type@scormxblock+block@scorm_render_component/handler/sync_runtime_info", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:56:00.151074+00:00", "host": "15e67b5a7f06", "context": {"course_id": "course-v1:QA+SCORMRender+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+SCORMRender+Py36/xblock/block-v1:QA+SCORMRender+Py36+type@scormxblock+block@scorm_render_component/handler/sync_runtime_info", "org_id": "QA"}}
+[10/Oct/2026 04:56:00] "GET /static/js/views/message_banner.js HTTP/1.1" 200 1269
+[10/Oct/2026 04:56:00] "GET /static/course_bookmarks/js/collections/bookmarks.js HTTP/1.1" 200 859
+[10/Oct/2026 04:56:00] "GET /static/course_bookmarks/js/views/bookmarks_list.js HTTP/1.1" 200 5525
+2026-10-10 04:56:00,156 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=8, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43436), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:56:00] "GET /static/course_bookmarks/js/views/bookmarks_list_button.js HTTP/1.1" 200 426
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/models/search_result.js HTTP/1.1" 200 331
+[10/Oct/2026 04:56:00] "GET /static/js/vendor/requirejs/text.js HTTP/1.1" 200 15873
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/views/search_results_view.js HTTP/1.1" 200 4136
+[10/Oct/2026 04:56:00] "GET /static/course_bookmarks/js/models/bookmark.js HTTP/1.1" 200 541
+[10/Oct/2026 04:56:00] "GET /static/common/js/components/views/paging_header.js HTTP/1.1" 200 2938
+[10/Oct/2026 04:56:00] "GET /static/edx-ui-toolkit/js/pagination/paging-collection.js HTTP/1.1" 200 19254
+[10/Oct/2026 04:56:00] "GET /static/common/js/components/views/paging_footer.js HTTP/1.1" 200 3582
+[10/Oct/2026 04:56:00] "GET /static/course_bookmarks/templates/bookmarks-list.underscore HTTP/1.1" 200 2604
+[10/Oct/2026 04:56:00] "GET /static/templates/fields/message_banner.underscore HTTP/1.1" 200 236
+[10/Oct/2026 04:56:00] "GET /static/course_search/templates/course_search_results.underscore HTTP/1.1" 200 765
+[10/Oct/2026 04:56:00] "GET /static/course_search/templates/course_search_item.underscore HTTP/1.1" 200 327
+[10/Oct/2026 04:56:00] "POST /courses/course-v1:QA+SCORMRender+Py36/xblock/block-v1:QA+SCORMRender+Py36+type@scormxblock+block@scorm_render_component/handler/sync_runtime_info HTTP/1.1" 200 2115
+[10/Oct/2026 04:56:00] "GET /static/common/templates/components/paging-header.underscore HTTP/1.1" 200 850
+[10/Oct/2026 04:56:00] "GET /static/course_search/templates/search_error.underscore HTTP/1.1" 200 122
+[10/Oct/2026 04:56:00] "GET /static/course_search/templates/search_loading.underscore HTTP/1.1" 200 95
+[10/Oct/2026 04:56:00] "GET /static/course_search/js/views/search_item_view.js HTTP/1.1" 200 2434
+2026-10-10 04:56:00,188 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=6, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43468), raddr=('192.168.148.14', 11211)>
+
+[10/Oct/2026 04:56:00] "GET /static/common/templates/components/paging-footer.underscore HTTP/1.1" 200 1424
+[10/Oct/2026 04:56:00] "GET /static/common/js/vendor/backbone.paginator.js HTTP/1.1" 200 50573
+[10/Oct/2026 04:56:01] "GET /static/djpyfs/block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/index.html HTTP/1.1" 200 333
+[10/Oct/2026 04:56:01] "GET /static/djpyfs/block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/runtime.js HTTP/1.1" 200 594
+[10/Oct/2026 04:56:01] "GET /static/djpyfs/block--v1-_QA-.SCORMRender-.Py36-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/package.css HTTP/1.1" 200 242
+2026-10-10 04:56:01,179 INFO 1 [tracking] logger.py:50 - {"user_id": 32, "username": "qascorm_py36", "ip": "127.0.0.1", "referer": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py36/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy36%2Btype%40vertical%2Bblock%40scorm_render_unit", "accept_language": "en-US", "event_source": "server", "event_type": "/courses/course-v1:QA+SCORMRender+Py36/xblock/block-v1:QA+SCORMRender+Py36+type@scormxblock+block@scorm_render_component/handler/ping", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36", "page": null, "time": "2026-10-10T08:56:01.179094+00:00", "host": "15e67b5a7f06", "context": {"course_id": "course-v1:QA+SCORMRender+Py36", "course_user_tags": {}, "user_id": 32, "path": "/courses/course-v1:QA+SCORMRender+Py36/xblock/block-v1:QA+SCORMRender+Py36+type@scormxblock+block@scorm_render_component/handler/ping", "org_id": "QA"}}
+[10/Oct/2026 04:56:01] "GET /courses/course-v1:QA+SCORMRender+Py36/xblock/block-v1:QA+SCORMRender+Py36+type@scormxblock+block@scorm_render_component/handler/ping HTTP/1.1" 200 0
+2026-10-10 04:56:01,198 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=16, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.17', 43512), raddr=('192.168.148.14', 11211)>
+

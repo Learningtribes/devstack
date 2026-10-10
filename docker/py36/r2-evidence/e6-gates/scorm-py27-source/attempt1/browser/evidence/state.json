@@ -1,0 +1,68 @@
+{
+  "status": "BROWSER_SCORM_OK",
+  "runtime": "py27",
+  "attempt": 2,
+  "browser": "149.0.7827.0",
+  "auth": {
+    "status": 200,
+    "url": "http://localhost:18000/auto_auth?username=qascorm_py27&email=qascorm_py27%40example.com",
+    "courseId": null
+  },
+  "unit": {
+    "requestedPath": "/courses/course-v1:QA+SCORMRender+Py27/jump_to/block-v1:QA+SCORMRender+Py27+type@vertical+block@scorm_render_unit",
+    "url": "http://localhost:18000/courses/course-v1:QA+SCORMRender+Py27/courseware/scorm_render_section/scorm_render_subsection/1?activate_block_id=block-v1%3AQA%2BSCORMRender%2BPy27%2Btype%40vertical%2Bblock%40scorm_render_unit",
+    "status": 200
+  },
+  "component": {
+    "usageId": "scorm_render_component",
+    "marker": "P1B_SCORM_PACKAGE_RENDER_OK",
+    "iframeSource": "/static/djpyfs/block--v1-_QA-.SCORMRender-.Py27-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/index.html"
+  },
+  "api": {
+    "initialized": "true",
+    "types": {
+      "api12": "object",
+      "api2004": "object"
+    }
+  },
+  "transport": {
+    "pingCount": 1,
+    "pingStatuses": [
+      200
+    ],
+    "syncCount": 1,
+    "syncStatuses": [
+      200
+    ],
+    "packageResponses": [
+      {
+        "file": "index.html",
+        "path": "/static/djpyfs/block--v1-_QA-.SCORMRender-.Py27-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/index.html",
+        "status": 200,
+        "contentType": "text/html",
+        "bodyBytes": 333
+      },
+      {
+        "file": "package.css",
+        "path": "/static/djpyfs/block--v1-_QA-.SCORMRender-.Py27-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/package.css",
+        "status": 200,
+        "contentType": "text/css",
+        "bodyBytes": 242
+      },
+      {
+        "file": "runtime.js",
+        "path": "/static/djpyfs/block--v1-_QA-.SCORMRender-.Py27-.type_64_scormxblock-.block_64_scorm__render__component/fs/NONE.NONE/p1b-scorm-render-package/runtime.js",
+        "status": 200,
+        "contentType": "application/javascript",
+        "bodyBytes": 594
+      }
+    ]
+  },
+  "diagnostics": {
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": []
+  },
+  "screenshot": "/work/out/evidence/py27-attempt2-scorm-render.png"
+}

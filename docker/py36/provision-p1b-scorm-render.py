@@ -46,6 +46,9 @@ SCORM_COMMIT = '8a6c07d562217500fa8236f555343c9921ef4907'
 SCORM_TREE = '595e291da2d3a7983a290fdc433e1471805b2525'
 SCORM_MODULE_SHA256 = '0b3b9304ecf20fb63009e8ba0b33857bbea3e868c25d9f087fb55d91438511b6'
 SCORM_JS_SHA256 = '675ed5821f9d193ae46024e1d3d8d01efba0b1b37b254640460e97d5740bc772'
+# Python 2.7 git checkout the scormxblock package must be imported from; None
+# means the installed (editable) distribution's own checkout.
+SCORM_SOURCE_ROOT = None
 MARKER = 'P1B_SCORM_PACKAGE_RENDER_OK'
 API_MARKER = 'P1B_SCORM_API_INIT'
 DISPLAY_NAME = 'P1-B SCORM Render'
@@ -192,8 +195,11 @@ def _scorm_source_identity(fixture):
         direct_url = json.loads(direct_url_paths[0])
         commit = direct_url.get('vcs_info', {}).get('commit_id')
     else:
-        commit = _text(subprocess.check_output(['git', '-C', distribution.location, 'rev-parse', 'HEAD'])).strip()
-        tree = _text(subprocess.check_output(['git', '-C', distribution.location, 'rev-parse', 'HEAD^{tree}'])).strip()
+        source_root = SCORM_SOURCE_ROOT or distribution.location
+        if module_root != os.path.join(os.path.realpath(source_root), 'scormxblock'):
+            raise RuntimeError('scormxblock is not imported from {}: {}'.format(source_root, module_root))
+        commit = _text(subprocess.check_output(['git', '-C', source_root, 'rev-parse', 'HEAD'])).strip()
+        tree = _text(subprocess.check_output(['git', '-C', source_root, 'rev-parse', 'HEAD^{tree}'])).strip()
         if tree != SCORM_TREE:
             raise RuntimeError('SCORM source tree mismatch: {}'.format(tree))
     if commit != SCORM_COMMIT:
@@ -208,6 +214,7 @@ def _scorm_source_identity(fixture):
     return {
         'commit': commit,
         'tree': SCORM_TREE,
+        'source_root': SCORM_SOURCE_ROOT,
         'distribution': distribution.version,
         'module_file': module_file,
         'module_sha256': SCORM_MODULE_SHA256,
