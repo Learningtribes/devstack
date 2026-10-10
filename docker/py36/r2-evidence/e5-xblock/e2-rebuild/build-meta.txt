@@ -1,0 +1,38 @@
+build start 2026-10-10 11:58:40 +0800 (attempt 3; attempts 1-2 lost GitHub TLS handshakes in GnuTLS git through the proxy, see build-attempt*-tls-flake.log)
+devstack HEAD 521cc5d4378a1a57c4a51ef8313efb47306ee509 (lock = xblock-pdf 99b22d45 + xblock-ilt 52b0f1cb; GitHub via git_mirror)
+platform context platform-r2-py36-src @ 0ac3bfa6d099916cc58fc258db17221801f49d48
+xblock_ilt context:
+  repo=git@github.com:Learningtribes/xblock-ilt.git
+  commit=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
+  tree=4bef495ee41186740ac7721186e4d284f4820658
+  hawthorn_tip=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
+  files=40
+  content_sha256=fc209332d9b1903135a3c8b08edf201658ba7e62dfb8faefaea7d147b353a1c0
+git_mirror context /Users/noahwang/workspace/hawthorn/.py36-r2-sources/git-mirror-4d239d86091b:
+  lock=py36-git-requirements.txt sha256=4d239d86091b1bef2d22fdef014bab09d652334e332d40574a7ea7957ba66e6a
+  repos=21
+  edx/django-celery.git 756cb57aad765cb2b0d37372c1855b8f5f37e6b0 tree=ca51e78d38ef0b5eea5bf33a5bf77dd3f5123e92 attempts=1
+  edx/django-rest-framework.git 1ceda7c086fddffd1c440cc86856441bbf0bd9cb tree=cba10e128fcd38fe4cffba62988e121d20366189 attempts=1
+  edx/django-wiki.git 4ceac471dab2d629a2b978646fb91e4d855b1e89 tree=f3a299b2e885cff2303260506e835d2ec949471e attempts=1
+  edx/codejail.git 4127fc4bd5775cc72aee8d7f0a70e31405e22439 tree=e902ae66a1a6d6fa9884ca08261209d86b8b9a93 attempts=1
+  edx/django-oauth-plus.git b9b64a3ac24fd11f471763c88462bbf3c53e46e6 tree=33021f2a809f615c42a84ecaab05767356480a9a attempts=1
+  edx/django-openid-auth.git 7398beacd3265b93f68084b03f88732dfcc86cef tree=0b616d55896d29a23af551198bf03fae5b03e4b2 attempts=1
+  edx/django-rest-framework-oauth.git 0a43e8525f1e3048efe4bc70c03de308a277197c tree=ed2dec0092431de70fc71e39684d3b3597687717 attempts=1
+  edx/MongoDBProxy.git d92bafe9888d2940f647a7b2b2383b29c752f35a tree=94fe9d6a469cb7b6a86dfea5d95e991079d6ce2f attempts=1
+  Learningtribes/djangosaml2idp.git da3798ea6be76ce392f3d3f26aa75d0fdccbf7fe tree=cb4790a8907858bd754dbf95502f190ca6db0567 attempts=1
+  appliedsec/pygeoip.git 95e69341cebf5a6a9fbf7c4f5439d458898bdc3b tree=98e637f04c467ff48c1532a4ee2b2507d25c1efe attempts=1
+  dgrtwo/ParsePy.git 7949b9f754d1445eff8e8f20d0e967b9a6420639 tree=bb2573bb168fa38be1765252d834dd94060bb1e1 attempts=1
+  jazkarta/edx-jsme.git 690dbf75441fa91c7c4899df0b83d77f7deb5458 tree=9861139648d01ce6dbf8a80ed3a2e68283cdff36 attempts=1
+  Learningtribes/edx-ora2 d3f24a9c539528e960c8dcc9aef200cea0c49baf tree=faf7e4ad4dbaf1d9c8c103e468943a94d4d1f988 attempts=1
+  Learningtribes/xblock-utils.git 8e5e856859f5b006d7f55e98b0fc867e465e3105 tree=f23eb9a763d7e6dba39ea3ced6faf0d41b548e03 attempts=1
+  Learningtribes/xblock-poll e8eed047d79ce424b0f9c980b43d48fdeb92517c tree=b855f55bdb7a3393a92c22a4464862f9313d52fe attempts=1
+  Learningtribes/xblock-done.git 25acf600d5d639a96c3556e3d26fbd14f99d1b85 tree=9fefb84b4e94b1537ed17d6e7517af32d4e582ed attempts=1
+  edx/xblock-lti-consumer.git af68c7cff38441abe00be725a504e77caf6ba282 tree=7bb5fc3ab93dc8abf87d3209893eff1842934f5f attempts=1
+  Learningtribes/edx_xblock_scorm 8a6c07d562217500fa8236f555343c9921ef4907 tree=595e291da2d3a7983a290fdc433e1471805b2525 attempts=1
+  Learningtribes/xblock-drag-and-drop-v2 9f0b43da2ed8e8691604c5b1a08185a7874ff9b9 tree=5b14733fc5af67079c415bc0dd849ba0f0af7663 attempts=1
+  Learningtribes/xblock-pdf 99b22d45060e9bc04503f5cb86a450204acb2e00 tree=ab05b5882fc1376fc7166913b8cd4ac0181afe88 attempts=1
+  Learningtribes/edx-search.git c770553be3c90ab2250bffd1afa3556fd660af11 tree=b06bcf99e617998373e7f179246b7274b6855656 attempts=1
+previous image sha256:8c2e7df2e03d retagged ltdps/edxapp:py36-r2-20261009-pre-ilt
+deviation from R1 build_command: DEBIAN_SECURITY_MIRROR=http://archive.debian.org/debian-security (as E2); --build-context git_mirror + xblock_ilt
+build end 2026-10-10 12:10:59 +0800
+build exit=0

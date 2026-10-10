@@ -1,0 +1,1 @@
+('py27 lms.envs.test scormxblock FAIL:', 'RuntimeError(u"Model class xblock_config.models.StudioConfig doesn\'t declare an explicit app_label and isn\'t in an application in INSTALLED_APPS.",)')

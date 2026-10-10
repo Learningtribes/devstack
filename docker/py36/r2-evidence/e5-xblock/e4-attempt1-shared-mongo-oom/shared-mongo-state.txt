@@ -1,0 +1,2 @@
+edx.devstack.mongo status=exited exit=137 oom_killed=true finished=2026-10-10T03:28:08.53840018Z
+docker_mem_total=16820461568 (OrbStack); concurrent at the kill: no-cache image build attempt 1, amd64-emulated webpack (asset compile r2), 8 E6 containers incl. 2 tmpfs MySQL

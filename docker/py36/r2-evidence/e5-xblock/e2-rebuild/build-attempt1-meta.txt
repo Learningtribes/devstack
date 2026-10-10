@@ -1,0 +1,14 @@
+build start 2026-10-10 11:17:28 +0800
+devstack HEAD 0d17f2a35219ff4ee154969f286525d71f320e6b (lock = xblock-pdf 99b22d45 + xblock-ilt 52b0f1cb)
+platform context platform-r2-py36-src @ 0ac3bfa6d099916cc58fc258db17221801f49d48
+xblock_ilt context:
+  repo=git@github.com:Learningtribes/xblock-ilt.git
+  commit=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
+  tree=4bef495ee41186740ac7721186e4d284f4820658
+  hawthorn_tip=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
+  files=40
+  content_sha256=fc209332d9b1903135a3c8b08edf201658ba7e62dfb8faefaea7d147b353a1c0
+previous image sha256:8c2e7df2e03d retagged ltdps/edxapp:py36-r2-20261009-pre-ilt
+deviation from R1 build_command: DEBIAN_SECURITY_MIRROR=http://archive.debian.org/debian-security (as E2)
+build end 2026-10-10 11:32:51 +0800
+build exit=1

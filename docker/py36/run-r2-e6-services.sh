@@ -17,6 +17,12 @@ EXPECTED_COMMIT=0ac3bfa6d099916cc58fc258db17221801f49d48
 CONFIG=${WORKSPACE}/.py36-r2-config
 DUMP=${CONFIG}/e6-mysql-snapshot.sql
 MYSQL_ENV=${CONFIG}/e6-mysql.env
+# The Python 3.6 image installs this exact export; overlaying it on the shared
+# src/ checkout keeps the Python 2.7 control's editable ilt-xblock identical.
+XBLOCK_ILT_COMMIT=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
+XBLOCK_ILT_SRC=${WORKSPACE}/.py36-r2-sources/xblock-ilt-${XBLOCK_ILT_COMMIT}
+# r2-build-e6-assets.sh output; LMS and Studio both mount the runtime's tree.
+ASSET_ROOT=${PY36_R2_E6_ASSET_ROOT:-/tmp/py36-r2-e6-assets-20261010-r3}
 MYSQL_IMAGE=mysql:5.6
 CACHE_IMAGE=memcached@sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226
 NETWORK=devstack_default
@@ -42,7 +48,7 @@ RUNTIME=${1:-}
 case "${RUNTIME}" in
     py36)
         IMAGE=ltdps/edxapp:py36-r2-20261009
-        IMAGE_ID=sha256:8c2e7df2e03d5155be22b6bb70d885a9f88987ff1f74f7ac6a2d1b31165d0355
+        IMAGE_ID=sha256:9b43579930c4cd53e77e1fc5cfe1100f8852c605f1dfa8e9ab924fa2503f2211
         PLATFORM=linux/arm64
         PYTHON=python
         PORT_BASE=183
@@ -95,6 +101,8 @@ service_args() {
         --platform "${PLATFORM}" --entrypoint /bin/sh \
         --mount "type=bind,src=${SOURCE_ROOT},dst=${P},readonly" \
         --mount "type=bind,src=${WORKSPACE}/src,dst=/edx/src,readonly" \
+        --mount "type=bind,src=${XBLOCK_ILT_SRC},dst=/edx/src/xblock-ilt,readonly" \
+        --mount "type=bind,src=${ASSET_ROOT}/${RUNTIME},dst=/edx/var/edxapp/staticfiles,readonly" \
         --mount "type=bind,src=${CONFIG}/${svc}.auth.json,dst=/edx/app/edxapp/${svc}.auth.json,readonly" \
         --mount "type=bind,src=${CONFIG}/${svc}.env.json,dst=/edx/app/edxapp/${svc}.env.json,readonly" \
         --mount "type=bind,src=${SCRIPT_DIR}/py36_r2_e6_settings.py,dst=/edx/app/edxapp/py36_r2_e6_settings.py,readonly" \
@@ -116,6 +124,9 @@ start() {
     test "$(git -C "${SOURCE_ROOT}" rev-parse HEAD)" = "${EXPECTED_COMMIT}"
     test -z "$(git -C "${SOURCE_ROOT}" status --porcelain)"
     test -f "${DUMP}" && test -f "${MYSQL_ENV}"
+    grep -qx "commit=${XBLOCK_ILT_COMMIT}" "${XBLOCK_ILT_SRC}.identity"
+    grep -qx "source_commit=${EXPECTED_COMMIT}" "${ASSET_ROOT}/logs/provenance.txt"
+    grep -qx "collect_${RUNTIME}_image=${IMAGE} ${IMAGE_ID}" "${ASSET_ROOT}/logs/provenance.txt"
     for c in ${MYSQL} ${CACHE} ${LMS} ${CMS}; do
         if exists "$c"; then echo "refusing to replace existing container: $c" >&2; exit 2; fi
     done
@@ -147,12 +158,10 @@ start() {
     # shellcheck disable=SC2046
     docker run -d --name "${LMS}" --network "${NETWORK}" \
         --publish "127.0.0.1:${LMS_PORT}:18000" --publish "127.0.0.1:${CMS_PORT}:18010" \
-        --mount type=volume,src=devstack_edxapp_lms_assets,dst=/edx/var/edxapp/staticfiles,readonly \
         $(service_args lms) "${IMAGE}" \
         -c "${METADATA}exec ${PYTHON} manage.py lms runserver 0.0.0.0:18000 --noreload --nostatic" >/dev/null
     # shellcheck disable=SC2046
     docker run -d --name "${CMS}" --network "container:${LMS}" \
-        --mount type=volume,src=devstack_edxapp_studio_assets,dst=/edx/var/edxapp/staticfiles,readonly \
         $(service_args cms) "${IMAGE}" \
         -c "${METADATA}exec ${PYTHON} manage.py cms runserver 0.0.0.0:18010 --noreload --nostatic" >/dev/null
 
