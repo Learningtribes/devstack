@@ -93,14 +93,19 @@ COPY --from=platform /common/lib/capa/setup.py /tmp/capa-metadata/setup.py
 COPY --from=platform /common/lib/capa/capa/__init__.py /tmp/capa-metadata/capa/__init__.py
 COPY --from=platform /common/lib/xmodule/setup.py /tmp/xmodule-metadata/setup.py
 COPY --from=platform /common/lib/xmodule/xmodule/__init__.py /tmp/xmodule-metadata/xmodule/__init__.py
+COPY --from=platform /openedx/core/lib/xblock_builtin/xblock_discussion/setup.py /tmp/discussion-metadata/setup.py
+COPY --from=platform /openedx/core/lib/xblock_builtin/xblock_discussion/xblock_discussion/__init__.py /tmp/discussion-metadata/xblock_discussion/__init__.py
 RUN pip install --no-cache-dir --no-deps /tmp/platform-metadata \
     && pip install --no-cache-dir --no-deps /tmp/capa-metadata \
     && pip install --no-cache-dir --no-deps /tmp/xmodule-metadata \
+    && pip install --no-cache-dir --no-deps /tmp/discussion-metadata \
     && python -c "import pkg_resources; assert list(pkg_resources.iter_entry_points('xmodule.v1', 'course')); assert list(pkg_resources.iter_entry_points('xmodule.v1', 'hidden')); print('XModule entry points OK')" \
+    && python -c "import pkg_resources; assert [ep.module_name for ep in pkg_resources.iter_entry_points('xblock.v1', 'discussion')] == ['xblock_discussion']; print('discussion entry point OK')" \
     && rm -f /usr/local/lib/python3.6/site-packages/Open_edX-0.11.dist-info/direct_url.json \
         /usr/local/lib/python3.6/site-packages/capa-0.1.dist-info/direct_url.json \
         /usr/local/lib/python3.6/site-packages/XModule-0.1.1.dist-info/direct_url.json \
-    && rm -rf /tmp/platform-metadata /tmp/capa-metadata /tmp/xmodule-metadata
+        /usr/local/lib/python3.6/site-packages/xblock_discussion-0.1.dist-info/direct_url.json \
+    && rm -rf /tmp/platform-metadata /tmp/capa-metadata /tmp/xmodule-metadata /tmp/discussion-metadata
 
 # Verify. uv is retained in the image, but no released uv runner can execute
 # Python 3.6; use the image interpreter directly for this smoke check.
