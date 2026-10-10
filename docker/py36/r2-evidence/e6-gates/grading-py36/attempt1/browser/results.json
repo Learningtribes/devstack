@@ -1,0 +1,165 @@
+{
+  "config": {
+    "argv": [
+      "/usr/bin/node",
+      "/work/node_modules/.bin/playwright",
+      "test",
+      "tests/grading_mutation.spec.ts",
+      "--reporter=list,json",
+      "--retries=0",
+      "--timeout=180000",
+      "--trace=retain-on-failure",
+      "--output=/work/out/test-results"
+    ],
+    "configFile": "/work/playwright.config.ts",
+    "rootDir": "/work/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/work/out/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/work/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "grading_mutation.spec.ts",
+      "file": "grading_mutation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "visible CAPA grading mutation persists wrong then correct through worker and Progress",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8559,
+                  "error": {
+                    "message": "Error: visible grading unit\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - visible grading unit with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"hd hd-2 unit-title\">Grading Unit</h2>\u001b[22m\n\u001b[2m       - unexpected value \"hidden\"\u001b[22m\n",
+                    "stack": "Error: visible grading unit\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - visible grading unit with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"hd hd-2 unit-title\">Grading Unit</h2>\u001b[22m\n\u001b[2m       - unexpected value \"hidden\"\u001b[22m\n\n    at openUnitFromCourseHome (/work/tests/grading_mutation.spec.ts:175:108)\n    at /work/tests/grading_mutation.spec.ts:328:19",
+                    "location": {
+                      "file": "/work/tests/grading_mutation.spec.ts",
+                      "column": 108,
+                      "line": 175
+                    },
+                    "snippet": "  173 |     await expect(page.locator('.course-content .page-header h3'), 'visible grading subsection heading')\n  174 |         .toHaveText(SUBSECTION_NAME);\n> 175 |     await expect(page.locator('.unit-title').filter({hasText: UNIT_NAME}).first(), 'visible grading unit').toBeVisible();\n      |                                                                                                            ^\n  176 |     return page.url();\n  177 | }\n  178 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/work/tests/grading_mutation.spec.ts",
+                        "column": 108,
+                        "line": 175
+                      },
+                      "message": "Error: visible grading unit\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - visible grading unit with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"hd hd-2 unit-title\">Grading Unit</h2>\u001b[22m\n\u001b[2m       - unexpected value \"hidden\"\u001b[22m\n\n\n  173 |     await expect(page.locator('.course-content .page-header h3'), 'visible grading subsection heading')\n  174 |         .toHaveText(SUBSECTION_NAME);\n> 175 |     await expect(page.locator('.unit-title').filter({hasText: UNIT_NAME}).first(), 'visible grading unit').toBeVisible();\n      |                                                                                                            ^\n  176 |     return page.url();\n  177 | }\n  178 |\n    at openUnitFromCourseHome (/work/tests/grading_mutation.spec.ts:175:108)\n    at /work/tests/grading_mutation.spec.ts:328:19"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "BROWSER_GRADING_FAILED {\"status\":\"BROWSER_GRADING_FAILED\",\"runtime\":\"py36\",\"attempt\":\"1\",\"browser\":\"149.0.7827.0\",\"auth\":{\"method\":\"GET\",\"url\":\"http://localhost:18000/auto_auth?username=qagrade_py36&email=qagrade_py36%40example.com\",\"status\":200,\"courseIdOmitted\":true,\"username\":\"qagrade_py36\",\"email\":\"qagrade_py36@example.com\"},\"course\":{\"courseKey\":\"course-v1:QA+GradingMutation+Py36\",\"displayName\":\"P1-B Grading Mutation\",\"unitUrl\":\"\",\"problemUsageKey\":\"block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36\"},\"midcondition\":null,\"scoringRequests\":[],\"screenshots\":[\"py36-attempt1-failure.png\"],\"screenshotError\":null,\"diagnostics\":{\"consoleErrors\":[],\"pageErrors\":[],\"failedRequests\":[],\"httpErrors\":[]},\"error\":{\"name\":\"Error\",\"message\":\"visible grading unit\\n\\n\\u001b[2mexpect(\\u001b[22m\\u001b[31mlocator\\u001b[39m\\u001b[2m).\\u001b[22mtoBeVisible\\u001b[2m(\\u001b[22m\\u001b[2m)\\u001b[22m failed\\n\\nLocator:  locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\\nExpected: visible\\nReceived: hidden\\nTimeout:  5000ms\\n\\nCall log:\\n\\u001b[2m  - visible grading unit with timeout 5000ms\\u001b[22m\\n\\u001b[2m  - waiting for locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\\u001b[22m\\n\\u001b[2m    14 × locator resolved to <h2 class=\\\"hd hd-2 unit-title\\\">Grading Unit</h2>\\u001b[22m\\n\\u001b[2m       - unexpected value \\\"hidden\\\"\\u001b[22m\\n\",\"stack\":\"Error: visible grading unit\\n\\n\\u001b[2mexpect(\\u001b[22m\\u001b[31mlocator\\u001b[39m\\u001b[2m).\\u001b[22mtoBeVisible\\u001b[2m(\\u001b[22m\\u001b[2m)\\u001b[22m failed\\n\\nLocator:  locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\\nExpected: visible\\nReceived: hidden\\nTimeout:  5000ms\\n\\nCall log:\\n\\u001b[2m  - visible grading unit with timeout 5000ms\\u001b[22m\\n\\u001b[2m  - waiting for locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\\u001b[22m\\n\\u001b[2m    14 × locator resolved to <h2 class=\\\"hd hd-2 unit-title\\\">Grading Unit</h2>\\u001b[22m\\n\\u001b[2m       - unexpected value \\\"hidden\\\"\\u001b[22m\\n\\n    at openUnitFromCourseHome (/work/tests/grading_mutation.spec.ts:175:108)\\n    at /work/tests/grading_mutation.spec.ts:328:19\"}}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-10T06:16:24.086Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/work/out/test-results/grading_mutation-visible-C-6fc49-through-worker-and-Progress-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/work/out/test-results/grading_mutation-visible-C-6fc49-through-worker-and-Progress-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/work/out/test-results/grading_mutation-visible-C-6fc49-through-worker-and-Progress-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/work/tests/grading_mutation.spec.ts",
+                    "column": 108,
+                    "line": 175
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "27942514126e2a9ca898-f7d6cb062256a64c02bd",
+          "file": "grading_mutation.spec.ts",
+          "line": 260,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T06:16:23.754Z",
+    "duration": 9376.285,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -89,6 +89,44 @@ CELERY_ALWAYS_EAGER = True
 BROKER_URL = 'memory://'
 CELERY_BROKER_URL = BROKER_URL
 
+# With PY36_R2_E6_WITH_BROKER=1 the LMS side (server, scripts, worker) uses the
+# stack's own RabbitMQ. Exchange, queue names and routing keys follow the R1
+# grading gate settings, whose provisioner asserts on them.
+E6_RABBIT_HOST = os.environ.get('PY36_R2_E6_RABBIT_HOST')
+if E6_RABBIT_HOST:
+    RABBIT_CONTAINER = E6_RABBIT_HOST
+    RABBIT_VHOST = E6_NAMESPACE
+    RABBIT_USER = _required('PY36_R2_E6_RABBIT_USER')
+    RABBIT_PASSWORD = _required('PY36_R2_E6_RABBIT_PASSWORD')
+    BROKER_URL = 'amqp://{}:{}@{}:5672/{}'.format(RABBIT_USER, RABBIT_PASSWORD, RABBIT_CONTAINER, RABBIT_VHOST)
+    CELERY_BROKER_URL = BROKER_URL
+    CELERY_RESULT_BACKEND = 'rpc://'
+    CELERY_ALWAYS_EAGER = False
+    CELERY_TASK_ALWAYS_EAGER = False
+    BROKER_HEARTBEAT = 30.0
+    BROKER_HEARTBEAT_CHECKRATE = 2
+    CELERY_SEND_EVENTS = True
+    CELERY_SEND_TASK_SENT_EVENT = True
+    CELERY_TRACK_STARTED = True
+    CELERYD_PREFETCH_MULTIPLIER = 1
+    CELERY_DEFAULT_EXCHANGE = '{}.edx.core'.format(E6_NAMESPACE)
+    CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
+    CELERY_DEFAULT_QUEUE = '{}.default'.format(E6_NAMESPACE)
+    CELERY_DEFAULT_ROUTING_KEY = CELERY_DEFAULT_QUEUE
+    CELERY_QUEUE_HA_POLICY = 'all'
+    CELERY_CREATE_MISSING_QUEUES = False
+    GRADING_QUEUES = {
+        role: '{}.{}'.format(E6_NAMESPACE, role)
+        for role in ('high', 'low', 'default', 'high_mem', 'grade', 'progress')
+    }
+    CELERY_QUEUES = {
+        queue: {'exchange': CELERY_DEFAULT_EXCHANGE, 'exchange_type': 'direct', 'routing_key': queue}
+        for queue in GRADING_QUEUES.values()
+    }
+    RECALCULATE_GRADES_ROUTING_KEY = GRADING_QUEUES['grade']
+    RECALCULATE_PROGRESS_ROUTING_KEY = GRADING_QUEUES['progress']
+    POLICY_CHANGE_GRADES_ROUTING_KEY = GRADING_QUEUES['grade']
+
 FEATURES = copy.deepcopy(FEATURES)
 FEATURES.update({
     'AUTOMATIC_AUTH_FOR_TESTING': True,

@@ -23,6 +23,51 @@ Earlier attempts, kept as evidence:
 | py36 attempt2 | thread-create request never sent | the devstack Django Debug Toolbar overlays the form's Submit button; E6 settings now drop `debug_toolbar` and `QueryCountDebugMiddleware`, as every R1 gate settings file did |
 | py36 attempt3, py27 attempt1 | pass | superseded by the final runs after the static-serving fix below |
 
+## Grading mutation (2026-10-10) - PASS on both runtimes
+
+Port of R1 `provision-p1b-grading-mutation.py` +
+`tests/grading_mutation.spec.ts` (`r2-e6-grading.sh` / `r2-e6-grading.py`)
+onto the E6 stack started with `PY36_R2_E6_WITH_BROKER=1`: a private
+`rabbitmq:3.8-management` (`sha256:4206c16c...`, 512 MiB cap, vhost = stack
+namespace, generated credentials in `.py36-r2-config/e6-broker.env`, mode 600)
+and a grade/progress worker (`r2_e6_grading_worker.py`: the R1 worker plus
+SIGTERM/SIGINT handlers). LMS, scripts and worker run with eager Celery off
+and the R1 exchange, queue and routing-key layout under the stack namespace;
+Studio stays eager. The shared `edx.devstack.rabbitmq` is not used.
+
+Flow: provision -> reset/preflight (idle queues, exactly one consumer per
+grading queue, one worker, required tasks registered) -> Chromium wrong answer
+and Progress 0/1 -> the wrapper waits for the worker log to show the expected
+successes and runs midcondition once -> release -> Chromium correct answer,
+Progress 1/1, reload -> postflight.
+
+| Runtime | Attempt | Result | Browser diagnostics | Tasks grade / progress (mid, post) | Course grade | Service logs (LMS, CMS, worker) |
+| --- | --- | --- | --- | --- | --- | --- |
+| py36 | `grading-py36/attempt2` | `E6_GRADING_OK` | 0 console, 0 page, 0 failed, 0 HTTP errors | 1/1, 2/1, 0 retries | 0.0 -> Pass 1.0 | one INFO cohort-cache line |
+| py27 | `grading-py27/attempt1` | `E6_GRADING_OK` | 0 console, 0 page, 0 failed, 0 HTTP errors | 1/1, 2/1, 0 retries | 0.0 -> Pass 1.0 | same INFO line |
+
+Both worker logs carry the same `graders.py:181 Invalid arguments for a
+subgrader: available_count` WARNING twice; it comes from the R1 fixture's
+grading policy and is runtime-neutral.
+
+Earlier attempt, kept as evidence:
+
+| Attempt | Failure | Root cause and fix |
+| --- | --- | --- |
+| py36 attempt1 | spec `visible grading unit`: `.unit-title` resolved but hidden | the `hawthorn` theme bound to `localhost:18000` hides `.xblock .unit-title` (`src/themes/hawthorn/lms/static/sass/_courseware.scss:818`); R1 ran on an unthemed per-gate site. With owner approval, `r2-e6-grading.py` provision deletes that site's `SiteTheme` row in the private clone (`E6_GRADING_UNTHEMED`); `SiteTheme.get_theme` reads per request, so no restart. Theme coverage stays with group 1 |
+
+Stack fixes found on the way (not gate failures):
+
+- RabbitMQ died at boot with `.erlang.cookie: eacces` on one start: the
+  readiness probe ran `rabbitmq-diagnostics` as root, and when it won the race
+  with the server it created a root-owned cookie. The probe now runs as
+  `rabbitmq`.
+- `docker rm -f` left the anonymous volumes the RabbitMQ, ES (`data`) and
+  Mongo (`configdb`) images declare; cleanup now uses `docker rm -f -v`. The
+  host dangling-volume count (82) did not grow across the two grading stacks.
+  Volumes leaked by earlier E6 runs cannot be told apart from other dangling
+  volumes and were left alone.
+
 ## Harness fix: static files served ahead of Django
 
 After the toolbar removal, the py27 group 1 control showed bursts of LMS
@@ -68,5 +113,8 @@ Evidence: `../e6-discussion-image/group1-{py36,py27}/`.
 ## Isolation
 
 The shared Elasticsearch had the same index list, document counts and
-`index_total=0` / `delete_total=0` before the clone, after the clone and after
-the discussion gates. No shared container was started, stopped or written.
+`index_total=0` / `delete_total=0` before the clone, after the clone, after
+the discussion gates and after the grading gates. No shared container was
+started, stopped or written. A secret scan of `docker/py36` (scripts and
+evidence) and the gate log root for the MySQL, forum and broker secrets found
+no match.

@@ -1,0 +1,37 @@
+{
+  "status": "BROWSER_GRADING_FAILED",
+  "runtime": "py36",
+  "attempt": "1",
+  "browser": "149.0.7827.0",
+  "auth": {
+    "method": "GET",
+    "url": "http://localhost:18000/auto_auth?username=qagrade_py36&email=qagrade_py36%40example.com",
+    "status": 200,
+    "courseIdOmitted": true,
+    "username": "qagrade_py36",
+    "email": "qagrade_py36@example.com"
+  },
+  "course": {
+    "courseKey": "course-v1:QA+GradingMutation+Py36",
+    "displayName": "P1-B Grading Mutation",
+    "unitUrl": "",
+    "problemUsageKey": "block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36"
+  },
+  "midcondition": null,
+  "scoringRequests": [],
+  "screenshots": [
+    "py36-attempt1-failure.png"
+  ],
+  "screenshotError": null,
+  "diagnostics": {
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": []
+  },
+  "error": {
+    "name": "Error",
+    "message": "visible grading unit\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - visible grading unit with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"hd hd-2 unit-title\">Grading Unit</h2>\u001b[22m\n\u001b[2m       - unexpected value \"hidden\"\u001b[22m\n",
+    "stack": "Error: visible grading unit\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - visible grading unit with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.unit-title').filter({ hasText: 'Grading Unit' }).first()\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"hd hd-2 unit-title\">Grading Unit</h2>\u001b[22m\n\u001b[2m       - unexpected value \"hidden\"\u001b[22m\n\n    at openUnitFromCourseHome (/work/tests/grading_mutation.spec.ts:175:108)\n    at /work/tests/grading_mutation.spec.ts:328:19"
+  }
+}

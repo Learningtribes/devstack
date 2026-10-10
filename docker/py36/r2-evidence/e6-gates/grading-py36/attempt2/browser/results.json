@@ -1,0 +1,125 @@
+{
+  "config": {
+    "argv": [
+      "/usr/bin/node",
+      "/work/node_modules/.bin/playwright",
+      "test",
+      "tests/grading_mutation.spec.ts",
+      "--reporter=list,json",
+      "--retries=0",
+      "--timeout=180000",
+      "--trace=retain-on-failure",
+      "--output=/work/out/test-results"
+    ],
+    "configFile": "/work/playwright.config.ts",
+    "rootDir": "/work/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/work/out/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/work/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "grading_mutation.spec.ts",
+      "file": "grading_mutation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "visible CAPA grading mutation persists wrong then correct through worker and Progress",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 33655,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "BROWSER_GRADING_OK {\"status\":\"BROWSER_GRADING_OK\",\"runtime\":\"py36\",\"attempt\":\"1\",\"browser\":\"149.0.7827.0\",\"auth\":{\"method\":\"GET\",\"url\":\"http://localhost:18000/auto_auth?username=qagrade_py36&email=qagrade_py36%40example.com\",\"status\":200,\"courseIdOmitted\":true,\"username\":\"qagrade_py36\",\"email\":\"qagrade_py36@example.com\"},\"course\":{\"courseKey\":\"course-v1:QA+GradingMutation+Py36\",\"displayName\":\"P1-B Grading Mutation\",\"unitUrl\":\"http://localhost:18000/courses/course-v1:QA+GradingMutation+Py36/courseware/grading_section/grading_subsection/\",\"problemUsageKey\":\"block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36\"},\"midcondition\":{\"attempt\":1,\"runtime\":\"py36\",\"status\":\"MIDCONDITION_OK\"},\"scoringRequests\":[{\"method\":\"POST\",\"url\":\"http://localhost:18000/courses/course-v1:QA+GradingMutation+Py36/xblock/block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36/handler/xmodule_handler/problem_check\",\"payloadKeys\":[\"input_p1b_grading_problem_py36_2_1\"],\"requestBody\":\"input_p1b_grading_problem_py36_2_1=choice_0\",\"requestId\":null,\"startedAt\":\"2026-10-10T06:27:51.518Z\",\"durationMs\":56,\"status\":200,\"responseBody\":\"{\\\"success\\\": \\\"incorrect\\\", \\\"contents\\\": \\\"\\\\n\\\\n\\\\n\\\\n<div class=\\\\\\\"block-header-wrapper problem-header-wrapper\\\\\\\">\\\\n    <h3 class=\\\\\\\"hd hd-3 block-header problem-header\\\\\\\" id=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\" aria-describedby=\\\\\\\"block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36-problem-progress\\\\\\\" tabindex=\\\\\\\"-1\\\\\\\">\\\\n      Grading Checkpoint\\\\n    </h3>\\\\n    <div class=\\\\\\\"problem-progress-wrapper\\\\\\\">\\\\n        <span class=\\\\\\\"far fa-bullseye-pointer\\\\\\\"></span>\\\\n        <div class=\\\\\\\"problem-progress\\\\\\\" id=\\\\\\\"block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36-problem-progress\\\\\\\"></div>\\\\n    </div>\\\\n</div>\\\\n\\\\n<div class=\\\\\\\"block-label problem-label\\\\\\\">\\\\n    <span class=\\\\\\\"far fa-clipboard-list Grading Checkpoint-icon block-label-icon\\\\\\\"></span>\\\\n    <span class=\\\\\\\"Grading Checkpoint block-label-text\\\\\\\">Quiz</span>\\\\n</div>\\\\n\\\\n<hr class=\\\\\\\"sep-line\\\\\\\">\\\\n\\\\n<div class=\\\\\\\"problem\\\\\\\">\\\\n    <div>\\\\n  <p>Choose the correct grading checkpoint.</p>\\\\n  <div class=\\\\\\\"wrapper-problem-response\\\\\\\" tabindex=\\\\\\\"-1\\\\\\\" aria-label=\\\\\\\"Question 1\\\\\\\" role=\\\\\\\"group\\\\\\\"><div class=\\\\\\\"choicegroup capa_inputtype\\\\\\\" id=\\\\\\\"inputtype_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n    <fieldset aria-describedby=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n          <div class=\\\\\\\"field\\\\\\\">\\\\n            \\\\n\\\\n            <label id=\\\\\\\"p1b_grading_problem_py36_2_1-choice_0-label\\\\\\\" class=\\\\\\\"response-label field-label label-inline choicegroup_incorrect\\\\\\\" aria-describedby=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n                <input type=\\\\\\\"radio\\\\\\\" name=\\\\\\\"input_p1b_grading_problem_py36_2_1\\\\\\\" id=\\\\\\\"input_p1b_grading_problem_py36_2_1_choice_0\\\\\\\" class=\\\\\\\"field-input input-radio ds-radio ds-radio--sm\\\\\\\" value=\\\\\\\"choice_0\\\\\\\" checked=\\\\\\\"true\\\\\\\"/><span class=\\\\\\\"choice-label-text\\\\\\\">GRADING_WRONG</span>\\\\n                    \\\\n\\\\n<span class=\\\\\\\"status incorrect\\\\\\\" id=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n    <span class=\\\\\\\"sr\\\\\\\">incorrect</span>\\\\n    <span class=\\\\\\\"status-icon\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"><wbr/></span>\\\\n  <ds-tooltip role=\\\\\\\"tooltip\\\\\\\">This answer is incorrect.</ds-tooltip>\\\\n</span>\\\\n\\\\n            </label>\\\\n          </div>\\\\n          <div class=\\\\\\\"field\\\\\\\">\\\\n            \\\\n\\\\n            <label id=\\\\\\\"p1b_grading_problem_py36_2_1-choice_1-label\\\\\\\" class=\\\\\\\"response-label field-label label-inline\\\\\\\" aria-describedby=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n                <input type=\\\\\\\"radio\\\\\\\" name=\\\\\\\"input_p1b_grading_problem_py36_2_1\\\\\\\" id=\\\\\\\"input_p1b_grading_problem_py36_2_1_choice_1\\\\\\\" class=\\\\\\\"field-input input-radio ds-radio ds-radio--sm\\\\\\\" value=\\\\\\\"choice_1\\\\\\\"/><span class=\\\\\\\"choice-label-text\\\\\\\">GRADING_CORRECT</span>\\\\n            </label>\\\\n          </div>\\\\n    </fieldset>\\\\n</div></div>\\\\n</div>\\\\n\\\\n\\\\n    \\\\n\\\\n\\\\n<div class=\\\\\\\"notification warning notification-gentle-alert\\\\n      is-hidden\\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-exclamation-circle\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n            \\\\n\\\\n\\\\n<div class=\\\\\\\"notification error notification-submit\\\\n      \\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-close\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">Incorrect (0/1 point)\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n    \\\\n\\\\n\\\\n<div class=\\\\\\\"notification warning notification-save\\\\n      is-hidden\\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-save\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">None\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n    \\\\n\\\\n\\\\n<div class=\\\\\\\"notification general notification-show-answer\\\\n      is-hidden\\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-info-circle\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">Answers are displayed within the problem\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n\\\\n    <div class=\\\\\\\"action\\\\\\\">\\\\n      <input type=\\\\\\\"hidden\\\\\\\" name=\\\\\\\"problem_id\\\\\\\" value=\\\\\\\"Grading Checkpoint\\\\\\\" />\\\\n\\\\n      <div class=\\\\\\\"submit-attempt-container\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"submit ds-button\\\\\\\" data-submitting=\\\\\\\"Submitting\\\\\\\" data-value=\\\\\\\"Submit\\\\\\\" data-should-enable-submit-button=\\\\\\\"True\\\\\\\" aria-describedby=\\\\\\\"submission_feedback_p1b_grading_problem_py36\\\\\\\" >\\\\n            <span class=\\\\\\\"submit-label\\\\\\\">Submit</span>\\\\n        </button>\\\\n        <div class=\\\\\\\"submission-feedback\\\\\\\" id=\\\\\\\"submission_feedback_p1b_grading_problem_py36\\\\\\\">\\\\n            You have used 1 of 5 attempts\\\\n          <span class=\\\\\\\"sr\\\\\\\">Some problems have options such as save, reset, hints, or show answer. These options follow the Submit button.</span>\\\\n        </div>\\\\n      </div>\\\\n\\\\n      <div class=\\\\\\\"problem-action-buttons-wrapper\\\\\\\">\\\\n            <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"save ds-button ds-button--neutral\\\\\\\" data-value=\\\\\\\"Save\\\\\\\"><span class=\\\\\\\"icon fa fa-floppy-o\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>Save</button>\\\\n      </div>\\\\n    </div>\\\\n</div>\\\\n\\\", \\\"progress_changed\\\": true, \\\"current_score\\\": 0.0, \\\"total_possible\\\": 1.0, \\\"attempts_used\\\": 1}\"},{\"method\":\"POST\",\"url\":\"http://localhost:18000/courses/course-v1:QA+GradingMutation+Py36/xblock/block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36/handler/xmodule_handler/problem_check\",\"payloadKeys\":[\"input_p1b_grading_problem_py36_2_1\"],\"requestBody\":\"input_p1b_grading_problem_py36_2_1=choice_1\",\"requestId\":null,\"startedAt\":\"2026-10-10T06:28:13.818Z\",\"durationMs\":38,\"status\":200,\"responseBody\":\"{\\\"success\\\": \\\"correct\\\", \\\"contents\\\": \\\"\\\\n\\\\n\\\\n\\\\n<div class=\\\\\\\"block-header-wrapper problem-header-wrapper\\\\\\\">\\\\n    <h3 class=\\\\\\\"hd hd-3 block-header problem-header\\\\\\\" id=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\" aria-describedby=\\\\\\\"block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36-problem-progress\\\\\\\" tabindex=\\\\\\\"-1\\\\\\\">\\\\n      Grading Checkpoint\\\\n    </h3>\\\\n    <div class=\\\\\\\"problem-progress-wrapper\\\\\\\">\\\\n        <span class=\\\\\\\"far fa-bullseye-pointer\\\\\\\"></span>\\\\n        <div class=\\\\\\\"problem-progress\\\\\\\" id=\\\\\\\"block-v1:QA+GradingMutation+Py36+type@problem+block@p1b_grading_problem_py36-problem-progress\\\\\\\"></div>\\\\n    </div>\\\\n</div>\\\\n\\\\n<div class=\\\\\\\"block-label problem-label\\\\\\\">\\\\n    <span class=\\\\\\\"far fa-clipboard-list Grading Checkpoint-icon block-label-icon\\\\\\\"></span>\\\\n    <span class=\\\\\\\"Grading Checkpoint block-label-text\\\\\\\">Quiz</span>\\\\n</div>\\\\n\\\\n<hr class=\\\\\\\"sep-line\\\\\\\">\\\\n\\\\n<div class=\\\\\\\"problem\\\\\\\">\\\\n    <div>\\\\n  <p>Choose the correct grading checkpoint.</p>\\\\n  <div class=\\\\\\\"wrapper-problem-response\\\\\\\" tabindex=\\\\\\\"-1\\\\\\\" aria-label=\\\\\\\"Question 1\\\\\\\" role=\\\\\\\"group\\\\\\\"><div class=\\\\\\\"choicegroup capa_inputtype\\\\\\\" id=\\\\\\\"inputtype_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n    <fieldset aria-describedby=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n          <div class=\\\\\\\"field\\\\\\\">\\\\n            \\\\n\\\\n            <label id=\\\\\\\"p1b_grading_problem_py36_2_1-choice_0-label\\\\\\\" class=\\\\\\\"response-label field-label label-inline\\\\\\\" aria-describedby=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n                <input type=\\\\\\\"radio\\\\\\\" name=\\\\\\\"input_p1b_grading_problem_py36_2_1\\\\\\\" id=\\\\\\\"input_p1b_grading_problem_py36_2_1_choice_0\\\\\\\" class=\\\\\\\"field-input input-radio ds-radio ds-radio--sm\\\\\\\" value=\\\\\\\"choice_0\\\\\\\"/><span class=\\\\\\\"choice-label-text\\\\\\\">GRADING_WRONG</span>\\\\n            </label>\\\\n          </div>\\\\n          <div class=\\\\\\\"field\\\\\\\">\\\\n            \\\\n\\\\n            <label id=\\\\\\\"p1b_grading_problem_py36_2_1-choice_1-label\\\\\\\" class=\\\\\\\"response-label field-label label-inline choicegroup_correct\\\\\\\" aria-describedby=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n                <input type=\\\\\\\"radio\\\\\\\" name=\\\\\\\"input_p1b_grading_problem_py36_2_1\\\\\\\" id=\\\\\\\"input_p1b_grading_problem_py36_2_1_choice_1\\\\\\\" class=\\\\\\\"field-input input-radio ds-radio ds-radio--sm\\\\\\\" value=\\\\\\\"choice_1\\\\\\\" checked=\\\\\\\"true\\\\\\\"/><span class=\\\\\\\"choice-label-text\\\\\\\">GRADING_CORRECT</span>\\\\n                    \\\\n\\\\n<span class=\\\\\\\"status correct\\\\\\\" id=\\\\\\\"status_p1b_grading_problem_py36_2_1\\\\\\\">\\\\n    <span class=\\\\\\\"sr\\\\\\\">correct</span>\\\\n    <span class=\\\\\\\"status-icon\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"><wbr/></span>\\\\n  <ds-tooltip role=\\\\\\\"tooltip\\\\\\\">This answer is correct.</ds-tooltip>\\\\n</span>\\\\n\\\\n            </label>\\\\n          </div>\\\\n    </fieldset>\\\\n</div></div>\\\\n</div>\\\\n\\\\n\\\\n    \\\\n\\\\n\\\\n<div class=\\\\\\\"notification warning notification-gentle-alert\\\\n      is-hidden\\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-exclamation-circle\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n            \\\\n\\\\n\\\\n<div class=\\\\\\\"notification success notification-submit\\\\n      \\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-check\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">Correct (1/1 point)\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n    \\\\n\\\\n\\\\n<div class=\\\\\\\"notification warning notification-save\\\\n      is-hidden\\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-save\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">None\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n    \\\\n\\\\n\\\\n<div class=\\\\\\\"notification general notification-show-answer\\\\n      is-hidden\\\\\\\"\\\\n     tabindex=\\\\\\\"-1\\\\\\\">\\\\n    <span class=\\\\\\\"icon fa fa-info-circle\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>\\\\n    <span class=\\\\\\\"notification-message\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\">Answers are displayed within the problem\\\\n    </span>\\\\n    <div class=\\\\\\\"notification-btn-wrapper\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"ds-button review-btn sr\\\\\\\">Review</button>\\\\n    </div>\\\\n</div>\\\\n\\\\n\\\\n    <div class=\\\\\\\"action\\\\\\\">\\\\n      <input type=\\\\\\\"hidden\\\\\\\" name=\\\\\\\"problem_id\\\\\\\" value=\\\\\\\"Grading Checkpoint\\\\\\\" />\\\\n\\\\n      <div class=\\\\\\\"submit-attempt-container\\\\\\\">\\\\n        <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"submit ds-button\\\\\\\" data-submitting=\\\\\\\"Submitting\\\\\\\" data-value=\\\\\\\"Submit\\\\\\\" data-should-enable-submit-button=\\\\\\\"True\\\\\\\" aria-describedby=\\\\\\\"submission_feedback_p1b_grading_problem_py36\\\\\\\" >\\\\n            <span class=\\\\\\\"submit-label\\\\\\\">Submit</span>\\\\n        </button>\\\\n        <div class=\\\\\\\"submission-feedback\\\\\\\" id=\\\\\\\"submission_feedback_p1b_grading_problem_py36\\\\\\\">\\\\n            You have used 2 of 5 attempts\\\\n          <span class=\\\\\\\"sr\\\\\\\">Some problems have options such as save, reset, hints, or show answer. These options follow the Submit button.</span>\\\\n        </div>\\\\n      </div>\\\\n\\\\n      <div class=\\\\\\\"problem-action-buttons-wrapper\\\\\\\">\\\\n            <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"save ds-button ds-button--neutral\\\\\\\" data-value=\\\\\\\"Save\\\\\\\"><span class=\\\\\\\"icon fa fa-floppy-o\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>Save</button>\\\\n            <button type=\\\\\\\"button\\\\\\\" class=\\\\\\\"show ds-button ds-button--neutral\\\\\\\" aria-describedby=\\\\\\\"p1b_grading_problem_py36-problem-title\\\\\\\"><span class=\\\\\\\"icon fa fa-info-circle\\\\\\\" aria-hidden=\\\\\\\"true\\\\\\\"></span>Show Answer</button>\\\\n      </div>\\\\n    </div>\\\\n</div>\\\\n\\\", \\\"progress_changed\\\": true, \\\"current_score\\\": 1.0, \\\"total_possible\\\": 1.0, \\\"attempts_used\\\": 2}\"}],\"screenshots\":[\"py36-attempt1-wrong-answer.png\",\"py36-attempt1-final-progress.png\",\"py36-attempt1-final-unit.png\"],\"diagnostics\":{\"consoleErrors\":[],\"pageErrors\":[],\"failedRequests\":[],\"httpErrors\":[]}}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-10T06:27:48.381Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "27942514126e2a9ca898-f7d6cb062256a64c02bd",
+          "file": "grading_mutation.spec.ts",
+          "line": 260,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T06:27:48.126Z",
+    "duration": 34164.299,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

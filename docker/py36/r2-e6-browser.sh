@@ -96,6 +96,11 @@ done
         docker logs --since "${started}" "py36-r2-e6-${RUNTIME}-${svc}" 2>&1 |
             grep -n -E 'Traceback|ERROR|Exception|" 5[0-9][0-9] ' || true
     done
+    worker_log=${PY36_R2_E6_LOG_ROOT:-/tmp/py36-r2-e6-20261010}/${RUNTIME}/lms/worker.log
+    if docker container inspect "py36-r2-e6-${RUNTIME}-worker" >/dev/null 2>&1 && [ -f "${worker_log}" ]; then
+        echo "== py36-r2-e6-${RUNTIME}-worker (whole log; the worker starts with the stack)"
+        grep -n -E 'Traceback|ERROR|Exception' "${worker_log}" || true
+    fi
 } > "${OUT}/service-log-errors.txt"
 rm -rf "${WORK}"
 tail -n 5 "${OUT}/playwright.txt"

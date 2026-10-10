@@ -1,7 +1,8 @@
 #!/bin/sh
 # R2-preview E6: per-runtime LMS + Studio on private MySQL, Mongo and
 # Elasticsearch clones, memcached and, with PY36_R2_E6_WITH_FORUM=1, an empty
-# private comments service.
+# private comments service; with PY36_R2_E6_WITH_BROKER=1, a private RabbitMQ
+# and a grade/progress worker.
 # usage: run-r2-e6-services.sh {clone|clone-es}
 #        run-r2-e6-services.sh {py36|py27} {start|status|cleanup|logs|script <file.py> <evidence-dir> [args]}
 #
@@ -38,6 +39,11 @@ FORUM_IMAGE=ltdps/forum@sha256:1f594e841dbeeb6dfad1a16ebff127e93b4db5427cdc0e288
 # Opt-in so group 1 keeps running with the discussion service off.
 WITH_FORUM=${PY36_R2_E6_WITH_FORUM:-0}
 FORUM_ENV=${CONFIG}/e6-forum.env
+# Opt-in: a private RabbitMQ plus a grade/progress worker; the LMS side turns
+# eager Celery off.
+WITH_BROKER=${PY36_R2_E6_WITH_BROKER:-0}
+BROKER_ENV=${CONFIG}/e6-broker.env
+RABBIT_IMAGE=rabbitmq@sha256:4206c16c09a58d0a604668e91227c32f4a222368e796bfb7bf2e0d0d160ef97a
 NETWORK=devstack_default
 LABEL=io.openedx.py36-r2.gate=e6
 # Gate containers share the Docker VM with edx.devstack.*; without a cgroup
@@ -109,9 +115,11 @@ FORUM_URL=http://${FORUM}:4567
 CACHE=${NAMESPACE}-memcached
 LMS=${NAMESPACE}-lms
 CMS=${NAMESPACE}-cms
+RABBIT=${NAMESPACE}-rabbitmq
+WORKER=${NAMESPACE}-worker
 LMS_PORT=${PORT_BASE}00
 CMS_PORT=${PORT_BASE}10
-STACK="${MYSQL} ${MONGO} ${ES} ${FORUM} ${CACHE} ${LMS} ${CMS}"
+STACK="${MYSQL} ${MONGO} ${ES} ${FORUM} ${RABBIT} ${CACHE} ${LMS} ${CMS} ${WORKER}"
 LOG_ROOT=${PY36_R2_E6_LOG_ROOT:-/tmp/py36-r2-e6-20261010}/${RUNTIME}
 PYTHONPATH_VALUE=/edx/app/edxapp:/runner/source-metadata:${P}:${L}/xmodule:${L}/capa:${P}/openedx/core/lib/xblock_builtin/xblock_discussion:${L}/calc:${L}/safe_lxml:${L}/symmath:${L}/chem:${L}/dogstats
 
@@ -160,6 +168,9 @@ service_args() {
         printf '%s\n' --env-file "${FORUM_ENV}" --env "PY36_R2_E6_FORUM_URL=${FORUM_URL}" \
             --env "COMMENTS_SERVICE_URL=${FORUM_URL}"
     fi
+    if [ "${WITH_BROKER}" = 1 ] && [ "${svc}" = lms ]; then
+        printf '%s\n' --env-file "${BROKER_ENV}" --env "PY36_R2_E6_RABBIT_HOST=${RABBIT}"
+    fi
 }
 
 es_isolated() {
@@ -186,6 +197,10 @@ start() {
     done
     if [ "${WITH_FORUM}" = 1 ] && [ ! -f "${FORUM_ENV}" ]; then
         (umask 077; key=$(openssl rand -hex 16); printf 'COMMENTS_SERVICE_KEY=%s\n' "${key}" > "${FORUM_ENV}")
+    fi
+    if [ "${WITH_BROKER}" = 1 ] && [ ! -f "${BROKER_ENV}" ]; then
+        (umask 077; pw=$(openssl rand -hex 16)
+         printf 'PY36_R2_E6_RABBIT_USER=py36r2e6\nPY36_R2_E6_RABBIT_PASSWORD=%s\n' "${pw}" > "${BROKER_ENV}")
     fi
     for port in ${LMS_PORT} ${CMS_PORT}; do
         if lsof -nP -iTCP:"${port}" -sTCP:LISTEN >/dev/null 2>&1; then echo "port ${port} in use" >&2; exit 2; fi
@@ -226,6 +241,18 @@ start() {
         wait_for forum sh -c "docker exec '${ES}' curl -fsS '${FORUM_URL}/heartbeat' | grep -q '\"OK\":true'"
         docker exec "${ES}" curl -fsS "${FORUM_URL}/heartbeat" > "${LOG_ROOT}/forum-heartbeat.json"
     fi
+    if [ "${WITH_BROKER}" = 1 ]; then
+        # The fixture below already runs with eager Celery off.
+        (. "${BROKER_ENV}"
+         docker run -d --name "${RABBIT}" --network "${NETWORK}" --label "${LABEL}" \
+            --label "io.openedx.py36-r2.runtime=${RUNTIME}" --memory 512m \
+            --env "RABBITMQ_DEFAULT_USER=${PY36_R2_E6_RABBIT_USER}" \
+            --env "RABBITMQ_DEFAULT_PASS=${PY36_R2_E6_RABBIT_PASSWORD}" \
+            --env "RABBITMQ_DEFAULT_VHOST=${NAMESPACE}" "${RABBIT_IMAGE}" >/dev/null)
+        # As root, a CLI call that wins the race with the server creates a
+        # root-owned .erlang.cookie and the server dies with eacces.
+        wait_for rabbitmq docker exec -u rabbitmq "${RABBIT}" rabbitmq-diagnostics -q check_running
+    fi
     # The entrypoint runs a socket-only server for init, then the final server
     # on TCP; pinging over TCP waits for the final one.
     wait_for mysql mysql_client mysqladmin -uroot -h127.0.0.1 ping
@@ -252,6 +279,16 @@ start() {
 
     wait_for "LMS heartbeat" curl -fsS -o /dev/null -H 'Host: localhost:18000' "http://127.0.0.1:${LMS_PORT}/heartbeat"
     wait_for "CMS heartbeat" curl -fsS -o /dev/null -H 'Host: localhost:18010' "http://127.0.0.1:${CMS_PORT}/heartbeat"
+    if [ "${WITH_BROKER}" = 1 ]; then
+        # Shares the LMS log mount, so scripts read its log at /edx/var/log/worker.log.
+        # shellcheck disable=SC2046
+        docker run -d --name "${WORKER}" --network "${NETWORK}" \
+            --mount "type=bind,src=${SCRIPT_DIR}/r2_e6_grading_worker.py,dst=/opt/r2-scripts/r2_e6_grading_worker.py,readonly" \
+            --env "PY36_R2_E6_WORKER_HOSTNAME=${WORKER}" \
+            $(service_args lms) "${IMAGE}" \
+            -c "${METADATA}exec ${PYTHON} /opt/r2-scripts/r2_e6_grading_worker.py > /edx/var/log/worker.log 2>&1" >/dev/null
+        wait_for "worker ready" grep -q '^PY36_R2_E6_WORKER_READY ' "${LOG_ROOT}/lms/worker.log"
+    fi
     status
     echo "E6_SERVICES_STARTED runtime=${RUNTIME} lms=http://127.0.0.1:${LMS_PORT} cms=http://127.0.0.1:${CMS_PORT} netns=${LMS}"
 }
@@ -267,10 +304,11 @@ status() {
 }
 
 cleanup() {
-    for c in ${CMS} ${LMS} ${CACHE} ${FORUM} ${ES} ${MONGO} ${MYSQL}; do
+    for c in ${WORKER} ${CMS} ${LMS} ${CACHE} ${RABBIT} ${FORUM} ${ES} ${MONGO} ${MYSQL}; do
         if exists "$c"; then
             test "$(docker inspect "$c" --format '{{index .Config.Labels "io.openedx.py36-r2.gate"}}')" = e6
-            docker rm -f "$c" >/dev/null && echo "removed $c"
+            # -v: the RabbitMQ, ES and Mongo images declare anonymous volumes.
+            docker rm -f -v "$c" >/dev/null && echo "removed $c"
         fi
     done
 }
@@ -292,14 +330,18 @@ run_script() {
         -c "${METADATA}exec ${PYTHON} /opt/r2-scripts/${script} $*"
 }
 
-# A running stack keeps the forum mode it was started with.
+# A running stack keeps the forum and broker modes it was started with.
 if [ "${2:-}" != start ] && exists "${FORUM}"; then WITH_FORUM=1; fi
+if [ "${2:-}" != start ] && exists "${RABBIT}"; then WITH_BROKER=1; fi
 
 case "${2:-}" in
     start) start ;;
     status) status ;;
     cleanup) cleanup ;;
-    logs) for c in ${LMS} ${CMS}; do echo "== ${c}"; docker logs "${c}" 2>&1; done ;;
+    logs)
+        for c in ${LMS} ${CMS}; do echo "== ${c}"; docker logs "${c}" 2>&1; done
+        if [ -f "${LOG_ROOT}/lms/worker.log" ]; then echo "== ${WORKER}"; cat "${LOG_ROOT}/lms/worker.log"; fi
+        ;;
     script) shift 2; run_script "$@" ;;
     *) echo "usage: $0 clone | {py36|py27} {start|status|cleanup|logs|script <file.py> <evidence-dir> [args]}" >&2; exit 2 ;;
 esac

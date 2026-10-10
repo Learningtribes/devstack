@@ -1,0 +1,4 @@
+# filtered from docker logs of py36-r2-e6-py36-{lms,cms,forum} since 2026-10-10T06:16:23Z: lines matching Traceback|ERROR|Exception| 5xx status
+== py36-r2-e6-py36-lms
+== py36-r2-e6-py36-cms
+== py36-r2-e6-py36-worker (whole log; the worker starts with the stack)
