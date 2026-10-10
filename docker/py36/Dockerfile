@@ -61,6 +61,20 @@ RUN pip install --no-cache-dir --constraint /tmp/py36-constraints.txt \
 RUN pip install --no-cache-dir --force-reinstall --constraint /tmp/py36-constraints.txt \
     -r /tmp/py36-git-requirements.txt
 
+# 3. Private LT XBlock. xblock-ilt has no anonymous URL, so the build takes the
+# exact source export from r2-export-xblock-ilt.sh as the xblock_ilt context
+# and refuses any export whose content digest differs.
+ARG XBLOCK_ILT_COMMIT
+ARG XBLOCK_ILT_TREE_SHA256
+LABEL r2.xblock_ilt.commit="${XBLOCK_ILT_COMMIT}" r2.xblock_ilt.content_sha256="${XBLOCK_ILT_TREE_SHA256}"
+COPY --from=xblock_ilt / /tmp/xblock-ilt
+RUN test -n "${XBLOCK_ILT_COMMIT}" \
+    && test "$(cd /tmp/xblock-ilt && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)" = "${XBLOCK_ILT_TREE_SHA256}" \
+    && pip install --no-cache-dir --constraint /tmp/py36-constraints.txt /tmp/xblock-ilt \
+    && rm -f /usr/local/lib/python3.6/site-packages/ilt_xblock-*.dist-info/direct_url.json \
+    && rm -rf /tmp/xblock-ilt \
+    && python -c "import pkg_resources; assert list(pkg_resources.iter_entry_points('xblock.v1', 'ilt')); assert list(pkg_resources.iter_entry_points('xblock.v1', 'pdf')); print('ilt/pdf entry points OK')"
+
 # Platform-owned Django apps and XModule descriptors are registered through
 # separate setup.py entry points. Install only their package metadata and
 # top-level package markers from the read-only Platform build context.

@@ -20,5 +20,8 @@ git+https://github.com/Learningtribes/xblock-done.git@25acf600d5d639a96c3556e3d2
 git+https://github.com/edx/xblock-lti-consumer.git@af68c7cff38441abe00be725a504e77caf6ba282
 git+https://github.com/Learningtribes/edx_xblock_scorm@8a6c07d562217500fa8236f555343c9921ef4907
 git+https://github.com/Learningtribes/xblock-drag-and-drop-v2@9f0b43da2ed8e8691604c5b1a08185a7874ff9b9
+git+https://github.com/Learningtribes/xblock-pdf@99b22d45060e9bc04503f5cb86a450204acb2e00#egg=xblock-pdf
+# xblock-ilt (ilt-xblock) is private and pinned in the Dockerfile through the
+# xblock_ilt build context: Learningtribes/xblock-ilt@52b0f1cb1f49858a6bfd9a4663c09eec73c5918c.
 # Keep this non-editable: the settings gate bind-mounts edx-platform and would hide an editable clone under src/.
 git+https://github.com/Learningtribes/edx-search.git@c770553be3c90ab2250bffd1afa3556fd660af11#egg=edx-search
