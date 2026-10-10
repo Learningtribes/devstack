@@ -30,6 +30,19 @@ E6_MYSQL_PASSWORD = _required('PY36_R2_E6_MYSQL_ROOT_PASSWORD')
 E6_MONGO_HOST = _required('PY36_R2_E6_MONGO_HOST')
 E6_ES_HOST = _required('PY36_R2_E6_ES_HOST')
 
+# devstack-only instrumentation, as in the R1 gate settings: the toolbar is
+# injected into every page and covers form controls the gates click.
+INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'debug_toolbar']
+MIDDLEWARE_CLASSES = [
+    middleware for middleware in MIDDLEWARE_CLASSES
+    if middleware not in (
+        'django_comment_client.utils.QueryCountDebugMiddleware',
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+]
+
+WSGI_APPLICATION = 'r2_e6_wsgi.application'
+
 ALLOWED_HOSTS = list(ALLOWED_HOSTS)
 for host in ('localhost', '127.0.0.1'):
     if host not in ALLOWED_HOSTS:

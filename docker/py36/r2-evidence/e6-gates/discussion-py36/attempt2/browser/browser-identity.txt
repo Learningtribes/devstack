@@ -1,0 +1,19 @@
+runtime=py36 netns=py36-r2-e6-py36-lms image=sha256:f02cf5e79316295694dff8e5248b8704fcd1866fb8b651bef9384c7b395aec37
+harness_head=68255fc7742c9486b760e026bd5cb5b1e5f75bf6
+harness_code_clean=0_changes
+playwright_image=mcr.microsoft.com/playwright@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48
+playwright_test=1.61.1
+test_timeout_ms=180000
+spec=tests/discussion_read_write.spec.ts sha256=2ab67daac7fcc445e4255fa731f70e8c13d4b579f23bdb759d5da4336c677eec
+env BROWSER_ACCEPTANCE_BASE_URL=http://localhost:18000
+env BROWSER_DISCUSSION_ATTEMPT=2
+env BROWSER_DISCUSSION_BASE_URL=http://localhost:18000
+env BROWSER_DISCUSSION_COURSE_KEY=course-v1:QA+DiscussionRW+Py36
+env BROWSER_DISCUSSION_EMAIL=qadiscuss_py36@example.com
+env BROWSER_DISCUSSION_EVIDENCE_DIR=/work/out/evidence
+env BROWSER_DISCUSSION_ID=p1b_discussion_rw_py36
+env BROWSER_DISCUSSION_RUNTIME=py36
+env BROWSER_DISCUSSION_STATE_FILE=/work/out/evidence/state.json
+env BROWSER_DISCUSSION_USERNAME=qadiscuss_py36
+started=2026-10-10T05:47:19Z
+finished=2026-10-10T05:47:40Z exit=1

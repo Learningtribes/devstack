@@ -143,6 +143,7 @@ service_args() {
         --mount "type=bind,src=${CONFIG}/${svc}.auth.json,dst=/edx/app/edxapp/${svc}.auth.json,readonly" \
         --mount "type=bind,src=${CONFIG}/${svc}.env.json,dst=/edx/app/edxapp/${svc}.env.json,readonly" \
         --mount "type=bind,src=${SCRIPT_DIR}/py36_r2_e6_settings.py,dst=/edx/app/edxapp/py36_r2_e6_settings.py,readonly" \
+        --mount "type=bind,src=${SCRIPT_DIR}/r2_e6_wsgi.py,dst=/edx/app/edxapp/r2_e6_wsgi.py,readonly" \
         --mount "type=bind,src=${LOG_ROOT}/${svc},dst=/edx/var/log" \
         --mount type=tmpfs,dst=/edx/var/edxapp/data \
         --mount type=tmpfs,dst=/runner \

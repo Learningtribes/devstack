@@ -1,0 +1,65 @@
+{
+  "course_key": "course-v1:QA+DiscussionRW+Py36",
+  "discussion_id": "p1b_discussion_rw_py36",
+  "elasticsearch": {
+    "course_document_count": 0,
+    "document_ids": [],
+    "index": "content"
+  },
+  "enrollment": {
+    "active": true,
+    "id": 12,
+    "mode": "audit",
+    "origin": "self enrollment"
+  },
+  "forum_heartbeat": {
+    "body": {
+      "OK": true
+    },
+    "status": 200
+  },
+  "lms_comments_heartbeat": {
+    "message": "OK",
+    "name": "forum",
+    "ok": true
+  },
+  "mongo": {
+    "comments": 0,
+    "comments_service_user_by_external_id": 1,
+    "threads": 0
+  },
+  "namespace": "py36-r2-e6-py36",
+  "privilege": {
+    "course_access_roles": [],
+    "is_staff": false,
+    "is_superuser": false,
+    "learning_group": null,
+    "non_student_forum_roles": []
+  },
+  "published": {
+    "course_status": "released",
+    "discussion_tab": true,
+    "discussion_xblock": "block-v1:QA+DiscussionRW+Py36+type@discussion+block@discussion_topic"
+  },
+  "runtime": "py36",
+  "service": {
+    "elasticsearch_index": "content",
+    "elasticsearch_server": "http://py36-r2-e6-py36-es:9200",
+    "forum_url": "http://py36-r2-e6-py36-forum:4567",
+    "lms_site": "localhost:18000",
+    "mongo_database": "cs_comments_service"
+  },
+  "topic": {
+    "category": "P1-B Discussion",
+    "display_name": "Discussion Topic",
+    "target": "Read Write Topic"
+  },
+  "usage_key": "block-v1:QA+DiscussionRW+Py36+type@discussion+block@discussion_topic",
+  "user": {
+    "comments_service_external_id": "32",
+    "comments_service_id": "32",
+    "email": "qadiscuss_py36@example.com",
+    "id": 32,
+    "username": "qadiscuss_py36"
+  }
+}

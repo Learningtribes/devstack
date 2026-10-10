@@ -49,3 +49,7 @@ mappings only.
 With the cloned indices, Studio `/program_search/` and `/course_search/` no
 longer return 500, and the earlier CMS `fa-regular-400.woff2` 500 does not
 recur.
+
+`group1-{py36,py27}/` now hold the runs under the final E6 settings (debug
+toolbar removed, static files served ahead of Django; see
+`../e6-gates/summary.md`). The result is the same 27/30 on both runtimes.

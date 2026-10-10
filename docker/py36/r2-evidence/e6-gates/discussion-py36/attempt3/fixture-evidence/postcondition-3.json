@@ -1,0 +1,314 @@
+{
+  "comment_count": 1,
+  "comment_id": "6ac9d1e1a1c96a0001000003",
+  "comments_service_read": {
+    "reply_marker_present": true,
+    "status": 200,
+    "thread_id": "6ac9d1dfa1c96a0001000000"
+  },
+  "course_key": "course-v1:QA+DiscussionRW+Py36",
+  "discussion_id": "p1b_discussion_rw_py36",
+  "elasticsearch": {
+    "documents": [
+      {
+        "_id": "6ac9d1e1a1c96a0001000003",
+        "_index": "content",
+        "_score": 0.67124057,
+        "_source": {
+          "_id": "6ac9d1e1a1c96a0001000003",
+          "abuse_flaggers": [],
+          "anonymous": false,
+          "anonymous_to_peers": false,
+          "at_position_list": [],
+          "author_id": "32",
+          "author_username": "qadiscuss_py36",
+          "body": "P1B_DISCUSSION_REPLY_OK",
+          "child_count": 0,
+          "comment_thread_id": "6ac9d1dfa1c96a0001000000",
+          "commentable_id": "p1b_discussion_rw_py36",
+          "course_id": "course-v1:QA+DiscussionRW+Py36",
+          "created_at": "2026-10-10T05:49:21Z",
+          "depth": 0,
+          "endorsed": false,
+          "endorsement": null,
+          "historical_abuse_flaggers": [],
+          "parent_id": null,
+          "parent_ids": [],
+          "retired_username": null,
+          "sk": "6ac9d1e1a1c96a0001000003",
+          "updated_at": "2026-10-10T05:49:21Z",
+          "visible": true,
+          "votes": {
+            "count": 0,
+            "down": [],
+            "down_count": 0,
+            "point": 0,
+            "up": [],
+            "up_count": 0
+          }
+        },
+        "_type": "comment"
+      },
+      {
+        "_id": "6ac9d1dfa1c96a0001000000",
+        "_index": "content",
+        "_score": 0.67124057,
+        "_source": {
+          "_id": "6ac9d1dfa1c96a0001000000",
+          "abuse_flaggers": [],
+          "anonymous": false,
+          "anonymous_to_peers": false,
+          "at_position_list": [],
+          "author_id": "32",
+          "author_username": "qadiscuss_py36",
+          "body": "P1B_DISCUSSION_BODY_OK",
+          "closed": false,
+          "comment_count": 0,
+          "commentable_id": "p1b_discussion_rw_py36",
+          "context": "course",
+          "course_id": "course-v1:QA+DiscussionRW+Py36",
+          "created_at": "2026-10-10T05:49:19Z",
+          "group_id": null,
+          "historical_abuse_flaggers": [],
+          "last_activity_at": "2026-10-10T05:49:21Z",
+          "pinned": null,
+          "retired_username": null,
+          "thread_type": "discussion",
+          "title": "P1B_DISCUSSION_THREAD_OK",
+          "updated_at": "2026-10-10T05:49:19Z",
+          "visible": true,
+          "votes": {
+            "count": 0,
+            "down": [],
+            "down_count": 0,
+            "point": 0,
+            "up": [],
+            "up_count": 0
+          }
+        },
+        "_type": "comment_thread"
+      }
+    ],
+    "ids": [
+      "6ac9d1e1a1c96a0001000003",
+      "6ac9d1dfa1c96a0001000000"
+    ],
+    "index": "content",
+    "total": 2
+  },
+  "enrollment": {
+    "active": true,
+    "mode": "audit",
+    "origin": "self enrollment"
+  },
+  "mongo": {
+    "comments": {
+      "count": 1,
+      "documents": [
+        {
+          "_id": "6ac9d1e1a1c96a0001000003",
+          "_type": "Comment",
+          "abuse_flaggers": [],
+          "anonymous": false,
+          "anonymous_to_peers": false,
+          "at_position_list": [],
+          "author_id": "32",
+          "author_username": "qadiscuss_py36",
+          "body": "P1B_DISCUSSION_REPLY_OK",
+          "child_count": 0,
+          "comment_thread_id": "6ac9d1dfa1c96a0001000000",
+          "course_id": "course-v1:QA+DiscussionRW+Py36",
+          "created_at": "2026-10-10T05:49:21.991000",
+          "depth": 0,
+          "endorsed": false,
+          "historical_abuse_flaggers": [],
+          "parent_ids": [],
+          "sk": "6ac9d1e1a1c96a0001000003",
+          "updated_at": "2026-10-10T05:49:21.991000",
+          "visible": true,
+          "votes": {
+            "count": 0,
+            "down": [],
+            "down_count": 0,
+            "point": 0,
+            "up": [],
+            "up_count": 0
+          }
+        }
+      ],
+      "ids": [
+        "6ac9d1e1a1c96a0001000003"
+      ]
+    },
+    "comments_service_user": {
+      "count_by_external_id": 1,
+      "count_by_username": 1,
+      "documents": [
+        {
+          "_id": "32",
+          "default_sort_key": "date",
+          "external_id": "32",
+          "read_states": [
+            {
+              "_id": "6ac9d1dfa1c96a0001000001",
+              "course_id": "course-v1:QA+DiscussionRW+Py36",
+              "last_read_times": {
+                "6ac9d1dfa1c96a0001000000": "2026-10-10T05:49:26.065000"
+              }
+            }
+          ],
+          "username": "qadiscuss_py36"
+        }
+      ],
+      "ids": [
+        "32"
+      ]
+    },
+    "elasticsearch": {
+      "documents": [
+        {
+          "_id": "6ac9d1e1a1c96a0001000003",
+          "_index": "content",
+          "_score": 0.67124057,
+          "_source": {
+            "_id": "6ac9d1e1a1c96a0001000003",
+            "abuse_flaggers": [],
+            "anonymous": false,
+            "anonymous_to_peers": false,
+            "at_position_list": [],
+            "author_id": "32",
+            "author_username": "qadiscuss_py36",
+            "body": "P1B_DISCUSSION_REPLY_OK",
+            "child_count": 0,
+            "comment_thread_id": "6ac9d1dfa1c96a0001000000",
+            "commentable_id": "p1b_discussion_rw_py36",
+            "course_id": "course-v1:QA+DiscussionRW+Py36",
+            "created_at": "2026-10-10T05:49:21Z",
+            "depth": 0,
+            "endorsed": false,
+            "endorsement": null,
+            "historical_abuse_flaggers": [],
+            "parent_id": null,
+            "parent_ids": [],
+            "retired_username": null,
+            "sk": "6ac9d1e1a1c96a0001000003",
+            "updated_at": "2026-10-10T05:49:21Z",
+            "visible": true,
+            "votes": {
+              "count": 0,
+              "down": [],
+              "down_count": 0,
+              "point": 0,
+              "up": [],
+              "up_count": 0
+            }
+          },
+          "_type": "comment"
+        },
+        {
+          "_id": "6ac9d1dfa1c96a0001000000",
+          "_index": "content",
+          "_score": 0.67124057,
+          "_source": {
+            "_id": "6ac9d1dfa1c96a0001000000",
+            "abuse_flaggers": [],
+            "anonymous": false,
+            "anonymous_to_peers": false,
+            "at_position_list": [],
+            "author_id": "32",
+            "author_username": "qadiscuss_py36",
+            "body": "P1B_DISCUSSION_BODY_OK",
+            "closed": false,
+            "comment_count": 0,
+            "commentable_id": "p1b_discussion_rw_py36",
+            "context": "course",
+            "course_id": "course-v1:QA+DiscussionRW+Py36",
+            "created_at": "2026-10-10T05:49:19Z",
+            "group_id": null,
+            "historical_abuse_flaggers": [],
+            "last_activity_at": "2026-10-10T05:49:21Z",
+            "pinned": null,
+            "retired_username": null,
+            "thread_type": "discussion",
+            "title": "P1B_DISCUSSION_THREAD_OK",
+            "updated_at": "2026-10-10T05:49:19Z",
+            "visible": true,
+            "votes": {
+              "count": 0,
+              "down": [],
+              "down_count": 0,
+              "point": 0,
+              "up": [],
+              "up_count": 0
+            }
+          },
+          "_type": "comment_thread"
+        }
+      ],
+      "ids": [
+        "6ac9d1e1a1c96a0001000003",
+        "6ac9d1dfa1c96a0001000000"
+      ],
+      "index": "content",
+      "total": 2
+    },
+    "mongo_database": "cs_comments_service",
+    "requested_comment_ids": [
+      "6ac9d1e1a1c96a0001000003"
+    ],
+    "requested_thread_ids": [
+      "6ac9d1dfa1c96a0001000000"
+    ],
+    "threads": {
+      "count": 1,
+      "documents": [
+        {
+          "_id": "6ac9d1dfa1c96a0001000000",
+          "_type": "CommentThread",
+          "abuse_flaggers": [],
+          "anonymous": false,
+          "anonymous_to_peers": false,
+          "at_position_list": [],
+          "author_id": "32",
+          "author_username": "qadiscuss_py36",
+          "body": "P1B_DISCUSSION_BODY_OK",
+          "closed": false,
+          "comment_count": 1,
+          "commentable_id": "p1b_discussion_rw_py36",
+          "context": "course",
+          "course_id": "course-v1:QA+DiscussionRW+Py36",
+          "created_at": "2026-10-10T05:49:19.654000",
+          "historical_abuse_flaggers": [],
+          "last_activity_at": "2026-10-10T05:49:21.991000",
+          "thread_type": "discussion",
+          "title": "P1B_DISCUSSION_THREAD_OK",
+          "updated_at": "2026-10-10T05:49:21.991000",
+          "visible": true,
+          "votes": {
+            "count": 0,
+            "down": [],
+            "down_count": 0,
+            "point": 0,
+            "up": [],
+            "up_count": 0
+          }
+        }
+      ],
+      "ids": [
+        "6ac9d1dfa1c96a0001000000"
+      ]
+    }
+  },
+  "namespace": "py36-r2-e6-py36",
+  "privilege": {
+    "course_access_roles": [],
+    "is_staff": false,
+    "is_superuser": false
+  },
+  "runtime": "py36",
+  "thread_comment_count": 1,
+  "thread_count": 1,
+  "thread_id": "6ac9d1dfa1c96a0001000000",
+  "thread_last_activity_at": "2026-10-10T05:49:21.991000",
+  "user_id": 32
+}
