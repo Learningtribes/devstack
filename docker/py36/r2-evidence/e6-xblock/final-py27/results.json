@@ -1,0 +1,1369 @@
+{
+  "config": {
+    "argv": [
+      "/usr/bin/node",
+      "/work/node_modules/.bin/playwright",
+      "test",
+      "tests/checklist.spec.ts",
+      "--reporter=list,json",
+      "--retries=0",
+      "--timeout=30000",
+      "--trace=retain-on-failure",
+      "--output=/work/out/test-results"
+    ],
+    "configFile": "/work/playwright.config.ts",
+    "rootDir": "/work/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/work/out/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/work/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "checklist.spec.ts",
+      "file": "checklist.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PR #py36-p1b-dashboard — Python 3 LMS dashboard last-activity gate",
+          "file": "checklist.spec.ts",
+          "line": 16,
+          "column": 10,
+          "specs": [],
+          "suites": [
+            {
+              "title": "auth: qacert",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "dashboard — QA last activity item renders",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 7931,
+                          "error": {
+                            "message": "Error: visible: .last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - visible: .last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"] with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]')\u001b[22m\n",
+                            "stack": "Error: visible: .last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - visible: .last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"] with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]')\u001b[22m\n\n    at /work/tests/checklist.spec.ts:148:84",
+                            "location": {
+                              "file": "/work/tests/checklist.spec.ts",
+                              "column": 84,
+                              "line": 148
+                            },
+                            "snippet": "  146 |                             }\n  147 |                             for (const sel of a.visible ?? []) {\n> 148 |                                 await expect(page.locator(sel), `visible: ${sel}`).toBeVisible();\n      |                                                                                    ^\n  149 |                             }\n  150 |                             for (const sel of a.absent ?? []) {\n  151 |                                 await expect(page.locator(sel), `absent: ${sel}`).toHaveCount(0);"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/work/tests/checklist.spec.ts",
+                                "column": 84,
+                                "line": 148
+                              },
+                              "message": "Error: visible: .last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - visible: .last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"] with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.last-activity-item[onclick*=\"/courses/course-v1:QA+Acceptance+Test/course/\"]')\u001b[22m\n\n\n  146 |                             }\n  147 |                             for (const sel of a.visible ?? []) {\n> 148 |                                 await expect(page.locator(sel), `visible: ${sel}`).toBeVisible();\n      |                                                                                    ^\n  149 |                             }\n  150 |                             for (const sel of a.absent ?? []) {\n  151 |                                 await expect(page.locator(sel), `absent: ${sel}`).toHaveCount(0);\n    at /work/tests/checklist.spec.ts:148:84"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:16.122Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/work/out/test-results/checklist-PR-py36-p1b-dash-e2424--last-activity-item-renders-chromium/error-context.md"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/work/out/test-results/checklist-PR-py36-p1b-dash-e2424--last-activity-item-renders-chromium/error-context.md"
+                            },
+                            {
+                              "name": "trace",
+                              "contentType": "application/zip",
+                              "path": "/work/out/test-results/checklist-PR-py36-p1b-dash-e2424--last-activity-item-renders-chromium/trace.zip"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/work/tests/checklist.spec.ts",
+                            "column": 84,
+                            "line": 148
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-f0717f5258a0429a34e9",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "QA course home — authenticated learner reaches course target",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 2393,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:24.813Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-0b39d178e531e97b91b9",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "dashboard last-activity click reaches QA course home",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 17223,
+                          "error": {
+                            "message": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"",
+                            "stack": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"\n    at /work/tests/checklist.spec.ts:123:42",
+                            "location": {
+                              "file": "/work/tests/checklist.spec.ts",
+                              "column": 42,
+                              "line": 123
+                            },
+                            "snippet": "  121 |                                 );\n  122 |                                 const [followResponse] = await Promise.all([\n> 123 |                                     page.waitForResponse((response) => {\n      |                                          ^\n  124 |                                         const responseUrl = new URL(response.url());\n  125 |                                         return response.request().isNavigationRequest()\n  126 |                                             && responseUrl.origin === followUrl.origin"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/work/tests/checklist.spec.ts",
+                                "column": 42,
+                                "line": 123
+                              },
+                              "message": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"\n\n  121 |                                 );\n  122 |                                 const [followResponse] = await Promise.all([\n> 123 |                                     page.waitForResponse((response) => {\n      |                                          ^\n  124 |                                         const responseUrl = new URL(response.url());\n  125 |                                         return response.request().isNavigationRequest()\n  126 |                                             && responseUrl.origin === followUrl.origin\n    at /work/tests/checklist.spec.ts:123:42"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:27.473Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/work/out/test-results/checklist-PR-py36-p1b-dash-6a1ef-lick-reaches-QA-course-home-chromium/error-context.md"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/work/out/test-results/checklist-PR-py36-p1b-dash-6a1ef-lick-reaches-QA-course-home-chromium/error-context.md"
+                            },
+                            {
+                              "name": "trace",
+                              "contentType": "application/zip",
+                              "path": "/work/out/test-results/checklist-PR-py36-p1b-dash-6a1ef-lick-reaches-QA-course-home-chromium/trace.zip"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/work/tests/checklist.spec.ts",
+                            "column": 42,
+                            "line": 123
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-90e35c538fae819a1cf8",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "PR #2395 — course mode chooser PARTIAL removal",
+          "file": "checklist.spec.ts",
+          "line": 16,
+          "column": 10,
+          "specs": [],
+          "suites": [
+            {
+              "title": "auth: none",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "course mode chooser route removed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 378,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:45.278Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-9c3ea55642b7c8f38922",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            },
+            {
+              "title": "auth: qacert",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "LMS homepage — no import error",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1892,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:45.743Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-1ece40c7166b0c6e8ed9",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "learner Dashboard — course mode info still renders",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1852,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:47.782Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-850c0ce82a78df7130d6",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            },
+            {
+              "title": "auth: qastaff",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "Studio home — no import error",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1939,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:49.639Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-cf1607f45aeaaa01b021",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "PR #2396 — verify_student pay/photo UI PARTIAL removal",
+          "file": "checklist.spec.ts",
+          "line": 16,
+          "column": 10,
+          "specs": [],
+          "suites": [
+            {
+              "title": "auth: none",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "start-flow route removed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 334,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:51.803Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-fe7690fc80bdd435bf66",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "reverify route removed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 335,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:52.154Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-3339286b7d9ac947262a",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "submit-photos route removed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 329,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:52.499Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-94fc80485d6eb540fc1b",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "results_callback route removed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 345,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:52.832Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-4ba66d44080f612f4e23",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            },
+            {
+              "title": "auth: qacert",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "LMS homepage — no import error",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1802,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:53.181Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-d0a2cb356f1f89c565ae",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "learner Dashboard — KEEP IDVerificationService",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1772,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:55.108Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-b849c4172b73a1217197",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "course_modes chooser still routed (KEEP)",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 352,
+                          "error": {
+                            "message": "Error: status for /course_modes/choose/course-v1:QA+Acceptance+Test/\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m",
+                            "stack": "Error: status for /course_modes/choose/course-v1:QA+Acceptance+Test/\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m\n    at /work/tests/checklist.spec.ts:57:76",
+                            "location": {
+                              "file": "/work/tests/checklist.spec.ts",
+                              "column": 76,
+                              "line": 57
+                            },
+                            "snippet": "  55 |                             const resp = await ctx.request.get(url, {headers});\n  56 |                             if (a.status != null) {\n> 57 |                                 expect(resp.status(), `status for ${url}`).toBe(a.status);\n     |                                                                            ^\n  58 |                             }\n  59 |                             if ((a.visible?.length ?? 0) + (a.absent?.length ?? 0) > 0) {\n  60 |                                 throw new Error(`surface \"${surface.id}\": visible/absent need the DOM — remove request:true`);"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/work/tests/checklist.spec.ts",
+                                "column": 76,
+                                "line": 57
+                              },
+                              "message": "Error: status for /course_modes/choose/course-v1:QA+Acceptance+Test/\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m\n\n  55 |                             const resp = await ctx.request.get(url, {headers});\n  56 |                             if (a.status != null) {\n> 57 |                                 expect(resp.status(), `status for ${url}`).toBe(a.status);\n     |                                                                            ^\n  58 |                             }\n  59 |                             if ((a.visible?.length ?? 0) + (a.absent?.length ?? 0) > 0) {\n  60 |                                 throw new Error(`surface \"${surface.id}\": visible/absent need the DOM — remove request:true`);\n    at /work/tests/checklist.spec.ts:57:76"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:56.884Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/work/out/test-results/checklist-PR-2396-—-verify-87c1b--chooser-still-routed-KEEP--chromium/error-context.md"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/work/out/test-results/checklist-PR-2396-—-verify-87c1b--chooser-still-routed-KEEP--chromium/error-context.md"
+                            },
+                            {
+                              "name": "trace",
+                              "contentType": "application/zip",
+                              "path": "/work/out/test-results/checklist-PR-2396-—-verify-87c1b--chooser-still-routed-KEEP--chromium/trace.zip"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/work/tests/checklist.spec.ts",
+                            "column": 76,
+                            "line": 57
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-cb7b75a19bff431df0df",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            },
+            {
+              "title": "auth: qastaff",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "Django admin — photo verification KEEP",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 622,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:57.697Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-1ef03646e6bd4b81b382",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "Studio home — no import error",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1639,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:53:58.555Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-3dc93fe6f3b9017e4ab5",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "PR #2397 — edx-enterprise DELETE",
+          "file": "checklist.spec.ts",
+          "line": 16,
+          "column": 10,
+          "specs": [],
+          "suites": [
+            {
+              "title": "auth: qastaff",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "admin — EnterpriseCustomer model removed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 344,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:00.216Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-a03ef38e9d3777ab5feb",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "admin — DataSharingConsent model removed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 352,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:00.705Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-19e8eb082ab227625079",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "Studio home — no import error",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1768,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:01.062Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-9fcb6aabe5d90246e438",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            },
+            {
+              "title": "auth: qacert",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "LMS homepage — no import error",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1882,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:02.834Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-cac384a0ab9091a82763",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "learner Dashboard — consent banner helper gone",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1139,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:04.906Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-1e7d6c70e46a67b04ed0",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "account settings — enterprise_name stubbed",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1221,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:06.057Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-cf28872e7a000bb2397b",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            },
+            {
+              "title": "auth: none",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "login page — enterprise_sidebar template gone",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1056,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:07.286Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-db624803d3ddad5d0f97",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "PR #r2-py3-templates — R2-preview Py3-converted Mako templates on real QA course data",
+          "file": "checklist.spec.ts",
+          "line": 16,
+          "column": 10,
+          "specs": [],
+          "suites": [
+            {
+              "title": "auth: qacert",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "dashboard — last activity links to courseware section",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1902,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:08.503Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-5d9c8279a2f9d2885d1b",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "dashboard last-activity click reaches courseware section",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 5300,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:10.613Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-b12b762e5284f148d05d",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "course home — Py3 course-home fragment renders",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1425,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:15.918Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-39f94490db1dd0f974a6",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "progress — Py3 progress template renders",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1081,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:17.347Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-ca5f9d6a3a43df9b1446",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "course about — Py3 course_about template renders",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1074,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:18.437Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-91a176cc1a6b2ff4fe7a",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            },
+            {
+              "title": "auth: qastaff",
+              "file": "checklist.spec.ts",
+              "line": 36,
+              "column": 18,
+              "specs": [
+                {
+                  "title": "Studio course team — Py3 manage_users template renders",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1611,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:19.517Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-1e2cd38ec0dc9a6200dd",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                },
+                {
+                  "title": "Studio course outline — Py3 Studio base and header render",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1158,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-10-10T04:54:21.418Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "6caaff584f9491ab6016-5a54c63573222d0d9313",
+                  "file": "checklist.spec.ts",
+                  "line": 44,
+                  "column": 25
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T04:53:15.855Z",
+    "duration": 66788.164,
+    "expected": 27,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}

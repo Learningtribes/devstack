@@ -54,7 +54,7 @@ cp -R "${HARNESS}/lib" "${HARNESS}/tests" "${HARNESS}/playwright.config.ts" "${H
 } > "${OUT}/browser-identity.txt"
 
 set +e
-docker run --rm --network "container:${NETNS}" --shm-size=1g \
+docker run --rm --network "container:${NETNS}" --shm-size=1g --memory "${PY36_R2_GATE_BROWSER_MEMORY:-3g}" \
     --label io.openedx.py36-r2.gate=e6-browser \
     --mount "type=bind,src=${WORK},dst=/work" \
     --mount "type=bind,src=${HARNESS}/node_modules,dst=/work/node_modules,readonly" \
@@ -66,5 +66,22 @@ docker run --rm --network "container:${NETNS}" --shm-size=1g \
 rc=$?
 set -e
 echo "finished=$(date -u +%Y-%m-%dT%H:%M:%SZ) exit=${rc}" >> "${OUT}/browser-identity.txt"
+
+started=$(sed -n 's/^started=//p' "${OUT}/browser-identity.txt")
+cp "${WORK}/out/results.json" "${OUT}/results.json"
+cp "${PY36_R2_E6_LOG_ROOT:-/tmp/py36-r2-e6-20261010}/${RUNTIME}/fixture.txt" "${OUT}/fixture.txt" 2>/dev/null || true
+mkdir -p "${OUT}/failure-screenshots"
+find "${WORK}/out/test-results" -name 'test-failed-*.png' 2>/dev/null | while read -r png; do
+    cp "${png}" "${OUT}/failure-screenshots/$(basename "$(dirname "${png}")").png"
+done
+{
+    echo "# filtered from docker logs of py36-r2-e6-${RUNTIME}-{lms,cms} since ${started}: lines matching Traceback|ERROR|Exception| 5xx status"
+    for svc in lms cms; do
+        echo "== py36-r2-e6-${RUNTIME}-${svc}"
+        docker logs --since "${started}" "py36-r2-e6-${RUNTIME}-${svc}" 2>&1 |
+            grep -n -E 'Traceback|ERROR|Exception|" 5[0-9][0-9] ' || true
+    done
+} > "${OUT}/service-log-errors.txt"
+rm -rf "${WORK}"
 tail -n 5 "${OUT}/playwright.txt"
 exit "${rc}"

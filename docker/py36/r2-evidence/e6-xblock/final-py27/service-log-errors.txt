@@ -1,0 +1,4 @@
+# filtered from docker logs of py36-r2-e6-py27-{lms,cms} since 2026-10-10T04:53:15Z: lines matching Traceback|ERROR|Exception| 5xx status
+== py36-r2-e6-py27-lms
+709:2026-10-10 00:53:31,970 INFO 1 [openedx.core.djangoapps.course_groups.cohorts] cohorts.py:477 - Exception occurs ( user_id:17 ) in clean_cohort_cache() caller: task_evaluate_subsection_completion_milestones : CohortMembership matching query does not exist.
+== py36-r2-e6-py27-cms
