@@ -1,0 +1,1430 @@
+
+
+
+
+
+
+
+<!doctype html>
+<!--[if lte IE 9]><html class="ie9 lte9" lang="en"><![endif]-->
+<!--[if !IE]><<!--><html lang="en"><!--<![endif]-->
+  <head dir="ltr">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="openedx-release-line" content="hawthorn" />
+    <title>
+        Studio Home |
+        Studio
+    </title>
+
+    
+
+
+    <script type="text/javascript" src="/static/studio/js/i18n/en/djangojs.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="path_prefix" content="">
+    <link rel="icon" type="image/x-icon" href="/static/studio/images/favicon.ico" />
+
+    
+  
+
+      <link rel="stylesheet" href="/static/studio/css/vendor/normalize.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/vendor/html5-input-polyfills/number-polyfill.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/CodeMirror/codemirror.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/vendor/ui-lightness/jquery-ui-1.8.22.custom.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/vendor/jquery.qtip.min.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/markitup/skins/simple/style.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/markitup/sets/wiki/style.css" type="text/css" media="all" / >
+
+    
+  
+
+      <link rel="stylesheet" href="/static/studio/css/tinymce-studio-content-fonts.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css" type="text/css" media="all" / >
+      <link rel="stylesheet" href="/static/studio/css/tinymce-studio-content.css" type="text/css" media="all" / >
+
+    
+  
+
+      <link rel="stylesheet" href="/static/studio/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/skin.min.css" type="text/css" media="all" / >
+
+
+      
+  
+
+      <link rel="stylesheet" href="/static/studio/hawthorn/css/studio-main-v1.css" type="text/css" media="all" / >
+
+
+    
+
+
+
+<!-- dummy Segment -->
+<script type="text/javascript">
+  var analytics = {
+    "track": function() {}
+  };
+</script>
+<!-- end dummy Segment -->
+
+
+    
+  </head>
+
+  <body class="ltr is-signedin index view-dashboard lang_en fa-width-auto">
+    
+
+    <a class="nav-skip" href="#main">Skip to main content</a>
+
+    
+      <script type="text/javascript" src="/static/studio/js/src/utility.js"></script>
+      <script type="text/javascript" src="/static/studio/js/src/logger.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/jquery.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/jquery-migrate.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/vue.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/vue-resource.js"></script>
+      <script type="text/javascript" src="/static/studio/js/vendor/jquery.cookie.js"></script>
+      <script type="text/javascript" src="/static/studio/js/vendor/url.min.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/underscore.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/underscore.string.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/backbone.js"></script>
+      <script type="text/javascript" src="/static/studio/js/vendor/URI.min.js"></script>
+      <script type="text/javascript" src="/static/studio/edx-ui-toolkit/js/utils/global-loader.js"></script>
+      <script type="text/javascript" src="/static/studio/edx-ui-toolkit/js/utils/string-utils.js"></script>
+      <script type="text/javascript" src="/static/studio/edx-ui-toolkit/js/utils/html-utils.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/popper.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/bootstrap.js"></script>
+      <script type="text/javascript" src="/static/studio/common/js/vendor/require.js"></script>
+
+
+    
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/commons.js" ></script>
+
+
+    <script type="text/javascript">
+      window.baseUrl = "/static/studio/";
+      require.config({
+          baseUrl: window.baseUrl
+      });
+
+    </script>
+
+    <script type="text/javascript" src="/static/studio/cms/js/require-config.js"></script>
+
+    <!-- view -->
+    <div class="wrapper wrapper-view" dir="ltr">
+      
+
+      
+      
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/static/studio/js/vendor/timepicker/jquery.timepicker.css" />
+  <script type="text/template" id="catalog-visibility-editor-tpl">
+    <div class="pacing-wrapper">
+    <span class="msg"><%= gettext("Course Visibility in Catalog") %><span class="mandatory">*</span></span>
+    <ol class="list-input pacing">
+        <li class="field">
+            <span class="icon fa-duotone fa-lock"></span>
+            <label id="private-label" class="course-pace-label" for="private"><%= gettext("Private") %></label>
+            <span class="tip"><%= gettext("The course will only be visible to Learners who have been enrolled.") %></span>
+            <label>
+                <input type="radio" class="ds-radio" name="catalog-visibility" id="private" value="none" aria-labelledby="private-label" />
+            </label>
+        </li>
+        <li class="field">
+            <span class="icon fa-duotone fa-link"></span>
+            <label id="accessible-by-url-label" class="course-pace-label" for="accessible-by-url"><%= gettext("Accessible by URL") %></label>
+            <span class="tip"><%= gettext("The course is accessible to Learners using the course link.") %></span>
+            <label>
+                <input type="radio" class="ds-radio" name="catalog-visibility" id="accessible-by-url" value="about" aria-labelledby="accessible-by-url-label" />
+            </label>
+        </li>
+        <li class="field">
+            <span class="icon fa-duotone fa-eye"></span>
+            <label id="full-public-label" class="course-pace-label" for="full-public"><%= gettext("Public") %></label>
+            <span class="tip"><%= gettext("The course is visible in the Catalog.") %></span>
+            <label>
+                <input type="radio" class="ds-radio" name="catalog-visibility" id="full-public" value="both" aria-labelledby="full-public-label" />
+            </label>
+        </li>
+    </ol>
+</div>
+
+  </script>
+  <script type="text/template" id="course-start-date-time-editor-tpl">
+    <ol class="list-input">
+    <li class="field-group field-group-course-start" id="course-start">
+        <div class="field date" id="field-course_start_date">
+            <label for="course_start_date" class="ds-input">
+                <span><%= gettext("Start Date & Time") %><span class="mandatory">*</span></span>
+                <input type="text" id="course_start_date" name="course_start_date"
+                value="" placeholder="MM/DD/YYYY" class="start-date date start" autocomplete="off">
+            </label>
+        </div>
+        <div class="field time" id="field-course-start-time">
+            <span><%= pgettext('datetime-format', 'at') %></span>
+            <label class="ds-input">
+                <input type="text" class="time start timepicker ui-timepicker-input" id="course-start-time" value="" placeholder="00:00 (UTC)" autocomplete="off">
+            </label>
+        </div>
+    </li>
+</ol>
+  </script>
+  <script type="text/template" id="course-end-date-time-editor-tpl">
+    <ol class="list-input">
+    <li class="field-group field-group-course-end" id="course-end">
+        <div class="field date" id="field-course-end-date">
+            <label for="course_end_date" class="ds-input">
+                <span><%= gettext("End Date & Time (Optional)") %></span>
+                <input type="text" id="course_end_date" name="course_end_date"
+                value="" placeholder="MM/DD/YYYY" class="end-date date end" autocomplete="off" >
+            </label>
+        </div>
+        <div class="field time" id="field-course-end-time">
+            <span><%= pgettext('datetime-format', 'at') %></span>
+            <label class="ds-input">
+                <input type="text" class="time end timepicker ui-timepicker-input" id="course-end-time" value="" placeholder="00:00 (UTC)" autocomplete="off">
+            </label>
+        </div>
+    </li>
+</ol>
+
+  </script>
+  <script type="text/template" id="course-description-editor-tpl">
+    <ol class="list-input">
+    <li class="field-group" id="field-course-description">
+        <label class="ds-input" for="course-description"><%= gettext("Course Description (Optional)") %></label>
+        <textarea class="text tinymce-editor" id="course-description-in-modal"></textarea>
+    </li>
+</ol>
+
+  </script>
+  <script type="text/template" id="course-privilege-flags-editor-tpl">
+    <ol class="list-input">
+    <li class="field-group">
+        <div class="field">
+            <ds-dropdown class="new-course-privileges-dropdown"
+                        placeholder="<%= gettext('Select one or multiple Privilege Flags') %>"
+                        multiple="true" searchable>
+                <span slot="label">
+                    <%= gettext("Privilege Flag(s)") %>
+                    <% if (privilegeFlagsMandatory) { %>
+                        <span class="mandatory">*</span>
+                    <% } %>
+                </span>
+                <% _.each(privilegeFlags, function(privilege) { %>
+                    <label class="<%= privilege.disabled ? 'hidden' : '' %>" key="<%= privilege.value %>">
+                        <input type="checkbox"
+                               value="<%= privilege.value %>"
+                               class="ds-checkbox"/>
+                        <span><%= privilege.text %></span>
+                    </label>
+                <% }); %>
+            </ds-dropdown>
+            <div id="review-selected-course-privilege-labels" class="review-selected-course-privilege-labels">
+            </div>
+        </div>
+    </li>
+</ol>
+
+  </script>
+  <script type="text/template" id="course-type-editor-tpl">
+    <ol class="list-input">
+    <li class="field-group">
+        <div class="field">
+            <label class="ds-input"><%= gettext("Course Type") %><span class="mandatory">*</span></label>
+            <div class="course-type-container">
+                <% _.each(courseTypes, function(name, id) { %>
+                    <label>
+                        <input class="ds-radio" type="radio" id="<%= id %>" name="course-type" value="<%= id %>" />
+                        <%= gettext(name) %>
+                    </label>
+                <% }); %>
+            </div>
+        </div>
+    </li>
+</ol>
+
+  </script>
+  <script type="text/template" id="course-category-editor-tpl">
+    <% if (!_.isEmpty(courseCategories)) { %>
+<ol class="list-input">
+    <li class="field-group">
+        <div class="field">
+            <label class="ds-input"><%= gettext("Course Category") %><span class="mandatory">*</span></label>
+            <div class="course-category-container">
+            <% _.each(courseCategories, function(category) { %>
+                <label key="<%= category %>">
+                    <input class="ds-radio" type="radio" id="course-category" name="course-category" value="<%= category %>"/>
+                    <span><%= gettext(category) %></span>
+                </label>
+            <% }); %>
+            </div>
+        </div>
+    </li>
+</ol>
+<% } %>
+
+  </script>
+  <script type="text/template" id="course-card-image-editor-tpl">
+    <div class="xblock-editor">
+    <div class="message modal-introduction">
+        <div class="form-check">
+            <div class="step3-wrapper">
+                <div class="course-container">
+                    <div class="course-image-preview-container">
+                        <label class="ds-input">
+                            <span><%= gettext("Course Card Image (Preview)") %><span class="mandatory">*</span></span>
+                        </label>
+                        <div class="course-image-preview-card">
+                            <div class="wrapper-course-image">
+                                <img class="course-image" id="course-image" src="" alt="<%= gettext('Course Card Image') %>"/>
+                                <div id="course-type" class="course-type"></div>
+                                <div id="course-language" class="course-language"></div>
+                            </div>
+
+                            <div class="wrapper-course-details">
+                                <div class="course-info">
+                                    <section>
+                                        <h2 id="course-title" class="course-title">
+                                        <ds-tooltip role="tooltip" scheme="dark" style="max-width: calc(306px); box-sizing: border-box;"></ds-tooltip>
+                                        </h2>
+                                    </section>
+                                    <span class="info-date-block-container">
+                                        <span id="course-start-date" class="info-date-block localized-datetime" data-language="en" data-timezone="" data-datetime="" data-format="shortDate" data-string="{date}">
+                                        </span>
+                                    </span>
+                                    <div class="info-certificate"></div>
+                                </div>
+
+                                <section class="sub-info">
+                                    <div class="badge">
+                                        <i class="far fa-trophy"></i>
+                                        <span>0</span>
+                                    </div>
+                                    <i class="far fa-solid fa-circle"></i>
+                                    <div class="duration">
+                                        <i class="far fa-clock"></i>
+                                        <span>0</span>
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="ds-button action action-upload-image" id="upload-course-image">
+                        <i class="fa-regular fa-upload"></i>
+                        <%= gettext("Upload Course Card Image") %>
+                    </button>
+
+                    <div class="upload-file-details">
+                        <span><%= gettext("Image dimensions: 400x310px") %></span>
+                        <span><%= gettext("Size limit: 10MB") %></span>
+                        <span><%= gettext("Format: .jpeg") %></span>
+                    </div>
+                </div>
+
+                <div id="image-container">
+                    <div id="image-toolbar-buttons">
+                        <div class="btn-icon" id="file-upload-button">
+                            <span><%= gettext("File Upload") %></span>
+                        </div>
+                        <div class="btn-icon disabled" id="unsplash-button">
+                            <span>Unsplash</span>
+                        </div>
+                    </div>
+
+                    <div id="file-upload-container">
+                        <div id="file-upload-box">
+                            <ul id="file-list">
+                                <div class="file-list-header">
+                                    <div class="file-column-header preview-header"><%= gettext("Preview") %></div>
+                                    <div class="file-column-header type-header"><%= gettext("Type of file") %></div>
+                                    <div class="file-column-header date-header"><%= gettext("Date") %></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="unsplash-container" class="hide">
+                        <navbar class="toolbar">
+                            <div id="search-container">
+                                <label class="ds-input">
+                                    <span class="icon">
+                                        <i class="far fa-magnifying-glass"></i>
+                                    </span>
+                                    <input type="text" id="search-query" placeholder="<%= gettext('Type your search term…') %>">
+                                </label>
+                            </div>
+                        </navbar>
+                        <hr class="ds-divider">
+                        <div id="unsplash-box">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-section"></div>
+</div>
+
+  </script>
+  <script type="text/template" id="upload-dialog-tpl">
+    <form class="upload-dialog" method="POST" action="<%- url %>" enctype="multipart/form-data">
+        <p id="dialog-assetupload-description" class="message"><%- message %></p>
+        <input id="file-upload-instructor" type="file" name="file" <% if(error && error.attributes && error.attributes.selectedFile) {%>class="error"<% } %> />
+
+    <div class="browser-file-wrapper">
+        <label class="browse" for="file-upload-instructor"><i class="far fa-file-upload"></i>Browse</label>
+        <span></span>
+    </div>
+        <div class="status-upload">
+
+            <% if(uploading) { %>
+            <div class="wrapper-progress">
+                <% if (uploadedBytes && totalBytes) { %>
+                <progress value="<%- uploadedBytes %>" max="<%- totalBytes %>"><%- uploadedBytes/totalBytes*100 %>%</progress>
+                <% } else { %>
+                <progress></progress>
+                <% } %>
+            </div>
+            <% } %>
+
+            <% if(error) {%>
+            <div id="upload_error" class="message message-status error is-shown" name="upload_error">
+                <p><%- error.message %></p>
+            </div>
+            <% } %>
+
+            <% if(finished) { %>
+            <div id="upload_confirm" class="message message-status confirm success is-shown" name="upload_confirm">
+                <p><%- gettext("File upload succeeded") %></p>
+            </div>
+            <% } %>
+
+        </div>
+    </div>
+</form>
+
+  </script>
+  <script type="text/template" id="basic-modal-tpl">
+    <div class="wrapper wrapper-modal-window wrapper-modal-window-<%- name %>"
+     aria-labelledby="modal-window-title"
+     role="dialog">
+    <div class="modal-window-overlay"></div>
+    <div class="modal-window <%- viewSpecificClasses %> modal-<%- size %> modal-type-<%- type %>" tabindex="-1" aria-labelledby="modal-window-title">
+        <div class="<%- name %>-modal">
+            <div class="modal-header">
+                <% if (typeof(displayReturnIcon)=='boolean'?displayReturnIcon:false) { %>
+                <span class="splinter"></span>
+                <% } %>
+                <h2 id="modal-window-title" class="title modal-window-title">
+                    <%- title %>
+                    <% if (modalSRTitle) { %>
+                        <span class="sr modal-sr-title">
+                            <%- modalSRTitle %>
+                        </span>
+                    <% } %>
+                </h2>
+
+                <% if (typeof(stickActionButtonsToTop)=='boolean'?stickActionButtonsToTop:false) { %>
+                    <div class="modal-actions">
+                        <h3 class="sr"><%- gettext("Actions") %></h3>
+                        <ul></ul>
+                    </div>
+                <% } %>
+                <% if (typeof(displayCloseButton)=='boolean'?displayCloseButton:false) { %>
+                <span class="icon-close"><i class="far fa-times"></i></span>
+                <% } %>
+
+            </div>
+            <% if (showEditorModeButtons) { %>
+            <div class="modal-tabs modal-tab-modes">
+                <ul class="editor-modes action-list action-modes settings-tabs-header">
+                </ul>
+            </div>
+            <% } %>
+            <div class="modal-content">
+            </div>
+            <% if (typeof(stickActionButtonsToTop)=='boolean'?!stickActionButtonsToTop:true) { %>
+            <div class="modal-actions">
+                <h3 class="sr"><%- gettext("Actions") %></h3>
+                <ul></ul>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+  </script>
+  <script type="text/template" id="modal-button-tpl">
+    <li class="action-item">
+    <a href="#" class="button <%- isPrimary ? 'action-primary' : '' %> action-<%- type %>"><%- name %></a>
+</li>
+
+  </script>
+  <script type="text/template" id="course-review-settings-modal-tabs-tpl">
+    <ul class="ds-tabs ds-tabs--bottom">
+    <% _.each(tabs, function(tab) { %>
+    <li data-id="<%- tab.id %>" data-tab="<%- tab.name %>" class="ds-tab settings-tab-button">
+        <%- tab.displayName %>
+    </li>
+    <% }); %>
+</ul>
+<% _.each(tabs, function(tab) { %>
+<div class='settings-tab <%- tab.name %>'></div>
+<% }); %>
+  </script>
+  <script type="text/template" id="course-review-settings-modal-tpl">
+    <div class="xblock-editor" data-locator="<%= xblockInfo.get('id') %>" data-course-key="<%= xblockInfo.get('courseKey') %>">
+    <div class="message modal-introduction">
+        <p><%- introductionMessage %></p>
+    </div>
+    <div class="modal-section"></div>
+</div>
+
+  </script>
+
+
+
+<script type="text/javascript" src="/static/studio/bundles/QuestionMark.js" ></script>
+
+<div class="wrapper-header wrapper header-fds" id="view-top">
+  <header class="primary" role="banner">
+
+    <div class="wrapper wrapper-l">
+      <h1 class="branding">
+        <a class="brand-link" href="/">
+          <img class="brand-image" src="/static/studio/hawthorn/images/studio-logo.png" alt="Studio" />
+        </a>
+      </h1>
+
+    </div>
+
+    <div class="wrapper wrapper-r">
+          <span id="studio-logs-icon-btn"></span>
+
+
+      <nav class="nav-program-status" aria-label="Program Status"></nav>
+
+      <nav class="nav-account nav-is-signedin nav-dd ui-right" aria-label="Account">
+        <h2 class="sr-only">Account Navigation</h2>
+        <ol>
+          <li class="nav-item nav-account-user">
+            
+
+
+
+
+
+  <h3 class="title">
+    <span class="label">
+      <span class="label-prefix sr-only">Currently signed in as:</span>
+      <span class="account-username" title="edx">edx</span>
+      <img class="user-image-frame" src="/static/studio/images/profiles/default_50.png" alt="Profile image for edx">
+    </span>
+  </h3>
+
+  <div class="wrapper wrapper-nav-sub">
+    <div class="nav-sub">
+      <ul>
+        <li class="nav-item nav-account-signout">
+          <a class="action action-signout" href="/logout">Sign Out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+          </li>
+        </ol>
+      </nav>
+
+    </div>
+  </header>
+</div>
+
+      
+
+      
+
+
+      <div id="page-alert">
+      
+      </div>
+
+      <main id="main" aria-label="Content" tabindex="-1">
+        <div id="content">
+        
+
+<div class="wrapper-editing "></div>
+<div class="wrapper-mast wrapper">
+  <header class="mast has-actions">
+    <h1 class="page-header">Studio Home</h1>
+    <div class="overview-text">Overview</div>
+  </header>
+</div>
+
+<div class="wrapper-content wrapper">
+  <section class="content">
+    <article class="content-primary" role="main">
+
+      <ul id="course-index-tabs">
+      </ul>
+
+      <div class="courses courses-tab active">
+
+        <div class="wrapper-create-element wrapper-create-course">
+          <form class="form-create create-course course-info" id="create-course-form" name="create-course-form">
+            <div class="wrap-error">
+              <div id="course_creation_error" name="course_creation_error" class="message message-status message-status error" role="alert">
+              <p>Please correct the highlighted fields below.</p>
+              </div>
+            </div>
+
+            <div class="wrapper-form">
+              <h3 class="title">Create a New Course</h3>
+              <fieldset>
+                <legend class="sr">Required Information to Create a New Course</legend>
+
+                <ol class="list-input">
+                  <li class="field text required" id="field-course-name">
+                    <label for="new-course-name">Course Name</label>
+                    <input class="new-course-name" id="new-course-name" type="text" name="new-course-name" required placeholder="Enter your course name" aria-describedby="tip-new-course-name tip-error-new-course-name" />
+                  </li>
+
+                  <li class="field text required" id="field-course-privileges">
+
+                    <label for="new-course-privileges">Privilege Flag(s)</label>
+                    <ds-dropdown class="new-course-privileges-dropdown"
+                                 placeholder="Select one or multiple Privilege Flags"
+                                 multiple
+                                 searchable
+                    >
+                      <label key="1">
+                          <input type="checkbox" value="1" class="ds-checkbox"/>
+                          <span>Privilege A</span>
+                      </label>
+                      <label key="2">
+                          <input type="checkbox" value="2" class="ds-checkbox"/>
+                          <span>Privilege B</span>
+                      </label>
+                      <label key="3">
+                          <input type="checkbox" value="3" class="ds-checkbox"/>
+                          <span>Privilege C</span>
+                      </label>
+                      <label key="4">
+                          <input type="checkbox" value="4" class="ds-checkbox"/>
+                          <span>Privilege D</span>
+                      </label>
+                      <label key="5">
+                          <input type="checkbox" value="5" class="ds-checkbox"/>
+                          <span>Privilege E</span>
+                      </label>
+                      <label key="6">
+                          <input type="checkbox" value="6" class="ds-checkbox"/>
+                          <span>Privilege F</span>
+                      </label>
+                      <label key="7">
+                          <input type="checkbox" value="7" class="ds-checkbox"/>
+                          <span>Privilege G</span>
+                      </label>
+                      <label key="8">
+                          <input type="checkbox" value="8" class="ds-checkbox"/>
+                          <span>Privilege H</span>
+                      </label>
+                      <label key="9">
+                          <input type="checkbox" value="9" class="ds-checkbox"/>
+                          <span>Privilege I</span>
+                      </label>
+                      <label key="10">
+                          <input type="checkbox" value="10" class="ds-checkbox"/>
+                          <span>Privilege J</span>
+                      </label>
+                      <label key="11">
+                          <input type="checkbox" value="11" class="ds-checkbox"/>
+                          <span>Privilege K</span>
+                      </label>
+                      <label key="12">
+                          <input type="checkbox" value="12" class="ds-checkbox"/>
+                          <span>Privilege L</span>
+                      </label>
+                      <label key="13">
+                          <input type="checkbox" value="13" class="ds-checkbox"/>
+                          <span>Privilege M</span>
+                      </label>
+                    </ds-dropdown>
+                    <input class="hidden" id="new-course-privileges" type="text" name="new-course-privileges" placeholder="" aria-describedby="tip-new-course-privileges tip-error-new-course-privileges" />
+                    <span class="tip_box" id="tip-new-course-privileges">Allow content editors associated with these privilege flags to view and edit the course.</span>
+
+                    <div id="selected-course-privilege-flags" class="selected-course-privilege-flags">
+                    </div>
+
+                  </li>
+
+                  <li class="field text required" id="field-course-number">
+                    <label for="new-course-number">Course Number</label>
+                    <input class="new-course-number" id="new-course-number" type="text" name="new-course-number" required placeholder="Enter your course number" aria-describedby="tip-new-course-number tip-error-new-course-number" />
+                    <span class="tip_box" id="tip-new-course-number">The unique number that identifies your course within your organization. Note: This is part of your course URL, so no spaces or special characters are allowed and it cannot be changed.</span>
+                  </li>
+
+                  <li class="field text required" id="field-course-run">
+                    <label for="new-course-run">Course Run</label>
+                    <input class="new-course-run" id="new-course-run" type="text" name="new-course-run" required placeholder="Enter your course run date" aria-describedby="tip-new-course-run tip-error-new-course-run" />
+                    <span class="tip_box" id="tip-new-course-run">The term in which your course will run. Note: This is part of your course URL, so no spaces or special characters are allowed and it cannot be changed.</span>
+                  </li>
+                </ol>
+
+              </fieldset>
+            </div>
+
+            <div class="actions">
+              <input type="hidden" value="False" class="allow-unicode-course-id" />
+              <input type="submit" value="Create" class="action action-primary new-course-save" />
+              <input type="button" value="Cancel" class="action action-secondary action-cancel new-course-cancel" />
+            </div>
+          </form>
+        </div>
+
+        <div id="non-courses-view" class="items-query-list hide">
+          <div class="welcome-view">
+              <div class="description">
+                  <h3>Welcome to the Studio</h3>
+                  <p>We&#39;re thrilled to have you here!</p>
+                  <p>To kick things off, you can start building your very first piece of content. Simply click the &#34;+&#34; icon or the button below to begin.</p>
+                  <p>Let&#39;s create something amazing together!</p>
+                  <input id="btn_create_course" type="button" value="Create a Course">
+              </div>
+              <img src="/static/studio/images/studio-illustration.jpg"/>
+          </div>
+        </div>
+
+        <div id="courses-list" class="items-query-list hide">
+          <section class="find-courses">
+          <section class="courses-container">
+            <section class="search-form">
+              <div id="discovery-form" role="search" aria-label="course" class="wrapper-search-context">
+                <form class="wrapper-search-input">
+                  <label for="discovery-input" class="sr">Search for a course</label>
+                  <input id="discovery-input" class="discovery-input" placeholder="Search" type="text" title="Course research"/>
+                  <button type="submit" class="button postfix discovery-submit" title="Search">
+                    <span class="icon fa fa-search" aria-hidden="true"></span>
+
+                  </button>
+                  <div aria-live="polite" aria-relevant="all">
+                      <div id="loading-indicator" class="loading-spinner ">
+                        <span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span>
+                        <span class="sr">Loading</span>
+                      </div>
+                  </div>
+                </form>
+              </div>
+
+              <aside aria-label="Refine Your Search" class="search-facets phone-menu">
+                <section class="search-facets-lists"></section>
+                <!--Reset-->
+                <button id="clear-all-filters" class="clear-filters flt-right discovery-button" title="Reset filters">
+                    <i class="fa-regular fa-filter-circle-xmark icon"></i>
+                </button>
+              </aside>
+
+              <div id="filter-bar" class="filters hide-phone is-collapsed"></div>
+
+              <!--<div id="discovery-message" class="search-status-label"></div>-->
+              <div class="search-status-label">
+                <div class="container">
+                  <div class="label">
+                    <span id="discovery-message" ></span>
+                  </div>
+                  <div>
+                    <span id="id_show_archived_switcher">
+                        <span class="switcher"></span>
+                        <input type="checkbox" id="show-archived-content" class="hidden" />
+                        <span class="switcher_text">Show Archived Content</span>
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <button id="export_courses_list" class="ds-button ds-button--neutral">
+                    <i class="fa-regular fa-arrow-down-to-bracket" aria-hidden="true"></i>Export as CSV
+                  </button>
+                </div>
+              </div>
+              <div id="export-status-message" class="export-status hide"></div>
+            </section>
+          </section>
+        </section>
+
+          <div id="discovery-message" class="search-status-label"></div>
+
+          <div class="list-wrapper">
+            <div class="title-bar-container">
+              <div class="listing-header">
+                <h3 class="courses_title sortable" data-sort_by="+display_name">
+                  Course Title
+                  <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                </h3>
+                <h3 class="course_creator sortable" data-sort_by="+creator">
+                  Creator
+                  <i class="fa fa-long-arrow-up hidden" aria-hidden="true"></i>
+                </h3>
+                <h3 class="course_status sortable" data-sort_by="+course_status">
+                  Status
+                  <i class="fa fa-long-arrow-up hidden" aria-hidden="true"></i>
+                </h3>
+                <h3 class="course_created sortable" data-sort_by="+created">
+                  Date of Creation
+                  <i class="fa fa-long-arrow-up hidden" aria-hidden="true"></i>
+                </h3>
+                <h3 class="course_modified sortable" data-sort_by="+modified">
+                  Last Modification
+                  <i class="fa fa-long-arrow-up hidden" aria-hidden="true"></i>
+                </h3>
+                <h3 class="course_pin"></h3>
+              </div>
+            </div>
+            <ul class="course-listing"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="paths paths-tab"></div>
+
+      <div class="libraries react-library-listing libraries-tab ">
+      </div>
+      <script type="text/javascript">
+        setTimeout(function() {
+          CourseOrLibraryListingFactory({
+            selector: 'div.libraries-tab',
+            props: {"linkClass": "library-link", "idBase": "library", "is_program_enabled": true, "libraries_enabled": true, "allow_unicode_course_id": false, "org": "edX", "language_code": "en"}
+          })
+        }, 500);
+      </script>
+
+    </article>
+    <aside class="content-supplementary" role="complementary">
+      <div class="bit">
+        <h3 class="title title-3">New to Studio?</h3>
+        <p>Click Help in the upper-right corner to get more information about the Studio page you are viewing. You can also use the links at the bottom of the page to access our continually updated documentation and other Studio resources.</p>
+
+        <ol class="list-actions">
+          <li class="action-item">
+
+            <a href="http://edx.readthedocs.io/projects/open-edx-building-and-running-a-course/en/open-release-hawthorn.master/getting_started/CA_get_started_Studio.html" target="_blank">Getting Started with Studio</a>
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </section>
+
+
+</div>
+
+<script type="text/javascript">
+ setTimeout(function() {
+  if (document.querySelector('#studio-logs-icon-btn')) {
+    StudioLogsIconBtnFactory({
+      selector: '#studio-logs-icon-btn',
+      props: {
+      }
+    })
+  }
+}, 500)
+</script>
+
+
+        </div>
+      </main>
+
+
+      
+      
+
+
+
+<div class="wrapper-footer wrapper">
+  <footer class="primary" role="contentinfo">
+
+    <div class="footer-content-primary">
+        <div class="wrapper-logo">
+          <img src="/static/studio/hawthorn/images/studio-logo.png" class="logo-triboo"/>
+        </div>
+
+        
+
+
+
+<div class="select-component footer-language-selector">
+
+    <select id="footer-language-select" name="language" onchange="footerLanguageSelector.handleSelection(this)">
+            
+                <option value="ar" imagesrc="/static/studio/images/country-icons/ar.png">العربية</option>
+            
+                <option value="de-de" imagesrc="/static/studio/images/country-icons/de-de.png">Deutsch</option>
+            
+                <option value="el" imagesrc="/static/studio/images/country-icons/el.png">Ελληνικά</option>
+            
+                <option value="en" imagesrc="/static/studio/images/country-icons/en.png" selected="selected">English</option>
+            
+                <option value="es-419" imagesrc="/static/studio/images/country-icons/es-419.png">Español</option>
+            
+                <option value="fr" imagesrc="/static/studio/images/country-icons/fr.png">Français</option>
+            
+                <option value="it-it" imagesrc="/static/studio/images/country-icons/it-it.png">Italiano</option>
+            
+                <option value="pt-br" imagesrc="/static/studio/images/country-icons/pt-br.png">Português</option>
+            
+                <option value="tr-tr" imagesrc="/static/studio/images/country-icons/tr-tr.png">Türkçe</option>
+            
+                <option value="zh-cn" imagesrc="/static/studio/images/country-icons/zh-cn.png">中文</option>
+    </select>
+</div>
+
+
+
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/LanguageSelector.js" ></script>
+      <script type="text/javascript">
+        
+    window.onload = function onload () {new LanguageSelector();}
+
+    window.footerLanguageSelector = {
+        handleSelection: function($select) {
+            this.setLanguageCookie($select.value, this.refreshPage);
+        },
+
+        setLanguageCookie: function(value, callback) {
+            document.cookie = 'change-openedx\u002Dlanguage\u002Dpreference=' + value + ';path=/';
+
+            callback();
+        },
+
+        refreshPage: function() {
+            window.location.reload();
+        }
+    };
+
+      </script>
+
+
+    </div>
+
+    <div class="footer-content-secondary" aria-label="Legal">
+      <div class="footer-about-copyright">
+        <p>
+          Copyright &copy; 2026 Foundever&#8482;. All rights reserved.
+        </p>
+      </div>
+      <div class="footer-about-openedx-copyright">
+        <p>
+          EdX, Open edX, Studio, and the edX and Open edX logos are registered trademarks or trademarks of <a data-rel='edx.org' href='https://www.edx.org/'>edX Inc.</a>
+        </p>
+      </div>
+      <div class="footer-about-openedx">
+        <a href="http://open.edx.org" title="Powered by Open edX">
+          <img alt="Powered by Open edX" src="https://files.edx.org/openedx-logos/edx-openedx-logo-tag.png">
+        </a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+      
+
+      <div id="page-notification"></div>
+    </div>
+
+    <div id="page-prompt"></div>
+
+    
+
+    
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/DSComponents.js" ></script>
+
+    
+  <script type="text/template" id="course_item-tpl">
+      <a class="course-link courses_title" href="<%- url %>">
+  <h3 class="course-title course-item-text truncated_string" id="" title="<%- content.display_name %>"><%- content.display_name %></h3>
+  <span class="course_code">
+      <%- number %><% if (run) { %>+<%- run %><% } %>
+  </span>
+</a>
+
+<div class="course_creator">
+   <%- creator %>
+</div>
+<% if (archived) { %>
+  <span class="course_status">
+    <span class="archive-flag"><%- gettext('Archived') %></span>
+  </span>
+<% } else { %>
+  <% if (course_status === "released") { %>
+    <span class="course_status">
+      <ds-tag color="success" size="small"><%- gettext('Released') %></ds-tag>
+    </span>
+  <% } else if (course_status === "running") { %>
+    <span class="course_status">
+      <ds-tag color="info" size="small"><%- gettext('Running') %></ds-tag>
+    </span>
+  <% } else { %>
+    <span class="course_status">
+      <ds-tag color="caution" size="small"><%- gettext('Draft') %></ds-tag>
+    </span>
+  <% } %> 
+<% } %>
+
+<div class="course_created">
+    <%- created %>
+</div>
+<div class="course_modified">
+    <%- modified %>
+</div>
+
+<% if (lms_link && rerun_link) { %>
+  <div class="course-actions course_pin">
+    <% if (is_pinned) { %>
+        <div class="course-pin-button pinned-hover-status" data-course_id="<%- id %>">
+            <i class="fa-solid fa-thumbtack"></i>
+        </div>
+    <% } else { %>
+        <div class="course-pin-button unpinned-hover-status" data-course_id="<%- id %>">
+            <i class="fa-regular fa-thumbtack"></i>
+        </div>
+    <% } %>
+
+  </div>
+
+<% } %>
+
+  </script>
+  <script type="text/template" id="filter_bar-tpl">
+      <div class="filters-inner">
+    <ul class="active-filters facet-list"></ul>
+</div>
+
+  </script>
+  <script type="text/template" id="filter-tpl">
+        <button data-value="<%- query %>" class="facet-option discovery-button" data-type="<%- type %>">
+    <span class="query"><%- gettext(name) %></span>
+    <span aria-hidden="true" class="fa fa-times" aria-hidden="true"></span>
+  </button>
+
+  </script>
+  <script type="text/template" id="facet-tpl">
+      <div class="fact-wrapper hidden-panel">
+    <h3 class="header-facet" title="<%- gettext(title) %>">
+        <%- gettext(displayName) %>
+    </h3>
+    <ul data-facet="<%- name %>" class="facet-list collapse">
+        <%= HtmlUtils.ensureHtml(optionsHtml) %>
+    </ul>
+</div>
+
+  </script>
+  <script type="text/template" id="facet_option-tpl">
+      <li>
+    <% if ( term.startsWith('---') ) { %>
+        <button data-facet="<%- facet %>" data-value="<%- term %>" data-text="<%- name %>" class="facet-option discovery-button <%- selected ? 'selected' : '' %>">
+            (<%- gettext('Empty') %>)
+            <span class="count">
+                <span class="count-number"><%- count %></span>
+            </span>
+        </button>
+    <% } else { %>
+        <button data-facet="<%- facet %>" data-value="<%- term %>" data-text="<%- name %>" class="facet-option discovery-button <%- selected ? 'selected' : '' %>">
+            <%- gettext(name) %>
+            <span class="count">
+                <span class="count-number"><%- count %></span>
+            </span>
+        </button>
+    <% } %>
+</li>
+
+  </script>
+
+  
+  <script type="text/javascript" src="/static/studio/bundles/CourseOrLibraryListing.js" ></script>
+  <script type="text/javascript" src="/static/studio/bundles/StudioLogs.js" ></script>
+  
+    
+    <script type="text/javascript">
+        (function (require) {
+            require(['js/discovery/discovery_factory'], function (DiscoveryFactory) {
+                
+    DiscoveryFactory(
+      {"languages": {"terms": {"aa": "Afar", "ab": "Abkhazian", "af": "Afrikaans", "ak": "Akan", "sq": "Albanian", "am": "Amharic", "ar": "Arabic", "an": "Aragonese", "hy": "Armenian", "as": "Assamese", "av": "Avaric", "ae": "Avestan", "ay": "Aymara", "az": "Azerbaijani", "ba": "Bashkir", "bm": "Bambara", "eu": "Basque", "be": "Belarusian", "bn": "Bengali", "bh": "Bihari languages", "bi": "Bislama", "bs": "Bosnian", "br": "Breton", "bg": "Bulgarian", "my": "Burmese", "ca": "Catalan", "ch": "Chamorro", "ce": "Chechen", "zh": "Chinese", "zh_HANS": "Simplified Chinese", "zh_HANT": "Traditional Chinese", "cu": "Church Slavic", "cv": "Chuvash", "kw": "Cornish", "co": "Corsican", "cr": "Cree", "cs": "Czech", "da": "Danish", "dv": "Divehi", "nl": "Dutch", "dz": "Dzongkha", "en": "English", "eo": "Esperanto", "et": "Estonian", "ee": "Ewe", "fo": "Faroese", "fj": "Fijian", "fi": "Finnish", "fr": "French", "fy": "Western Frisian", "ff": "Fulah", "ka": "Georgian", "de": "German", "gd": "Gaelic", "ga": "Irish", "gl": "Galician", "gv": "Manx", "el": "Greek", "gn": "Guarani", "gu": "Gujarati", "ht": "Haitian", "ha": "Hausa", "he": "Hebrew", "hz": "Herero", "hi": "Hindi", "ho": "Hiri Motu", "hr": "Croatian", "hu": "Hungarian", "ig": "Igbo", "is": "Icelandic", "io": "Ido", "ii": "Sichuan Yi", "iu": "Inuktitut", "ie": "Interlingue", "ia": "Interlingua", "id": "Indonesian", "ik": "Inupiaq", "it": "Italian", "jv": "Javanese", "ja": "Japanese", "kl": "Kalaallisut", "kn": "Kannada", "ks": "Kashmiri", "kr": "Kanuri", "kk": "Kazakh", "km": "Central Khmer", "ki": "Kikuyu", "rw": "Kinyarwanda", "ky": "Kirghiz", "kv": "Komi", "kg": "Kongo", "ko": "Korean", "kj": "Kuanyama", "ku": "Kurdish", "lo": "Lao", "la": "Latin", "lv": "Latvian", "li": "Limburgan", "ln": "Lingala", "lt": "Lithuanian", "lb": "Luxembourgish", "lu": "Luba-Katanga", "lg": "Ganda", "mk": "Macedonian", "mh": "Marshallese", "ml": "Malayalam", "mi": "Maori", "mr": "Marathi", "ms": "Malay", "mg": "Malagasy", "mt": "Maltese", "mn": "Mongolian", "na": "Nauru", "nv": "Navajo", "nr": "Ndebele, South", "nd": "Ndebele, North", "ng": "Ndonga", "ne": "Nepali", "nn": "Norwegian Nynorsk", "nb": "Bokm\u00e5l, Norwegian", "no": "Norwegian", "ny": "Chichewa", "oc": "Occitan", "oj": "Ojibwa", "or": "Oriya", "om": "Oromo", "os": "Ossetian", "pa": "Panjabi", "fa": "Persian", "pi": "Pali", "pl": "Polish", "pt": "Portuguese", "ps": "Pushto", "qu": "Quechua", "rm": "Romansh", "ro": "Romanian", "rn": "Rundi", "ru": "Russian", "sg": "Sango", "sa": "Sanskrit", "si": "Sinhala", "sk": "Slovak", "sl": "Slovenian", "se": "Northern Sami", "sm": "Samoan", "sn": "Shona", "sd": "Sindhi", "so": "Somali", "st": "Sotho, Southern", "es": "Spanish", "sc": "Sardinian", "sr": "Serbian", "ss": "Swati", "su": "Sundanese", "sw": "Swahili", "sv": "Swedish", "ty": "Tahitian", "ta": "Tamil", "tt": "Tatar", "te": "Telugu", "tg": "Tajik", "tl": "Tagalog", "th": "Thai", "bo": "Tibetan", "ti": "Tigrinya", "to": "Tonga (Tonga Islands)", "tn": "Tswana", "ts": "Tsonga", "tk": "Turkmen", "tr": "Turkish", "tw": "Twi", "ug": "Uighur", "uk": "Ukrainian", "ur": "Urdu", "uz": "Uzbek", "ve": "Venda", "vi": "Vietnamese", "vo": "Volap\u00fck", "cy": "Welsh", "wa": "Walloon", "wo": "Wolof", "xh": "Xhosa", "yi": "Yiddish", "yo": "Yoruba", "za": "Zhuang", "zu": "Zulu"}, "name": "Language"}, "status": {"name": "Status", "terms": {"past": "Archived", "current": "Published", "future": "Draft"}}, "course_type": {"name": "Type", "terms": {"online": "E-Learning", "offline": "Instructor-led", "session_recorded": "Blended learning", "microlearning": "Microlearning", "external": "External"}}, "course_category": {"name": "Category"}, "vendor": {"name": "Tag"}, "course_mandatory_enabled": {"name": "Mandatory", "terms": {"false": "No", "true": "Yes"}}, "course_country": {"name": "Country"}, "enrollment_learning_groups": {"name": "Learning Group"}, "privilege_ids": {"name": "Course Privilege Flag", "terms": {"1": "Privilege A", "2": "Privilege B", "3": "Privilege C", "4": "Privilege D", "5": "Privilege E", "6": "Privilege F", "7": "Privilege G", "8": "Privilege H", "9": "Privilege I", "10": "Privilege J", "11": "Privilege K", "12": "Privilege L", "13": "Privilege M"}}, "catalog_visibility": {"name": "Visibility", "terms": {"both": "Public", "about": "Accessible by URL", "none": "Private"}}},
+      {"0": "Public", "1": "Accessible by URL", "2": "Private"},
+      {"Availability": "Availability filtering", "Label": "Key words filtering", "Type": "Type filtering", "Language": "Language filtering", "Country": "Country filtering", "Learning Group": "Learning Group filtering"},
+      {},
+      {},
+      {},
+      null,
+      "en",
+      null,
+      true,
+      false,
+      true
+    );
+  
+            });
+        }).call(this, require || RequireJS.require);
+    </script>
+
+
+
+      
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/js/sock.js" ></script>
+
+
+    
+      <script type="text/javascript">
+      require(['js/factories/base'], function () {
+        
+  require(["js/factories/index"], function (IndexFactory) {
+      IndexFactory({
+        org: "edX",
+        is_program_enabled: true,
+        privilege_flags: [{"text": "Privilege A", "value": "1"}, {"text": "Privilege B", "value": "2"}, {"text": "Privilege C", "value": "3"}, {"text": "Privilege D", "value": "4"}, {"text": "Privilege E", "value": "5"}, {"text": "Privilege F", "value": "6"}, {"text": "Privilege G", "value": "7"}, {"text": "Privilege H", "value": "8"}, {"text": "Privilege I", "value": "9"}, {"text": "Privilege J", "value": "10"}, {"text": "Privilege K", "value": "11"}, {"text": "Privilege L", "value": "12"}, {"text": "Privilege M", "value": "13"}],
+      });
+  });
+
+
+      });
+      </script>
+    
+    
+
+
+
+    <div class="modal-cover"></div>
+
+    <script aria-hidden="true" type="text/template" id="dialog-template">
+        
+<!--<h4 id="editor-dialog-title" class="dialog-title"><span>Title</span></h4>-->
+<i class="fas fa-times"></i>
+<div role="status" id="wmd-editor-dialog-form-errors" class="sr" tabindex="-1"></div>
+<div class="dialog-content"></div>
+
+    </script>
+    <script aria-hidden="true" type="text/template" id="confirmation-template">
+        
+
+<!--<h4 id="editor-dialog-title" class="dialog-title"><span>Title</span></h4>-->
+<i class="far fa-times"></i>
+<div role="status" id="wmd-editor-dialog-form-errors" class="sr" tabindex="-1"></div>
+<div class="dialog-content"></div>
+<div class="actions">
+    <input type="button" id="btn-secondary" class="btn-secondary" value="Cancel">
+    <input type="button" class="btn-primary" value="Confirm">
+</div>
+
+    </script>
+    <div id="dialog-container"></div>
+    
+    
+    
+    <script type="text/javascript" src="/static/studio/bundles/Dialog.js" ></script>
+
+  
+<link rel="stylesheet" href="/static/studio/debug_toolbar/css/print.css" type="text/css" media="print" />
+<link rel="stylesheet" href="/static/studio/debug_toolbar/css/toolbar.css" type="text/css" />
+
+<!-- Prevent our copy of jQuery from registering as an AMD module on sites that use RequireJS. -->
+<script src="/static/studio/debug_toolbar/js/jquery_pre.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="/static/studio/debug_toolbar/js/jquery_post.js"></script>
+
+<script src="/static/studio/debug_toolbar/js/toolbar.js"></script>
+<div id="djDebug" class="djdt-hidden" dir="ltr"
+     data-store-id="cb38a33f20b74e82bc7389cd5bf1e8fe" data-render-panel-url="/__debug__/render_panel/"
+     >
+	<div class="djdt-hidden" id="djDebugToolbar">
+		<ul id="djDebugPanelList">
+			
+			<li><a id="djHideToolBarButton" href="#" title="Hide toolbar">Hide &#187;</a></li>
+			
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtVersionsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Versions" class="VersionsPanel">
+					
+					Versions
+					
+					
+						<br /><small>Django 1.11.29</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtTimerPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Time" class="TimerPanel">
+					
+					Time
+					
+					
+						<br /><small>CPU: 82.83ms (84.01ms)</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSettingsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Settings from &lt;code&gt;py36_r2_e4_settings&lt;/code&gt;" class="SettingsPanel">
+					
+					Settings
+					
+					
+						
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtHeadersPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Headers" class="HeadersPanel">
+					
+					Headers
+					
+					
+						
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtRequestPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Request" class="RequestPanel">
+					
+					Request
+					
+					
+						<br /><small>course_listing</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSQLPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="SQL queries from 1 connection" class="SQLPanel">
+					
+					SQL
+					
+					
+						<br /><small>5 queries in 1.14ms</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtSignalsPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Signals" class="SignalsPanel">
+					
+					Signals
+					
+					
+						<br /><small>77 receivers of 12 signals</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtLoggingPanel" checked="checked" title="Disable for next and successive requests" />
+					
+						<a href="#" title="Log messages" class="LoggingPanel">
+					
+					Logging
+					
+					
+						<br /><small>0 messages</small>
+					
+					
+					
+						</a>
+					
+				</li>
+			
+				<li class="djDebugPanelButton">
+					<input type="checkbox" data-cookie="djdtProfilingPanel" title="Enable for next and successive requests" />
+					
+						<div class="djdt-contentless djdt-disabled">
+					
+					Profiling
+					
+					
+						</div>
+					
+				</li>
+			
+		</ul>
+	</div>
+	<div class="djdt-hidden" id="djDebugToolbarHandle">
+		<span title="Show toolbar" id="djShowToolBarButton">&#171;</span>
+	</div>
+	
+		
+			<div id="VersionsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Versions</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="TimerPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Time</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SettingsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Settings from <code>py36_r2_e4_settings</code></h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="HeadersPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Headers</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="RequestPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Request</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SQLPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>SQL queries from 1 connection</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="SignalsPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Signals</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+			<div id="LoggingPanel" class="djdt-panelContent">
+				<div class="djDebugPanelTitle">
+					<a href="" class="djDebugClose"></a>
+					<h3>Log messages</h3>
+				</div>
+				<div class="djDebugPanelContent">
+					
+					<img src="/static/studio/debug_toolbar/img/ajax-loader.gif" alt="loading" class="djdt-loader" />
+					<div class="djdt-scroll"></div>
+					
+				</div>
+			</div>
+		
+	
+		
+	
+	<div id="djDebugWindow" class="djdt-panelContent"></div>
+</div>
+</body>
+</html>

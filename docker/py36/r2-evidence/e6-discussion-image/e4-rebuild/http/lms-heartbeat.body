@@ -1,0 +1,14 @@
+{
+  "modulestore": {
+    "status": true,
+    "message": "OK"
+  },
+  "sql": {
+    "status": true,
+    "message": "OK"
+  },
+  "elasticsearch": {
+    "status": true,
+    "message": "OK"
+  }
+}

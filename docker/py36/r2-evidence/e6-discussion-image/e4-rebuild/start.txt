@@ -1,0 +1,6 @@
+/py36-r2-rabbitmq-20261009 running=true restarts=0 image=sha256:4206c16c09a58d0a604668e91227c32f4a222368e796bfb7bf2e0d0d160ef97a source_ro=
+/py36-r2-memcached-20261009 running=true restarts=0 image=sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226 source_ro=
+/py36-r2-lms-20261009 running=true restarts=0 image=sha256:f02cf5e79316295694dff8e5248b8704fcd1866fb8b651bef9384c7b395aec37 source_ro=true
+/py36-r2-cms-20261009 running=true restarts=0 image=sha256:f02cf5e79316295694dff8e5248b8704fcd1866fb8b651bef9384c7b395aec37 source_ro=true
+/py36-r2-worker-20261009 running=true restarts=0 image=sha256:f02cf5e79316295694dff8e5248b8704fcd1866fb8b651bef9384c7b395aec37 source_ro=true
+E4_SERVICES_STARTED lms=http://127.0.0.1:18200 cms=http://127.0.0.1:18210

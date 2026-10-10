@@ -1,0 +1,18 @@
+### lms (plain lms.envs.test, source read-only)
+edx_proctoring apps: ['edx_proctoring']
+course=CourseDescriptor;hidden=HiddenDescriptor
+xmodule.v1 entry points: 35 load failures: 0 []
+openedx.course_tool loaded: ['course_bookmarks=CourseBookmarksTool', 'course_reviews=CourseReviewsTool', 'course_updates=CourseUpdatesTool']
+markdown 2.6.11 render ok: True
+xblock.v1 entry points: 48 load failures: 1 [('scormxblock', 'RuntimeError("Model class xblock_config.models.StudioConfig doesn\'t declare an explicit app_label and isn\'t in an application in INSTALLED_APPS.",)')]
+ilt=ilt.ilt.ILTXBlock;pdf=pdf.pdf.PdfBlock;discussion=xblock_discussion.DiscussionXBlock
+exit=0
+### cms (plain cms.envs.test, source read-only)
+edx_proctoring apps: ['edx_proctoring']
+course=CourseDescriptor;hidden=HiddenDescriptor
+xmodule.v1 entry points: 35 load failures: 0 []
+openedx.course_tool loaded: ['course_bookmarks=CourseBookmarksTool', 'course_reviews=CourseReviewsTool', 'course_updates=CourseUpdatesTool']
+markdown 2.6.11 render ok: True
+xblock.v1 entry points: 48 load failures: 0 []
+ilt=ilt.ilt.ILTXBlock;pdf=pdf.pdf.PdfBlock;discussion=xblock_discussion.DiscussionXBlock
+exit=0

@@ -1,0 +1,16 @@
+HTTP/1.0 200 OK
+Date: Sat, 10 Oct 2026 05:33:33 GMT
+Server: WSGIServer/0.2 CPython/3.6.15
+Content-Type: application/json
+Vary: Cookie, Accept-Language
+x-content-type-options: nosniff
+X-Frame-Options: ALLOW
+Content-Language: en
+Content-Length: 45
+Set-Cookie:  edxloggedin=true; HttpOnly; Path=/
+Set-Cookie:  edx-user-info="{\"version\": 1\054 \"username\": \"edx\"\054 \"header_urls\": {\"logout\": \"http://localhost:18010/logout\"\054 \"resume_block\": \"http://localhost:18010/login_post\"}\054 \"enrollmentStatusHash\": \"53b26b904016f61aa22c85817facdc5c\"}"; HttpOnly; Path=/
+Set-Cookie:  csrftoken=Z1xUQdm6jV0U1OvvJevmuo1IJ1weNM8PkOBXI5G24QU22u6FWZQGrHih0GnAhgm5; expires=Sat, 09-Oct-2027 05:33:33 GMT; Max-Age=31449600; Path=/
+Set-Cookie:  openedx-language-preference=""; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+Set-Cookie:  change-openedx-language-preference=""; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+Set-Cookie:  sessionid=1|s89s8kumorysbpxk1rzzzr7iq1ink2lp|UG1ehf7zsyw4|ImQ1YjlhNDA1ZGFlODkwNDk1MWE2ODEwNWVlMWEwOTFiYWI5ZTJlMmNjNmQ3ZTBlODYwNDA2YjJmNGUwODE3ZTEi:1xFPi9:mhRCW_jtCRsblcWVO0hTC2ghubc; HttpOnly; Path=/
+

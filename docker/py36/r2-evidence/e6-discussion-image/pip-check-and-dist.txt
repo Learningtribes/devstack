@@ -1,0 +1,16 @@
+No broken requirements found.
+/usr/local/lib/python3.6/site-packages/xblock_discussion:
+__init__.py
+__pycache__
+
+/usr/local/lib/python3.6/site-packages/xblock_discussion-0.1.dist-info:
+INSTALLER
+METADATA
+RECORD
+REQUESTED
+WHEEL
+entry_points.txt
+top_level.txt
+[xblock.v1]
+discussion = xblock_discussion:DiscussionXBlock
+

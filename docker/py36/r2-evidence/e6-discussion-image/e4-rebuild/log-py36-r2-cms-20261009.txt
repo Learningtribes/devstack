@@ -1,0 +1,59 @@
+2026-10-10 01:33:32,367 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.002s]
+2026-10-10 01:33:32,367 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/elasticsearch/connection/http_urllib3.py:98: DeprecationWarning: HTTPResponse.getheaders() is deprecated and will be removed in urllib3 v2.1.0. Instead access HTTPResponse.headers directly.
+  return response.status, response.getheaders(), raw_data
+
+[10/Oct/2026 01:33:32] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-10 01:33:32,368 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42452), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,368 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42480), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,611 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.002s]
+[10/Oct/2026 01:33:32] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-10 01:33:32,612 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42488), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,612 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42494), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,812 INFO 1 [tracking] logger.py:50 - {"user_id": null, "username": "", "ip": "192.168.148.1", "referer": "", "accept_language": "", "event_source": "server", "event_type": "/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "curl/8.16.1-DEV", "page": null, "time": "2026-10-10T05:33:32.812500+00:00", "host": "a21b3eb82a95", "context": {"user_id": null, "path": "/", "course_id": "", "org_id": ""}}
+[10/Oct/2026 01:33:32] "GET / HTTP/1.1" 302 0
+2026-10-10 01:33:32,883 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42508), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,883 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42528), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,898 INFO 1 [tracking] logger.py:50 - {"user_id": null, "username": "", "ip": "192.168.148.1", "referer": "", "accept_language": "", "event_source": "server", "event_type": "/signin", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "curl/8.16.1-DEV", "page": null, "time": "2026-10-10T05:33:32.898783+00:00", "host": "a21b3eb82a95", "context": {"user_id": null, "path": "/signin", "course_id": "", "org_id": ""}}
+[10/Oct/2026 01:33:32] "GET /signin HTTP/1.1" 200 15366
+2026-10-10 01:33:32,946 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42536), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,946 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42542), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:32,968 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/django/contrib/auth/__init__.py:116: UserWarning: No request passed to the backend, unable to rate-limit. Username was 'edx@example.com'
+  return backend.authenticate(*args, **credentials)
+
+2026-10-10 01:33:32,981 INFO 1 [audit] models.py:2241 - Login success - edx (edx@example.com)
+[10/Oct/2026 01:33:33] "POST /login_post HTTP/1.1" 200 45
+2026-10-10 01:33:33,000 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42556), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,001 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 42570), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,020 INFO 1 [tracking] logger.py:50 - {"user_id": 2, "username": "edx", "ip": "192.168.148.1", "referer": "", "accept_language": "", "event_source": "server", "event_type": "/", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "curl/8.16.1-DEV", "page": null, "time": "2026-10-10T05:33:33.019995+00:00", "host": "a21b3eb82a95", "context": {"user_id": 2, "path": "/", "course_id": "", "org_id": ""}}
+2026-10-10 01:33:33,081 WARNING 1 [py.warnings] warnings.py:99 - /usr/local/lib/python3.6/site-packages/babel/plural.py:285: DeprecationWarning: Flags not at the start of the expression '\\s+(?u)'
+  (None, re.compile(r'\s+(?u)')),
+
+[10/Oct/2026 01:33:33] "GET / HTTP/1.1" 200 57857
+2026-10-10 01:33:33,112 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 39950), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,112 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 39968), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,135 INFO 1 [elasticsearch] base.py:63 - HEAD http://edx.devstack.elasticsearch:9200/ [status:200 request:0.002s]
+[10/Oct/2026 01:33:33] "GET /heartbeat HTTP/1.1" 200 188
+2026-10-10 01:33:33,137 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 39980), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,137 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 40010), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,153 INFO 1 [tracking] logger.py:50 - {"user_id": null, "username": "", "ip": "192.168.148.1", "referer": "", "accept_language": "", "event_source": "server", "event_type": "/static/studio/bundles/LoginFactory.js", "event": "{\"GET\": {}, \"POST\": {}}", "agent": "curl/8.16.1-DEV", "page": null, "time": "2026-10-10T05:33:33.153658+00:00", "host": "a21b3eb82a95", "context": {"user_id": null, "path": "/static/studio/bundles/LoginFactory.js", "course_id": "", "org_id": ""}}
+[10/Oct/2026 01:33:33] "GET /static/studio/bundles/LoginFactory.js HTTP/1.1" 200 11013
+2026-10-10 01:33:33,156 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 40026), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,156 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=8, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 40028), raddr=('192.168.148.14', 11211)>
+
+2026-10-10 01:33:33,156 WARNING 1 [py.warnings] warnings.py:99 - sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=2049, proto=0, laddr=('192.168.148.16', 40044), raddr=('192.168.148.14', 11211)>
+

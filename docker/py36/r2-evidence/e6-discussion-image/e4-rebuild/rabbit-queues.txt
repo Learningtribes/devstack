@@ -1,0 +1,7 @@
+Timeout: 60.0 seconds ...
+Listing queues for vhost py36-r2-20261009 ...
+name	messages_ready	messages_unacknowledged	consumers
+ea4d2ec8-a6fe-359c-b30a-5369971fe79a	0	0	0
+py36-r2-worker-20261009@b115a39ab954.celery.pidbox	0	0	1
+py36-r2.lms.default	0	0	1
+c202f156-c950-36d7-b3b4-8b6a830194f5	0	0	0

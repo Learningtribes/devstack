@@ -1,13 +1,14 @@
 #!/bin/sh
-# R2-preview E6: per-runtime LMS + Studio on private MySQL and Mongo clones, an
-# empty private Elasticsearch, memcached and, with PY36_R2_E6_WITH_FORUM=1, an
-# empty private comments service.
-# usage: run-r2-e6-services.sh clone
+# R2-preview E6: per-runtime LMS + Studio on private MySQL, Mongo and
+# Elasticsearch clones, memcached and, with PY36_R2_E6_WITH_FORUM=1, an empty
+# private comments service.
+# usage: run-r2-e6-services.sh {clone|clone-es}
 #        run-r2-e6-services.sh {py36|py27} {start|status|cleanup|logs|script <file.py> <evidence-dir> [args]}
 #
 # `clone` takes one read-only mysqldump of the shared edxapp/edxapp_csmh
-# databases and one mongodump of the shared `edxapp` Mongo database; every
-# runtime stack loads the same snapshots into its own servers.
+# databases, one mongodump of the shared `edxapp` Mongo database and one
+# GET-only export of the shared Elasticsearch indices (`clone-es` alone redoes
+# the last); every runtime stack loads the same snapshots into its own servers.
 # LMS (:18000) and Studio (:18010) share one network namespace so a browser
 # joined to it sees the canonical devstack origins (Site rows, absolute Studio
 # URLs, cookies) while the host ports stay with the shared Python 2.7 devstack.
@@ -25,8 +26,9 @@ MYSQL_ENV=${CONFIG}/e6-mysql.env
 XBLOCK_ILT_COMMIT=52b0f1cb1f49858a6bfd9a4663c09eec73c5918c
 XBLOCK_ILT_SRC=${WORKSPACE}/.py36-r2-sources/xblock-ilt-${XBLOCK_ILT_COMMIT}
 # r2-build-e6-assets.sh output; LMS and Studio both mount the runtime's tree.
-ASSET_ROOT=${PY36_R2_E6_ASSET_ROOT:-/tmp/py36-r2-e6-assets-20261010-r3}
+ASSET_ROOT=${PY36_R2_E6_ASSET_ROOT:-/tmp/py36-r2-e6-assets-20261010-r4}
 MONGO_DUMP=${CONFIG}/e6-mongo-snapshot.archive
+ES_DUMP=${CONFIG}/e6-es-snapshot.json
 MYSQL_IMAGE=mysql:5.6
 CACHE_IMAGE=memcached@sha256:ec8ffdf1f1d2b4d7a20ac91359520528fe4a934453f8e058eaf41ac5f7f9e226
 # Same images as edx.devstack.mongo / edx.devstack.elasticsearch.
@@ -60,15 +62,25 @@ clone() {
     docker exec edx.devstack.mongo mongodump --quiet --db edxapp --archive > "${MONGO_DUMP}.tmp"
     mv "${MONGO_DUMP}.tmp" "${MONGO_DUMP}"
     echo "E6_MONGO_CLONE_DONE bytes=$(wc -c < "${MONGO_DUMP}" | tr -d ' ') sha256=$(shasum -a 256 "${MONGO_DUMP}" | cut -d' ' -f1)"
+    clone_es
+}
+
+# GET-only read of the shared cluster.
+clone_es() {
+    umask 077
+    python3 "${SCRIPT_DIR}/r2-e6-es-clone.py" dump edx.devstack.elasticsearch "${ES_DUMP}.tmp"
+    mv "${ES_DUMP}.tmp" "${ES_DUMP}"
+    echo "E6_ES_CLONE_DONE bytes=$(wc -c < "${ES_DUMP}" | tr -d ' ') sha256=$(shasum -a 256 "${ES_DUMP}" | cut -d' ' -f1)"
 }
 
 if [ "${1:-}" = clone ]; then clone; exit 0; fi
+if [ "${1:-}" = clone-es ]; then clone_es; exit 0; fi
 
 RUNTIME=${1:-}
 case "${RUNTIME}" in
     py36)
         IMAGE=ltdps/edxapp:py36-r2-20261009
-        IMAGE_ID=sha256:9b43579930c4cd53e77e1fc5cfe1100f8852c605f1dfa8e9ab924fa2503f2211
+        IMAGE_ID=sha256:f02cf5e79316295694dff8e5248b8704fcd1866fb8b651bef9384c7b395aec37
         PLATFORM=linux/arm64
         PYTHON=python
         PORT_BASE=183
@@ -164,7 +176,7 @@ start() {
     test "$(docker image inspect "${IMAGE}" --format '{{.Id}}')" = "${IMAGE_ID}"
     test "$(git -C "${SOURCE_ROOT}" rev-parse HEAD)" = "${EXPECTED_COMMIT}"
     test -z "$(git -C "${SOURCE_ROOT}" status --porcelain)"
-    test -f "${DUMP}" && test -f "${MYSQL_ENV}" && test -f "${MONGO_DUMP}"
+    test -f "${DUMP}" && test -f "${MYSQL_ENV}" && test -f "${MONGO_DUMP}" && test -f "${ES_DUMP}"
     grep -qx "commit=${XBLOCK_ILT_COMMIT}" "${XBLOCK_ILT_SRC}.identity"
     grep -qx "source_commit=${EXPECTED_COMMIT}" "${ASSET_ROOT}/logs/provenance.txt"
     grep -qx "collect_${RUNTIME}_image=${IMAGE} ${IMAGE_ID}" "${ASSET_ROOT}/logs/provenance.txt"
@@ -201,6 +213,7 @@ start() {
     docker exec -i "${MONGO}" mongorestore --quiet --archive < "${MONGO_DUMP}"
     wait_for elasticsearch docker exec "${ES}" curl -fsS http://localhost:9200/
     es_isolated
+    python3 "${SCRIPT_DIR}/r2-e6-es-clone.py" restore "${ES}" "${ES_DUMP}" > "${LOG_ROOT}/es-restore.txt"
     if [ "${WITH_FORUM}" = 1 ]; then
         # The comments service searches `content` but does not create it.
         docker exec "${ES}" curl -fsS -X PUT http://localhost:9200/content > "${LOG_ROOT}/es-content-index.json"

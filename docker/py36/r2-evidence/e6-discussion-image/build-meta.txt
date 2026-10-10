@@ -1,0 +1,5 @@
+build start 2026-10-10 13:31:14 +0800 (cached: layers before the discussion metadata step must be reused from sha256:9b43579930c4)
+devstack HEAD 460b3b157c3f011d79861e4f5df5a1886992c5e9
+platform context platform-r2-py36-src @ 0ac3bfa6d099916cc58fc258db17221801f49d48 clean=0
+previous image sha256:9b43579930c4 retagged ltdps/edxapp:py36-r2-20261009-pre-discussion
+build end 2026-10-10 13:31:24 +0800 exit=0
