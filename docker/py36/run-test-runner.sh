@@ -15,7 +15,7 @@ case "${RUNNER_KIND}" in
         RUNNER_NAMESPACE="${PY36_R2_TEST_NAMESPACE:-py36-r2-e5-py27}"
         ;;
     *)
-        echo "usage: $0 {py36|py27} {identity|r2-dcc-collect|r2-dcc|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
+        echo "usage: $0 {py36|py27} {identity|r2-dcc-collect|r2-dcc|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|r2-learning-path-collect|r2-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
         exit 2
         ;;
 esac

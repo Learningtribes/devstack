@@ -202,10 +202,16 @@ run_learning_path() {
         execute)
             ;;
         *)
-            echo "usage: run_learning_path {collect|execute}" >&2
+            echo "usage: run_learning_path {collect|execute} [r2]" >&2
             exit 2
             ;;
     esac
+    # test_python3_compatibility.py exists only on R1 (b104c1e8031); the r2
+    # variant runs the rest of the R1 node list against the R2 tree.
+    learning_path_r1_only="${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_python3_compatibility.py"
+    if [ "${2:-}" = "r2" ]; then
+        learning_path_r1_only=""
+    fi
 
     learning_path_lms_root="${PY36_R1_TEST_ROOT}/learning-path-lms"
     learning_path_cms_root="${PY36_R1_TEST_ROOT}/learning-path-cms"
@@ -233,7 +239,7 @@ run_learning_path() {
         --rootdir="${RUNNER_PLATFORM_ROOT}" \
         --tb=short \
         -q \
-        "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_python3_compatibility.py" \
+        ${learning_path_r1_only} \
         "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/program_enrollments/tests/test_models.py" \
         "${RUNNER_PLATFORM_ROOT}/lms/djangoapps/courseware/tests/test_about.py::AboutTestCase::test_anonymous_user"
 
@@ -674,6 +680,12 @@ case "${1:-identity}" in
     p1b-learning-path)
         run_learning_path execute
         ;;
+    r2-learning-path-collect)
+        run_learning_path collect r2
+        ;;
+    r2-learning-path)
+        run_learning_path execute r2
+        ;;
     p1b-dashboard-remediation-collect)
         run_dashboard_remediation collect
         ;;
@@ -719,7 +731,7 @@ case "${1:-identity}" in
         collect_target "common/lib/xmodule/xmodule/tests/test_raw_module.py"
         ;;
     *)
-        echo "usage: $0 {identity|r2-dcc-collect|r2-dcc|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
+        echo "usage: $0 {identity|r2-dcc-collect|r2-dcc|lms|xmodule|focused-collect|focused|p1b-batch1-collect|p1b-batch1|p1b-batch2-collect|p1b-batch2|p1b-learning-path-collect|p1b-learning-path|r2-learning-path-collect|r2-learning-path|p1b-dashboard-remediation-collect|p1b-dashboard-remediation|p1b-grading-mutation-collect|p1b-grading-mutation|p1b-enrollment-view-targeted|p1b-discussion-read-write-collect|p1b-discussion-read-write|p1b-studio-cms-collect|p1b-studio-cms|p1b-ora2-assessment-collect|p1b-ora2-assessment|p1b-scorm-render-collect|p1b-scorm-render|all}" >&2
         exit 2
         ;;
 esac

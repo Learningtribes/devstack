@@ -1,0 +1,17 @@
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+lms/djangoapps/program_enrollments/tests/test_models.py::ProgramCourseEnrollmentTest::test_convert_datetime_accepts_text
+lms/djangoapps/program_enrollments/tests/test_models.py::ProgramCourseEnrollmentTest::test_get_completed_program_enrollments_accepts_text_course_id
+lms/djangoapps/program_enrollments/tests/test_models.py::ProgramCourseEnrollmentTest::test_program_enrollment_origin_is_persisted
+lms/djangoapps/program_enrollments/tests/test_models.py::ProgramCourseEnrollmentTest::test_program_rating_is_persisted
+lms/djangoapps/program_enrollments/tests/test_models.py::ProgramCourseEnrollmentTest::test_update_program_complete_flag_accepts_text_course_id
+lms/djangoapps/courseware/tests/test_about.py::AboutTestCase::test_anonymous_user
+
+no tests ran in 0.27 seconds
+cms/djangoapps/contentstore/tests/test_course_settings.py::CheckVisibilityOfProgramsLinkedWithCourseTest::test_classifies_private_and_non_private_programs
+cms/djangoapps/contentstore/tests/test_course_settings.py::CheckVisibilityOfProgramsLinkedWithCourseTest::test_uses_lp_only_loading_policy
+cms/djangoapps/contentstore/tests/test_course_listing.py::TestCourseListing::test_get_course_list
+
+no tests ran in 0.06 seconds

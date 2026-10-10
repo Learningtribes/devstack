@@ -122,6 +122,35 @@ Earlier attempt, kept as evidence:
 | --- | --- | --- |
 | py36 attempt1 | 32 console errors on Studio pages: 404 for `/static/css/{noto,foundever}-sans.css` and `/static/fonts/NotoSans/*` (the publish flow itself completed) | the `hawthorn` theme's fonts partial (`src/themes/hawthorn/common/static/sass/_fonts.scss`) and `common/static/css/noto-sans.css` (#1683) reference `/static/css/` and `/static/fonts/` absolutely, outside Studio's `/static/studio/` `STATIC_URL`. Production nginx serves the whole `/static/` prefix from the shared collected tree on the Studio host too; the E6 handler only covered `STATIC_URL`. R1 avoided it by setting Studio's `STATIC_URL` to `/static/`. Fix in `r2_e6_wsgi.py` (next section) |
 
+## Learning Path (2026-10-10) - R2 node set PASS on both runtimes; R1-only test not run
+
+Learning Path has no browser spec; the gate is the R1 `p1b-learning-path`
+runner target (`run-test-runner.sh <rt> <target>`, shared-Mongo test DBs under
+the `py36-r2-e6-lp-<rt>` prefix, as in E5).
+
+- `p1b-learning-path` as written fails at collection on both runtimes:
+  `lms/djangoapps/program_enrollments/tests/test_python3_compatibility.py` was
+  added on R1 only (`b104c1e8031`, test-only commit) and is on neither
+  `origin/master` nor R2 (`*-p1b-learning-path*.txt`).
+- New `r2-learning-path` target = the same node list without that file:
+
+| Runtime | LMS (program_enrollments `test_models.py` x5, `test_about` anonymous) | CMS (programs-linked course settings x2, course listing) |
+| --- | --- | --- |
+| py36 | 6 passed | 3 passed |
+| py27 | 6 passed | 3 passed |
+
+Collected node lists are identical across runtimes. Warnings are Django 2.0
+deprecations, pymongo `count`, and invalid escape sequences (Python 3.6 only),
+no errors.
+
+Gap: the R1-only file is the target's Python 3 read-path coverage (Discovery
+date strings through `PartialProgram.get_dates`, slumber `get`/`delete`
+binding in `programs/workflows.py`, authenticated course-about program read).
+The product files it exercises differ between R1 and R2 (`persistance/programs.py`,
+`programs/workflows.py`, `models.py`, `courseware/views/views.py`), so R1's
+result does not carry over to R2. Running it on R2 needs the file in the
+mounted tree (owner call, handoff §7).
+
 ## Harness fix: static files served ahead of Django
 
 After the toolbar removal, the py27 group 1 control showed bursts of LMS

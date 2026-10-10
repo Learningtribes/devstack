@@ -1,0 +1,43 @@
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+rendered source metadata: /runner/source-metadata/Open_edX-0.11.egg-info
+rendered source metadata: /runner/source-metadata/XModule-0.1.1.egg-info
+rendered source metadata: /runner/source-metadata/capa-0.1.egg-info
+rendered source metadata: /runner/source-metadata/xblock_discussion-0.1.egg-info
+......                                                                   [100%]
+=============================== warnings summary ===============================
+lms/djangoapps/courseware/tests/test_about.py::AboutTestCase::test_anonymous_user
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/completion/api/urls.py:10: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('completion.api.v1.urls', namespace='v1')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:112: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/completion/', include('completion.api.urls', namespace='completion_api')),
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/organizations/urls.py:8: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v0/', include('organizations.v0.urls', namespace='v0')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:130: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/organizations/', include('organizations.urls', namespace='organizations')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:152: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^api/extended/', include('extended_api.urls', namespace='extended_api')),
+  /edx/app/edxapp/edx-platform/lms/urls.py:208: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^notify/', include(notify_pattern())),
+  /edx/app/edxapp/edx-platform/lms/urls.py:792: RemovedInDjango20Warning: Passing a 3-tuple to django.conf.urls.include() is deprecated. Pass a 2-tuple containing the list of patterns and app_name, and provide the namespace argument to include() instead.
+    url(r'^triboo-guanli/', include(admin.site.urls)),
+  /edx/app/edxapp/edx-platform/lms/urls.py:803: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^oauth2/', include('edx_oauth2_provider.urls', namespace='oauth2')),
+  /edx/app/edxapp/edx-platform/lms/djangoapps/grades/api/urls.py:26: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    url(r'^v1/', include('grades.api.v1.urls', namespace='v1'))
+  /edx/app/edxapp/edx-platform/openedx/core/djangoapps/plugins/plugin_urls.py:23: RemovedInDjango20Warning: Specifying a namespace in django.conf.urls.include() without providing an app_name is deprecated. Set the app_name attribute in the included module, or pass a 2-tuple containing the list of patterns and app_name instead.
+    for url_module_path, url_config in _iter_plugins(project_type)
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/core/handlers/base.py:52: RemovedInDjango20Warning: Old-style middleware using settings.MIDDLEWARE_CLASSES is deprecated. Update your middleware and use settings.MIDDLEWARE instead.
+    "instead.", RemovedInDjango20Warning
+  /edx/app/edxapp/edx-platform/common/djangoapps/student/middleware.py:54: RemovedInDjango20Warning: Using user.is_authenticated() and user.is_anonymous() as a method is deprecated. Remove the parentheses to use it as an attribute.
+    if request.user.is_authenticated() is False:
+
+-- Docs: http://doc.pytest.org/en/latest/warnings.html
+6 passed, 12 warnings in 3.30 seconds
+...                                                                      [100%]
+=============================== warnings summary ===============================
+cms/djangoapps/contentstore/tests/test_course_listing.py::TestCourseListing::test_get_course_list
+  /edx/app/edxapp/venvs/edxapp/local/lib/python2.7/site-packages/django/contrib/auth/__init__.py:107: RemovedInDjango21Warning: Update rules.permissions.ObjectPermissionBackend.authenticate() to accept a positional `request` argument.
+    RemovedInDjango21Warning
+
+-- Docs: http://doc.pytest.org/en/latest/warnings.html
+3 passed, 1 warnings in 0.86 seconds
