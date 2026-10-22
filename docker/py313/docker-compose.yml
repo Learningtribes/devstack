@@ -1,0 +1,92 @@
+name: py313
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: py313.mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PY313_MYSQL_ROOT_PASSWORD:?run make env}
+      MYSQL_DATABASE: edxapp
+      MYSQL_USER: ${PY313_MYSQL_USER:-edxapp}
+      MYSQL_PASSWORD: ${PY313_MYSQL_PASSWORD:?run make env}
+    ports:
+      - "127.0.0.1:13306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  mongo:
+    image: mongo:8.0
+    container_name: py313.mongo
+    ports:
+      - "127.0.0.1:27117:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ping:1}).ok' | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  rabbitmq:
+    image: rabbitmq:4.3-management
+    container_name: py313.rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${PY313_RABBITMQ_USER:-edxapp}
+      RABBITMQ_DEFAULT_PASS: ${PY313_RABBITMQ_PASSWORD:?run make env}
+    ports:
+      - "127.0.0.1:15673:5672"
+      - "127.0.0.1:15674:15672"
+    volumes:
+      - ./rabbitmq/20-permit-transient-nonexcl.conf:/etc/rabbitmq/conf.d/20-permit-transient-nonexcl.conf:ro
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  memcached:
+    image: memcached:1.6
+    container_name: py313.memcached
+    ports:
+      - "127.0.0.1:11311:11211"
+
+  valkey:
+    image: valkey/valkey:8.1
+    container_name: py313.valkey
+    ports:
+      - "127.0.0.1:16379:6379"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  elasticsearch:
+    image: elasticsearch:8.19.0
+    container_name: py313.elasticsearch
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "127.0.0.1:19200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf localhost:9200/_cluster/health >/dev/null"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+volumes:
+  mysql_data:
+  mongo_data:
+  rabbitmq_data:
+  elasticsearch_data:

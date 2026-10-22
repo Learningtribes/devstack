@@ -1,0 +1,9 @@
+numpy
+scipy
+cryptography
+lxml
+Pillow
+Shapely
+PyYAML
+python-ldap
+libsass
