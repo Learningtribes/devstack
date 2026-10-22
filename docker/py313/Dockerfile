@@ -1,10 +1,10 @@
-ARG PYTHON_IMAGE=python:3.13-slim-bookworm
+ARG PYTHON_IMAGE=python:3.13-slim-bookworm@sha256:67a1e1f215ccda113cfc024e8639049257e88f273898f595b61476d128d387e8
+ARG BUILD_DEPS="build-essential pkg-config default-libmysqlclient-dev libldap2-dev libsasl2-dev libgeos-dev \
+ libxml2-dev libxslt1-dev libxmlsec1-dev libjpeg-dev zlib1g-dev"
 
 FROM ${PYTHON_IMAGE} AS apt-base
 ARG DEBIAN_MIRROR=http://deb.debian.org/debian
 ARG DEBIAN_SECURITY_MIRROR=http://deb.debian.org/debian-security
-ARG PIP_INDEX_URL=https://pypi.org/simple
-ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 RUN sed -i \
         -e "s|http://deb.debian.org/debian-security|${DEBIAN_SECURITY_MIRROR}|g" \
         -e "s|http://deb.debian.org/debian\$|${DEBIAN_MIRROR}|g" \
@@ -12,13 +12,11 @@ RUN sed -i \
         /etc/apt/sources.list.d/debian.sources
 
 FROM apt-base AS build-base
+ARG BUILD_DEPS
+ARG PIP_INDEX_URL=https://pypi.org/simple
+ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        build-essential pkg-config git curl ca-certificates xz-utils \
-        default-libmysqlclient-dev \
-        libldap2-dev libsasl2-dev \
-        libgeos-dev \
-        libxml2-dev libxslt1-dev libxmlsec1-dev \
-        libjpeg-dev zlib1g-dev \
+        ${BUILD_DEPS} git curl ca-certificates xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
 FROM build-base AS wheels
@@ -49,8 +47,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
-COPY --from=wheels /wheels /wheels
-COPY requirements-infra.txt requirements-native-probe.txt /tmp/
-RUN pip install --no-index --find-links /wheels -r /tmp/requirements-infra.txt -r /tmp/requirements-native-probe.txt \
-    && rm -rf /wheels
+ENV VIRTUAL_ENV=/opt/venv PATH=/opt/venv/bin:$PATH PYTHONDONTWRITEBYTECODE=1
+RUN python -m venv /opt/venv
+# Bind mounts keep the 98MB wheel cache out of the image layers.
+RUN --mount=type=bind,from=wheels,source=/wheels,target=/wheels \
+    --mount=type=bind,source=requirements-infra.txt,target=/tmp/requirements-infra.txt \
+    --mount=type=bind,source=requirements-native-probe.txt,target=/tmp/requirements-native-probe.txt \
+    pip install --no-index --find-links /wheels -r /tmp/requirements-infra.txt -r /tmp/requirements-native-probe.txt
 WORKDIR /edx/app/edxapp/edx-platform
+
+# Runtime plus a compiler toolchain, for installing platform requirements that need sdists.
+# /opt/venv is meant to be a named volume (see Makefile `shell`); PIP_INDEX_URL is passed at run time.
+FROM runtime AS dev
+ARG BUILD_DEPS
+RUN apt-get update && apt-get install -y --no-install-recommends ${BUILD_DEPS} \
+    && rm -rf /var/lib/apt/lists/*

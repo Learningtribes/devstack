@@ -23,6 +23,9 @@ services:
   mongo:
     image: mongo:8.0
     container_name: py313.mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${PY313_MONGO_USER:-edxapp}
+      MONGO_INITDB_ROOT_PASSWORD: ${PY313_MONGO_PASSWORD:?run make env}
     ports:
       - "127.0.0.1:27117:27017"
     volumes:
@@ -45,6 +48,20 @@ services:
     volumes:
       - ./rabbitmq/20-permit-transient-nonexcl.conf:/etc/rabbitmq/conf.d/20-permit-transient-nonexcl.conf:ro
       - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  # Control group for the pidbox matrix: same broker, default deprecated-feature policy.
+  rabbitmq-noperm:
+    image: rabbitmq:4.3-management
+    container_name: py313.rabbitmq-noperm
+    profiles: ["noperm"]
+    environment:
+      RABBITMQ_DEFAULT_USER: ${PY313_RABBITMQ_USER:-edxapp}
+      RABBITMQ_DEFAULT_PASS: ${PY313_RABBITMQ_PASSWORD:?run make env}
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
       interval: 10s
