@@ -16,6 +16,17 @@ make destroy  # stop and delete volumes
 
 `make shell` refuses a main checkout (use `git worktree add`; override with `ALLOW_MAIN_CHECKOUT=1`) and mounts `/opt/venv` from the named volume `py313_venv`, so packages installed there survive `--rm`. The volume is seeded from the dev image on first use; run `make venv-reset` after rebuilding the image. `PIP_INDEX_URL` is passed at run time, not baked into the image.
 
+Entering the environment (run `make` on the host, not inside a container):
+
+```bash
+# plain Python 3.13, no platform code, packages are lost on exit
+docker run --rm -it --network py313_default --env-file .env ltdps/edxapp:py313-local bash
+# dev shell with a platform worktree and a persistent venv
+make shell PLATFORM_DIR=/path/to/platform-worktree
+```
+
+Service hostnames inside the network are `mysql`, `mongo`, `rabbitmq`, `memcached`, `valkey`, `elasticsearch`; credentials come from `.env` via `--env-file`.
+
 Host ports (127.0.0.1 only): MySQL 13306, MongoDB 27117, RabbitMQ 15673 (management 15674), Memcached 11311, Valkey 16379, Elasticsearch 19200.
 
 RabbitMQ 4.3 denies non-exclusive transient queues by default; `rabbitmq/20-permit-transient-nonexcl.conf` re-enables them for Celery's pidbox queues. The `noperm` compose profile starts a default-policy broker for the control experiment.
