@@ -1,0 +1,1508 @@
+[
+ {
+  "name": "amqp",
+  "ver": "5.3.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "analytics-python",
+  "ver": "1.4.post1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "anyio",
+  "ver": "4.13.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "appdirs",
+  "ver": "1.4.4",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "asgiref",
+  "ver": "3.11.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "asttokens",
+  "ver": "3.0.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "attrs",
+  "ver": "26.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "babel",
+  "ver": "2.18.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "backoff",
+  "ver": "1.10.0",
+  "kind": "pure-wheel",
+  "rp": ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+ },
+ {
+  "name": "beautifulsoup4",
+  "ver": "4.14.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.7.0"
+ },
+ {
+  "name": "billiard",
+  "ver": "4.2.4",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "bleach",
+  "ver": "6.3.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "boto",
+  "ver": "2.49.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "boto3",
+  "ver": "1.42.97",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "botocore",
+  "ver": "1.42.97",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "cachecontrol",
+  "ver": "0.14.4",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "cachetools",
+  "ver": "7.0.6",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "celery",
+  "ver": "5.6.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "certifi",
+  "ver": "2026.4.22",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "cffi",
+  "ver": "2.0.0",
+  "kind": "native-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "chardet",
+  "ver": "7.4.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "charset-normalizer",
+  "ver": "3.4.7",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "click",
+  "ver": "8.3.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "click-didyoumean",
+  "ver": "0.3.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.6.2"
+ },
+ {
+  "name": "click-plugins",
+  "ver": "1.1.1.2",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "click-repl",
+  "ver": "0.3.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "code-annotations",
+  "ver": "3.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.12"
+ },
+ {
+  "name": "coreapi",
+  "ver": "2.3.3",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "coreschema",
+  "ver": "0.0.4",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "cryptography",
+  "ver": "47.0.0",
+  "kind": "native-wheel",
+  "rp": "!=3.9.0,!=3.9.1,>=3.8"
+ },
+ {
+  "name": "cssutils",
+  "ver": "2.15.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "ddt",
+  "ver": "1.7.2",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "decorator",
+  "ver": "5.3.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "defusedxml",
+  "ver": "0.7.1",
+  "kind": "pure-wheel",
+  "rp": ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+ },
+ {
+  "name": "django",
+  "ver": "5.2.13",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "django-appconf",
+  "ver": "1.2.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "django-auth-ldap",
+  "ver": "5.4.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.11"
+ },
+ {
+  "name": "django-classy-tags",
+  "ver": "4.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "django-config-models",
+  "ver": "3.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-cors-headers",
+  "ver": "4.9.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "django-countries",
+  "ver": "8.2.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "django-crequest",
+  "ver": "2018.5.11",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "django-crum",
+  "ver": "0.7.9",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-filter",
+  "ver": "25.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "django-ipware",
+  "ver": "7.0.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "django-js-asset",
+  "ver": "3.1.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "django-method-override",
+  "ver": "1.0.4",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-model-utils",
+  "ver": "5.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "django-mptt",
+  "ver": "0.18.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "django-mysql",
+  "ver": "4.19.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "django-oauth-toolkit",
+  "ver": "1.7.1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-push-notifications",
+  "ver": "3.3.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "django-ratelimit",
+  "ver": "4.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "django-ratelimit-backend",
+  "ver": "2.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-require",
+  "ver": "1.0.11",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "django-rest-swagger",
+  "ver": "2.2.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-sekizai",
+  "ver": "4.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "django-ses",
+  "ver": "4.7.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "django-simple-history",
+  "ver": "3.11.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "django-statici18n",
+  "ver": "2.7.1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-storages",
+  "ver": "1.14.6",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "django-tables2",
+  "ver": "3.0.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.11"
+ },
+ {
+  "name": "django-user-tasks",
+  "ver": "4.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "django-waffle",
+  "ver": "5.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "django-webpack-loader",
+  "ver": "3.2.3",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "djangorestframework",
+  "ver": "3.17.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "dnspython",
+  "ver": "2.8.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "docopt",
+  "ver": "0.6.2",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "dogapi",
+  "ver": "1.11.1",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "drf-jwt",
+  "ver": "1.19.2",
+  "kind": "pure-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+ },
+ {
+  "name": "drf-nested-routers",
+  "ver": "0.95.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "drf-yasg",
+  "ver": "1.21.15",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "edx-ace",
+  "ver": "1.15.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-analytics-data-api-client",
+  "ver": "0.18.3",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-ccx-keys",
+  "ver": "2.0.2",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-celeryutils",
+  "ver": "2.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-completion",
+  "ver": "5.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-django-release-util",
+  "ver": "1.5.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-django-sites-extensions",
+  "ver": "6.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-django-utils",
+  "ver": "8.0.1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-drf-extensions",
+  "ver": "10.6.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-milestones",
+  "ver": "2.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-opaque-keys",
+  "ver": "4.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-organizations",
+  "ver": "8.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-proctoring",
+  "ver": "5.2.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-rest-api-client",
+  "ver": "7.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-submissions",
+  "ver": "4.0.2",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-toggles",
+  "ver": "6.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-user-state-client",
+  "ver": "1.3.2",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edx-when",
+  "ver": "4.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "edxval",
+  "ver": "4.0.1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "elementpath",
+  "ver": "4.8.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "emoji",
+  "ver": "2.16.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "encutils",
+  "ver": "1.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "et-xmlfile",
+  "ver": "2.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "event-tracking",
+  "ver": "4.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "executing",
+  "ver": "2.3.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "fastavro",
+  "ver": "1.12.2",
+  "kind": "native-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "feedparser",
+  "ver": "6.0.14",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "feedparser-sgmllib",
+  "ver": "2.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "firebase-admin",
+  "ver": "7.4.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "firebase-token-generator",
+  "ver": "2.0.1",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "fs",
+  "ver": "2.4.16",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "fs-s3fs",
+  "ver": "1.1.1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "future",
+  "ver": "1.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+ },
+ {
+  "name": "glob2",
+  "ver": "0.7",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "google-api-core",
+  "ver": "2.30.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "google-auth",
+  "ver": "2.49.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "google-cloud-core",
+  "ver": "2.5.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "google-cloud-firestore",
+  "ver": "2.27.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "google-cloud-storage",
+  "ver": "3.10.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "google-crc32c",
+  "ver": "1.8.0",
+  "kind": "native-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "google-resumable-media",
+  "ver": "2.8.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "googleapis-common-protos",
+  "ver": "1.74.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "grpcio",
+  "ver": "1.80.0",
+  "kind": "native-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "grpcio-status",
+  "ver": "1.80.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "gunicorn",
+  "ver": "25.3.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "h11",
+  "ver": "0.16.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "h2",
+  "ver": "4.3.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "help-tokens",
+  "ver": "4.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "hpack",
+  "ver": "4.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "html5lib",
+  "ver": "1.1",
+  "kind": "pure-wheel",
+  "rp": ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+ },
+ {
+  "name": "httpcore",
+  "ver": "1.0.9",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "httpx",
+  "ver": "0.28.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "hyperframe",
+  "ver": "6.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "idna",
+  "ver": "3.13",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "inflection",
+  "ver": "0.5.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.5"
+ },
+ {
+  "name": "ipython",
+  "ver": "9.17.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.11"
+ },
+ {
+  "name": "ipython-pygments-lexers",
+  "ver": "1.1.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "isodate",
+  "ver": "0.7.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "itypes",
+  "ver": "1.2.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "jedi",
+  "ver": "0.20.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "jinja2",
+  "ver": "3.1.6",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "jmespath",
+  "ver": "1.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "joblib",
+  "ver": "1.5.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "jsonfield",
+  "ver": "3.2.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "jwcrypto",
+  "ver": "1.5.7",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "kombu",
+  "ver": "5.6.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "lazy",
+  "ver": "1.6",
+  "kind": "pure-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+ },
+ {
+  "name": "legacy-cgi",
+  "ver": "2.6.4",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "levenshtein",
+  "ver": "0.27.5",
+  "kind": "native-wheel",
+  "rp": ">=3.11"
+ },
+ {
+  "name": "libsass",
+  "ver": "0.23.0",
+  "kind": "sdist-only",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "lxml",
+  "ver": "5.3.2",
+  "kind": "native-wheel",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "mailsnake",
+  "ver": "1.6.4",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "mako",
+  "ver": "1.3.12",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "markdown",
+  "ver": "3.10.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "markupsafe",
+  "ver": "3.0.3",
+  "kind": "native-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "matplotlib-inline",
+  "ver": "0.2.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "mock",
+  "ver": "5.2.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "mongoengine",
+  "ver": "0.29.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "monotonic",
+  "ver": "1.6",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "more-itertools",
+  "ver": "11.0.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "mpmath",
+  "ver": "1.3.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "msgpack",
+  "ver": "1.1.2",
+  "kind": "native-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "mysqlclient",
+  "ver": "2.2.8",
+  "kind": "sdist-only",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "networkx",
+  "ver": "3.7",
+  "kind": "pure-wheel",
+  "rp": "!=3.14.1,>=3.12"
+ },
+ {
+  "name": "newrelic",
+  "ver": "14.0.0",
+  "kind": "native-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "nltk",
+  "ver": "3.9.4",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "nodeenv",
+  "ver": "1.10.0",
+  "kind": "pure-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+ },
+ {
+  "name": "numpy",
+  "ver": "2.5.4",
+  "kind": "native-wheel",
+  "rp": ">=3.12"
+ },
+ {
+  "name": "oauthlib",
+  "ver": "3.3.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "openapi-codec",
+  "ver": "1.3.2",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "openedx-events",
+  "ver": "11.2.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.12"
+ },
+ {
+  "name": "openpyxl",
+  "ver": "3.1.5",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "packaging",
+  "ver": "26.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "parso",
+  "ver": "0.8.7",
+  "kind": "pure-wheel",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "path",
+  "ver": "16.11.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "path-py",
+  "ver": "12.5.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.5"
+ },
+ {
+  "name": "paver",
+  "ver": "1.3.4",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pexpect",
+  "ver": "4.9.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "piexif",
+  "ver": "1.1.3",
+  "kind": "pure-wheel",
+  "rp": ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+ },
+ {
+  "name": "pillow",
+  "ver": "12.2.0",
+  "kind": "native-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "prompt-toolkit",
+  "ver": "3.0.52",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "proto-plus",
+  "ver": "1.27.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "protobuf",
+  "ver": "6.33.6",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "psutil",
+  "ver": "7.2.2",
+  "kind": "native-wheel",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "ptyprocess",
+  "ver": "0.7.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pure-eval",
+  "ver": "0.2.4",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pyasn1",
+  "ver": "0.6.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "pyasn1-modules",
+  "ver": "0.4.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "pycontracts",
+  "ver": "1.8.12",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "pycountry",
+  "ver": "26.2.16",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "pycparser",
+  "ver": "3.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "pycryptodomex",
+  "ver": "3.23.0",
+  "kind": "native-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+ },
+ {
+  "name": "pygments",
+  "ver": "2.21.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "pygraphviz",
+  "ver": "2.0.4",
+  "kind": "native-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "pyjwkest",
+  "ver": "1.4.4",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pyjwt",
+  "ver": "2.12.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "pymemcache",
+  "ver": "4.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "pymongo",
+  "ver": "4.19.0",
+  "kind": "native-wheel",
+  "rp": ">=3.11"
+ },
+ {
+  "name": "pynacl",
+  "ver": "1.6.2",
+  "kind": "native-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "pynliner",
+  "ver": "0.8.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pyopenssl",
+  "ver": "26.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "pyparsing",
+  "ver": "3.3.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "pysaml2",
+  "ver": "7.5.5",
+  "kind": "pure-wheel",
+  "rp": ">=3.9.2"
+ },
+ {
+  "name": "pysrt",
+  "ver": "1.1.2",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "python-dateutil",
+  "ver": "2.9.0.post0",
+  "kind": "pure-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+ },
+ {
+  "name": "python-ipware",
+  "ver": "3.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "python-ldap",
+  "ver": "3.4.8",
+  "kind": "sdist-only",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "python-levenshtein",
+  "ver": "0.27.5",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "python-slugify",
+  "ver": "8.0.4",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "python3-openid",
+  "ver": "3.2.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "python3-saml",
+  "ver": "1.16.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pytz",
+  "ver": "2026.1.post1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pyuca",
+  "ver": "1.2",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "pyyaml",
+  "ver": "6.0.3",
+  "kind": "native-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "rapidfuzz",
+  "ver": "3.14.6",
+  "kind": "native-wheel",
+  "rp": ">=3.11"
+ },
+ {
+  "name": "redis",
+  "ver": "7.4.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "regex",
+  "ver": "2026.4.4",
+  "kind": "native-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "requests",
+  "ver": "2.33.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "requests-oauthlib",
+  "ver": "2.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.4"
+ },
+ {
+  "name": "rest-condition",
+  "ver": "1.0.3",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "rules",
+  "ver": "3.5",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "s3transfer",
+  "ver": "0.16.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "sailthru-client",
+  "ver": "2.2.3",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "scipy",
+  "ver": "1.17.1",
+  "kind": "native-wheel",
+  "rp": ">=3.11"
+ },
+ {
+  "name": "semantic-version",
+  "ver": "2.10.0",
+  "kind": "pure-wheel",
+  "rp": ">=2.7"
+ },
+ {
+  "name": "setuptools",
+  "ver": "84.2.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "shapely",
+  "ver": "2.1.2",
+  "kind": "native-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "simplejson",
+  "ver": "4.1.1",
+  "kind": "pure-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,!=3.7.*,>=2.7"
+ },
+ {
+  "name": "six",
+  "ver": "1.17.0",
+  "kind": "pure-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+ },
+ {
+  "name": "social-auth-app-django",
+  "ver": "5.4.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "social-auth-core",
+  "ver": "4.9.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "sorl-thumbnail",
+  "ver": "13.0.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "sortedcontainers",
+  "ver": "2.4.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "soupsieve",
+  "ver": "2.8.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "sqlparse",
+  "ver": "0.5.5",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "stack-data",
+  "ver": "0.6.3",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "stevedore",
+  "ver": "5.7.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "sympy",
+  "ver": "1.14.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "tablib",
+  "ver": "3.10.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "text-unidecode",
+  "ver": "1.3",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "tqdm",
+  "ver": "4.67.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "traitlets",
+  "ver": "5.16.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.10"
+ },
+ {
+  "name": "typing-extensions",
+  "ver": "4.15.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "tzdata",
+  "ver": "2026.2",
+  "kind": "pure-wheel",
+  "rp": ">=2"
+ },
+ {
+  "name": "tzlocal",
+  "ver": "5.3.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "unicodecsv",
+  "ver": "0.14.1",
+  "kind": "sdist-only",
+  "rp": ""
+ },
+ {
+  "name": "uritemplate",
+  "ver": "4.2.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "urllib3",
+  "ver": "2.6.3",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "vine",
+  "ver": "5.1.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.6"
+ },
+ {
+  "name": "watchdog",
+  "ver": "6.0.0",
+  "kind": "sdist-only",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "wcwidth",
+  "ver": "0.6.0",
+  "kind": "pure-wheel",
+  "rp": ">=3.8"
+ },
+ {
+  "name": "web-fragments",
+  "ver": "4.0.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "webencodings",
+  "ver": "0.5.1",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "webob",
+  "ver": "1.8.9",
+  "kind": "pure-wheel",
+  "rp": "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+ },
+ {
+  "name": "wrapt",
+  "ver": "2.1.2",
+  "kind": "pure-wheel",
+  "rp": ">=3.9"
+ },
+ {
+  "name": "xblock",
+  "ver": "6.1.0",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "xblock-review",
+  "ver": "1.1.5",
+  "kind": "pure-wheel",
+  "rp": ""
+ },
+ {
+  "name": "xmlschema",
+  "ver": "2.5.1",
+  "kind": "pure-wheel",
+  "rp": ">=3.7"
+ },
+ {
+  "name": "xmlsec",
+  "ver": "1.3.17",
+  "kind": "native-wheel",
+  "rp": ">=3.9"
+ }
+]

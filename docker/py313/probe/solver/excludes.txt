@@ -1,0 +1,10 @@
+# Py2-only or removed backports; dropped from resolution including as transitive dependencies.
+enum34
+futures
+argparse
+ipaddress
+pysqlite
+funcsigs
+linecache2
+traceback2
+unittest2

@@ -1,0 +1,9 @@
+# Hard constraints: Django 5.2 line plus the client versions verified in item 1 (draft, not frozen).
+Django>=5.2,<5.3
+pymongo~=4.18
+mongoengine~=0.29
+mysqlclient~=2.2
+celery~=5.6
+kombu~=5.6
+elasticsearch~=8.19
+pymemcache~=4.0

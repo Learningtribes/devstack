@@ -1,0 +1,9 @@
+# package	disposition	replacement	evidence
+django-babel-underscore	probe-drop		latest release caps django<2.0; upstream Verawood has no such package; only conf/locale/babel_underscore.cfg (i18n extraction) references it
+django-splash	probe-drop		latest 1.3.0 caps django<5.0; 3 platform .py files + middleware and INSTALLED_APPS entries (lms/envs/common.py:1195,2010); real decision pending
+edx-django-oauth2-provider	probe-drop		latest 1.3.5 caps django<2.1; DOP, ~27 .py files import provider.oauth2; real decision pending (migrate clients/tokens to DOT)
+edx-oauth2-provider	probe-drop		latest 1.3.1 caps django<2.0; ~19 .py files import edx_oauth2_provider; real decision pending
+python-saml	replace	python3-saml	pulls dm.xmlsec.binding (setup.py Py2 print statement); same onelogin.saml2 namespace; upstream Verawood uses python3-saml + xmlsec
+rfc6266-parser	probe-drop		latest 0.0.6 uses use_2to3 (rejected by current setuptools); used by cms/djangoapps/contentstore/views/videos.py; upstream Verawood has no such package; real decision pending
+djangorestframework-jwt	probe-drop		resolved with it, it holds PyJWT<2 and drags edx-proctoring 5.2.0->3.25.0, edx-drf-extensions 10.6.0->6.6.0, social-auth-core 4.9.0->4.0.2, social-auth-app-django 5.4.1->4.0.0 below upstream; 0 rest_framework_jwt imports in lms/cms/openedx/common; upstream Verawood uses drf-jwt via edx-drf-extensions
+django-memcached-hashring	probe-drop		re-adds python-memcached (replaced by pymemcache); 0 .py imports, only lms/envs/bok_choy.env.json mentions it; relies on MemcachedCache removed in Django 4.1

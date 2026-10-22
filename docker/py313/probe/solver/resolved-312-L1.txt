@@ -1,0 +1,873 @@
+amqp==5.3.1
+    # via kombu
+analytics-python==1.4.post1
+    # via -r solver.in
+anyio==4.13.0
+    # via httpx
+appdirs==1.4.4
+    # via fs
+asgiref==3.11.1
+    # via
+    #   django
+    #   django-cors-headers
+    #   django-countries
+asttokens==3.0.2
+    # via stack-data
+attrs==26.1.0
+    # via
+    #   -r solver.in
+    #   edx-ace
+    #   openedx-events
+babel==2.18.0
+    # via -r solver.in
+backoff==1.10.0
+    # via analytics-python
+beautifulsoup4==4.14.3
+    # via pynliner
+billiard==4.2.4
+    # via celery
+bleach==6.3.0
+    # via -r solver.in
+boto==2.49.0
+    # via -r solver.in
+boto3==1.42.97
+    # via
+    #   -r solver.in
+    #   django-ses
+    #   fs-s3fs
+botocore==1.42.97
+    # via
+    #   -r solver.in
+    #   boto3
+    #   s3transfer
+cachecontrol==0.14.4
+    # via firebase-admin
+cachetools==7.0.6
+    # via edxval
+celery==5.6.3
+    # via
+    #   -c hard.txt
+    #   -r solver.in
+    #   django-user-tasks
+    #   edx-celeryutils
+    #   event-tracking
+certifi==2026.4.22
+    # via
+    #   -r solver.in
+    #   httpcore
+    #   httpx
+    #   requests
+cffi==2.0.0
+    # via
+    #   cryptography
+    #   pynacl
+chardet==7.4.3
+    # via
+    #   encutils
+    #   pysrt
+charset-normalizer==3.4.7
+    # via requests
+click==8.3.3
+    # via
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
+    #   code-annotations
+    #   edx-django-utils
+    #   nltk
+click-didyoumean==0.3.1
+    # via celery
+click-plugins==1.1.1.2
+    # via celery
+click-repl==0.3.0
+    # via celery
+code-annotations==3.0.0
+    # via edx-toggles
+coreapi==2.3.3
+    # via
+    #   django-rest-swagger
+    #   openapi-codec
+coreschema==0.0.4
+    # via coreapi
+cryptography==47.0.0
+    # via
+    #   -r solver.in
+    #   google-auth
+    #   jwcrypto
+    #   pyjwt
+    #   pyopenssl
+    #   pysaml2
+    #   social-auth-core
+cssutils==2.15.0
+    # via pynliner
+ddt==1.7.2
+    # via -r solver.in
+decorator==5.3.1
+    # via
+    #   dogapi
+    #   pycontracts
+defusedxml==0.7.1
+    # via
+    #   -r solver.in
+    #   pysaml2
+    #   python3-openid
+    #   social-auth-core
+django==5.2.13
+    # via
+    #   -c hard.txt
+    #   -r solver.in
+    #   django-appconf
+    #   django-auth-ldap
+    #   django-classy-tags
+    #   django-config-models
+    #   django-cors-headers
+    #   django-crequest
+    #   django-crum
+    #   django-filter
+    #   django-js-asset
+    #   django-method-override
+    #   django-model-utils
+    #   django-mysql
+    #   django-oauth-toolkit
+    #   django-push-notifications
+    #   django-ratelimit-backend
+    #   django-sekizai
+    #   django-ses
+    #   django-simple-history
+    #   django-statici18n
+    #   django-storages
+    #   django-tables2
+    #   django-user-tasks
+    #   django-waffle
+    #   djangorestframework
+    #   drf-jwt
+    #   drf-nested-routers
+    #   drf-yasg
+    #   edx-ace
+    #   edx-celeryutils
+    #   edx-completion
+    #   edx-django-release-util
+    #   edx-django-sites-extensions
+    #   edx-django-utils
+    #   edx-drf-extensions
+    #   edx-milestones
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-submissions
+    #   edx-toggles
+    #   edx-when
+    #   edxval
+    #   event-tracking
+    #   help-tokens
+    #   jsonfield
+    #   openedx-events
+    #   rest-condition
+    #   social-auth-app-django
+django-appconf==1.2.0
+    # via django-statici18n
+django-auth-ldap==5.4.0
+    # via -r solver.in
+django-classy-tags==4.1.0
+    # via django-sekizai
+django-config-models==3.0.0
+    # via -r solver.in
+django-cors-headers==4.9.0
+    # via -r solver.in
+django-countries==8.2.0
+    # via -r solver.in
+django-crequest==2018.5.11
+    # via -r solver.in
+django-crum==0.7.9
+    # via
+    #   -r solver.in
+    #   edx-django-utils
+    #   edx-proctoring
+    #   edx-toggles
+django-filter==25.2
+    # via -r solver.in
+django-ipware==7.0.1
+    # via
+    #   -r solver.in
+    #   edx-proctoring
+django-js-asset==3.1.2
+    # via django-mptt
+django-method-override==1.0.4
+    # via -r solver.in
+django-model-utils==5.0.0
+    # via
+    #   -r solver.in
+    #   django-user-tasks
+    #   edx-celeryutils
+    #   edx-completion
+    #   edx-milestones
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-submissions
+    #   edx-when
+    #   edxval
+django-mptt==0.18.0
+    # via -r solver.in
+django-mysql==4.19.0
+    # via -r solver.in
+django-oauth-toolkit==1.7.1
+    # via -r solver.in
+django-push-notifications==3.3.0
+    # via edx-ace
+django-ratelimit==4.1.0
+    # via -r solver.in
+django-ratelimit-backend==2.0
+    # via -r solver.in
+django-require==1.0.11
+    # via -r solver.in
+django-rest-swagger==2.2.0
+    # via -r solver.in
+django-sekizai==4.1.0
+    # via -r solver.in
+django-ses==4.7.2
+    # via -r solver.in
+django-simple-history==3.11.0
+    # via
+    #   -r solver.in
+    #   edx-organizations
+    #   edx-proctoring
+django-statici18n==2.7.1
+    # via -r solver.in
+django-storages==1.14.6
+    # via
+    #   -r solver.in
+    #   edxval
+django-tables2==3.0.1
+    # via -r solver.in
+django-user-tasks==4.0.0
+    # via -r solver.in
+django-waffle==5.0.0
+    # via
+    #   -r solver.in
+    #   edx-django-utils
+    #   edx-drf-extensions
+    #   edx-proctoring
+    #   edx-toggles
+django-webpack-loader==3.2.3
+    # via
+    #   -r solver.in
+    #   edx-proctoring
+djangorestframework==3.17.1
+    # via
+    #   django-config-models
+    #   django-rest-swagger
+    #   django-user-tasks
+    #   drf-jwt
+    #   drf-nested-routers
+    #   drf-yasg
+    #   edx-completion
+    #   edx-drf-extensions
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-submissions
+    #   rest-condition
+dnspython==2.8.0
+    # via pymongo
+dogapi==1.11.1
+    # via -r solver.in
+drf-jwt==1.19.2
+    # via edx-drf-extensions
+drf-nested-routers==0.95.3
+    # via -r solver.in
+drf-yasg==1.21.15
+    # via django-user-tasks
+edx-ace==1.15.0
+    # via -r solver.in
+edx-analytics-data-api-client==0.18.3
+    # via -r solver.in
+edx-ccx-keys==2.0.2
+    # via
+    #   -r solver.in
+    #   openedx-events
+edx-celeryutils==2.0.0
+    # via -r solver.in
+edx-completion==5.0.0
+    # via -r solver.in
+edx-django-release-util==1.5.0
+    # via
+    #   -r solver.in
+    #   edx-submissions
+    #   edxval
+edx-django-sites-extensions==6.0.0
+    # via -r solver.in
+edx-django-utils==8.0.1
+    # via
+    #   django-config-models
+    #   edx-ace
+    #   edx-drf-extensions
+    #   edx-rest-api-client
+    #   edx-toggles
+    #   edx-when
+    #   event-tracking
+    #   openedx-events
+edx-drf-extensions==10.6.0
+    # via
+    #   -r solver.in
+    #   edx-completion
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-when
+    #   edxval
+edx-milestones==2.0.0
+    # via -r solver.in
+edx-opaque-keys==4.0.0
+    # via
+    #   -r solver.in
+    #   edx-ccx-keys
+    #   edx-completion
+    #   edx-drf-extensions
+    #   edx-milestones
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-user-state-client
+    #   edx-when
+    #   openedx-events
+edx-organizations==8.0.0
+    # via -r solver.in
+edx-proctoring==5.2.0
+    # via -r solver.in
+edx-rest-api-client==7.0.0
+    # via
+    #   -r solver.in
+    #   edx-proctoring
+edx-submissions==4.0.2
+    # via -r solver.in
+edx-toggles==6.0.0
+    # via
+    #   edx-completion
+    #   edxval
+    #   event-tracking
+edx-user-state-client==1.3.2
+    # via -r solver.in
+edx-when==4.0.0
+    # via edx-proctoring
+edxval==4.0.1
+    # via -r solver.in
+elementpath==4.8.0
+    # via xmlschema
+emoji==2.16.0
+    # via -r solver.in
+encutils==1.0.0
+    # via cssutils
+et-xmlfile==2.0.0
+    # via openpyxl
+event-tracking==4.0.0
+    # via
+    #   -r solver.in
+    #   edx-completion
+    #   edx-proctoring
+executing==2.3.0
+    # via stack-data
+fastavro==1.12.2
+    # via openedx-events
+feedparser==6.0.14
+    # via -r solver.in
+feedparser-sgmllib==2.1.0
+    # via feedparser
+firebase-admin==7.4.0
+    # via edx-ace
+firebase-token-generator==2.0.1
+    # via -r solver.in
+fs==2.4.16
+    # via
+    #   -r solver.in
+    #   fs-s3fs
+    #   xblock
+fs-s3fs==1.1.1
+    # via -r solver.in
+future==1.0.0
+    # via
+    #   pycontracts
+    #   pyjwkest
+glob2==0.7
+    # via -r solver.in
+google-api-core==2.30.3
+    # via
+    #   firebase-admin
+    #   google-cloud-core
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-auth==2.49.2
+    # via
+    #   google-api-core
+    #   google-cloud-core
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-cloud-core==2.5.1
+    # via
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-cloud-firestore==2.27.0
+    # via firebase-admin
+google-cloud-storage==3.10.1
+    # via firebase-admin
+google-crc32c==1.8.0
+    # via
+    #   google-cloud-storage
+    #   google-resumable-media
+google-resumable-media==2.8.2
+    # via google-cloud-storage
+googleapis-common-protos==1.74.0
+    # via
+    #   google-api-core
+    #   grpcio-status
+grpcio==1.80.0
+    # via
+    #   google-api-core
+    #   google-cloud-firestore
+    #   grpcio-status
+grpcio-status==1.80.0
+    # via google-api-core
+gunicorn==25.3.0
+    # via -r solver.in
+h11==0.16.0
+    # via httpcore
+h2==4.3.0
+    # via httpx
+help-tokens==4.0.0
+    # via -r solver.in
+hpack==4.1.0
+    # via h2
+html5lib==1.1
+    # via -r solver.in
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
+    # via firebase-admin
+hyperframe==6.1.0
+    # via h2
+idna==3.13
+    # via
+    #   anyio
+    #   httpx
+    #   requests
+inflection==0.5.1
+    # via drf-yasg
+ipython==9.17.1
+    # via -r solver.in
+ipython-pygments-lexers==1.1.1
+    # via ipython
+isodate==0.7.2
+    # via python3-saml
+itypes==1.2.0
+    # via coreapi
+jedi==0.20.1
+    # via ipython
+jinja2==3.1.6
+    # via
+    #   code-annotations
+    #   coreschema
+jmespath==1.1.0
+    # via
+    #   boto3
+    #   botocore
+joblib==1.5.3
+    # via nltk
+jsonfield==3.2.0
+    # via
+    #   -r solver.in
+    #   edx-celeryutils
+    #   edx-proctoring
+    #   edx-submissions
+jwcrypto==1.5.7
+    # via django-oauth-toolkit
+kombu==5.6.2
+    # via
+    #   -c hard.txt
+    #   celery
+lazy==1.6
+    # via -r solver.in
+levenshtein==0.27.5
+    # via python-levenshtein
+libsass==0.23.0
+    # via -r solver.in
+lxml==5.3.2
+    # via
+    #   -r solver.in
+    #   edxval
+    #   python3-saml
+    #   xblock
+    #   xmlsec
+mailsnake==1.6.4
+    # via -r solver.in
+mako==1.3.12
+    # via
+    #   -r solver.in
+    #   xblock
+markdown==3.10.2
+    # via -r solver.in
+markupsafe==3.0.3
+    # via
+    #   -r solver.in
+    #   jinja2
+    #   mako
+    #   xblock
+matplotlib-inline==0.2.2
+    # via ipython
+mock==5.2.0
+    # via -r solver.in
+mongoengine==0.29.3
+    # via
+    #   -c hard.txt
+    #   -r solver.in
+monotonic==1.6
+    # via analytics-python
+more-itertools==11.0.2
+    # via cssutils
+mpmath==1.3.0
+    # via sympy
+msgpack==1.1.2
+    # via cachecontrol
+mysqlclient==2.2.8
+    # via
+    #   -c hard.txt
+    #   -r solver.in
+networkx==3.7
+    # via -r solver.in
+newrelic==14.0.0
+    # via -r solver.in
+nltk==3.9.4
+    # via -r solver.in
+nodeenv==1.10.0
+    # via -r solver.in
+numpy==2.5.4
+    # via
+    #   -r solver.in
+    #   scipy
+    #   shapely
+oauthlib==3.3.1
+    # via
+    #   -r solver.in
+    #   django-oauth-toolkit
+    #   requests-oauthlib
+    #   social-auth-core
+openapi-codec==1.3.2
+    # via django-rest-swagger
+openedx-events==11.2.0
+    # via event-tracking
+openpyxl==3.1.5
+    # via -r solver.in
+packaging==26.2
+    # via
+    #   drf-yasg
+    #   gunicorn
+    #   kombu
+parso==0.8.7
+    # via jedi
+path==16.11.0
+    # via path-py
+path-py==12.5.0
+    # via -r solver.in
+paver==1.3.4
+    # via -r solver.in
+pexpect==4.9.0
+    # via ipython
+piexif==1.1.3
+    # via -r solver.in
+pillow==12.2.0
+    # via
+    #   -r solver.in
+    #   edx-organizations
+    #   edxval
+prompt-toolkit==3.0.52
+    # via
+    #   click-repl
+    #   ipython
+proto-plus==1.27.2
+    # via
+    #   google-api-core
+    #   google-cloud-firestore
+protobuf==6.33.6
+    # via
+    #   google-api-core
+    #   google-cloud-firestore
+    #   googleapis-common-protos
+    #   grpcio-status
+    #   proto-plus
+psutil==7.2.2
+    # via
+    #   -r solver.in
+    #   edx-django-utils
+    #   ipython
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.4
+    # via stack-data
+pyasn1==0.6.3
+    # via
+    #   pyasn1-modules
+    #   python-ldap
+pyasn1-modules==0.4.2
+    # via
+    #   google-auth
+    #   python-ldap
+pycontracts==1.8.12
+    # via -r solver.in
+pycountry==26.2.16
+    # via -r solver.in
+pycparser==3.0
+    # via cffi
+pycryptodomex==3.23.0
+    # via
+    #   -r solver.in
+    #   edx-proctoring
+    #   pyjwkest
+pygments==2.21.0
+    # via
+    #   -r solver.in
+    #   ipython
+    #   ipython-pygments-lexers
+pygraphviz==2.0.4
+    # via -r solver.in
+pyjwkest==1.4.4
+    # via -r solver.in
+pyjwt==2.12.1
+    # via
+    #   -r solver.in
+    #   drf-jwt
+    #   edx-drf-extensions
+    #   edx-proctoring
+    #   edx-rest-api-client
+    #   firebase-admin
+    #   social-auth-core
+pymemcache==4.0.0
+    # via
+    #   -c hard.txt
+    #   -r solver.in
+pymongo==4.19.0
+    # via
+    #   -c hard.txt
+    #   -r solver.in
+    #   edx-opaque-keys
+    #   event-tracking
+    #   mongoengine
+pynacl==1.6.2
+    # via edx-django-utils
+pynliner==0.8.0
+    # via -r solver.in
+pyopenssl==26.1.0
+    # via pysaml2
+pyparsing==3.3.2
+    # via
+    #   -r solver.in
+    #   pycontracts
+pysaml2==7.5.5
+    # via -r solver.in
+pysrt==1.1.2
+    # via
+    #   -r solver.in
+    #   edxval
+python-dateutil==2.9.0.post0
+    # via
+    #   -r solver.in
+    #   analytics-python
+    #   botocore
+    #   celery
+    #   edx-ace
+    #   edx-proctoring
+    #   pysaml2
+    #   xblock
+python-ipware==3.0.0
+    # via django-ipware
+python-ldap==3.4.8
+    # via
+    #   -r solver.in
+    #   django-auth-ldap
+python-levenshtein==0.27.5
+    # via -r solver.in
+python-slugify==8.0.4
+    # via code-annotations
+python3-openid==3.2.0
+    # via social-auth-core
+python3-saml==1.16.0
+    # via -r solver.in
+pytz==2026.1.post1
+    # via
+    #   -r solver.in
+    #   drf-yasg
+    #   edx-completion
+    #   edx-proctoring
+    #   edx-submissions
+    #   event-tracking
+    #   xblock
+pyuca==1.2
+    # via -r solver.in
+pyyaml==6.0.3
+    # via
+    #   -r solver.in
+    #   code-annotations
+    #   drf-yasg
+    #   edx-django-release-util
+    #   xblock
+rapidfuzz==3.14.6
+    # via levenshtein
+redis==7.4.0
+    # via -r solver.in
+regex==2026.4.4
+    # via nltk
+requests==2.33.1
+    # via
+    #   -r solver.in
+    #   analytics-python
+    #   cachecontrol
+    #   coreapi
+    #   django-oauth-toolkit
+    #   edx-analytics-data-api-client
+    #   edx-drf-extensions
+    #   edx-rest-api-client
+    #   google-api-core
+    #   google-cloud-storage
+    #   mailsnake
+    #   pyjwkest
+    #   pysaml2
+    #   requests-oauthlib
+    #   sailthru-client
+    #   social-auth-core
+requests-oauthlib==2.0.0
+    # via
+    #   -r solver.in
+    #   social-auth-core
+rest-condition==1.0.3
+    # via -r solver.in
+rules==3.5
+    # via
+    #   -r solver.in
+    #   edx-proctoring
+s3transfer==0.16.1
+    # via boto3
+sailthru-client==2.2.3
+    # via
+    #   -r solver.in
+    #   edx-ace
+scipy==1.17.1
+    # via -r solver.in
+semantic-version==2.10.0
+    # via edx-drf-extensions
+setuptools==84.2.1
+    # via
+    #   edx-analytics-data-api-client
+    #   edx-completion
+    #   edx-milestones
+    #   edx-organizations
+    #   fs
+    #   openedx-events
+shapely==2.1.2
+    # via -r solver.in
+simplejson==4.1.1
+    # via
+    #   django-rest-swagger
+    #   sailthru-client
+    #   xblock
+six==1.17.0
+    # via
+    #   -r solver.in
+    #   analytics-python
+    #   edx-ace
+    #   edx-ccx-keys
+    #   edx-django-release-util
+    #   edx-milestones
+    #   event-tracking
+    #   fs
+    #   fs-s3fs
+    #   html5lib
+    #   paver
+    #   pycontracts
+    #   pyjwkest
+    #   python-dateutil
+social-auth-app-django==5.4.1
+    # via -r solver.in
+social-auth-core==4.9.0
+    # via
+    #   -r solver.in
+    #   social-auth-app-django
+sorl-thumbnail==13.0.0
+    # via -r solver.in
+sortedcontainers==2.4.0
+    # via -r solver.in
+soupsieve==2.8.3
+    # via beautifulsoup4
+sqlparse==0.5.5
+    # via django
+stack-data==0.6.3
+    # via ipython
+stevedore==5.7.0
+    # via
+    #   -r solver.in
+    #   code-annotations
+    #   edx-ace
+    #   edx-django-utils
+    #   edx-opaque-keys
+sympy==1.14.0
+    # via -r solver.in
+tablib==3.10.0
+    # via -r solver.in
+text-unidecode==1.3
+    # via python-slugify
+tqdm==4.67.3
+    # via nltk
+traitlets==5.16.1
+    # via
+    #   ipython
+    #   matplotlib-inline
+typing-extensions==4.15.0
+    # via
+    #   anyio
+    #   beautifulsoup4
+    #   django-countries
+    #   edx-opaque-keys
+    #   grpcio
+    #   jwcrypto
+    #   pyopenssl
+tzdata==2026.2
+    # via kombu
+tzlocal==5.3.1
+    # via celery
+unicodecsv==0.14.1
+    # via -r solver.in
+uritemplate==4.2.0
+    # via
+    #   coreapi
+    #   drf-yasg
+urllib3==2.6.3
+    # via
+    #   botocore
+    #   requests
+vine==5.1.0
+    # via
+    #   amqp
+    #   celery
+    #   kombu
+watchdog==6.0.0
+    # via -r solver.in
+wcwidth==0.6.0
+    # via prompt-toolkit
+web-fragments==4.0.0
+    # via
+    #   -r solver.in
+    #   xblock
+webencodings==0.5.1
+    # via
+    #   bleach
+    #   html5lib
+webob==1.8.9
+    # via xblock
+wrapt==2.1.2
+    # via -r solver.in
+xblock==6.1.0
+    # via
+    #   -r solver.in
+    #   edx-completion
+    #   edx-user-state-client
+    #   edx-when
+    #   xblock-review
+xblock-review==1.1.5
+    # via -r solver.in
+xmlschema==2.5.1
+    # via pysaml2
+xmlsec==1.3.17
+    # via python3-saml

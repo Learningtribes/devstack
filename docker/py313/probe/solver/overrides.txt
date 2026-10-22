@@ -1,0 +1,5 @@
+# Used from layer 2 (local packages). Relaxes caps hard-coded by calc/chem/xmodule setup.py.
+numpy>=1.26
+scipy>=1.11
+pyparsing>=3
+edx-opaque-keys>=4
