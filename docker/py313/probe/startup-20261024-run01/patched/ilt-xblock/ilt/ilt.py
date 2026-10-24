@@ -568,7 +568,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
         optional_fields = configuration_helper.get_value("ILT_OPTIONAL_FIELDS", [])
         date_format = configuration_helper.get_value("ILT_DATE_FORMAT", "YYYY-MM-DD HH:mm")
-        all_list = self.get_all_list()
+        all_list = self.get_all_list() if data["is_staff"] else ({}, {})
 
         data.update({
             'show_unenroll_button': user.profile.lt_ilt_supervisor is None,
@@ -876,7 +876,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     def grade_users(self, request, data, suffix=''):
         all_users = []
         for i in self.enrolled_users.values():
-            all_users = all_users + i.keys()
+            all_users.extend(i)
         eval_users = data.keys()
         users = User.objects.filter(username__in=list(eval_users))
         grade_info = [{
@@ -923,7 +923,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
         return self._batch_toggle_enrollment(data, compare_session, request)
 
-    @json_handler(False, 'POST')
+    @json_handler(True, 'POST')
     def batch_unenroll(self, request, data, suffix=''):
         _ = self.ugettext
 
@@ -1085,7 +1085,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 return e.get_response()
         return self.get_student_data()
 
-    @json_handler(False, 'POST')
+    @json_handler(True, 'POST')
     def batch_update_accepted_requests(self, request, data, suffix=''):
         """
         when course admin edits accepted/confirmed request from Enrollment Management tab,
@@ -1180,7 +1180,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 send_mail_to_student(u.email, params, language=get_user_email_language(u))
         return self.get_student_data()
 
-    @json_handler(False, 'POST')
+    @json_handler(True, 'POST')
     def batch_switch_session(self, request, data, suffix=''):
         """
         when course admin change learner's selected session to another, in this case, the request
@@ -1212,7 +1212,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 self.send_email('ilt_session_changed', user, request, session_info=session_info)
         return self.get_student_data()
 
-    @json_handler(False, 'POST')
+    @json_handler(True, 'POST')
     def batch_accept_requests(self, request, data, suffix=''):
         """
         1. request pending + accommodation accepted by course admin (--> accepted) => no email
