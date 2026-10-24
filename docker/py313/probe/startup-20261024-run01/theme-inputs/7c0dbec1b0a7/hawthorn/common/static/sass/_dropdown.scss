@@ -1,0 +1,41 @@
+ds-dropdown {
+  --background: transparent;
+
+  width: 180px;
+  z-index: 99;
+
+  &[scheme="white"] {
+    --background: var(--fds-global-color-neutral-0);
+  }
+
+  > *:not([slot]) {
+    @include typography-body-sm-regular;
+    display: flex;
+    padding: $fds-global-space-xs $fds-global-space-sm;
+    align-items: center;
+    gap: $fds-global-space-xxs;
+    align-self: stretch;
+    border-radius: var(--content-item-border-radius, 0);
+    box-sizing: border-box;
+    margin: 0;
+
+    &:hover,
+    &.selected {
+      background: $fds-global-color-neutral-10;
+    }
+  }
+
+  > [slot="value"] {
+    @include typography-body-sm-regular;
+  }
+
+  > [slot="label"] {
+    @include typography-body-sm-medium;
+  }
+}
+
+ds-datepicker {
+  > [slot="label"] {
+    @include typography-body-sm-medium;
+  }
+}

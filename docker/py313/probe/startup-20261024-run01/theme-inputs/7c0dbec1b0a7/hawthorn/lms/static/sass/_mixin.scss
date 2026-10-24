@@ -1,0 +1,328 @@
+// mixins only used in lms
+@mixin catalog_name-wrapper {
+  font-weight: bold;
+  font-size: 16px;
+  color: $triboo-color-fg-neutral;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .category_name {
+    @include dashboard-section-title;
+  }
+
+  > i {
+    cursor: pointer;
+    margin-right: 20px;
+
+    @include media-down($md) {
+      display: none;
+    }
+  }
+}
+
+@mixin catalog-sidebar {
+  width: 280px;
+  padding: 30px 20px;
+  opacity: 1;
+  margin-right: 0;
+  background-color: $grey5;
+  box-shadow: $fds-global-shadow-inner;
+  box-sizing: border-box;
+
+  $header-font-size: 15px;
+  $field-gap-height: 15px;
+
+  %header-style {
+    font-weight: 600;
+    font-size: $header-font-size;
+    -webkit-font-smoothing: antialiased;
+    color: $triboo-color-fg-neutral;
+  }
+
+  @include media-down($md) {
+    width: calc(100% - 20px);
+    background-color: $white;
+    padding: 0 12px;
+    margin: 20px 10px;
+    border-radius: 5px;
+    box-shadow: none;
+    border: 1px solid $grey20;
+    max-height: 999px;
+  }
+
+  transition: width 1s, max-height 1s, opacity 1s, padding 1s;
+  overflow: hidden;
+
+  &.hide-status {
+    display: block; //remove
+    width: 0;
+    padding: 30px 0;
+    opacity: 0;
+
+    @include media-down($md) {
+      display: block;
+      width: auto;
+      float: left;
+      padding: 0 12px;
+      opacity: 1;
+      max-height: 46px;
+    }
+
+    .searching-field, .topic-wrapper, ul, .actions {
+      @include media-down($md) {
+        display: block;
+      }
+    }
+  }
+
+  .filters-wrapper {
+    color: $triboo-color-fg-neutral;
+    padding: 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+
+    @include media-down($md) {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      padding-top: 13px;
+      align-items: center;
+      padding-bottom: 13px;
+    }
+
+    h4 {
+      @extend %header-style;
+      text-transform: uppercase;
+      //add padding bottom will shift h4 up, if you do want to add it, please contact Sean
+      padding-bottom: 0;
+
+      @include media-down($md) {
+        margin-left: 10px;
+      }
+    }
+
+    i {
+      font-size: 16px;
+      cursor: pointer;
+
+      @include media-down($md) {
+        &.fa-indent:before {
+          content: '\f078';
+        }
+        &.fa-outdent:before {
+          content: '\f077';
+        }
+      }
+    }
+  }
+
+  .topic-wrapper {
+    margin-top: $field-gap-height;
+    border-top: 1px solid $fds-global-color-neutral-100;
+
+    h4 {
+      @extend %header-style;
+      padding: $field-gap-height 0;
+
+      @include media-down($md) {
+        padding: 10px 0;
+      }
+    }
+
+    .topics {
+      @include dropdoown();
+      width: 100%;
+      margin-top: 8px;
+
+      .select {
+        background-color: $grey20;
+        border: none;
+        border-radius: 5px;
+
+        .text {
+
+        }
+      }
+
+      .panel {
+        ul li {
+          color: $black;
+          font-size: 13px;
+
+          &:hover {
+            color: $triboo-color-brand-primary;
+          }
+        }
+      }
+    }
+  }
+
+  .searching-field {
+    @include select-tag();
+
+    .input-wrapper {
+      margin-top: 0; //remove
+    }
+  }
+
+  //elements container
+  > ul {
+    border-top: 1px solid $fds-global-color-neutral-100;
+    margin-top: $field-gap-height;
+
+    > li {
+      border-bottom: 1px solid $fds-global-color-neutral-100;
+      padding: 5px 0;
+
+      h4 {
+        @extend %header-style;
+        display: flex;
+        cursor: pointer;
+        justify-content: space-between;
+        font-size: $header-font-size;
+        align-items: center;
+        padding: 10px 0;
+
+        span {
+          @extend %header-style;
+        }
+
+        i {
+          color: $fds-global-color-neutral-100;
+        }
+      }
+
+      .component-wrapper {
+        transition: all 1s;
+        max-height: 260px;
+        overflow: hidden;
+        overflow-y: auto;
+        opacity: 1;
+
+        &.hide-status {
+          max-height: 0px;
+          overflow-y: hidden;
+          opacity: 0;
+        }
+
+        //the element's children container
+        > ul {
+          padding: 0 0 10px 15px;
+
+          > li {
+            position: relative;
+            display: flex;
+            width: 100%;
+            margin-top: 10px;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            input[type=checkbox] {
+              @include checkbox-generator($checked-color: $triboo-color-brand-primary);
+
+              &:checked {
+                + label + span {
+                  color: $triboo-color-brand-primary;
+                  background-color: rgba(231, 65, 60, 0.2);
+                }
+              }
+
+              + label {
+                font-style: normal;
+                margin-bottom: 0;
+                color: $black;
+                font-weight: 600;
+                font-size: 13px;
+                line-height: 20px;
+                text-transform: capitalize;
+                word-break: break-word;
+
+                &:before {
+                  z-index: 4;
+                }
+              }
+
+              + label[title="0 - 2 hours"] {
+                text-transform: lowercase
+              }
+
+              + label[title="2 - 6 hours"] {
+                text-transform: lowercase
+              }
+
+              + label[title="6 - 16 hours"] {
+                text-transform: lowercase
+              }
+
+              + label[title="16 + hours"] {
+                text-transform: lowercase
+              }
+
+            }
+
+            label, span {
+              font-weight: 600;
+            }
+
+            label {
+              margin-right: auto;
+            }
+
+            span {
+              font-size: 10px;
+              color: $triboo-color-fg-neutral;
+              background-color: $grey25;
+              border-radius: 5px;
+              width: auto;
+              min-width: 25px;
+              text-align: center;
+              padding: 2px 3px;
+            }
+          }
+        }
+      }
+
+      .lt-react-dropdown {
+        .panel {
+          z-index: 6;
+        }
+      }
+    }
+  }
+
+  .actions {
+    padding: $field-gap-height 0;
+
+    .apply-button {
+      display: none;
+    }
+
+    .reset-button {
+      @include button($font-weight: 400);
+      @include small-button();
+      @include white-button();
+
+      box-shadow: $fds-global-shadow-xs;
+      font-size: 15px;
+      font-weight: 600;
+      color: $triboo-color-fg-neutral;
+
+      &.hover {
+        box-shadow: none !important;
+      }
+
+      i {
+        font-size: 14px;
+      }
+
+      span {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  + a {
+    display: none;
+  }
+}

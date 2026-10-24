@@ -1,0 +1,334 @@
+#gradebook {
+  padding: 0 !important;
+
+  .fa-undo {
+    color: $red;
+  }
+
+  span.score {
+    padding: 10px 0;
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  span[contenteditable="true"] {
+    user-select: text;
+    -webkit-user-select: text;
+    border: 1px solid $grey10;
+    outline: none;
+    cursor: text;
+  }
+
+  .title_gradebook {
+    @extend %t-title5;
+    @extend %t-strong;
+
+    padding-bottom: 10px;
+  }
+
+  .search {
+    display: flex;
+    padding-bottom: 30px;
+
+    form.student-search {
+      padding: 0 20px 0 0;
+      display: flex;
+      flex: 1;
+      align-items: center;
+
+      @include media-down($md) {
+        padding: 0;
+      }
+
+      i {
+        cursor: pointer;
+      }
+    }
+
+    input.student-search-field {
+      @extend %linner-text-box;
+
+      margin-right: 18px;
+      padding-left: 20px;
+      height: 40px;
+      flex: 0.33;
+
+      @include media-down($md) {
+        flex: 1;
+      }
+
+      &::placeholder {
+        color: $fds-global-color-neutral-100;
+      }
+
+      & ~ i {
+        color: $triboo-color-brand-primary;
+        font-size: 18px;
+      }
+    }
+
+    input[type=submit] {
+      display: none;
+    }
+  }
+
+  .confirm-grade, .edit-grade, .cancel-grade {
+    text-shadow: none;
+  }
+
+  .confirm-grade,
+  .edit-grade {
+    @include primary-medium-button();
+  }
+
+  .cancel-grade {
+    @include grey-medium-button();
+  }
+
+  .gradebook-instructions-wrapper {
+    background-color: $grey3;
+    padding: 20px 28px;
+    margin-bottom: 30px;
+  }
+
+  .gradebook-instructions {
+    padding: 0;
+    margin: 0;
+    padding-bottom: 20px;
+
+    &:first-line {
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    li:first-child {
+      padding-top: 10px;
+    }
+
+  }
+
+  %table-clean {
+    td {
+      border-bottom: 0;
+      background: transparent;
+      border-left: 0;
+    }
+
+    tr:nth-child(odd) td {
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 1px solid $grey5;
+    }
+  }
+
+  table.student-table {
+    @extend %table-clean;
+
+    box-shadow: $fds-global-shadow-xs;
+    border-radius: 4px 0 0 4px;
+
+    @include media-down($md) {
+      width: 34%;
+    }
+
+    thead {
+      th:first-child {
+        vertical-align: top;
+        box-sizing: border-box;
+        padding-top: 5px;
+      }
+    }
+    th {
+      padding-left: 30px;
+      color: grey;
+      text-transform: uppercase;
+
+      @include media-down($md) {
+        font-size: 11px;
+      }
+    }
+
+    tbody {
+      tr:nth-child(odd) td {
+        background-color: $grey3;
+      }
+
+      tr.highlight td a {
+        color: $triboo-color-brand-primary;
+      }
+
+      td {
+        @include media-down($md) {
+          font-size: 11px;
+          padding-left: 5px;
+        }
+      }
+    }
+
+  }
+
+  .grades {
+    box-shadow: $fds-global-shadow-xs;
+    border-radius: 0 4px 4px 0;
+
+    @include media-down($md) {
+      width: 66%;
+    }
+
+    table.grade-table {
+      @extend %table-clean;
+      width: -webkit-max-content;
+      display: -webkit-box;
+
+      @include media-down($md) {
+        width: max-content;
+      }
+
+      th.high-column {
+        color: $triboo-color-brand-primary;
+        font-size: 16px;
+        text-transform: uppercase;
+        >div {
+          min-width: 90px;
+        }
+      }
+
+      thead tr th {
+        box-shadow: none;
+        background: transparent;
+        border-left: 0;
+        color: $triboo-color-fg-neutral;
+        vertical-align: baseline;
+        width: auto;
+
+        >div {
+          word-break: break-word;
+          width: max-content;
+          min-width: 60px;
+          max-width: 120px;
+          padding: 5px 3px 2px ;
+          line-height: 13px;
+
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          -webkit-box-orient: vertical;
+          -webkit-box-pack: center;
+        }
+
+        &:first-child, &:last-child {
+          border-radius: 0;
+          box-shadow: none;
+        }
+        &:first-child {
+          vertical-align: top;
+          box-sizing: border-box;
+          padding-top: 5px;
+        }
+        &:last-child>div {
+          padding-right: 10px;
+        }
+      }
+
+      tr {
+        border-right: 0;
+      }
+
+      td {
+        color: $triboo-color-fg-neutral;
+        text-align: left;
+        padding-left: 0px;
+        text-align: center;
+
+        @include media-down($md) {
+          padding-left: 10px;
+        }
+      }
+
+      .indicate-icon {
+        padding-left: 2px;
+
+        .fa-arrow-up {
+          color: $green;
+        }
+
+        .fa-arrow-down {
+          color: $triboo-color-brand-primary;
+        }
+      }
+    }
+  }
+
+  .indicate-icon {
+    display: inline-block;
+
+    a {
+      display: inline-block;
+    }
+
+    a.promote-section, a.undo-grade {
+      display: none;
+    }
+  }
+
+  .student-table .indicate-icon {
+    width: 18px;
+  }
+
+  .gradebook-footer {
+    clear: both;
+    padding-top: 30px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .active-filter {
+    margin: 0 0 20px 28px;
+
+    .filter-wrapper {
+      display: inline-block;
+      border-radius: 16px;
+      background-color: $grey25;
+
+      button {
+        border: none;
+        background: none;
+        padding-left: 12px;
+        padding-right: 12px;
+        color: $triboo-color-fg-neutral;
+        font-weight: 400;
+
+        i {
+          font-size: 16px;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+}
+
+#revert-override {
+  padding: 20px;
+  text-align: center;
+
+  p {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  button.revert-confirm {
+    @include primary-medium-button()
+  }
+
+  button.revert-cancel {
+    @include grey-medium-button()
+  }
+}

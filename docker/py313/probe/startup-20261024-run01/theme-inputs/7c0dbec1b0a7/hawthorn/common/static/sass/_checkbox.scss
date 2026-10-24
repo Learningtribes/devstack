@@ -1,0 +1,133 @@
+.ds-checkbox, input.ds-checkbox, input.ds-checkbox[type="checkbox"] {
+  --thumb-size: 20px;
+  --mark-size: 12px;
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  inline-size: var(--thumb-size);
+  block-size: var(--thumb-size);
+
+  appearance: none;
+  touch-action: pan-y;
+  outline-offset: 5px;
+  box-sizing: border-box;
+  border: 1px solid $fds-global-color-neutral-40;
+  border-radius: $fds-global-border-radius-md;
+  margin: 0;
+
+  flex-shrink: 0;
+  transition: all 0.3s ease-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+
+  @if $bi-app-direction == rtl {
+    transform: scaleX(-1);
+  }
+
+  &:not(:disabled) {
+    &:hover {
+      border-color: $fds-global-color-neutral-80;
+    }
+
+    &:active,
+    &:focus-visible {
+      border-color: $triboo-color-brand-primary;
+    }
+
+    &:checked,
+    &:indeterminate {
+      &:hover {
+        background: $triboo-color-brand-primary-50;
+        border-color: $triboo-color-brand-primary-50;
+      }
+
+      &:active,
+      &:focus-visible {
+        background: $triboo-color-brand-primary-60;
+        border-color: $triboo-color-brand-primary-60;
+      }
+    }
+  }
+
+  &:checked,
+  &:indeterminate {
+    background: $triboo-color-brand-primary;
+    border-color: $triboo-color-brand-primary;
+
+    &::before {
+      pointer-events: auto;
+      color: $fds-global-color-neutral-0;
+      font-size: var(--mark-size);
+      line-height: 1;
+      font-family: $font-awesome;
+      font-weight: 400;
+    }
+  }
+
+  // note that svg colors are hardcoded
+  &:checked::before {
+    content: "\f00c";
+  }
+
+  &:indeterminate::before {
+    content: "\f068";
+  }
+
+  &:disabled {
+    border-color: $fds-global-color-neutral-20;
+    background: none;
+
+    cursor: not-allowed;
+
+    &:checked,
+    &:indeterminate {
+      &::before {
+        color: $fds-global-color-neutral-50;
+      }
+    }
+  }
+
+  &:invalid,
+  &.ds-checkbox--error {
+    &,
+    &:hover,
+    &:active,
+    &:focus-visible {
+      border-color: $fds-global-color-error-40;
+    }
+
+    &:checked {
+      background: $fds-global-color-error-40;
+      border-color: $fds-global-color-error-40;
+    }
+  }
+
+  &.ds-checkbox--sm,
+  &.ds-checkbox--small {
+    --thumb-size: 16px;
+    --mark-size: 8px;
+  }
+}
+
+label:has(> .ds-checkbox) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lt-react-checkbox-group {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: inline-block;
+    width: 20%;
+  }
+}

@@ -1,0 +1,30 @@
+// studio - views - certificates
+// ====================
+
+// Table of Contents
+// * +Layout - Certificates
+// * +Main - Collection
+// * +Main - Certificate
+// * +Signatories -Certificate
+
+
+// * +Main - Collection
+// ====================
+.view-certificates {
+  .wrapper-collection {
+    @extend %list-item;
+
+    .collection-edit {
+      background: transparent;
+
+      .actions {
+        box-shadow: none;
+        border-top: 0;
+        background: transparent;
+      }
+
+    }
+
+  }
+
+}

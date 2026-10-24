@@ -1,0 +1,261 @@
+// studio - views - course updates
+// ====================
+
+.view-updates {
+  .wrapper-content {
+    display: none;
+  }
+
+  .main-wrapper {
+    &, &.inner-wrapper {
+      position: static;
+    }
+
+    margin-top: 35px;
+    margin: 0 20px;
+
+    .course-info-wrapper {
+      @include layout();
+      align-items: flex-start;
+    }
+  }
+
+  .main-column {
+    border-radius: 10px;
+
+    .course-updates {
+      border-radius: 10px;
+      padding: $padding-beside-list;
+
+      .update-list {
+        >li {
+          @include list-item-gentle();
+
+          &, &:first-child {
+            @include framed-list-item();
+            padding: 20px $padding-beside-list-item;
+            margin-bottom: 23px;
+          }
+
+          &.editing {
+            position: static;
+            .new-update-form {
+              display: block;
+            }
+          }
+
+          .new-update-form {
+            display: none;
+            @include edit-box;
+            @include dialog($height:555px);
+            background-color: $white;
+            width: 800px;
+            box-sizing: border-box;
+            position: fixed;
+            border-radius: $border-radius-half;
+            padding: 0;
+
+            .modal-header {
+              @include modal-header();
+
+              .modal-window-title {
+                @include modal-header-title();
+                font-size: 18px;
+              }
+            }
+
+            .modal-content {
+              padding: 20px $padding-beside-form;
+            }
+
+            .modal-actions {
+              @include modal-footer();
+              border-top: 1px solid $editor-border-color;
+              button:not(:last-child) {
+                margin-right: 15px;
+              }
+            }
+
+
+
+            .row:nth-of-type(2) {
+              margin: 20px 0;
+            }
+            .inline-label:not(:first-child) {
+              margin-left: 10px;
+            }
+
+            .row:last-child {
+              text-align: right;
+              margin-bottom: 0;
+            }
+
+            .row {
+              label {
+                @include label();
+              }
+              .title, .date {
+                @include form-text-box();
+                background-color: $white;
+              }
+
+              .title {
+                width: 300px;
+              }
+            }
+
+
+            .tox-tinymce {
+              height: 400px !important;
+              border-color: $grey35;
+              border-radius: $border-radius-half;
+              overflow: hidden;
+              border: 1px solid $editor-border-color;
+
+              .tox-editor-header {
+                border-bottom: 1px solid $editor-border-color;
+              }
+            }
+          }
+
+          .post-preview {
+            .post-actions {
+              position: relative;
+              float: right;
+
+              i {
+                font-size: 16px;
+                @include action-icon();
+              }
+              .action-menu {
+                @include action-menu-panel();
+                margin-top: -9px;
+                white-space: nowrap;
+
+                button {
+                  display: block;
+                  float: none;
+                  &:hover {
+                    text-shadow: none;
+                  }
+                  &:focus {
+                    outline: none;
+                    box-shadow: none;
+                  }
+
+                  i {
+                    font-size: 14px;
+                  }
+                }
+
+                .edit-button,
+                .delete-button {
+                  //style reset
+                  background-image: none;
+                  background-color: transparent;
+                  border: none;
+                  padding: 0;
+                  margin-left: 0;
+                  @include action-menu-item();
+
+                  &:hover {
+                    box-shadow: none;
+                  }
+
+                  .edit-icon, .delete-icon {
+                    display: none;
+                  }
+
+                }
+              }
+
+            }
+
+            .update-title {
+              display: none;
+            }
+
+            .update-contents {
+              p {
+                @include list-item-title();
+              }
+            }
+
+            .update-footer {
+              @include list-item-subtitle();
+              margin-top: 5px;
+
+              .date, .author {
+                font-weight: inherit;
+                font-size: inherit;
+                color: inherit;
+              }
+
+              small {
+                color: $fds-global-color-neutral-100;
+                font-size: inherit;
+                @include margin-left(10px);
+              }
+            }
+          }
+
+          .editing {
+            z-index: 39;
+          }
+        }
+        .no-content {
+          padding: 30px;
+          p a {
+            @include primary-small-button();
+            @include margin-left(10px);
+          }
+        }
+        &.hide-no-content {
+          .no-content {
+            display: none
+          }
+        }
+      }
+
+      .mce-panel {
+        border: 1px solid $grey5;
+        border-radius: $default-border-radius;
+      }
+
+    }
+  }
+
+  .course-complementary {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 0; //remove
+
+    .title {
+      font-weight: 600;
+      font-size: 16px;
+      color: $black;
+    }
+    p {
+      font-size: 14px;
+      color: $triboo-color-fg-neutral;
+      margin-top: 15px;
+    }
+  }
+
+  .course-handouts {
+    display: none;
+  }
+
+  //extra elements
+  .modal-cover {
+    background-color: rgba(0,0,0, 0.3);
+  }
+
+  .ui-datepicker {
+    @include date-picker();
+  }
+
+  .tox {
+    @include tox();
+  }
+}

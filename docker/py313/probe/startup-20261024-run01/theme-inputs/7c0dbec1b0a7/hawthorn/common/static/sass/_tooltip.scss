@@ -1,0 +1,159 @@
+ds-tooltip {
+  --padding-block: #{$fds-global-space-xs};
+  --padding-inline: #{$fds-global-space-md};
+  --bg: #{$fds-global-color-neutral-100};
+  --fg: #{$fds-global-color-neutral-0};
+  --triangle-size: 7px;
+  @if $bi-app-direction == ltr {
+    --isRTL: -1;
+  } @else if $bi-app-direction == rtl {
+    --isRTL: 1;
+  }
+
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: translateX(var(--x, 0)) translateY(var(--y, 0));
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  position: absolute;
+  z-index: 99;
+  inline-size: max-content;
+  max-inline-size: Min(440px, 90vw);
+  text-align: start;
+  font-size: 1rem;
+  white-space: initial;
+  font-weight: normal;
+  line-height: initial;
+  padding: var(--padding-block) var(--padding-inline);
+  margin: 0;
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--fg);
+  will-change: filter;
+  filter: drop-shadow(0px 2px 5px rgba(9, 9, 45, 0.2));
+
+  &::after {
+    content: "";
+    background: var(--bg);
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+  }
+
+  &:is([position="top"], :not([position])) {
+    inset-inline-start: 50%;
+    inset-block-end: calc(100% + var(--padding-block) + var(--triangle-size));
+    --x: calc(50% * var(--isRTL));
+
+    &::after {
+      -webkit-mask: unquote("conic-gradient(from -30deg at bottom, #0000, #000 1deg 60deg, #0000 61deg) bottom / 100% 50% no-repeat");
+      mask: unquote("conic-gradient(from -30deg at bottom, #0000, #000 1deg 60deg, #0000 61deg) bottom / 100% 50% no-repeat");
+      inset-block-end: calc(var(--triangle-size) * -1);
+      border-block-end: var(--triangle-size) solid transparent;
+    }
+  }
+
+  &[position="right"] {
+    inset-inline-start: calc(100% + var(--padding-inline) + var(--triangle-size));
+    inset-block-end: 50%;
+    --y: 50%;
+
+    &::after {
+      inset-inline-start: calc(var(--triangle-size) * -1);
+      border-inline-start: var(--triangle-size) solid transparent;
+    }
+  }
+
+  &[position="right"] {
+    &::after {
+      -webkit-mask: unquote("conic-gradient(from 60deg at left, #0000, #000 1deg 60deg, #0000 61deg) left / 50% 100% no-repeat");
+      mask: unquote("conic-gradient(from 60deg at left, #0000, #000 1deg 60deg, #0000 61deg) left / 50% 100% no-repeat");
+    }
+  }
+
+  &[position="bottom"] {
+    inset-inline-start: 50%;
+    inset-block-start: calc(100% + var(--padding-block) + var(--triangle-size));
+    --x: calc(50% * var(--isRTL));
+
+    &::after {
+      -webkit-mask: unquote("conic-gradient(from 150deg at top, #0000, #000 1deg 60deg, #0000 61deg) top / 100% 50% no-repeat");
+      mask: unquote("conic-gradient(from 150deg at top, #0000, #000 1deg 60deg, #0000 61deg) top / 100% 50% no-repeat");
+      inset-block-start: calc(var(--triangle-size) * -1);
+      border-block-start: var(--triangle-size) solid transparent;
+    }
+  }
+
+  &[position="left"] {
+    inset-inline-end: calc(100% + var(--padding-inline) + var(--triangle-size));
+    inset-block-end: 50%;
+    --y: 50%;
+
+    &::after {
+      inset-inline-end: calc(var(--triangle-size) * -1);
+      border-inline-end: var(--triangle-size) solid transparent;
+    }
+  }
+
+  &[position="left"] {
+    &::after {
+      -webkit-mask: unquote("conic-gradient(from -120deg at right, #0000, #000 1deg 60deg, #0000 61deg) right / 50% 100% no-repeat");
+      mask: unquote("conic-gradient(from -120deg at right, #0000, #000 1deg 60deg, #0000 61deg) right / 50% 100% no-repeat");
+    }
+  }
+
+  &[size="xs"], &[size="extrasmall"] {
+    --padding-block: #{$fds-global-space-xxs};
+    --padding-inline: #{$fds-global-space-xs};
+    @include typography-body-xs-regular;
+  }
+  &[size="sm"], &[size="small"],
+  &:not([size]) {
+    --padding-block: #{$fds-global-space-xs};
+    --padding-inline: #{$fds-global-space-md};
+    @include typography-body-sm-regular;
+  }
+  &[size="md"], &[size="medium"] {
+    --padding-block: #{$fds-global-space-sm};
+    --padding-inline: #{$fds-global-space-xl};
+    @include typography-body-md-regular;
+  }
+  &[size="lg"], &[size="large"] {
+    --padding-block: #{$fds-global-space-md};
+    --padding-inline: #{$fds-global-space-2xl};
+    @include typography-body-lg-regular;
+  }
+
+  &[scheme="light"] {
+    --bg: #{$fds-global-color-neutral-0};
+    --fg: #{$fds-global-color-neutral-170};
+  }
+}
+
+:has(> ds-tooltip) {
+  position: relative;
+
+  /* when those parent elements have focus, hover, etc */
+  &:is(:hover, :focus-visible, :active) > ds-tooltip {
+    opacity: 1;
+    transition-delay: 200ms;
+  }
+
+  &:not(:hover, :active) > ds-tooltip {
+    &:is([position="top"], :not([position])) {
+      --y: 3px;
+    }
+    &[position="right"] {
+      --x: calc(var(--isRTL) * 3px);
+    }
+    &[position="bottom"] {
+      --y: -3px;
+    }
+    &[position="left"] {
+      --x: calc(var(--isRTL) * -3px);
+    }
+  }
+}

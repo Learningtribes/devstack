@@ -1,0 +1,530 @@
+// studio - views - course pages
+// ====================
+
+.view-static-pages {
+
+  .wrapper-content {
+    @include layout();
+  }
+
+  .content-primary,.content-supplementary {
+    margin-top: 30px;
+  }
+
+  .content-primary {
+    .notice-incontext {
+      background-color: transparent;
+      display: none;
+    }
+
+    .unit-body {
+      @include list-item();
+      padding: $padding-beside-list;
+
+      .tab-list {
+        padding: 0;
+
+        .header {
+          @include list-header();
+        }
+
+        .components > li {
+          @include framed-list-item();
+          @include list-item-gentle();
+          margin-bottom: 10px;
+          display: flex;
+          align-items: center;
+          @include padding-left($padding-beside-list-item);
+          @include padding-right(0);
+
+          &.is-fixed {
+            background-color: $fds-global-color-neutral-10;
+            border-color: $fds-global-color-neutral-10;
+            opacity: initial;
+            box-shadow: none;
+
+            .course-nav-item-header .title {
+              color: $fds-global-color-neutral-50;
+            }
+
+            .wrapper-actions-list > i {
+              display: none;
+            }
+          }
+
+          &[data-tab-id=pdf_textbooks] {
+            .wrapper-actions-list > i {
+              display: none;
+            }
+          }
+
+          .xmodule_StaticTabModule,
+          .course-nav-item-header .title {
+            @include list-item-title();
+          }
+          .drag-handle {
+            background-color: transparent;
+            height: 50px;
+            position: static;
+            margin-left: 20px;
+          }
+
+          .wrapper-actions-list,
+          .wrapper-component-action-header {
+            width: auto;
+            //float: right;
+            position: static;
+            margin: 0;
+            margin-left: auto;
+            > i {
+              font-size: 16px;
+              @include action-icon();
+            }
+
+            .actions-list,
+            .component-actions {
+              @include action-menu-panel();
+
+              right: -50px;
+              z-index: 30;
+              top: 45px;
+              padding: 0;
+              border-radius: 4px;
+
+              .action-item {
+                margin: 0;
+              }
+
+              .action-show-or-hide,
+              .action-edit,.action-delete {
+                display: block;
+                button {
+                  background-color: transparent;
+                  box-shadow: none;
+                  text-align: left;
+                  text-shadow: none;
+                  @include action-menu-item();
+                  border-radius: 0; //remove
+                  text-transform: none;
+                  border: none;
+
+                  &:focus {
+                    outline: none;
+                  }
+                }
+
+              }
+
+              .action-show-or-hide {
+                button {
+                  .fa-eye {
+                    +.label-show {
+                      display: inline-block;
+                      +.label-hide {
+                        display: none;
+                      }
+                    }
+
+                  }
+                  .fa-eye-slash {
+                    +.label-show {
+                      display: none;
+                      +.label-hide {
+                        display: inline-block;
+                      }
+                    }
+                  }
+                }
+
+              }
+            }
+
+          }
+
+          .wrapper-component-action-header {
+            padding-right: 0;
+            .static-switcher {
+              padding-top: 5px;
+            }
+          }
+
+          .edit-button,
+          .delete-button {
+            cursor: pointer;
+          }
+
+          .delete-button {
+            margin-left: 30px;
+          }
+
+          .wrapper-actions-list {
+            margin: 0 0 0 auto;
+            padding: 5px 10px;
+            padding-bottom: 0;
+            //margin-left: auto;
+
+            .switcher {
+              margin-right: 36px;
+            }
+
+            .actions-list {
+              margin-right: 30px;
+
+              .action-item {
+                @include action-menu-item();
+                cursor: pointer;
+
+                .label-show-to-all, .label-hide-from-all {
+                  vertical-align: middle;
+                }
+
+                .toggle-checkbox {
+                  +.action-button {
+                    +.label-show-to-all {
+                      display: inline-block;
+                      +.label-hide-from-all {
+                        display: none;
+                      }
+                    }
+                  }
+
+                  &:checked {
+                    +.action-button {
+                      +.label-show-to-all {
+                        display: none;
+                        +.label-hide-from-all {
+                          display: inline-block;
+                        }
+                      }
+                    }
+                  }
+
+                }
+                .action-button {
+                  display: inline-block;
+                  vertical-align: middle;
+                  background-color: transparent;
+                  color: inherit;
+                  transition: none;
+                  height: auto;
+                  padding: 0;
+
+                  +span {
+
+                  }
+                }
+                &.action-visible .toggle-checkbox {
+                  right: auto;
+                  width: 100%;
+                }
+                &.action-visible .toggle-checkbox:hover ~ .action-button,
+                &.action-visible .toggle-checkbox:checked:hover ~ .action-button {
+                  background-color: $triboo-color-brand-primary;
+                }
+              }
+            }
+          }
+
+          .xblock-student_view {
+            padding-left: 0;
+          }
+        }
+      }
+
+      .add-pages {
+        margin: 0;
+        text-align: $bi-app-left;
+        padding: 15px 0px 20px;
+        border-radius: 0;
+        box-shadow: none;
+
+        border-bottom: 1px solid rgba(114, 114, 114, 0.2);
+
+        .button {
+          background-color: transparent;
+          box-shadow: none;
+          color: black;
+          margin-left: 0;
+          padding: 7px 0;
+
+          &:hover {
+            color: $triboo-color-brand-primary;
+            text-shadow: none;
+          }
+
+          .icon {
+            font-size: 27px;
+            @include margin-right(10px);
+          }
+        }
+
+      }
+    }
+  }
+
+  .content-supplementary {
+    .bit {
+      border-bottom: none;
+      margin: 0 0 15px 0;
+
+      h3 {
+        font-weight: 600;
+        font-size: 16px;
+        color: $black;
+      }
+      p {
+        font-size: 14px;
+        color: $triboo-color-fg-neutral;
+        margin-top: 15px;
+        a[rel=modal] {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .unit-body {
+    .component-editor {
+      @include edit-box;
+    }
+  }
+
+  .component,
+  .course-nav-item {
+    &:first-child {
+      border-top: 0;
+    }
+
+    &:hover {
+      border: 0;
+
+      &:first-child {
+        border-top: 0;
+      }
+    }
+
+    .switcher,
+    .static-switcher {
+      @include switcher();
+    }
+
+    .switcher {
+      padding-top: 5px;
+    }
+
+    .drag-handle {
+      border-bottom-right-radius: 8px;
+      border-top-right-radius: 8px;
+      z-index: 7;
+    }
+
+    .component-actions,
+    .course-nav-item-actions {
+      margin-right: 30px;
+    }
+
+    .static-component-actions,
+    .course-nav-item-actions {
+      display: flex;
+      align-items: center;
+      .label {
+        width: 120px;
+        font-size: 14px;
+        color: $triboo-color-fg-neutral;
+        margin-right: 15px;
+        text-align: right;
+      }
+    }
+  }
+
+  .course-nav-item .drag-handle {
+    margin-right: 5px;
+  }
+
+  .xblock-student_view {
+    background: transparent;
+  }
+
+  .modal-window {
+    position: fixed;
+    width: 800px;
+    height: 600px;
+    top: calc((100% - 600px) / 2) !important;
+    left: calc((100% - 800px) / 2) !important;
+    bottom: auto;
+    background-color: transparent;
+    box-sizing: border-box;
+
+    .edit-xblock-modal {
+      height: 100%;
+      @include editing-modal();
+
+      .modal-tab-modes {
+        display: none;
+      }
+      .modal-content {
+        height: auto;
+        flex: 1;
+        overflow: visible;
+        padding-bottom: 20px;
+
+        .xblock-editor .xmodule_edit {
+          display: flex;
+          flex-direction: column-reverse;
+
+          .wrapper-comp-editor {
+            flex: 1;
+            border: none;
+            box-sizing: border-box;
+            padding: 0 $padding-beside-form 2px;
+
+            .html-editor {
+              border: 1px solid $border-color;
+              border-radius: $border-radius-half;
+              overflow: hidden;
+            }
+
+            .CodeMirror {
+              height: 100%;
+            }
+          }
+        }
+
+        .wrapper-comp-settings {
+          .list-input {
+            .field {
+              &.comp-setting-entry.editor, &.comp-setting-entry.course_staff_only {
+                display: none;
+              }
+            }
+
+          }
+        }
+      }
+      .modal-actions {
+        border-top: 1px solid $editor-border-color;
+      }
+    }
+  }
+
+  .tox {
+    @include tox();
+  }
+
+  $border-color: rgba(114, 114, 114, 0.21);
+
+  .modal-lg.modal-editor {
+    box-shadow: none;
+    padding: 0;
+    border: none;
+
+    .tiny-mce {
+      .tox-toolbar {
+        background-color: $fds-global-color-neutral-5;
+      }
+    }
+
+    .tox-tinymce {
+      border: none; //remove
+      .tox-editor-header {
+        background-color: $editor-header-background-color;
+      }
+    }
+
+  }
+
+  .wrapper-comp-settings {
+    display: block;
+    width: auto;
+    overflow-y: auto;
+    box-sizing: border-box;
+    border-top: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    border: none;
+    padding: 20px $padding-beside-form 10px;
+    overflow: visible;
+
+    h4 {
+      display: none;
+    }
+
+    .settings-list {
+      &.list-input {
+        overflow: visible;
+      }
+      .field {
+        &.comp-setting-entry {
+          opacity: 1;
+          border-top: none;
+          padding:0;
+          margin: 0;
+          &.is-set .setting-input {
+            color: rgba($triboo-color-fg-neutral, 0.8);
+          }
+        }
+        .wrapper-comp-setting {
+          label {
+            @include label();
+            display: inline-block;
+            padding-bottom: 0;
+          }
+
+          input[type=text] {
+            width: 400px;
+          }
+
+          .tip {
+            @include tip();
+            margin-left: 0;
+            font-size: 10px;
+            color: $triboo-color-fg-neutral;
+          }
+        }
+
+        .setting-text {
+          white-space: normal;
+          display: block;
+          word-break: break-all;
+          color: rgba($triboo-color-fg-neutral, 0.8);
+          font-size: 14px;
+        }
+        .setting-label {
+          display: block;
+          //min-width: 100px;
+          width: auto;
+          padding-bottom: 14px;
+        }
+        input, select {
+          &.setting-input {
+            @include form-text-box();
+          }
+        }
+        select.setting-input {
+          @extend %dropdown-studio;
+          height: 44px;
+          margin-left: 0;
+        }
+        input, select {
+          &.setting-input {
+            border-radius: $border-radius-half;
+            font-size: 14px;
+            color: rgba($triboo-color-fg-neutral, 0.8);
+            width: 210px;
+          }
+        }
+
+        .setting-clear, .setting-help {
+          display: none;
+        }
+
+        .question-mark-wrapper {
+          display: inline-block;
+          margin-left: 13px;
+        }
+
+      }
+    }
+  }
+
+}

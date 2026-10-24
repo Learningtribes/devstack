@@ -1,0 +1,29 @@
+// lms - elements - typography
+// ====================
+
+// Scale - (6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 21, 24, 36, 48, 60, 72)
+
+%t-strong {
+  font-weight: 600;
+}
+
+%t-title3 {
+  font-family: $font-family-header;
+
+  font-size: 36px;
+  line-height: 36px;
+}
+
+%t-title4 {
+  font-family: $font-family-header;
+
+  font-size: 24px;
+  line-height: 24px;
+}
+
+%t-title5 {
+  font-family: $font-family-default;
+
+  font-size: 18px;
+  @include line-height(18);
+}

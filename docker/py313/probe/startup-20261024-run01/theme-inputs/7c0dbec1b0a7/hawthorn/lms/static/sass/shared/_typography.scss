@@ -1,0 +1,255 @@
+    @mixin global-design-typography ($font-weight, $font-size, $line-height, $letter-spacing: 0em) {
+      font-family: $font-family-default;
+      font-style: normal;
+      font-weight: $font-weight;
+      font-size: $font-size;
+      line-height: $line-height;
+      letter-spacing: $letter-spacing;
+      text-indent: 0px;
+    }
+
+/* Represents a large, bold font style used for eye-catching headlines or titles */
+@mixin typography-display-large-bold {
+  @include global-design-typography(700, 52px, 68px);
+}
+
+/* Represents a large, semibold font style used for eye-catching headlines or titles */
+@mixin typography-display-large-semibold {
+  @include global-design-typography(600, 52px, 68px);
+}
+
+/* Represents a small, bold font style used for eye-catching headlines or titles */
+@mixin typography-display-small-bold {
+  @include global-design-typography(700, 44px, 56px);
+}
+
+/* Represents a small, semibold font style used for eye-catching headlines or titles */
+@mixin typography-display-small-semibold {
+  @include global-design-typography(600, 44px, 56px);
+}
+
+/* Represents a mobile-friendly font style with a semibold weight, used for the H1 or title on a mobile device */
+@mixin typography-mobile-h1-semibold {
+  @include global-design-typography(600, 36px, 48px);
+}
+
+/* Represents a mobile-friendly font style with a bold weight, used for the H1 or title on a mobile device */
+@mixin typography-mobile-h1-bold {
+  @include global-design-typography(700, 36px, 48px);
+}
+
+/* Represents a mobile-friendly font style with a semibold weight, used for the H2 or title on a mobile device */
+@mixin typography-mobile-h2-semibold {
+  @include global-design-typography(600, 32px, 44px);
+}
+
+/* Represents a mobile-friendly font style with a bold weight, used for the H2 or title on a mobile device */
+@mixin typography-mobile-h2-bold {
+  @include global-design-typography(700, 32px, 44px);
+}
+
+/* Represents a mobile-friendly font style with a semibold weight, used for the H3 or title on a mobile device */
+@mixin typography-mobile-h3-semibold {
+  @include global-design-typography(600, 28px, 36px);
+}
+
+/* Represents a mobile-friendly font style with a bold weight, used for the H3 or title on a mobile device */
+@mixin typography-mobile-h3-bold {
+  @include global-design-typography(700, 28px, 36px);
+}
+
+/* Represents a mobile-friendly font style with a semibold weight, used for the H4 or title on a mobile device */
+@mixin typography-mobile-h4-semibold {
+  @include global-design-typography(600, 24px, 32px);
+}
+
+/* Represents a mobile-friendly font style with a bold weight, used for the H4 or title on a mobile device */
+@mixin typography-mobile-h4-bold {
+  @include global-design-typography(700, 24px, 32px);
+}
+
+/* Represents a mobile-friendly font style with a semibold weight, used for the H5 or title on a mobile device */
+@mixin typography-mobile-h5-semibold {
+  @include global-design-typography(600, 20px, 28px);
+}
+
+/* Represents a mobile-friendly font style with a bold weight, used for the H5 or title on a mobile device */
+@mixin typography-mobile-h5-bold {
+  @include global-design-typography(700, 20px, 28px);
+}
+
+/* Represents a mobile-friendly font style with a semibold weight, used for the H6 or title on a mobile device */
+@mixin typography-mobile-h6-semibold {
+  @include global-design-typography(600, 18px, 24px);
+}
+
+/* Represents a mobile-friendly font style with a bold weight, used for the H6 or title on a mobile device */
+@mixin typography-mobile-h6-bold {
+  @include global-design-typography(700, 18px, 24px);
+}
+
+/* Represents a font style with a semibold weight, used for the H1 or title on a desktop device */
+@mixin typography-h1-semibold {
+  @include global-design-typography(600, 40px, 52px);
+}
+
+/* Represents a font style with a bold weight, used for the H1 or title on a desktop device */
+@mixin typography-h1-bold {
+  @include global-design-typography(700, 40px, 52px);
+}
+
+/* Represents a font style with a semibold weight, used for the H2 or title on a desktop device */
+@mixin typography-h2-semibold {
+  @include global-design-typography(600, 36px, 48px);
+}
+
+/* Represents a font style with a bold weight, used for the H2 or title on a desktop device */
+@mixin typography-h2-bold {
+  @include global-design-typography(700, 36px, 48px);
+}
+
+/* Represents a font style with a semibold weight, used for the H3 or title on a desktop device */
+@mixin typography-h3-semibold {
+  @include global-design-typography(600, 32px, 44px);
+}
+
+/* Represents a font style with a bold weight, used for the H3 or title on a desktop device */
+@mixin typography-h3-bold {
+  @include global-design-typography(700, 32px, 44px);
+}
+
+/* Represents a font style with a semibold weight, used for the H4 or title on a desktop device */
+@mixin typography-h4-semibold {
+  @include global-design-typography(600, 28px, 36px);
+}
+
+/* Represents a font style with a bold weight, used for the H4 or title on a desktop device */
+@mixin typography-h4-bold {
+  @include global-design-typography(700, 28px, 36px);
+}
+
+/* Represents a font style with a semibold weight, used for the H5 or title on a desktop device */
+@mixin typography-h5-semibold {
+  @include global-design-typography(600, 24px, 32px);
+}
+
+/* Represents a font style with a bold weight, used for the H5 or title on a desktop device */
+@mixin typography-h5-bold {
+  @include global-design-typography(700, 24px, 32px);
+}
+
+/* Represents a font style with a semibold weight, used for the H6 or title on a desktop device */
+@mixin typography-h6-semibold {
+  @include global-design-typography(600, 20px, 28px);
+}
+
+/* Represents a font style with a bold weight, used for the H6 or title on a desktop device */
+@mixin typography-h6-bold {
+  @include global-design-typography(700, 20px, 28px);
+}
+
+/* Represents a large font style with a regular weight used for body content, text inside components, and captions */
+@mixin typography-body-lg-regular {
+  @include global-design-typography(400, 18px, 28px);
+}
+
+/*  Represents a large font style with a medium weight used for body content, text inside components, and captions */
+@mixin typography-body-lg-medium {
+  @include global-design-typography(500, 18px, 28px);
+}
+
+/*  Represents a large font style with a bold weight used for body content, text inside components, and captions */
+@mixin typography-body-lg-bold {
+  @include global-design-typography(700, 18px, 28px);
+}
+
+
+@mixin typography-body-lg-underline {
+  @include global-design-typography(400, 18px, 28px);
+}
+
+/* Represents a medium font style with a regular weight used for body content, text inside components, and captions */
+@mixin typography-body-md-regular {
+  @include global-design-typography(400, 16px, 24px);
+}
+
+/* Represents a medium font style with a medium weight used for body content, text inside components, and captions */
+@mixin typography-body-md-medium {
+  @include global-design-typography(500, 16px, 24px);
+}
+
+/*  Represents a medium font style with a bold weight used for body content, text inside components, and captions */
+@mixin typography-body-md-bold {
+  @include global-design-typography(700, 16px, 24px);
+}
+
+
+@mixin typography-body-md-underline {
+  @include global-design-typography(400, 16px, 24px);
+}
+
+/* Represents a small font style with a regular weight used for body content, text inside components, and captions */
+@mixin typography-body-sm-regular {
+  @include global-design-typography(400, 14px, 20px);
+}
+
+/* Represents a small font style with a medium weight used for body content, text inside components, and captions */
+@mixin typography-body-sm-medium {
+  @include global-design-typography(500, 14px, 20px);
+}
+
+/* Represents a small font style with a bold weight used for body content, text inside components, and captions */
+@mixin typography-body-sm-bold {
+  @include global-design-typography(700, 14px, 20px);
+}
+
+
+@mixin typography-body-sm-underline {
+  @include global-design-typography(400, 14px, 20px);
+}
+
+/* Represents an extra-small font style with a regular weight used for body content, text inside components, and captions */
+@mixin typography-body-xs-regular {
+  @include global-design-typography(400, 12px, 16px);
+}
+
+/* Represents an extra-small font style with a medium weight used for body content, text inside components, and captions */
+@mixin typography-body-xs-medium {
+  @include global-design-typography(500, 12px, 16px);
+}
+
+/* Represents an extra-small font style with a bold weight used for body content, text inside components, and captions */
+@mixin typography-body-xs-bold {
+  @include global-design-typography(700, 12px, 16px);
+}
+
+
+@mixin typography-body-xs-underline {
+  @include global-design-typography(400, 12px, 16px);
+}
+
+/* Represents a tiny font style with a regular weight used on challenging UI regions like data visualizations. It must be used sparingly */
+@mixin typography-body-2xs-regular {
+  @include global-design-typography(400, 10px, 12px, 0.01em);
+}
+
+/* Represents a tiny font style with a medium weight used on challenging UI regions like data visualizations. It must be used sparingly */
+@mixin typography-body-2xs-medium {
+  @include global-design-typography(500, 10px, 12px, 0.01em);
+}
+
+/* Represents a tiny font style with a bold weight used on challenging UI regions like data visualizations. It must be used sparingly */
+@mixin typography-body-2xs-bold {
+  @include global-design-typography(700, 10px, 12px, 0.01em);
+}
+
+/* They are used sparingly to annotate imagery, small chips or to introduce a headline */
+@mixin typography-overline-regular {
+  @include global-design-typography(500, 14px, 16px, 0.01em);
+}
+
+/* They are used sparingly to annotate imagery, small chips or to introduce a headline */
+@mixin typography-overline-small {
+  @include global-design-typography(500, 12px, 16px, 0.01em);
+}
+

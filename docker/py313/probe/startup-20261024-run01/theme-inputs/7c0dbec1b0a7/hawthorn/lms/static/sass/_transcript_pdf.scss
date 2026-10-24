@@ -1,0 +1,62 @@
+#main-pdf {
+  height: auto; //remove
+  width: 297mm;
+  margin: 0 auto;
+
+  .print-page {
+    position: fixed;
+    right: 70px;
+    top: 2mm;
+    button {
+      @include primary-small-button();
+      margin: 5px -5px;
+    }
+  }
+
+  .transcript {
+    padding: 3mm 2mm;
+    .report-wrapper {
+      padding: 4mm 8mm;
+      .logo {
+        img {
+          width: 100px;
+          height: auto;
+          float: left;
+          margin-top: 2mm;
+        }
+      }
+      .analytics-header {
+        text-align: center;
+        margin: 8mm 0;
+        h2 {
+          margin: 40px 0;
+        }
+      }
+    }
+  }
+
+  .analytics-widget-24,
+  .analytics-widget-75,
+  .analytics-widget-100 {
+    //@extend %list-item;
+
+    border: 1px solid $background-grey;
+    margin-right: 26px;
+    margin-bottom: 20px;
+    min-height: 150px;
+    flex-direction: column;
+    justify-content: center;
+    float: left;
+    box-sizing: border-box;
+    padding: 20px;
+    font-size: 14px;
+  }
+
+  .analytics-widget-24 {
+    width: 260px;
+  }
+
+  .actions {
+    display: none;
+  }
+}

@@ -1,0 +1,22 @@
+// studio - utilities - INHERITED mixins and extends
+
+// NOTE: these are older/poorly architected mixins that we want to move away from using or refactor in the future.
+// They are still referenced when styling current interface elements and as such need to be preserved for the time being.
+// talbs: we need to slowly ween ourselves off of these
+// ====================
+
+// inherited - ui
+.window {
+  border: 0;
+}
+
+// only needed for course updates
+@mixin edit-box {
+  .save-button {
+    @extend %btn-primary-primary
+  }
+
+  .cancel-button {
+    @extend %btn-secondary-light-gray;
+  }
+}

@@ -1,0 +1,86 @@
+.ds-input,
+.ds-textarea {
+  display: inline-flex;
+  flex-direction: column;
+  gap: $fds-global-space-xxs;
+  align-items: flex-start;
+  width: 180px;
+  @include typography-body-sm-medium;
+  color: $fds-global-color-neutral-170;
+  margin: 0;
+}
+
+.ds-input input,
+.ds-textarea textarea {
+  @include typography-body-sm-regular;
+  padding: $fds-global-space-xs $fds-global-space-sm;
+  display: flex;
+  gap: $fds-global-space-xxs;
+  align-items: center;
+  align-self: stretch;
+  border: 1px solid $fds-global-color-neutral-40;
+  border-radius: $fds-global-border-radius-md;
+  background: transparent;
+
+  &:hover {
+    border-color: $fds-global-color-neutral-80;
+  }
+  &:active,
+  &:focus {
+    border-color: $triboo-color-brand-primary;
+    outline: none;
+    box-shadow: none;
+  }
+  &:user-invalid {
+    border-color: $fds-global-color-error-40;
+    + span {
+      color: $fds-global-color-error-40;
+    }
+  }
+  &::placeholder {
+    color: $fds-global-color-neutral-70;
+    user-select: none;
+  }
+
+  + span {
+    @include typography-body-2xs-regular;
+    color: $fds-global-color-neutral-70;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.ds-input--white input,
+.ds-textarea--white textarea {
+  background: var(--fds-global-color-neutral-0);
+}
+.ds-input--invalid input,
+.ds-textarea--invalid textarea {
+  border-color: $fds-global-color-error-40;
+  + span {
+    color: $fds-global-color-error-40;
+  }
+}
+
+.ds-input.disabled,
+.ds-textarea.disabled,
+.ds-input:has(input:disabled),
+.ds-textarea:has(textarea:disabled) {
+  cursor: not-allowed;
+}
+
+.ds-input.disabled input,
+.ds-input:has(input:disabled) input,
+.ds-textarea.disabled textarea,
+.ds-textarea:has(textarea:disabled) textarea {
+  border-color: $fds-global-color-neutral-20;
+  pointer-events: none;
+
+  &,
+  &::placeholder,
+  + span {
+    color: $fds-global-color-neutral-50;
+  }
+}

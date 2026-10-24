@@ -1,0 +1,103 @@
+ds-tag {
+  --bg: #{$triboo-color-brand-primary-5};
+  --fg: #{$triboo-color-brand-primary-60};
+  &[color="fds-primary"] {
+    --bg: #{$fds-global-color-primary-5};
+    --fg: #{$fds-global-color-primary-60};
+  }
+  &[color="neutral"] {
+    --bg: #{$fds-global-color-neutral-20};
+    --fg: #{$fds-global-color-neutral-110};
+  }
+  &[color="error"] {
+    --bg: #{$fds-global-color-error-5};
+    --fg: #{$fds-global-color-error-70};
+  }
+  &[color="warning"] {
+    --bg: #{$fds-global-color-warning-5};
+    --fg: #{$fds-global-color-warning-70};
+  }
+  &[color="caution"] {
+    --bg: #{$fds-global-color-caution-5};
+    --fg: #{$fds-global-color-caution-70};
+  }
+  &[color="success"] {
+    --bg: #{$fds-global-color-success-5};
+    --fg: #{$fds-global-color-success-70};
+  }
+  &[color="info"] {
+    --bg: #{$fds-global-color-info-5};
+    --fg: #{$fds-global-color-info-70};
+  }
+  &[filled] {
+    --bg: #{$triboo-color-brand-primary};
+    --fg: #{$fds-global-color-neutral-0};
+    &[color="fds-primary"] {
+      --bg: #{$fds-global-color-primary-40};
+    }
+    &[color="neutral"] {
+      --bg: #{$fds-global-color-neutral-110};
+    }
+    &[color="error"] {
+      --bg: #{$fds-global-color-error-40};
+    }
+    &[color="warning"] {
+      --bg: #{$fds-global-color-warning-40};
+    }
+    &[color="caution"] {
+      --bg: #{$fds-global-color-caution-40};
+    }
+    &[color="success"] {
+      --bg: #{$fds-global-color-success-40};
+    }
+    &[color="info"] {
+      --bg: #{$fds-global-color-info-60};
+    }
+  }
+
+  &[size="small"] {
+    --padding-block: #{$fds-global-space-xxs};
+    --padding-inline: #{$fds-global-space-xxs};
+  }
+  &,
+  &[size="medium"] {
+    --padding-block: #{$fds-global-space-xxs};
+    --padding-inline: #{$fds-global-space-xs};
+  }
+  &[size="large"] {
+    --padding-block: #{$fds-global-space-xxs};
+    --padding-inline: #{$fds-global-space-xs};
+  }
+
+  --gap: #{$fds-global-space-xxs};
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap);
+
+  padding: var(--padding-block) var(--padding-inline);
+
+  border-radius: $fds-global-border-radius-sm;
+  background-color: var(--bg);
+  color: var(--fg);
+
+  &[size="small"] {
+    @include typography-body-2xs-bold;
+  }
+  &,
+  &[size="medium"] {
+    @include typography-body-xs-bold;
+  }
+  &[size="large"] {
+    @include typography-body-sm-bold;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    &,
+    &[color] {
+      --bg: #{$fds-global-color-neutral-10};
+      --fg: #{$fds-global-color-neutral-50};
+    }
+  }
+}

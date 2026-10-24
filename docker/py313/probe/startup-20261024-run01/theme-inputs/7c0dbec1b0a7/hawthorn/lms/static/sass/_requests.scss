@@ -1,0 +1,742 @@
+
+#admin-panel {
+  .banner {
+    @include banner();
+  }
+
+  .tabs-wrapper {
+    display: flex;
+    height: 56px;
+    padding: 0 60px;
+    background-color: $white;
+
+    @include media-down($lg) {
+      overflow-x: visible;
+      overflow-y: visible;
+    }
+
+    @include media-down($md) {
+      position: relative;
+      padding: 0;
+      height: auto;
+    }
+  }
+
+  .subtabs-wrapper {
+    display: flex;
+    padding: 0 60px;
+    padding-left: 80px;
+
+    @include side-auto-padding($addition: 10px);
+
+    .subtabs-nav {
+        margin: 30px 0 0;
+        display: inline-block;
+
+        @include media-down($sm) {
+          border-bottom: none;
+        }
+
+        .nav-item {
+          display: inline-block;
+          padding-bottom: 10px;
+
+          &:not(:last-of-type) {
+            margin-right: 25px;
+
+            @include media-down($sm) {
+              margin-right: 8px;
+            }
+          }
+
+          .btn-link {
+            font-size: 16px;
+            color: $triboo-color-fg-neutral;
+            font-weight: 300;
+            text-decoration: none !important;
+            letter-spacing: normal;
+
+            @include media-down($sm) {
+              border: 1px solid $fds-global-color-neutral-100;
+              border-radius: 8px;
+              padding: 5px 8px;
+            }
+
+            &:hover, &:active {
+              @include font-bold($color: $triboo-color-fg-neutral);
+
+              @include media-down($sm) {
+                text-shadow: none;
+              }
+            }
+
+            &.active-section {
+              font-weight: 400;
+              border-bottom: 2px solid $triboo-color-brand-primary;
+
+              @include media-down($sm) {
+                border: 1px solid $triboo-color-brand-primary;
+                color: $triboo-color-brand-primary;
+                border-radius: 8px;
+              }
+            }
+          }
+        }
+      }
+  }
+
+  .tabs {
+    display: flex;
+    flex: 1;
+    margin: 0;
+    overflow-x: visible;
+
+    @include media-down($md) {
+      flex-direction: column;
+    }
+
+    li {
+      @include typography-body-md-regular;
+      display: flex;
+      align-items: center;
+      padding: 0 $fds-global-space-3xl;
+      border-right: $fds-global-border-width;
+
+
+      @include media-down($xl) {
+        padding: 0 20px;
+      }
+
+      @include media-down($md) {
+        @include typography-body-sm-regular;
+        height: 45px;
+        border-bottom: $fds-global-border-width;
+        padding: 0 $fds-global-space-md;
+        border-right: none;
+
+        &:before {
+          content: normal;
+        }
+      }
+
+      &.active {
+        color: $triboo-color-brand-primary;
+        font-weight: 600;
+      }
+
+      a {
+        @include hyper-link-header;
+        border-bottom: 0 !important;
+        font-size: inherit;
+        padding: 0;
+
+        @include media-down($md) {
+          width: 100%;
+          text-align: left;
+          padding-left: 0;
+
+          &:before {
+            content: '';
+          }
+        }
+
+        &.active {
+          color: $triboo-color-brand-primary;
+          font-weight: 600;
+          border-bottom: 0;
+
+          @include media-down($md) {
+            &:before {
+              content: '';
+            }
+          }
+
+          &:hover {
+            @include font-bold($color: $triboo-color-brand-primary);
+
+            &:before {
+              text-shadow: none;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  .requests-wrapper {
+    padding: 30px 60px;
+    @include side-auto-padding($top-bottom: 20px);
+  }
+
+  .approved-requests,
+  .declined-requests,
+  .pending-requests,
+  .enrollment-panel {
+    .request-container {
+      @extend %content-container;
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+
+      %label-style {
+        display: inline-block;
+        font-size: 14px;
+        @include padding-right(15px);
+      }
+
+      %span-style {
+        //display: inline-block;
+        font-size: 14px;
+      }
+
+      $label-padding: 8px;
+
+      %reset-font-style {
+        font-style: normal;
+        font-weight: 400;
+        -webkit-font-smoothing: auto;
+      }
+
+      .learner-info {
+        @include media-down($md) {
+          @include padding-right(100px);
+        }
+
+        .avatar {
+          width: 32px;
+          height: 32px;
+          @include margin-right(10px);
+          border-radius: 50%;
+        }
+
+        .profile-name {
+          font-weight: 600;
+        }
+
+        .user-name {
+          display: block;
+          @include margin-left(46px);
+        }
+      }
+
+      .request-info {
+        padding-top: 15px;
+
+        h2 {
+          margin-bottom: 0;
+
+          color: $black;
+          font-weight: 600;
+
+          @include media-down($md) {
+            padding-right: 100px;
+          }
+        }
+
+        h3 {
+          color: $triboo-color-fg-neutral;
+          font-size: 14px;
+          margin-top: 5px;
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+
+        .dynamic-wrapper {
+          display: flex;
+          justify-content: space-between;
+          margin: 15px 0;
+
+          @include media-down($md) {
+            display: block;
+            .input-wrapper {
+              margin-top: 10px;
+            }
+          }
+
+          p {
+            margin-top: 5px;
+          }
+
+          .time-location-wrapper {
+            .location-wrapper {
+              margin-top: 10px;
+            }
+          }
+        }
+
+        .location, .address, .time, .accommodation, .comment, .city-zip {
+          @extend %span-style;
+        }
+
+        .city-zip {
+          b {
+            font-weight: 600;
+          }
+        }
+
+        .time {
+          font-weight: 600;
+        }
+
+        select {
+          @extend %dropdown;
+          @extend %form-text-box;
+          padding: 3px 25px 3px 10px;
+          margin-top: 20px;
+          margin-bottom: 5px;
+          width: 100%;
+
+          option {
+            &.expire-for-student, &.within-deadline {
+              display: none;
+            }
+          }
+        }
+
+        .input-wrapper {
+          &:not(.editor-mode) {
+            .xlabel, label {
+              width: 230px;
+              line-height: 16px;
+              margin-bottom: 0;
+              margin-top: 5px;
+            }
+
+            .comment {
+              label {
+                width: auto;
+                @include padding-right(40px);
+              }
+
+              span {
+                width: 200px;
+                margin-top: 5px;
+              }
+            }
+
+          }
+        }
+
+        .accommodation {
+
+          label {
+            @extend %reset-font-style;
+            @extend %label-style;
+          }
+
+          span {
+            color: $triboo-color-brand-primary;
+            font-weight: 600;
+            text-transform: uppercase;
+          }
+
+          input[type=radio]:nth-of-type(1) {
+            @include checkbox-generator($text: '\f058', $checked-text: '\f058', $text-color: $black);
+
+            + label {
+              font-style: normal;
+              @include padding-right(8px);
+
+              &:before {
+                font-size: 16px;
+                @include margin-left(-22px);
+              }
+            }
+          }
+
+          input[type=radio]:nth-of-type(2) {
+            @include checkbox-generator($text: '\f057', $checked-text: '\f057', $text-color: $black, $checked-color: $red);
+
+            + label {
+              font-style: normal;
+
+              &:before {
+                font-size: 16px;
+                margin-left: -22px;
+              }
+            }
+          }
+
+          .fa-check-circle {
+            &, + span {
+              color: $green;
+            }
+          }
+
+          .fa-times-circle {
+            &, + span {
+              color: $triboo-color-fg-neutral;
+            }
+          }
+        }
+
+        .trip {
+
+          .field {
+
+            span {
+              color: $triboo-color-brand-primary;
+              text-transform: uppercase;
+            }
+          }
+
+          label {
+            @extend %reset-font-style;
+            @extend %label-style;
+          }
+
+          input {
+            @extend %form-text-box;
+            @extend %reset-font-style;
+
+            vertical-align: baseline;
+            font-family: $font-family-default;
+            color: $triboo-color-fg-neutral;
+            width: 50px;
+
+            &:nth-of-type(1) {
+              margin-right: 20px;
+            }
+          }
+
+          span:nth-of-type(2) {
+            margin-left: 60px;
+          }
+        }
+
+        .comment {
+
+          width: 350px;
+          display: flex;
+
+          label {
+            @extend %reset-font-style;
+            @extend %label-style;
+            line-height: 16px;
+          }
+
+          span {
+            font-style: italic;
+          }
+
+          textarea {
+            flex: 1;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 14px;
+            color: $triboo-color-fg-neutral;
+            border: 2px dashed $grey10;
+            box-shadow: none;
+            border-radius: 6px;
+            min-width: 225px;
+          }
+
+        }
+      }
+
+      .action-button {
+        margin-top: 25px;
+        text-align: $bi-app-right;
+
+        > div {
+          display: inline-block;
+
+          button {
+            &[disabled], &.disabled {
+              box-shadow: none;
+            }
+          }
+        }
+
+        .unsubscribe, .cancel, .edit, .refuse {
+          @include grey-small-button()
+        }
+
+        .edit {
+          background-color: $white !important;
+          box-shadow: $fds-global-shadow-xs !important;
+          padding-left: 15px;
+
+          i {
+            line-height: 25px;
+            @include margin-right(0 !important);
+            color: rgb(56, 56, 55)
+          }
+        }
+
+        .save {
+          @include primary-small-button()
+        }
+
+        .approve {
+          @include green-small-button()
+        }
+      }
+
+    }
+
+    .search-container {
+      margin-bottom: 10px;
+      position: relative;
+
+      .search-part {
+        padding-right: 10px;
+        width: calc(100% - 45px);
+        input {
+          @extend %form-text-box;
+          width: 48%;
+          font-family: $font-family-default;
+          font: inherit;
+          border-radius: 8px;
+          @include margin-right(10px);
+        }
+
+        input::placeholder {
+          color: $fds-global-color-neutral-60;
+          font-size: 16px;
+          letter-spacing: 0;
+          font-style: normal;
+          -webkit-font-smoothing: subpixel-antialiased;
+        }
+
+        #id_select_module,
+        #id_select_start,
+        #id_enrollment_select_course,
+        #id_enrollment_select_module {
+          + .select2 {
+            width: auto !important; //remove
+            @include margin-right(10px);
+          }
+        }
+
+        .select2 {
+          @extend %form-text-box;
+
+          .select2-container--default .select2-selection--single {
+            border: none;
+          }
+        }
+
+        .select2-selection,
+        .select2-selection__rendered,
+        .select2-selection__arrow {
+          height: 35px;
+          line-height: 35px;
+        }
+
+        .select2-selection {
+          border-color: $fds-global-color-neutral-20;
+          border-radius: 8px;
+          outline: none;
+          border: none;
+          min-width: 180px;
+        }
+      }
+
+      .reset-button {
+        position: absolute;
+        top: 0;
+        @include right(0);
+        .reset {
+          @include grey-small-button();
+          background-color: $white !important;
+          height: 35px;
+          i {
+            line-height: 25px;
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+            color: rgb(56, 56, 55);
+          }
+        }
+      }
+    }
+  }
+
+  .approved-requests, .declined-requests {
+    .request-container {
+      position: relative;
+    }
+
+    .request-status {
+      position: absolute;
+      @include right(20px);
+      top: 30px;
+      min-width: 120px;
+
+      text-transform: uppercase;
+
+      .action-button {
+        margin-top: 40px;
+      }
+
+      .approved {
+        position: absolute;
+        @include right(0);
+        color: $green;
+      }
+
+      .declined {
+        color: $red;
+      }
+
+      i {
+        @include padding-left(10px);
+      }
+
+      .fa-edit {
+        @include padding-left(0);
+      }
+    }
+
+  }
+
+  .enrollment-panel {
+    .enrollment-search-result {
+      margin-top: 50px;
+      .session-container {
+        .session-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 15px;
+          .session-title {
+            font-weight: bold;
+          }
+          .session-seats {
+            padding: 0 10px;
+          }
+        }
+
+        .session {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 15px;
+          .session-title, .session-seats, .expanded-session {
+            padding: 10px;
+            background-color: $white;
+            border: 1px solid $grey35;
+            border-radius: 8px;
+          }
+          .session-seats {
+            width: 20px;
+            height: 20px;
+            text-align: center;
+          }
+          .session-title {
+            display: flex;
+            justify-content: space-between;
+            @include margin-right(10px);
+            width: 100%
+          }
+          .expired-session {
+            background-color: $grey35;
+          }
+          .expanded-session {
+            @include margin-right(10px);
+            width: 100%;
+            border-radius: 25px;
+            .expanded-session-title {
+              display: flex;
+              justify-content: space-between;
+            }
+            .bulk-enrollment {
+              font-size: 14px;
+              background-color: $white;
+              box-shadow: $fds-global-shadow-xs;
+              margin: 50px 100px;
+              padding: 20px 50px;
+              border-radius: 8px;
+
+              .name-checkbox-list {
+
+                .enroll {
+                  display: flex;
+                  justify-content: end;
+
+                  button {
+                    @include primary-small-button()
+                  }
+                }
+                .identifier-checkbox {
+                  display: inline-block;
+                  width: 33%;
+                }
+
+                label {
+                  font-style: normal;
+                }
+              }
+
+              h3 {
+                font-weight: bold;
+                margin-bottom: 10px;
+              }
+              p {
+                margin-bottom: 20px;
+              }
+            }
+            .fold-session {
+              text-align: center;
+              font-size: 25px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//for select2
+$select2-font-size:14px;
+
+.select2-dropdown {
+  @include list-item();
+  width: auto;
+}
+
+.select2-container--open .select2-dropdown--below {
+  @include ltr {
+    width: auto !important;
+  }
+  min-width: 180px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  outline: none;
+  border: 1px solid $grey5;
+}
+
+.select2-search--dropdown {
+  border: none;
+  font-size: $select2-font-size;
+}
+
+.select2-results__option {
+  height: 35px;
+  line-height: 35px;
+  padding: 0 10px 0 20px;
+  color: $triboo-color-fg-neutral;
+      white-space: nowrap;
+}
+
+.select2-container--default {
+  .select2-results__option {
+    &[aria-selected=true] {
+      background-color: transparent;
+    }
+  }
+
+  .select2-results__message {
+    font-size: $select2-font-size;
+  }
+
+  .select2-results__option[aria-disabled=true] {
+    height: 0;
+  }
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: transparent;
+  color: $black60;
+}

@@ -1,0 +1,91 @@
+.ds-search {
+  display: inline-flex;
+  box-sizing: border-box;
+  flex-direction: row;
+  gap: $fds-global-space-xxs;
+  align-items: center;
+
+  border: 1px solid $fds-global-color-neutral-40;
+  border-radius: $fds-global-border-radius-md;
+  padding: calc(#{$fds-global-space-xs} - 1px) $fds-global-space-sm;
+  color: $fds-global-color-neutral-70;
+  margin: 0;
+
+  &:hover {
+    border-color: $fds-global-color-neutral-80;
+  }
+  &:active,
+  &:focus-within {
+    border-color: $triboo-color-brand-primary;
+    outline: none;
+  }
+
+  > i,
+  > button,
+  > span {
+    user-select: none;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  > button {
+    &, &:hover, &:focus, &:active {
+      background: none;
+      border: none;
+      box-shadow: none;
+      outline: none;
+      text-shadow: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      color: $fds-global-color-neutral-70;
+    }
+  }
+
+  input, input[type="text"] {
+    @include typography-body-sm-regular;
+    padding: 0;
+    display: flex;
+    gap: $fds-global-space-xxs;
+    align-items: center;
+    align-self: stretch;
+    border: none;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+    background: none;
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: none;
+      outline: none;
+    }
+
+    &:invalid {
+      border-color: $fds-global-color-error-40;
+      + span {
+        color: $fds-global-color-error-40;
+      }
+    }
+    &::placeholder {
+      color: $fds-global-color-neutral-70;
+      user-select: none;
+    }
+  }
+
+  &.disabled,
+  &:has(input:disabled) {
+    cursor: not-allowed;
+
+    input {
+      border-color: $fds-global-color-neutral-20;
+      pointer-events: none;
+
+      &,
+      &::placeholder {
+        color: $fds-global-color-neutral-50;
+      }
+    }
+  }
+}

@@ -1,0 +1,576 @@
+#register-learning-activity-modal, #learning-activity-approval-modal {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba($fds-global-color-neutral-170, 0.7);
+
+  .modal-content {
+    background-color: $fds-global-color-neutral-0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: $fds-global-border-radius-lg;
+    box-shadow: $fds-global-shadow-xl;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: left;
+
+    .modal-header {
+      padding: $fds-global-space-md $fds-global-space-xl;
+
+      .modal-title {
+        @include typography-body-md-bold;
+
+        i {
+          margin-left: 24px;
+          cursor: pointer;
+        }
+
+        .icon {
+          border-radius: $fds-global-border-radius-md;
+          padding: 6px 10px 6px 10px;
+          visibility: hidden;
+          transition-duration: 0.3s;
+        }
+
+        .icon:hover {
+           color: $fds-global-color-neutral-0;
+           background-color: $triboo-color-brand-primary;
+        }
+      }
+
+      .modal-title:hover > .icon {
+        visibility: visible;
+      }
+
+      .close {
+        color: $fds-global-color-neutral-140;
+        float: right;
+        font-weight: bold;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+          color: $fds-global-color-neutral-170;
+          text-decoration: none;
+        }
+      }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: $fds-global-space-md $fds-global-space-xl;
+      gap: $fds-global-space-md;
+
+      .message {
+        width: 569px;
+      }
+
+      .label-group {
+        display: flex;
+        flex-direction: column;
+        gap: $fds-global-space-xxs;
+
+        .ds-label {
+          @include typography-body-sm-medium();
+          color: $fds-global-color-neutral-170;
+
+          .star-rating {
+            margin-top: $fds-global-space-xs;
+            font-size: 30px;
+            color: $fds-global-color-caution-40;
+
+            .fa-star {
+              cursor: pointer;
+            }
+          }
+        }
+
+        .ds-dropdown, .ds-input, .ds-textarea {
+          width: auto;
+        }
+
+        .date-group {
+          font-size: 12px;
+          padding: $fds-global-space-xs $fds-global-space-sm;
+          display: flex;
+          gap: $fds-global-space-xxs;
+          align-items: center;
+          border: 1px solid $fds-global-color-neutral-40;
+          border-radius: $fds-global-border-radius-md;
+          width: 100px;
+
+          input {
+            padding: 0;
+            height: auto;
+            border: none;
+            box-shadow: none;
+            width: 90px;
+            @include typography-body-sm-regular;
+          }
+        }
+      }
+
+      .activity-info, .activity-comment {
+        display: flex;
+        flex-direction: column;
+        width: 569px;
+        padding: $fds-global-space-md;
+        gap: $fds-global-space-md;
+        background-color: $fds-global-color-neutral-5;
+        @include typography-body-sm-regular ();
+        color: $fds-global-color-neutral-170;
+
+        .field-row {
+          display: flex;
+
+          .field-title {
+            width: 161px;
+            font-weight: 500;
+            color: $fds-global-color-neutral-100;
+          }
+
+          .activity-link-container, .activity-date {
+            display: flex;
+            gap: $fds-global-space-xxs;
+            align-items: center;
+          }
+
+          .activity-link-container {
+            a, i {
+              color: $fds-global-color-primary-50;
+            }
+            a {
+              text-decoration: underline;
+            }
+          }
+          .activity-date {
+            color: $fds-global-color-neutral-170;
+
+            .fa-calendar {
+              font-size: 10px;
+            }
+          }
+
+          #activity-rating {
+            font-size: 16px;
+            color: $fds-global-color-caution-40;
+          }
+        }
+      }
+      .activity-comment {
+        border-top: 1px solid $fds-global-color-neutral-20;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: $fds-global-space-xs;
+      border-top: 1px solid $fds-global-color-neutral-20;
+      padding: $fds-global-space-md $fds-global-space-xl;
+    }
+  }
+}
+
+#register-learning-activity-modal {
+  .modal-content {
+    width: 448px;
+  }
+}
+
+#other-activities {
+  %medium-border {
+    border: 2px solid $grey10;
+    border-radius: 10px;
+    box-shadow: none;
+    background: $white;
+  }
+
+  .section-header {
+    overflow: hidden;
+    padding: 0 0 $fds-global-space-md;
+
+    .banner {
+      @include banner();
+      margin-bottom: 0px;
+
+      @include media-down($lg) {
+        margin-bottom: 0px;
+      }
+    }
+
+    .tabs-wrapper {
+      padding: $fds-global-space-2xl 60px 0px;
+    }
+
+    @include media-down($sm) {
+      .banner {
+        margin-bottom: 0px;
+      }
+
+      .tabs-wrapper {
+        padding-inline: 0;
+      }
+    }
+
+    .alert-wrapper {
+      margin: 16px 60px;
+
+      .alert-info-box {
+        display: flex;
+        gap: $fds-global-space-xs;
+        background-color: $fds-global-color-info-0;
+        padding: $fds-global-space-md;
+        border-radius: $fds-global-border-radius-lg;
+
+        .alert-text {
+          display: flex;
+          flex-direction: column;
+          gap: $fds-global-space-xs;
+          width: 100%;
+
+          label {
+            @include typography-body-sm-regular();
+            cursor: unset;
+            color: $fds-global-color-info-70;
+
+            .bolder {
+              font-weight: 700;
+            }
+            .email {
+              color: $fds-global-color-primary-50;
+            }
+          }
+        }
+
+        .alert-close-btn {
+          display: none;
+          color: $fds-global-color-neutral-140;
+          cursor: pointer;
+        }
+      }
+
+      @include media-down($sm) {
+        margin-inline: $fds-global-space-md;
+      }
+    }
+
+    .action-group {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 60px;
+      align-items: center;
+
+      @include media-down($md) {
+        padding: 0 5px;
+        flex-wrap: wrap;
+
+        .user-search .search-input {
+          width: calc((100vw - 110px)/2);
+          padding-left: 5px
+        }
+      }
+
+      .buttons {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+
+        @include media-down($md) {
+          position: relative;
+          flex-basis: 100%;
+          margin-top: 10px;
+        }
+      }
+
+      @include media-down($sm) {
+        margin-inline: $fds-global-space-md;
+
+        .buttons {
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+
+  .section-content {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 100px;
+    gap: 27px;
+    color: $black;
+    padding: 0 60px 60px 60px;
+
+    .activities-list-container {
+      width: 100%;
+      overflow-x: auto;
+      padding: 1px;
+      border-radius: $fds-global-border-radius-lg;
+
+      #activities-table {
+
+        th {
+          .sort-icon {
+            color: $fds-global-color-neutral-50;
+            cursor: pointer;
+          }
+          &.sorted {
+            .sort-icon {
+              color: $fds-global-color-primary-40;
+            }
+          }
+        }
+
+
+        .column-link {
+          width: 10%;
+
+          a {
+            display: flex;
+            gap: $fds-global-space-xxs;
+            align-items: center;
+            color: $fds-global-color-primary-50;
+
+            span {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        .column-rating {
+          i.star {
+            color: $fds-global-color-caution-40;
+          }
+        }
+
+        .column-action {
+          a {
+            &.action-resend-email {
+              color: $fds-global-color-neutral-140;
+            }
+            &.action-delete {
+              color: $fds-global-color-error-60;
+            }
+            &.disabled-action {
+              cursor: not-allowed;
+              opacity: 0.5;
+              pointer-events: none;
+            }
+            &:hover {
+              text-shadow: unset !important;
+            }
+          }
+        }
+      }
+    }
+
+    @include media-down($sm) {
+      padding-inline: $fds-global-space-md;
+    }
+  }
+}
+
+.ui-datepicker {
+  background: $fds-global-color-neutral-0 !important;
+  width: 17em;
+  padding: 0.2em 0.2em 0;
+  display: none;
+
+  .ui-datepicker-header {
+    position: relative;
+    padding: 0.2em 0;
+    background-color: $triboo-color-brand-primary;
+    border-radius: $border-radius-half;
+    color: $fds-global-color-neutral-0;
+
+    > a {
+      .ui-icon {
+        display: none;
+      }
+    }
+
+    .ui-datepicker-prev,
+    .ui-datepicker-next {
+      position: absolute;
+      top: 5px;
+      width: 1.8em;
+      height: 1.8em;
+      color: inherit;
+
+      span {
+        display: none;
+      }
+
+      &:before {
+        font-family: $font-awesome;
+        font-size: 16px;
+        font-weight: 600;
+        vertical-align: middle;
+      }
+
+      &-hover {
+        top: 6px;
+        border: 0 !important;
+        background: $triboo-color-brand-primary !important;
+      }
+    }
+
+    .ui-datepicker-prev {
+      left: 5px;
+
+      &:before {
+        content: '\f32e';
+      }
+
+      &-hover {
+        left: 4px;
+      }
+    }
+
+    .ui-datepicker-next {
+      right: 6px;
+      text-align: end;
+
+      &:before {
+        content: '\f330';
+      }
+
+      &-hover {
+        right: 5px;
+      }
+    }
+
+    .ui-corner-all {
+      height: auto;
+    }
+
+    .ui-datepicker-title {
+      margin: 0 2.3em;
+      line-height: 1.8em;
+      text-align: center;
+      font-size: 12px;
+
+      select {
+        font-size: 1em;
+        margin: 1px 0;
+      }
+    }
+
+    // .ui-state-hover {
+    //   background-color: $triboo-color-brand-primary;
+    // }
+  }
+
+  .ui-widget-header {
+    border: 0;
+    background: $triboo-color-brand-primary;
+  }
+
+  .ui-datepicker-calendar {
+    thead {
+      tr {
+        th {
+          padding: 0.7em 0.3em;
+          text-align: center;
+          font-weight: 400;
+          font-size: 12px;
+          border: 0;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          border: 0;
+          padding: 1px;
+          font-size: 12px;
+
+          a,
+          span {
+            display: block;
+            padding: 0.2em;
+            text-align: right;
+            text-decoration: none;
+          }
+
+          a {
+            background-image: none;
+            background-color: $white;
+            border-color: $grey20;
+            color: $fds-global-color-neutral-140;
+
+            // &.ui-state-hover {
+            //   border-color: $fds-global-color-neutral-100;
+            //   background-color: $fds-global-color-neutral-100;
+            //   color: $white;
+            // }
+          }
+
+          &.ui-datepicker-today a {
+            border-color: $grey35;
+            background-color: $grey35;
+            color: $white;
+          }
+
+          &.ui-datepicker-current-day a {
+            border-color: $triboo-color-brand-primary;
+            background-color: $triboo-color-brand-primary;
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  .ui-widget-content {
+    .ui-datepicker-current,
+    .ui-datepicker-close {
+      border-width: 0;
+      color: $triboo-color-brand-primary;
+    }
+  }
+
+  .ui-datepicker-buttonpane {
+    background-image: none;
+    margin: 0.7em 0 0 0;
+    padding: 0 0.2em;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+
+    button {
+      float: right;
+      margin: 0.5em 0.2em 0.4em;
+      cursor: pointer;
+      padding: 0.2em 0.6em 0.3em 0.6em;
+      width: auto;
+      overflow: visible;
+
+      &.ui-datepicker-current {
+        float: left;
+      }
+    }
+  }
+
+  select.ui-datepicker-month-year {
+    width: 100%;
+  }
+
+  select.ui-datepicker-month,
+  select.ui-datepicker-year {
+    width: 49%;
+  }
+
+  table {
+    width: 100%;
+    font-size: 0.9em;
+    border-collapse: collapse;
+    margin: 0 0 0.4em;
+  }
+}

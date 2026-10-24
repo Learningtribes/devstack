@@ -1,0 +1,268 @@
+
+#course_info {
+  .hd-4 {
+    color: $black;
+    font-size: 18px
+  }
+
+  .basic-wrapper {
+    display: block;
+    margin-bottom: 0;
+
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .board-layer {
+      @include list-item();
+
+      border: 1px solid $background-grey;
+      @include margin-right(26px);
+      margin-bottom: 20px;
+      width: 260px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      float: $bi-app-left;
+
+      @include media-down($md) {
+        width: 100%;
+        height: auto;
+      }
+
+      figure & {
+        width: 220px;
+      }
+
+      img {
+        max-width: 90%;
+        margin: auto;
+      }
+
+      figcaption {
+        text-align: center;
+        display: none;
+      }
+
+      li {
+        position: relative;
+
+        label {
+          font-size: 14px;
+          line-height: 16px;
+          color: $fds-global-color-neutral-100;
+          margin-bottom: 0;
+        }
+
+        b {
+          font-size: 16px;
+          font-weight: 400;
+        }
+
+        label, b {
+          display: block;
+        }
+      }
+    }
+
+    .course-primary-info, .detail-enrollments {
+      @include padding-left(50px);
+
+      @include media-down($md) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &:not(:last-child) {
+          padding-bottom: 20px;
+        }
+      }
+
+      i {
+        position: absolute;
+        @include left(-25px);
+        color: $triboo-color-brand-primary;
+      }
+    }
+
+    .course-status {
+      @include padding-left(30px);
+
+      @include media-down($md) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      li {
+        &:not(:last-child) {
+          padding-bottom: 30px;
+        }
+      }
+
+      b {
+        position: relative;
+        @include padding-left(30px);
+      }
+
+      i {
+        position: absolute;
+        top: 20px;
+        @include left(0);
+        font-size: 14px;
+        font-weight: 400;
+
+        &.fa-check {
+          color: $green;
+        }
+
+        &.fa-times {
+          color: $red;
+        }
+      }
+    }
+
+    .board-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 200px;
+      height: 200px;
+
+      @include media-down($md) {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+      }
+
+      .half-board-layer {
+        @extend %list-item;
+
+        flex: 0.5;
+        display: flex;
+        flex-direction: column;
+        @include padding-left(50px);
+        justify-content: center;
+
+        @include media-down($md) {
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 20px;
+
+          @include media-down($md) {
+            margin-bottom: 0;
+            margin-right: 10px;
+          }
+        }
+
+        i {
+          position: relative;
+          @include left(-25px);
+          top: 40px;
+          color: $triboo-color-brand-primary;
+        }
+
+        label {
+          color: $fds-global-color-neutral-100;
+          font-size: 12px;
+          margin: 0;
+        }
+
+
+        b {
+          font-size: 36px;
+          line-height: 30px;
+        }
+
+        label, b {
+          position: relative;
+          top: -10px;
+        }
+      }
+
+      #field-grade-cutoffs {
+        b {
+          font-size: 20px;
+        }
+
+        b.pass {
+          font-size: 26px;
+        }
+      }
+
+      .passing-percent {
+        span {
+          font-size: 10px;
+          font-weight: 600;
+        }
+      }
+    }
+
+    ul.list-input {
+      display: none;
+    }
+
+    .git-logs {
+      display: none;
+    }
+
+    .total-enrollments {
+      width: fit-content;
+      padding: 20px;
+      float: none;
+
+      @include media-down($md) {
+        width: 100%;
+      }
+
+      p.tip {
+        font-size: 10px;
+        color: $fds-global-color-neutral-100;
+      }
+
+      i {
+        position: relative;
+        left: -25px;
+        top: 40px;
+        color: $triboo-color-brand-primary;
+      }
+
+      label {
+        color: $triboo-color-brand-primary;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+
+
+      b {
+        font-size: 36px;
+        line-height: 30px;
+      }
+
+      label, b {
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    .detail-enrollments {
+      display: none;
+    }
+  }
+
+  .running-tasks-container {
+    display: none;
+  }
+}

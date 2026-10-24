@@ -25,7 +25,7 @@ else
     uv pip install --python /runtime/venv/bin/python --no-deps -e "$platform_root/$package"
   done
 fi
-uv pip install --python /runtime/venv/bin/python --no-deps 'numpy>=1.24' 'scipy>=1.11' 'pyparsing>=3.0'
+uv pip install --python /runtime/venv/bin/python --no-deps 'numpy==2.5.4' 'scipy==1.17.1' 'pyparsing==3.3.2'
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/django-splash-1.3.0
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/django-require-1.0.11
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/jazkarta-edx-jsme-690dbf7

@@ -1,0 +1,116 @@
+$gap-of-item: 10px;
+
+.course-outline {
+  padding-bottom: 30px;
+
+  .course-outline-nav {
+    margin-bottom: $fds-global-space-md;
+
+    h2 {
+      @include typography-h5-bold;
+      color: $fds-global-color-neutral-170;
+      margin: 0;
+    }
+  }
+
+  .block-tree {
+    box-shadow: $fds-global-shadow-xs;
+    border-radius: $fds-global-border-radius-md;
+    border: $fds-global-border-width;
+    color: $fds-global-color-neutral-170;
+
+    button.accordion-trigger,
+    button.prerequisite-button {
+      .fa {
+        color: $fds-global-color-neutral-170;
+      }
+    }
+
+    li {
+      button,
+      .section-title {
+        @include typography-body-md-regular;
+        text-shadow: none;
+        text-align: start;
+        color: $fds-global-color-neutral-170;
+      }
+
+      .fa-chevron-right,
+      .complete-checkmark {
+        font-size: 20px;
+        margin-right: $fds-global-space-md;
+        color: $fds-global-color-success-40;
+      }
+
+      li {
+        .section-title {
+          @include typography-body-sm-regular;
+        }
+
+        li {
+          .section-title {
+            @include typography-body-xs-regular;
+          }
+        }
+      }
+    }
+
+    li {
+      display: flex;
+      flex-direction: column;
+
+      > :first-child {
+        display: flex;
+        align-items: center;
+        background: none;
+        box-shadow: none;
+        border: none;
+        gap: $fds-global-space-xs;
+        padding: 0;
+      }
+
+      .section-title {
+        flex: 1;
+      }
+
+      .details {
+        display: none;
+      }
+    }
+
+    > li {
+      padding: $fds-global-space-md $fds-global-space-lg;
+
+      &:not(:last-child) {
+        border-bottom: $fds-global-border-width;
+      }
+
+      li {
+        > :first-child {
+          margin-left: $fds-global-space-2xl;
+          margin-top: $fds-global-space-md;
+        }
+        li {
+          > :first-child {
+            margin-left: calc(#{$fds-global-space-2xl} * 2);
+          }
+        }
+      }
+
+      > ol {
+        position: relative;
+        margin-top: var(--fds-global-space-md);
+
+        &::before {
+          content: "";
+          position: absolute;
+          height: 1px;
+          background: var(--fds-global-color-neutral-20);
+          left: calc(-1 * var(--fds-global-space-lg));
+          right: calc(-1 * var(--fds-global-space-lg));
+          top: 0px;
+        }
+      }
+    }
+  }
+}

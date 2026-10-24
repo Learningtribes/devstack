@@ -1,0 +1,856 @@
+@import "upload-widget";
+
+// studio - elements - xblock rendering
+// ==========================
+
+// Table of Contents
+// * +Layout - Xblocks
+// * +Licensing - Xblocks
+// * +Pagination - Xblocks
+// * +Messaging - Xblocks
+// * +Case: Page Level
+// * +Case: Nesting Level
+// * +Case: Element / Component Level
+// * +Case: Experiment Groups - Edited
+// * +Editing - Xblocks
+// * +Case - Special Xblock Type Overrides
+
+@mixin question-mark-in-first-line {
+  .question-mark-wrapper {
+    .icon-question {
+      .before {
+        border-top: none;
+        border-bottom: 26px solid $grey25;
+        top: calc(100% - 1px);
+      }
+      .after {
+        top: calc(100% + 4px);
+        bottom: unset;
+      }
+    }
+  }
+}
+
+// +Layout - Xblocks
+// ====================
+// styling for xblocks at various levels of nesting: page level,
+.wrapper-xblock {
+
+  // +Case: Element / Component Level
+  // ====================
+  &.level-element {
+    &:hover {
+      border-color: $primary45;
+    }
+  }
+
+  .container-paging-footer .pagination-full.pagination {
+    width: auto;
+    text-align: center;
+  }
+
+  .wrapper-xblock .header-actions .actions-list .action-item .action-button {
+    border: none;
+    outline: none;
+    &:hover {
+      background-color: $triboo-color-brand-primary;
+    }
+  }
+}
+
+.xmodule_VideoDescriptor {
+  .wrapper-comp-settings {
+    .wrapper-comp-setting {
+      .question-mark-wrapper {
+        display: inline-block;
+      }
+
+    }
+  }
+}
+
+// xblock Settings tab wrapper. The PDF editor sets its own field layout.
+.wrapper-comp-settings:not(.pdf-editor-modal) {
+  //settings-list
+  .list-input.settings-list {
+    //component-setting-entry
+    .field.comp-setting-entry {
+
+      &.is-set {
+        .setting-input {
+          color: tint($triboo-color-brand-primary, 20%);
+        }
+      }
+
+      .wrapper-comp-setting-text {
+        .setting-label {
+          @include label();
+          -webkit-font-smoothing: antialiased;
+        }
+        .setting-text {
+          margin-top: 15px;
+          font-size: 14px;
+          color: $triboo-color-fg-neutral;
+          display: block;
+        }
+      }
+    }
+
+    .action.setting-clear {
+      padding: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .center-text {
+      text-align: center;
+    }
+
+    .alert-field {
+      margin-bottom: 10px;
+      font-size: 15px;
+      height: 48px;
+      border-radius: 5px;
+
+      .alert-dialog {
+        padding: 12px;
+        .btn-close {
+          float: right;
+          &:hover {
+            cursor: pointer
+          }
+        }
+      }
+    }
+
+    .alert-error {
+      color: $triboo-color-tag-light-fg-red;
+      background-color: $triboo-color-tag-light-bg-red;
+      border-color: $triboo-color-tag-light-bg-red;
+    }
+
+  }
+
+  .list-input.settings-list {
+    .wrapper-comp-setting,
+    .wrapper-comp-setting-text {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+// CASE: xblock license settings
+.wrapper-license {
+  .license-types {
+    display: flex;
+
+    %clean-button-style {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .action.license-button {
+      @extend %clean-button-style;
+      @include custom-underline($left: 0, $right: 0, $bottom: 1px, $height: 2px, $background-color: $grey20);
+      color: $triboo-color-fg-neutral;
+
+      &.is-selected:hover,
+      &.is-selected:focus,
+      &:hover {
+        @extend %clean-button-style;
+        color: $triboo-color-fg-neutral;
+        outline: none;
+      }
+
+      &:hover {
+        color: $triboo-color-brand-primary;
+      }
+
+      &.is-selected {
+        @extend %clean-button-style;
+        @include custom-underline($left: 0px, $right: 0);
+        position: relative;
+        color: $triboo-color-fg-neutral;
+      }
+    }
+  }
+}
+
+.ilt-xblock {
+  .ilt-learners-actions, .ilt-staff-actions {
+    display: none;
+  }
+}
+
+.studio-xblock-wrapper {
+  .wrapper-xblock {
+    .xblock-header-pdf {
+
+      +.xblock-render {
+        margin: 10px 0 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .pdf_block {
+    h2 {
+      display: none;
+    }
+
+    ul {
+      padding: 15px 15px 0 0px;
+
+      //quick fixing, this style should be rewritted.
+      .pdf-download-button {
+        @include grey-small-button();
+        &:hover {
+          a {
+            color: $black;
+            text-shadow: none;
+          }
+        }
+        &, &:focus {
+          a {
+            color: $white;
+            &:hover {
+              color: $black;
+              text-shadow: none;
+            }
+          }
+
+        }
+
+        margin-right: 10px;
+
+        a {
+          @include icon-button($icon-code: '\f1c1', $padding-left: 25px);
+
+          &:before {
+            margin-left: -18px;
+          }
+        }
+
+        a:hover {
+          color: $black;
+          text-shadow: none;
+        }
+
+      }
+    }
+
+    .pdf-h5-container,.pdf-embed-container {
+      display: none;
+    }
+
+    .h5 {
+      .pdf-h5-container {
+        display: block;
+      }
+    }
+
+    .embed {
+      .pdf-embed-container {
+        display: block;
+      }
+    }
+  }
+
+  .xblock-student_view-video {
+    margin-bottom: 0;
+  }
+
+  .component-default-text {
+    font-size: 13px;
+    color: $triboo-color-fg-neutral;
+  }
+
+}
+
+// PDF editor. These classes all sit on the studio_view root, inside
+// .modal-window. The extra classes are required to beat platform rules
+// such as .modal-window .editor-with-buttons.wrapper-comp-settings
+// .list-input.settings-list and .wrapper-comp-settings input widths.
+.modal-window .editor-with-buttons.wrapper-comp-settings.settings-pdf.pdf-editor-modal {
+  display: block;
+  height: auto;
+  padding: $fds-global-space-md;
+
+  // Upload Zone
+  .pdf-upload-section {
+    margin-bottom: $fds-global-space-lg;
+  }
+
+  @include upload-widget-area(".pdf-upload-area");
+
+  .pdf-files-grid {
+    display: flex;
+    gap: $fds-global-space-sm;
+    overflow-x: auto;
+    padding: $fds-global-space-xs 0;
+    margin-bottom: $fds-global-space-sm;
+
+    // scrollbar
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $fds-global-color-neutral-10;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $fds-global-color-neutral-30;
+      border-radius: 3px;
+
+      &:hover {
+        background: $fds-global-color-neutral-40;
+      }
+    }
+  }
+
+  .pdf-file-item {
+    flex-shrink: 0;
+    width: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      .pdf-file-preview {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &.selected {
+      .pdf-file-preview {
+        border-color: $triboo-color-brand-primary;
+      }
+
+      .pdf-file-name {
+        color: $white;
+        background-color: $triboo-color-brand-primary;
+        border-radius: 4px;
+      }
+    }
+
+    &.uploading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+  }
+
+  .pdf-file-preview {
+    width: 100px;
+    height: 100px;
+    border: 4px solid transparent;
+    border-radius: 4px;
+    background-color: $grey3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+    box-sizing: content-box;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+    .pdf-badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background-color: $fds-global-color-success-5;
+      color: $fds-global-color-success-70;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 16px;
+      padding: $fds-global-space-xxs;
+      border-radius: $fds-global-border-radius-sm;
+      text-transform: lowercase;
+      z-index: 1;
+    }
+
+    .pdf-icon {
+      font-size: 35px;
+      color: $triboo-color-fg-neutral-alt;
+      margin-top: 6px;
+
+      i {
+        display: block;
+      }
+    }
+
+    .pdf-upload-overlay {
+      position: absolute;
+      bottom: $fds-global-space-xs;
+      left: $fds-global-space-xs;
+      right: $fds-global-space-xs;
+
+      .pdf-item-progress {
+        width: 100%;
+        height: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: none;
+        border-radius: 2px;
+        background-color: $fds-global-color-primary-10;
+        overflow: hidden;
+
+        &::-webkit-progress-bar {
+          background-color: $fds-global-color-primary-10;
+          border-radius: 2px;
+        }
+
+        &::-webkit-progress-value {
+          background-color: $fds-global-color-primary-40;
+          border-radius: 2px;
+        }
+
+        &::-moz-progress-bar {
+          background-color: $fds-global-color-primary-40;
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+
+  .pdf-file-info {
+    width: 100px;
+    margin-top: 8px;
+
+    .pdf-file-name {
+      display: inline-block;
+      max-width: 100%;
+      box-sizing: border-box;
+      vertical-align: top;
+      font-size: 12px;
+      font-weight: 500;
+      color: $triboo-color-fg-neutral;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .pdf-file-size {
+      font-size: 12px;
+      font-weight: 400;
+      color: $triboo-color-fg-neutral-alt;
+    }
+  }
+
+  // Settings List
+  ul.pdf-settings-list {
+    border-top: 1px solid $fds-global-color-neutral-10;
+    float: none;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li.field.comp-setting-entry {
+      opacity: 1;
+      margin: 0;
+      padding: 10px 0;
+      border-top: 0;
+      background-color: transparent;
+    }
+
+    .wrapper-comp-setting {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $fds-global-space-xs;
+      min-width: 0;
+      margin-bottom: 0;
+      position: static;
+    }
+
+    label.setting-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: $triboo-color-fg-neutral;
+      width: auto;
+      min-width: 0;
+      margin: 0;
+      position: static;
+      left: auto;
+    }
+
+    input.setting-input {
+      width: 100%;
+      min-width: 0;
+      height: auto;
+      padding: $fds-global-space-sm $fds-global-space-md;
+      border: 1px solid $fds-global-color-neutral-20;
+      border-radius: $fds-global-border-radius-md;
+      font-size: 14px;
+      color: $triboo-color-fg-neutral;
+      background-color: $white;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus {
+        border-color: $triboo-color-brand-primary;
+        box-shadow: 0 0 0 2px $white, 0 0 0 4px $triboo-color-brand-primary;
+      }
+
+      &::placeholder {
+        color: $fds-global-color-neutral-40;
+      }
+    }
+  }
+
+  // Toggle Field
+  .pdf-toggle-field {
+    .pdf-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      gap: $fds-global-space-sm;
+    }
+
+    .pdf-toggle {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 22px;
+      cursor: pointer;
+
+      input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        min-width: 0;
+        margin: 0;
+
+        &:checked + .pdf-toggle-slider {
+          background-color: $triboo-color-brand-primary;
+
+          &::before {
+            transform: translateX(18px);
+          }
+        }
+
+        &:focus-visible + .pdf-toggle-slider {
+          box-shadow: 0 0 0 2px $white, 0 0 0 4px $triboo-color-brand-primary;
+        }
+      }
+
+      .pdf-toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $fds-global-color-neutral-30;
+        transition: 0.3s;
+        border-radius: 22px;
+
+        &::before {
+          position: absolute;
+          content: "";
+          height: 18px;
+          width: 18px;
+          left: 2px;
+          bottom: 2px;
+          background-color: $white;
+          transition: 0.3s;
+          border-radius: 50%;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+
+    .pdf-toggle-label {
+      font-size: 14px;
+      color: $triboo-color-fg-neutral;
+    }
+  }
+
+  // Action Buttons. Platform pins .editor-with-buttons .xblock-actions
+  // to the bottom of the modal; keep these in normal flow.
+  .xblock-actions.pdf-actions {
+    position: static;
+    bottom: auto;
+    width: auto;
+    background-color: transparent;
+    margin-top: $fds-global-space-lg;
+    padding-top: $fds-global-space-md;
+    border-top: 1px solid $editor-border-color;
+
+    ul {
+      display: flex;
+      justify-content: flex-end;
+      gap: $fds-global-space-sm;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .action-item {
+      margin: 0;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: $fds-global-space-sm $fds-global-space-lg;
+      border-radius: $fds-global-border-radius-md;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &.action-cancel {
+        background-color: transparent;
+        color: $triboo-color-fg-neutral;
+        border: none;
+
+        &:hover {
+          background-color: $fds-global-color-neutral-10;
+        }
+      }
+
+      &.action-save,
+      &.action-primary {
+        background-color: $triboo-color-brand-primary;
+        color: $white;
+        border: none;
+
+        &:hover {
+          background-color: $triboo-color-brand-primary-60;
+        }
+      }
+    }
+  }
+}
+
+//modal editors
+.modal-editor {
+  @mixin bold-label {
+    @include label();
+    font-weight: 600;
+  }
+
+  //this one should be removed
+  &.modal-lg .modal-content {
+    height: auto !important;
+  }
+
+  &.modal-type-html, &.modal-type-problem,
+  &.modal-type-video, &.modal-type-videoalpha {
+    div.modal-tabs {
+      display: block;
+    }
+  }
+  &.modal-type-scormxblock {
+    .xblock-studio_view {
+      .wrapper-comp-settings {
+        .list-input {
+          .field {
+            &:first-child {
+              @include question-mark-in-first-line;
+            }
+            >.tip {
+              display: $tip-visibility;
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+  &.modal-type-html {
+    .modal-content {
+      height: 435px !important;
+    }
+  }
+  &.modal-type-drag-and-drop-v2 {
+    .modal-content {
+      min-height: 600px;
+    }
+  }
+  &.modal-type-openassessment {
+    .modal-content {
+      height: 100% !important;
+    }
+    .edit-xblock-modal {
+
+    }
+  }
+  &.modal-type-iframe {
+    .xblock-studio_view {
+      .wrapper-comp-settings {
+        .list-input {
+          .field {
+            &:first-child {
+              @include question-mark-in-first-line;
+            }
+            >.tip {
+              display: $tip-visibility;
+            }
+
+          }
+        }
+        .xblock-actions {
+          border-top: 1px solid $editor-border-color;
+        }
+      }
+    }
+  }
+  &.modal-type-pdf {
+    .xblock-studio_view {
+      height: 100%;
+      .wrapper-comp-settings {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        // New PDF editor modal layout
+        &.settings-pdf.pdf-editor-modal {
+          height: auto;
+        }
+
+        // Legacy layout
+        .upload-zone_list-input {
+          flex: 1;
+          display: flex;
+
+          .upload-zone {
+            height: auto;
+          }
+          .list-input {
+            height: auto;
+            .field {
+              .question-mark-wrapper {
+                .icon-question .after {
+                  @include right(-40px);
+                }
+              }
+
+              &:first-child {
+                @include question-mark-in-first-line;
+              }
+              .wrapper-comp-setting {
+                .label {
+                  @include bold-label();
+                  width: 160px;
+                }
+                select {
+                  display: none;
+                }
+                .switcher-wrapper {
+                  >div {
+                    vertical-align: middle;
+                  }
+                }
+                .question-mark-wrapper .wrapper {
+                  .icon-question {
+                    vertical-align: middle;
+                  }
+                }
+                +.setting-help {
+                  &, +.setting-help {
+                    display: $tip-visibility;
+                  }
+                }
+              }
+
+            }
+
+          }
+        }
+        .xblock-actions {
+          border-top: 1px solid $editor-border-color;
+        }
+      }
+    }
+  }
+}
+
+// .xblock-studio_view-pdf {}
+
+.xblock-studio_view-html {
+  .block-header-wrapper > h3,
+  .problem-header,
+  .block-label,
+  .sep-line {
+    display: none !important;
+  }
+}
+
+.xblock-student_view-html {
+  &.xmodule_display.xmodule_HtmlModule {
+    p {
+      font-size: 13px;
+      color: $triboo-color-fg-neutral;
+    }
+  }
+}
+
+.word_cloud {
+  .action {
+    margin-top: 10px;
+    .save {
+      @include primary-small-button()
+    }
+  }
+
+}
+
+.xblock-student_view-lbmdonexblock {
+  text-align: right;
+  .lbmdonexblock_block {
+    @include primary-medium-button();
+    min-width: 0;
+
+    span {
+      padding-right: 0;
+    }
+
+    height: 27px;
+    padding: 12px 15px 6px 15px;
+
+    label {
+      font-weight: 600;
+      font-size: 16px;
+      .fa {
+        margin-right: 0;
+        vertical-align: baseline;
+      }
+      i {
+        font-style: normal;
+      }
+    }
+
+    &:hover {
+      label {
+        color: black;
+      }
+    }
+  }
+}
+
+[class*="view-"] {
+  .modal-lg.modal-editor.modal-type-drag-and-drop-v2 {
+    .modal-header .title {
+      width: 100%;
+    }
+  }
+}
+
+@import "xblock-render";

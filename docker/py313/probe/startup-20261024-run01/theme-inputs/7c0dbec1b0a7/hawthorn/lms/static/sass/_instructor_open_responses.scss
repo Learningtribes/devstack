@@ -1,0 +1,353 @@
+.container > div.instructor-dashboard-wrapper-2 {
+  section.idash-section#open_response_assessment .open-response-assessment {
+    padding-top: 6px;
+  }
+}
+
+body.view-in-course .instructor-dashboard-wrapper-2 {
+  margin-bottom: 40px;
+}
+
+
+.open-response-assessment-block {
+
+  hr {
+    display: none;
+  }
+
+  .open-response-assessment-summary {
+    padding-bottom: 30px;
+
+    .backgrid, .ora-summary-value {
+      text-overflow: initial;
+      overflow: initial;
+    }
+
+    .backgrid {
+      width: 900px;
+      height: 210px;
+      position: relative;
+
+      @include media-down($lg) {
+        width: 100%;
+        height: auto;
+      }
+
+    }
+
+    tbody, tr {
+      display: block;
+      height: 200px;
+
+      @include media-down($lg) {
+        height: auto;
+      }
+    }
+
+    tbody {
+      @include media-down($md) {
+        height: auto;
+      }
+    }
+
+    tr {
+      position: relative;
+
+      @include media-down($lg) {
+        display: flex;
+        height: auto;
+        flex-wrap: wrap;
+        position: static;
+        padding-bottom: 10px;
+      }
+
+      &:after {
+        box-shadow: $fds-global-shadow-sm;
+        background-color: $white;
+        border-radius: $default-border-radius;
+
+        content: '';
+        position: absolute;
+        left: 520px;
+        top: 0;
+        bottom: 0;
+        width: 320px;
+
+        @include media-down($xl) {
+          left: 440px;
+          width: 280px;
+        }
+
+        @include media-down($lg) {
+          left: 0;
+          top: 230px;
+          width: 100%;
+        }
+      }
+    }
+
+    td {
+      height: auto;
+
+      @include media-down($lg) {
+        order: 2;
+        max-width: none;
+      }
+    }
+
+    td.training, .training ~ td {
+      display: inline-block;
+      width: 180px;
+      position: relative;
+      z-index: 2;
+
+      .ora-summary-title {
+        font-size: 13px;
+        font-weight: 400;
+        color: $fds-global-color-neutral-100;
+        text-transform: none;
+      }
+
+      .ora-summary-value {
+        font-size: 16px;
+      }
+    }
+
+    td.training {
+      &, & ~ td:not(.done) {
+        @include media-down($lg) {
+          width: 48%;
+        }
+      }
+    }
+
+
+    .parent_name, .name, td.total, td.done {
+      @extend %list-item;
+
+      float: left;
+      width: 200px !important;
+      height: 90px !important;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: center;
+      padding-left: 35px;
+      line-height: normal;
+      top: -22px;
+
+      @include media-down($lg) {
+        order: 1;
+
+        width: 48% !important;
+      }
+
+      .ora-summary-title {
+        font-size: 10px;
+        font-weight: 400;
+        color: $fds-global-color-neutral-100;
+        text-transform: none;
+      }
+
+      .ora-summary-value {
+        @extend %big-title;
+
+        position: relative;
+        padding-left: 20px;
+        font-size: 33px;
+        font-weight: 900;
+        line-height: 43px;
+
+        &:after {
+          position: absolute;
+          font-family: $font-awesome;
+          font-weight: 400;
+          font-size: 17px;
+          left: 0;
+          margin-top: 17px;
+          color: $triboo-color-brand-primary;
+          line-height: initial;
+        }
+      }
+    }
+
+    .parent_name, .name {
+      margin: 0 60px 20px 0;
+    }
+
+    .total, .done {
+      margin: 0 60px 0 0;
+
+      @include media-down($lg) {
+        margin: 0 4% 20px 0;
+      }
+
+      .ora-summary-value {
+        &:after {
+          content: '\f316';
+        }
+      }
+    }
+
+    .parent_name, .total {
+      @include media-down($xl) {
+        margin-right: 20px;
+      }
+    }
+
+    .parent_name {
+      @include media-down($lg) {
+        margin-right: 4%;
+      }
+
+      .ora-summary-value {
+        &:after {
+          content: '\f46d';
+        }
+      }
+    }
+
+    .name {
+      @include media-down($lg) {
+        margin-right: 0px;
+      }
+
+      .ora-summary-value {
+        &:after {
+          content: '\f319';
+        }
+      }
+    }
+
+    td.total {
+      clear: left;
+
+      @include media-down($lg) {
+        margin-right: 4%;
+      }
+
+      .ora-summary-value {
+        &:after {
+          content: '\f15c';
+        }
+      }
+    }
+
+    td.done {
+      @include media-down($lg) {
+        margin-right: 0px;
+        top: auto;
+      }
+    }
+
+    td.training, td.self, td.staff {
+      @include media-between($lg, $xl) {
+        padding-left: 0;
+        width: 130px;
+      }
+    }
+
+    .training {
+      padding: 20px 0 13px 30px;
+    }
+
+    .peer {
+      padding: 20px 0 13px 0;
+    }
+
+    .self {
+      padding: 0 0 13px 30px;
+    }
+
+    .waiting {
+      padding: 0 0 13px 0;
+
+    }
+
+    .staff {
+      padding: 0 0 0 30px;
+    }
+
+  }
+
+  .open-response-assessment-main-table {
+    @extend %list-item;
+
+    border: 1px solid $grey5;
+    border-radius: $default-border-radius;
+    padding: 0px 3px 10px;
+
+    @include media-down($xl) {
+      overflow-y: auto;
+    }
+
+    .backgrid {
+      @include media-down($xl) {
+        width: 900px;
+      }
+    }
+
+    tbody tr {
+      &:nth-child(odd) {
+        background-color: transparent;
+      }
+
+      &:nth-child(even) {
+        background-color: $grey3;
+      }
+    }
+
+    th, td {
+      &:not(:last-child) {
+        border-right: 1px solid $grey5;
+      }
+    }
+
+    .parent_name, .parent_name + th, .parent_name + td {
+      padding-left: 30px;
+    }
+
+    $number-column-width: 80px;
+
+    th {
+      height: 75px;
+      vertical-align: middle;
+      text-align: center;
+      border-bottom: 0;
+      white-space: normal;
+
+      &.name ~ th {
+        width: $number-column-width;
+        text-align: center;
+        text-align: -webkit-center;
+      }
+
+      button {
+        color: $triboo-color-fg-neutral;
+        font-size: 12px !important;
+        text-transform: uppercase;
+
+        .sort-caret {
+          border-bottom-color: $triboo-color-fg-neutral;
+          border-top-color: $triboo-color-fg-neutral;
+
+        }
+      }
+    }
+
+    td {
+      color: $fds-global-color-neutral-100;
+      font-size: 14px;
+      height: 60px;
+      border-bottom: 0;
+      max-width: none;
+      text-overflow: initial;
+      white-space: normal;
+
+      &.total, &.total ~ td {
+        text-align: center;
+        width: $number-column-width;
+      }
+    }
+  }
+
+}

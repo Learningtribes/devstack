@@ -1,0 +1,88 @@
+
+.instructor-dashboard-wrapper-2 section.idash-section#discussions_management {
+
+  #header-discussions_management {
+    display: none;
+  }
+
+  $space-between-block: 30px;
+
+  .division-scheme-container {
+    @include list-item();
+    padding: 30px;
+
+    @include media-down($sm) {
+      padding: 20px;
+    }
+
+    margin-bottom: $space-between-block;
+
+    .division-scheme-items {
+      @include media-down($md) {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .division-scheme-item {
+        @include media-down($md) {
+          max-width: 100%;
+          padding-bottom: 10px;
+        }
+      }
+    }
+
+    .division-scheme-label {
+      display: block;
+      padding-bottom: 3px;
+
+      @include media-down($md) {
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .inline-discussions-nav,
+  .course-wide-discussions-nav {
+    @extend %content-container;
+  }
+
+  .inline-discussions-nav {
+
+  }
+
+  .discussions-management-supplemental {
+    margin-top: auto;
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .course-wide-discussions-nav {
+    margin-bottom: $space-between-block;
+  }
+
+  .hd-3 {
+    padding-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .hd-4 {
+    font-size: 16px;
+  }
+
+  .form-actions {
+    padding-top: 10px;
+  }
+
+  button.form-submit {
+    @extend %btn-primary-primary;
+
+    &:focus:not(:disabled) {
+      border: none;
+    }
+
+    &[disabled] {
+      box-shadow: none;
+    }
+  }
+}

@@ -1,0 +1,276 @@
+
+.view-container {
+  .modal-window {
+    .modal-content {
+      .xblock-studio_view-video,
+      .xblock-studio_view-videoalpha {
+        .editor-with-tabs {
+          .tabs-wrapper {
+            .component-tab {
+              h4 {
+                display: none;
+              }
+              ul {
+                li {
+                  opacity: 1 !important;
+
+                  @mixin times-icon {
+                    color: $fds-global-color-neutral-100;
+                    &:hover {
+                      color: $red;
+                    }
+                  }
+                  >.tip {
+                    display: $tip-visibility;
+                  }
+                  &.comp-setting-entry {
+                    border-top: none;
+                    .wrapper-transcripts-message {
+                      .transcripts-message-status .icon {
+                        font-size: 18px;
+                        vertical-align: middle;
+                        line-height: 18px;
+                        margin-right: 10px;
+                      }
+                      .status-error {
+                        color: $incorrect;
+                      }
+
+                    }
+                    .transcripts-message {
+                      color: $black;
+                    }
+                  }
+                  .wrapper-comp-setting {
+                    .setting-label {
+                      @include label();
+                      -webkit-font-smoothing: antialiased;
+                    }
+                    .wrapper-videolist-settings {
+                      width: 70%;
+                    }
+                    textarea, input[type=number],
+                    input[type=text] {
+                      box-shadow: none;
+                      @include form-text-box();
+                      &:focus {
+                        outline: none;
+                      }
+                      width: map_get($field, 'component-width');
+                    }
+                    >select {
+                      display: none;
+                    }
+                    .switcher-wrapper {
+                      display: inline-block;
+                    }
+                    .question-mark-wrapper {
+                      .after {
+                        width: 300px;
+                      }
+                    }
+                  }
+                  .wrapper-comp-setting-text,
+                  .transcripts-status {
+                    .setting-label {
+                      @include label();
+                      -webkit-font-smoothing: antialiased;
+                    }
+                  }
+                  .wrapper-comp-setting-text {
+                    .setting-text {
+                      margin-top: 15px;
+                      font-size: 14px;
+                      color: $triboo-color-fg-neutral;
+                      display: block;
+                    }
+                  }
+                  .file-uploader {
+                    .wrapper-uploader-actions {
+                      width: auto;
+                      display: inline-flex;
+                      a {
+                        width: auto;
+                      }
+                      .download-action {
+                        @include grey-small-button();
+                      }
+                    }
+                  }
+                  .metadata-video-translations {
+                    .wrapper-translations-settings {
+                      background: $fds-global-color-neutral-5;
+                      border-radius: $border-radius-v2-half;
+                      padding: 8px;
+                      ol {
+                        li {
+                          a {
+                            @include times-icon();
+                          }
+                        }
+                      }
+                      a {
+                        border: none;
+                        background-color: transparent;
+                        font-weight: 600;
+                      }
+                    }
+
+                  }
+
+                  &:first-child {
+                    .question-mark-wrapper {
+                      .before {
+                        border-bottom: 26px solid $grey25;
+                        border-top: none;
+                        bottom: -43px;
+                      }
+                      .after {
+                        bottom: -52px;
+                      }
+                    }
+                  }
+                  .metadata-list-enum {
+                    .wrapper-list-settings {
+                      background-color: $fds-global-color-neutral-5;
+                      padding: 8px;
+                      border-radius: $border-radius-v2-half;
+                      ol {
+                        li {
+                          input[type=text] {
+                            border: 1px solid rgba(114, 114, 114, 0.8);
+                            box-shadow: none;
+                            width: 90%;
+                          }
+                          a {
+                            @include times-icon();
+                          }
+                        }
+                      }
+                      >a {
+                        width: auto;
+                        border: none;
+                        background-color: transparent;
+                        font-weight: 600;
+                      }
+                    }
+                    .question-mark-wrapper {
+                      vertical-align: top;
+                    }
+                  }
+                  .metadata-videolist-enum {
+                    .wrapper-videolist-url {
+                      display: flex;
+                      align-items: center;
+                      +.tip {
+                        display: $tip-visibility;
+                      }
+                    }
+                    .wrapper-videolist-urls {
+                      border-radius: $border-radius-v2-half;
+                      .collapse-action {
+                        color: $triboo-color-fg-neutral;
+                        text-shadow: none;
+                        font-size: 12px;
+                        &:focus {
+                          outline: none;
+                        }
+                      }
+                      .videolist-extra-videos {
+                        input[type=text] {
+                          border: 1px solid $fds-global-color-neutral-140;
+                          border-radius: $border-radius-v2-half;
+                        }
+                      }
+                    }
+                  }
+
+                  .transcripts-status {
+                    .wrapper-transcripts-message {
+                      .transcripts-error-message {
+                        background-color: transparent;
+                        color: $fds-global-color-neutral-100;
+                      }
+                      .wrapper-transcripts-buttons.is-invisible {
+                        display: block;
+                      }
+                      .setting-download {
+                        border: none;
+                      }
+                    }
+
+                  }
+                  &.licence {
+                    display: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .xblock-studio_view-video,
+      .xblock-studio_view-videoalpha,
+      .xblock-studio_view-problem {
+        .editor-with-tabs {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+
+          .edit-header {
+            @include modal-header();
+            background-color: transparent !important;
+            display: flex;
+            justify-content: space-between;
+            margin: 0 !important;
+            border-bottom: 1px solid $editor-border-color !important;
+
+            .component-name {
+              width: auto !important;
+              padding: 20px 0;
+              //@include modal-header-title();
+              font-size: 18px !important;
+              color: black;
+              font-weight: 600 !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              margin-left: 30px !important;
+            }
+            .editor-tabs {
+              width: auto !important;
+              display: flex !important;
+              align-items: center;
+              li a {
+                &.current,
+                &:hover {
+                  background-color: $fds-global-color-neutral-140 !important;
+                  background-image: none !important;
+                  color: $white !important;
+                  text-shadow: none !important;
+                }
+              }
+            }
+          }
+
+          .tabs-wrapper {
+            border: none !important;
+            flex: 1;
+
+            .component-tab {
+              border-top: none;
+              height: 470px;
+              overflow: auto;
+            }
+          }
+        }
+      }
+
+      .xblock-studio_view-problem {
+        .editor-with-tabs .tabs-wrapper .component-tab:nth-of-type(2) {
+          overflow: visible;
+        }
+      }
+    }
+  }
+}

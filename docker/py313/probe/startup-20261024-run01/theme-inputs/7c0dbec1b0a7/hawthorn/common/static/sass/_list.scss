@@ -1,0 +1,54 @@
+.ds-list {
+  @include typography-body-sm-regular;
+
+  display: flex;
+  width: 125px;
+  padding: $fds-global-space-xs $fds-global-border-radius-sharp;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $fds-global-space-xxxs;
+
+  border-radius: $fds-global-border-radius-md;
+  background: $fds-global-color-neutral-0;
+  box-shadow: $fds-global-shadow-sm;
+
+  > * {
+    display: flex;
+    gap: $fds-global-space-xxs;
+    padding: $fds-global-space-xs $fds-global-space-sm;
+    align-items: center;
+    gap: $fds-global-space-xxs;
+    align-self: stretch;
+
+    &:hover,
+    &.active {
+      background: $fds-global-color-neutral-10;
+    }
+  }
+
+  &--padding {
+    padding: $fds-global-space-xs;
+
+    > * {
+      &:hover,
+      &.active {
+        border-radius: $fds-global-border-radius-md;
+      }
+    }
+  }
+
+  &--large,
+  &--lg {
+    width: 150px;
+    padding: $fds-global-space-sm $fds-global-border-radius-sharp;
+
+    > * {
+      gap: $fds-global-space-xs;
+      padding: $fds-global-space-sm $fds-global-space-xl;
+    }
+
+    &.ds-list--padding {
+      padding: $fds-global-space-sm;
+    }
+  }
+}

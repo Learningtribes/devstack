@@ -1,0 +1,41 @@
+
+#studio_logs_index {
+  .studio-logs {
+    table {
+      thead {
+        border-bottom: 1px solid $fds-global-color-neutral-40;
+        color: $fds-global-color-neutral-80;
+      }
+
+      tbody {
+        color: $fds-global-color-neutral-110;
+
+        td {
+          .item-type {
+            margin-right: 1ch;
+          }
+        }
+      }
+
+      .col-date-time {
+        width: 250px;
+      }
+
+      .col-user {
+        width: 150px;
+      }
+    }
+
+    .pagination-container {
+      margin-top: 20px;
+    }
+
+    &.disabled {
+      table {
+        opacity: 0.8;
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

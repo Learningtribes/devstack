@@ -1,0 +1,2326 @@
+// studio - views - user dashboard
+// ====================
+
+$data-list: (
+  "body-column-color": $triboo-color-fg-neutral,
+  "body-column-font-size": 10px,
+  "body-column-important-font-size": 12px
+);
+
+//temporary mixins, and will move to _mixin file or been removed.
+//for form
+@mixin fieldset {
+  //fieldset {
+    //margin-top: 30px;
+
+    .field {
+      &:not(:first-child) {
+        margin-top: 40px;
+      }
+      &.required label::after {
+        content: normal;
+      }
+      >label {
+        font-family: $font-family-header;
+        font-weight: 400;
+        font-size: 24px;
+        border-radius: 4px;
+        color: $black;
+        -webkit-font-smoothing: antialiased;
+      }
+      input,select {
+        margin-top:28px;
+        display: inline-block;
+        width: 88%;
+        border-radius: $default-border-radius / 2;
+        +.wrapper {
+          display: inline-block;
+          width: auto;
+          margin-left: 10px;
+        }
+      }
+      ds-dropdown {
+        width: 88%;
+        vertical-align: middle;
+      }
+      input::placeholder {
+        font-size: 14px;
+        color: $fds-global-color-neutral-70;
+      }
+      select {
+        @extend %form-text-box;
+        @extend %dropdown-studio;
+        height: 40px;
+        padding-left: 10px;
+      }
+      >.lt-react-dropdown {
+        vertical-align: middle;
+        @include dropdoown();
+        min-width: 120px;
+
+        +.wrapper {
+          display: inline-block;
+          width: auto;
+          margin-left: 10px;
+        }
+      }
+      >.question-mark {
+        display: inline-block;
+        margin-left: 18px;
+        width: auto;
+        vertical-align: middle;
+      }
+      >.tip {
+        display: none;
+      }
+      &.error input {
+        border-color: $triboo-color-brand-primary;
+      }
+      >label[for=new-path-org] {
+        margin-bottom: 20px;
+      }
+    }
+  //}
+}
+@mixin form-actions {
+  background-color: transparent;
+
+  justify-content: center;
+  margin-top: 20px;
+
+  input:not(:last-child) {
+    margin-left: 10px;
+  }
+
+  .action-primary {
+    @include primary-small-button();
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: 600;
+  }
+}
+
+@mixin dropdown-v2 {
+    .select {
+      @include form-text-box();
+      padding: 0 10px;
+      .text {
+        min-width: 80px;
+      }
+    }
+    .panel input[type=text] {
+      border: none;
+      box-shadow: none;
+      border-bottom: 1px solid $grey35;
+      border-radius: 0;
+      width: 100%;
+    }
+}
+
+@mixin search-status-label {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0px 10px 0px;
+  width: 100%;
+
+  .container {
+    display: flex;
+    gap: $fds-global-space-md;
+    align-items: center;
+
+    .label {
+      color: $black60;
+      @include typography-body-sm-regular;
+    }
+    #discovery-message {
+      @include margin-left(5px);
+      -webkit-font-smoothing: antialiased;
+      color: $fds-global-color-neutral-170;
+      text-transform: lowercase;
+    }
+
+    #id_show_archived_switcher {
+      display: flex;
+
+      .switcher_text {
+        font-size: 16px;
+        font-weight: 500;
+        margin-left: 10px;
+        color: $fds-global-color-neutral-100;
+      }
+    }
+  }
+}
+
+.export-status {
+  width: 100%;
+  padding: $fds-global-space-md;
+  background-color: $fds-global-color-primary-0;
+  border: 1px solid $fds-global-color-primary-20;
+  border-radius: $fds-global-border-radius-md;
+  @include typography-body-sm-regular();
+  color: $fds-global-color-primary-80;
+
+  &.hide {
+    display: none;
+  }
+
+  .file-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $fds-global-color-primary-50;
+    margin-top: 10px;
+
+    i.fa-file-csv { font-size: 20px; }
+    i.fa-arrow-up-right-from-square {
+      font-size: 16px;
+      padding: 0;
+    }
+    a {
+      color: $fds-global-color-primary-50;
+      text-decoration: underline;
+    }
+  }
+}
+
+
+.view-dashboard {
+  .wrapper-content {
+    position: static;
+  }
+
+  #main {
+    padding-bottom: 0;
+    background-color: $fds-global-color-neutral-5;
+
+    #content {
+      .mast {
+        border: 0px;
+        margin-bottom: 0px;
+
+        .overview-text {
+          font-size: 16px;
+          font-weight: 500;
+          color: $fds-global-color-neutral-100;
+          margin-top: 8px;
+        }
+
+      }
+
+      .has-actions {
+        display: block;
+      }
+
+    }
+  }
+
+  div.wrapper-create-element {
+    @include dialog($width:90%, $height:620px);
+    position: static;
+    display: none;
+
+    height: 0;
+    overflow: visible;
+    opacity: 0;
+    transition: visibility 0s, opacity 1s linear;
+    margin: 0px 0px 20px 0px;
+
+    &.is-shown {
+      visibility: visible;
+      opacity: 1;
+      height: auto;
+      display: block;
+
+      ~ .paths,
+      ~ .courses，
+      ~ .libraries {
+        display: none;
+      }
+    }
+
+    .form-create {
+      position: static;
+      width: auto;
+      margin-bottom: 0;
+      padding-top: 35px;
+      padding-bottom: 60px;
+      z-index: 31;
+
+      .wrap-error {
+        display: none;
+        .message-status {
+          display: block;
+        }
+      }
+
+      .new-path-name {
+        width: 100% !important;
+      }
+
+      .wrapper-close-icon {
+        text-align: right;
+        padding-right: 40px;
+
+        i {
+          cursor: pointer;
+          font-size: 26px;
+          color: gray;
+          &:hover {
+            color: $triboo-color-brand-primary;
+          }
+        }
+      }
+
+      .wrapper-form {
+        padding: 0 120px;
+        margin-top: 25px;
+        max-width: 860px;
+        margin: auto;
+
+        .title {
+          font-family: $font-family-header;
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 32px;
+          color: $fds-global-color-neutral-170;
+          border: none;
+          margin: 0px;
+          padding-bottom: 10px;
+        }
+
+        fieldset {
+          margin-top: 0px;
+          @include fieldset();
+
+          .field > label {
+              font-size: 14px;
+              font-weight: 500;
+              line-height: 20px;
+              color: $fds-global-color-neutral-170;
+              margin-bottom: 8px;
+          }
+
+          .field > input {
+            margin-top: 0px;
+          }
+
+          .field {
+              .program-tip {
+                  margin-top: 8px;
+                  font-size: 10px;
+                  font-weight: 400;
+                  line-height: 12px;
+                  color: $fds-global-color-neutral-70;
+              }
+
+              .library-name-tip {
+                  margin-top: 8px;
+                  font-size: 10px;
+                  font-weight: 400;
+                  line-height: 12px;
+                  color: $fds-global-color-neutral-70;
+              }
+
+              .library-code-tip {
+                  margin-top: 8px;
+                  font-size: 10px;
+                  font-weight: 400;
+                  line-height: 12px;
+                  color: $fds-global-color-neutral-70;
+              }
+
+          }
+
+          .field:not(:first-child) {
+              margin-top: 0px;
+          }
+
+          ds-dropdown {
+              .ds-checkbox {
+                width: 23px;
+                margin: 0px $fds-global-space-xs 0px 0px;
+                float: left;
+              }
+
+              input[type="checkbox"] {
+                height: 23px;
+                padding: 0px 0px 3px 5px;
+              }
+          }
+
+          ds-tag {
+            margin-right: 10px;
+
+            .selected-course-label {
+              cursor: pointer;
+            }
+
+          }
+
+          input[type="text"],
+          textarea.text {
+            box-sizing: border-box;
+
+            @extend %t-copy-sub2;
+            @extend %t-demi-strong;
+
+            height: 38px;
+            padding: 9px 8px 8px 8px;
+            border: 1px solid var(--Color-Neutral-40, $grey45);
+            border-radius: 4px;
+            background-color: $white !important;
+            font-family: $font-family-sans-serif;
+            color: $color-copy-emphasized;
+            outline: 0;
+
+            &::-webkit-input-placeholder,
+            &:-moz-placeholder,
+            &:-ms-input-placeholder {
+              color: $gray-l2;
+            }
+
+            &:hover {
+              border-color: var(--hover-border-color);
+            }
+
+          }
+
+          .tip_box {
+            transition: color 0.15s ease-in-out;
+            display: block;
+            margin-top: 5px;
+            color: $fds-global-color-neutral-70;
+            font-size: 10px;
+            font-weight: 400;
+            line-height: 12px;
+            letter-spacing: 0.1px;
+            min-width: 900px;
+          }
+
+        }
+
+      }
+
+      .actions {
+        @include form-actions;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+        max-width: 860px;
+        padding: 0 120px;
+        margin: 20px auto auto auto;
+
+        input {
+          width: 230px;
+          height: 50px;
+
+          font-weight: 600;
+          font-size: 16px;
+          justify-content: center;
+
+          &:disabled {
+            background-color: rgba($triboo-color-fg-neutral, 0.5);
+          }
+        }
+      }
+    }
+  }
+  div.wrapper-create-path {
+    top: calc((100% - 770px) / 2);
+
+    .actions {
+        input {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 20px !important;
+
+            &:disabled {
+              background-color: $triboo-color-brand-primary !important;
+            }
+        }
+
+        .new-path-cancel {
+            width: 76px !important;
+            height: 36px !important;
+        }
+
+        .new-path-save {
+            width: 76px !important;
+            height: 36px !important;
+            margin-right: 30px;
+        }
+
+    }
+  }
+  div.wrapper-create-course {
+    //top: calc((100% - 770px) / 2);
+  }
+  div.wrapper-create-library {
+    top: calc((100% - 640px) / 2);
+
+    .actions {
+        input {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 20px !important;
+        }
+
+        .new-library-cancel {
+            width: 76px !important;
+            height: 36px !important;
+        }
+
+        .new-library-save {
+            width: 76px !important;
+            height: 36px !important;
+            margin-right: 30px;
+        }
+    }
+  }
+
+  // elements - notices
+  .content .notice-incontext {
+
+      .notice-item {
+          .msg {
+              .title {
+                  color: black;
+                  border-bottom: none;
+              }
+          }
+      }
+
+    // CASE: notice has actions {
+    &.has-actions,
+    &.list-notices .notice-item.has-actions {
+
+      .list-actions {
+        text-align: left;
+        margin-top: 24px;
+
+        .action-create-course,
+        .action-create-library {
+          @extend %btn-primary-primary;
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  // Course/Library tabs
+  #course-index-tabs {
+    padding-bottom: 10px;
+    margin: 0px 0px 20px 0px;
+
+    li {
+      margin: 0px 20px 0px 0px;
+      text-transform: capitalize;
+      cursor: default;
+      border: 0px;
+
+      &.active {
+        border: 0px;
+
+        .tab-content {
+          background-color: $triboo-color-brand-primary;
+          border: 1px solid $triboo-color-brand-primary;
+
+          .tab-icon {
+            background-color: white;
+          }
+          .tab-title {
+            color: white;
+
+            .title-text {
+              color: white;
+            }
+          }
+          .tab-add-button {
+            color: $fds-global-color-neutral-10;
+            cursor: pointer;
+
+            &:hover {
+                color: $fds-global-color-neutral-20;
+            }
+
+          }
+        }
+      }
+
+      a {
+        color: $triboo-color-fg-neutral;
+      }
+    }
+  }
+
+  .truncated_string {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .courses {
+      .fa-solid {
+          color: $triboo-color-brand-primary-50;
+          padding: 1px 8px 1px 8px;
+          border-radius: 3px;
+          width: auto;
+          height: auto;
+
+          &:hover {
+              background-color: $triboo-color-brand-primary-5;
+          }
+      }
+
+      .fa-regular {
+          padding: 2px 8px 1px 8px;
+          border-radius: 3px;
+          width: auto;
+          height: auto;
+
+          &:hover {
+              background-color: $fds-global-color-neutral-5;
+          }
+      }
+  }
+
+  .paths {
+      .fa-solid {
+          color: $triboo-color-brand-primary-50;
+          padding: 6px 8px 6px 8px;
+          border-radius: 3px;
+          width: auto;
+          height: auto;
+
+          &:hover {
+              background-color: $triboo-color-brand-primary-5;
+          }
+      }
+
+      .fa-regular {
+          padding: 6px 8px 6px 8px;
+          border-radius: 3px;
+          width: auto;
+          height: auto;
+
+          &:hover {
+              background-color: $fds-global-color-neutral-5;
+          }
+      }
+  }
+
+  .libraries {
+      .fa-solid {
+          color: $triboo-color-brand-primary-50;
+          padding: 6px 8px 6px 8px;
+          border-radius: 3px;
+          width: auto;
+          height: auto;
+
+          &:hover {
+              background-color: $triboo-color-brand-primary-5;
+          }
+      }
+
+      .fa-regular {
+          padding: 6px 8px 6px 8px;
+          border-radius: 3px;
+          width: auto;
+          height: auto;
+
+          &:hover {
+              background-color: $fds-global-color-neutral-5;
+          }
+      }
+  }
+
+  .courses, .libraries {
+    padding: 0px;
+    box-shadow: none;
+
+    .title-bar-container {
+      padding: 0px;
+    }
+
+    .listing-header {
+      @include list-header();
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 16px;
+      color: $fds-global-color-neutral-80;
+      padding: 10px 20px 10px 20px !important;
+
+      .fa {
+        color: $fds-global-color-neutral-50;
+        font-weight: 400;
+      }
+
+    }
+
+    .course-listing {
+      margin-top: 0px !important;
+      padding: 0;
+    }
+
+    .courses_title {
+      cursor: pointer;
+      min-width: 350px;
+      width: 43%;
+      color: $fds-global-color-neutral-80;
+
+      .course_code {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        color: $fds-global-color-neutral-70;
+      }
+    }
+
+    .sortable {
+      cursor: pointer;
+
+      &:hover {
+          color: $fds-global-color-neutral-170;
+      }
+    }
+
+    .course_creator {
+      width: 15%;
+    }
+
+    .course_status {
+      width: 9%;
+      min-width: 76px;
+    }
+
+    .course_created {
+      width: 12%;
+      min-width: 115px;
+      text-align: left;
+    }
+
+    .course_modified {
+      width: 16%;
+      min-width: 188px;
+    }
+
+    .course_pin {
+      cursor: pointer;
+      width: 5%;
+    }
+
+  }
+
+  .courses-tab {
+    display: none;
+    &.active {
+      display: block;
+    }
+
+    width: 332px;
+    height: 100px;
+    border-radius: 8px;
+
+    .tab-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid white;
+
+      &:hover {
+          border: 1px solid $triboo-color-brand-primary;
+      }
+
+      .tab-icon {
+        width: 77px;
+        height: 66px;
+        border-radius: 8px;
+        background-color: $triboo-color-brand-primary-0;
+
+        .fa-2xl {
+          top: 15px;
+          left: 15px;
+          font-size: 3em;
+          color: $triboo-color-brand-primary;
+        }
+      }
+
+      .tab-title {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+        width: 200px;
+        margin: 0px 15px 0px 15px;
+
+        .title-text {
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 28px;
+          color: $fds-global-color-neutral-100;
+        }
+      }
+
+      .tab-add-button {
+        width: 50px;
+        color: $triboo-color-brand-primary;
+        cursor: pointer;
+
+        &:hover {
+            color: $triboo-color-brand-primary-50;
+        }
+
+      }
+    }
+
+  }
+
+  .paths-tab {
+    display: none;
+    &.active {
+      display: block;
+    }
+
+    width: 332px;
+    height: 100px;
+    border-radius: 8px;
+
+    .tab-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid white;
+
+      &:hover {
+          border: 1px solid $triboo-color-brand-primary;
+      }
+
+      .tab-icon {
+        width: 77px;
+        height: 66px;
+        border-radius: 8px;
+        background-color: $triboo-color-brand-primary-0;
+
+        .fa-2xl {
+          top: 15px;
+          left: 15px;
+          font-size: 3em;
+          color: $triboo-color-brand-primary;
+        }
+      }
+
+      .tab-title {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+        width: 200px;
+        margin: 0px 15px 0px 15px;
+
+        .title-text {
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 28px;
+          color: $fds-global-color-neutral-100;
+        }
+      }
+
+      .tab-add-button {
+        width: 50px;
+        color: $triboo-color-brand-primary;
+        cursor: pointer;
+
+        &:hover {
+            color: $triboo-color-brand-primary-50;
+        }
+
+      }
+    }
+
+  }
+
+  .libraries-tab {
+    display: none;
+    &.active {
+      display: block;
+    }
+
+    width: 332px;
+    height: 100px;
+    border-radius: 8px;
+
+    .tab-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid white;
+
+      &:hover {
+          border: 1px solid $triboo-color-brand-primary;
+      }
+
+      .tab-icon {
+        width: 77px;
+        height: 66px;
+        border-radius: 8px;
+        background-color: $triboo-color-brand-primary-0;
+
+        .fa-2xl {
+          top: 15px;
+          left: 15px;
+          font-size: 3em;
+          color: $triboo-color-brand-primary;
+        }
+      }
+
+      .tab-title {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+        width: 200px;
+        margin: 0px 15px 0px 15px;
+
+        .title-text {
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 28px;
+          color: $fds-global-color-neutral-100;
+        }
+      }
+
+      .tab-add-button {
+        width: 50px;
+        color: $triboo-color-brand-primary;
+        cursor: pointer;
+
+        &:hover {
+            color: $triboo-color-brand-primary-50;
+        }
+      }
+    }
+
+  }
+
+  .archived-courses-tab {
+    display: none;
+    &.active {
+      display: block;
+    }
+
+    width: 332px;
+    height: 100px;
+    border-radius: 8px;
+
+    .tab-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+
+      .tab-icon {
+        width: 77px;
+        height: 66px;
+        border-radius: 8px;
+        background-color: $triboo-color-brand-primary-0;
+
+        .fa-2xl {
+          top: 15px;
+          left: 15px;
+          font-size: 3em;
+          color: $triboo-color-brand-primary;
+        }
+      }
+
+      .tab-title {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+        width: 200px;
+        margin: 0px 15px 0px 15px;
+
+        .title-text {
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 28px;
+          color: $fds-global-color-neutral-100;
+        }
+      }
+
+      .tab-add-button {
+        width: 50px;
+        color: $triboo-color-brand-primary;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  .courses-tab {
+    .search-status-label {
+      font-size: 14px;
+      color: grey;
+    }
+    .course-listing {
+      margin-top: 20px;
+    }
+  }
+
+  .courses {
+    width: 100% !important;
+    height: 100% !important;
+
+    .list-wrapper {
+      padding: 5px 0px 5px 0px;
+      border: 1px solid $fds-global-color-neutral-20;
+      border-radius: 8px;
+    }
+  }
+
+  .paths {
+    width: 100% !important;
+    height: 100% !important;
+
+    .list-wrapper {
+      padding: 5px 0px 5px 0px;
+    }
+  }
+
+  .libraries {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 8px;
+
+    .wrapper-form {
+        .new-library-name {
+            width: 100% !important;
+        }
+        .new-library-number {
+            width: 100% !important;
+        }
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: stretch;
+
+      .text-search {
+        display: flex;
+        align-items: center;
+        @include form-text-box();
+        padding: 0px 20px;
+        width: 100%;
+        box-shadow: none;
+        border: 1px solid $fds-global-color-neutral-40;
+        border-radius: 5px;
+
+        &:hover {
+            border: 1px solid $fds-global-color-neutral-80;
+        }
+
+        input[type=text] {
+          height: 36px;
+          width: 96%;
+          box-shadow: none;
+          border: none;
+          border-radius: 0;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          color: $fds-global-color-neutral-70;
+
+          &::placeholder {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            color: $fds-global-color-neutral-70;
+          }
+        }
+
+        .icon {
+            font-size: 16px !important;
+            font-weight: 400;
+            align-content: center;
+            color: $fds-global-color-neutral-70;
+        }
+
+        .loading-spinner {
+          height: auto;
+          align-content: center;
+
+          .icon {
+               font-size: 16px;
+               font-weight: 800;
+               margin-right: 5px; //check the reset icon in studio home when you change it to another value
+               color: $fds-global-color-neutral-70;
+          }
+        }
+
+      }
+
+    }
+
+    .reset {
+        @include form-text-box();
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: white;
+        background-color: $triboo-color-brand-primary;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        width: 41px;
+        height: 38px;
+        margin-left: 5px;
+
+        &:hover {
+          color: $triboo-color-brand-primary;
+          background-color: white;
+        }
+    }
+
+    #filter-library-bar {
+        margin-top: 10px;
+
+        .active-library-filters {
+            display: flex;
+
+            .active-filter {
+                width: auto;
+                margin: 10px 15px 10px 0;
+
+                .discovery-button {
+                    font-size: 12px;
+                    font-weight: 700;
+                    line-height: 16px;
+                    background-color: $triboo-color-brand-primary-5;
+                    color: $triboo-color-brand-primary-60;
+                    border: 0px;
+                    border-radius: 3px;
+                    padding: 5px 6px 5px 6px;
+
+                    .query {
+                        margin-right: 3px;
+                    }
+                }
+            }
+        }
+    }
+
+    .search-status-label {
+      @include search-status-label;
+      margin: 12px 0px 24px 0px;
+    }
+
+    .list-wrapper {
+      padding: 5px 0px 5px 0px !important;
+      border: 1px solid $fds-global-color-neutral-20;
+      border-radius: 8px;
+      background-color: white;
+
+      .library-header {
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+          font-weight: 700;
+          height: 40px;
+          color: $fds-global-color-neutral-80;
+
+          div {
+            padding-left: 20px;
+
+            .fa {
+                margin-left: 5px;
+                font-weight: 400;
+                color: $fds-global-color-neutral-50;
+            }
+          }
+      }
+
+      .sortable {
+        cursor: pointer;
+      }
+
+      .library_title {
+        width: 45%;
+      }
+      .library_creator {
+        width: 18%;
+      }
+      .library_created {
+        width: 15%;
+        min-width: 153px;
+        text-align: left;
+      }
+      .library_modified {
+        width: 16%;
+        min-width: 198px;
+      }
+      .library_pinned_button {
+        width: 6%;
+      }
+
+      .list-libraries {
+
+        li {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          height: 40px;
+          border-top: 1px solid $fds-global-color-neutral-20;
+          color: $fds-global-color-neutral-110;
+
+          span {
+              padding: 10px 0px 10px 20px;
+          }
+        }
+
+        .pinned_status {
+          background-color: $fds-global-color-neutral-10 !important;
+        }
+
+      }
+
+    }
+  }
+
+  .paths {
+    .toolbar {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 10px;
+
+      >* {
+        vertical-align: middle;
+        &:not(:first-child) {
+          margin-left: 5px;
+        }
+      }
+
+      .text-search {
+        display: flex;
+        @include form-text-box();
+        padding: 0px 20px;
+        width: 100%;
+        box-shadow: none;
+        border: 1px solid $fds-global-color-neutral-40;
+        border-radius: 5px;
+
+        &:hover {
+            border: 1px solid $fds-global-color-neutral-80;
+        }
+
+        .icon {
+            font-size: 16px !important;
+            font-weight: 400;
+            align-content: center;
+            color: $fds-global-color-neutral-70;
+        }
+
+        >* {
+          vertical-align: middle;
+        }
+        .far {
+          font-size: 20px;
+        }
+        input[type=text] {
+          width: 95%;
+          box-shadow: none;
+          border: none;
+          border-radius: 0;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          color: $fds-global-color-neutral-70;
+          height: 36px;
+
+          &::placeholder {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            color: $fds-global-color-neutral-70;
+          }
+        }
+
+        .loading-spinner {
+          height: auto;
+          align-content: center;
+
+          .icon {
+               font-size: 16px;
+               font-weight: 800;
+               margin-right: 5px; //check the reset icon in studio home when you change it to another value
+               color: $fds-global-color-neutral-70;
+          }
+        }
+
+      }
+
+      .lt-react-dropdown  {
+        box-shadow: none;
+        border: 1px solid $fds-global-color-neutral-40;
+        border-radius: 5px;
+
+        &:hover {
+            border: 1px solid $fds-global-color-neutral-80;
+        }
+
+        @include dropdoown();
+        .select {
+          @include form-text-box();
+          height: 100%;
+          display: inline-flex;
+          min-width: 140px;
+          width: 100%;
+          box-shadow: none;
+
+          .text {
+            line-height: initial;
+            display: inline-flex;
+            align-items: center;
+            color: $fds-global-color-neutral-170;
+
+            >span {
+              &:not(:first-child) {
+                margin-left: 8px;
+              }
+            }
+          }
+        }
+        .panel {
+          padding: 0px;
+
+          ul {
+            max-height: 100%;
+
+            li {
+              padding: 6px 5px 6px 18px;
+
+              &:hover {
+                  background-color: $fds-global-color-neutral-5;
+              }
+
+              input[type=checkbox] {
+                @include checkbox-generator($checked-color: $triboo-color-brand-primary);
+                display: none;
+
+                + label {
+                  @include padding-left(24px);
+                  display: inline-block;
+                  white-space: initial;
+                  color: $fds-global-color-neutral-170;
+
+                  &::before {
+                    position: static;
+                    vertical-align: middle;
+                    margin-right: 10px;
+                  }
+                }
+              }
+
+              label {
+                font-weight: 400;
+              }
+            }
+          }
+
+          > ul > li {
+            height: auto;
+            overflow: visible;
+          }
+        }
+      }
+      .reset {
+        @include form-text-box();
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: white;
+        background-color: $triboo-color-brand-primary;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        width: 41px;
+        height: 38px;
+
+        &:hover {
+          color: $triboo-color-brand-primary;
+          background-color: white;
+        }
+      }
+    }
+
+    #filter-programs-bar {
+        margin: 0px;
+
+        .active-programs-filters {
+            display: flex;
+
+            .active-filter {
+                width: auto;
+                margin: 10px 15px 10px 0;
+
+                .discovery-button {
+                    font-size: 12px;
+                    font-weight: 700;
+                    line-height: 16px;
+                    background-color: $triboo-color-brand-primary-5;
+                    color: $triboo-color-brand-primary-60;
+                    border: 0px;
+                    border-radius: 3px;
+                    padding: 5px 6px 5px 6px;
+
+                    .query {
+                        margin-right: 3px;
+                    }
+                }
+            }
+        }
+    }
+
+    .search-status-label {
+      @include search-status-label;
+      margin: 12px 0px 14px 0px;
+
+      .archived-switcher {
+          min-width: 200px;
+
+          #id_show_archived_lp_switcher {
+              display: flex;
+              min-width: 190px;
+
+              .switcher_text {
+                  font-size: 16px;
+                  font-weight: 500;
+                  line-height: 24px;
+                  margin-left: 10px;
+                  color: $fds-global-color-neutral-100;
+              }
+          }
+      }
+    }
+
+    .list-wrapper {
+
+      .list {
+        width: 100%;
+        border: 1px solid $fds-global-color-neutral-20;
+        border-radius: 8px;
+
+        .programs-header {
+          display: flex;
+          align-items: center;
+          height: 44px;
+          font-weight: 700;
+          font-size: 12px;
+          line-height: 16px;
+          color: $fds-global-color-neutral-80;
+
+          div {
+            vertical-align: middle;
+            padding-left: 20px;
+          }
+
+          .fa {
+            margin-left: 5px;
+            font-weight: 400;
+            color: $fds-global-color-neutral-50;
+          }
+
+          .lp-title {
+              width: 35%;
+              cursor: pointer;
+
+              &:hover {
+                  color: $fds-global-color-neutral-170;
+              }
+          }
+          .lp-creator {
+              width: 15%;
+              min-width: 182px;
+              cursor: pointer;
+
+              &:hover {
+                  color: $fds-global-color-neutral-170;
+              }
+          }
+          .lp-status {
+              width: 6%;
+              min-width: 84px;
+              cursor: pointer;
+
+              &:hover {
+                  color: $fds-global-color-neutral-170;
+              }
+          }
+          .lp-number {
+              width: 12%;
+              min-width: 148px;
+              cursor: pointer;
+              text-align: center;
+
+              &:hover {
+                  color: $fds-global-color-neutral-170;
+              }
+          }
+          .lp-created {
+              width: 10%;
+              min-width: 127px;
+              cursor: pointer;
+              text-align: left;
+
+              &:hover {
+                  color: $fds-global-color-neutral-170;
+              }
+          }
+          .lp-modified {
+              width: 17%;
+              min-width: 203px;
+              cursor: pointer;
+
+              &:hover {
+                  color: $fds-global-color-neutral-170;
+              }
+          }
+          .lp-pin-button {
+            width: 5%;
+            cursor: pointer;
+          }
+        }
+
+        .pinned_status {
+          background-color: $fds-global-color-neutral-10 !important;
+        }
+
+        .programs-list {
+          display: flex;
+          flex-direction: column;
+
+          .row {
+            display: flex;
+            align-items: center;
+            vertical-align: middle;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            height: 40px;
+            color: $fds-global-color-neutral-110;
+            border-top: 1px solid $fds-global-color-neutral-20;
+
+            &:last-child {
+              border-right: 1px solid $grey5;
+            }
+
+            div {
+                padding: 10px 0px 10px 20px;
+            }
+
+            .row-title {
+                width: 35%;
+                cursor: pointer;
+
+            }
+            .row-creator {
+                width: 15%;
+                min-width: 182px;
+            }
+            .row-status {
+                width: 6%;
+                min-width: 84px;
+            }
+            .row-number {
+                width: 12%;
+                min-width: 148px;
+                text-align: center;
+            }
+            .row-created {
+                width: 10%;
+                min-width: 127px;
+                text-align: left;
+            }
+            .row-modified {
+                width: 17%;
+                min-width: 203px;
+            }
+            .program-pin-button {
+                width: 5%;
+                cursor: pointer;
+            }
+
+            .icon {
+              cursor: pointer;
+              font-size: 16px;
+              display: block;
+              &:hover +.menu, +.menu:hover {
+                  display: block;
+              }
+            }
+
+            .menu {
+              @include action-menu-panel();
+              position: absolute;
+              display: none;
+              li {
+                @include action-menu-item();
+                box-sizing: border-box;
+                .far {
+                  @include action-menu-item-icon();
+                }
+                span {
+                  margin-left: 5px;
+                }
+              }
+
+            }
+
+            .archived {
+              padding: 5px;
+              font-size: 12px;
+              font-weight: 700;
+              line-height: 12px;
+              color: $fds-global-color-error-70;
+              background-color: $fds-global-color-error-5;
+            }
+
+
+          }
+
+        }
+
+      }
+    }
+
+  }
+
+  .courses, .paths, .libraries {
+    .welcome-view {
+      display: flex;
+      max-width: 1100px;
+      margin: 30px auto 0;
+      .description {
+        flex: 1;
+        flex-direction: column;
+        display: inline-flex;
+        h3 {
+          font-weight: 600;
+          font-size: 40px;
+          color: $black;
+          line-height: normal;
+        }
+        p {
+          font-weight: 300;
+          font-size: 18px;
+          color: $fds-global-color-neutral-140;
+          margin-top: 18px;
+        }
+        input[type=button] {
+          @include primary-small-button();
+          margin: auto 0 20px;
+          align-self: baseline;
+        }
+      }
+      img {
+        flex: 1;
+        margin-left: 110px;
+        width: 495px;
+      }
+    }
+  }
+
+  .list-courses {
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .paths-tab {
+    .list-wrapper table tbody tr th {
+        a {
+          color: $triboo-color-fg-neutral;
+          font-size: 14px;
+          font-weight: 300px;
+
+          &:hover {
+            color: $triboo-color-brand-primary;
+            text-shadow: 0.25px 0.25px 0 $triboo-color-brand-primary;
+          }
+        }
+    }
+  }
+
+  .pinned_status {
+    background-color: $fds-global-color-neutral-10 !important;
+  }
+
+  // UI: individual course listings
+  .course-item {
+    display: flex;
+    align-items: center;
+    background: $white;
+    border: 0px;
+    border-radius: 0px;
+    border-top: 1px solid $fds-global-color-neutral-20;
+    padding: 5px 20px 5px 20px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: $fds-global-color-neutral-110;
+
+    .course-item-text {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: $fds-global-color-neutral-110;
+    }
+
+    &:hover {
+      background-color: white;
+    }
+
+    .library-link,
+    .course-link {
+      margin-right: 0px;
+      z-index: 3;
+      -webkit-font-smoothing: antialiased;
+
+      .course-metadata {
+
+        .metadata-item {
+          &:before {
+            color: $fds-global-color-neutral-110;
+          }
+        }
+      }
+
+      .course-title {
+        @include list-item-title();
+        line-height: normal;
+        margin: 0px;
+        padding-right: 8px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: $fds-global-color-neutral-110;
+      }
+
+      .course-metadata {
+        @include list-item-subtitle();
+      }
+    }
+
+    .archive-flag {
+      background: $fds-global-color-error-5;
+      padding: 2px 2px 2px 2px;
+      border-radius: 2px;
+      color: $fds-global-color-error-70;
+      font-size: 10px;
+      width: 53px;
+      height: 20px;
+      text-align: center;
+      font-weight: 700;
+      display: block;
+    }
+
+    .item-actions {
+      width: auto;
+      flex: 1;
+
+      > span {
+        font-size: 16px;
+        color: $triboo-color-fg-neutral;
+        &:hover+ul {
+          display: block;
+        }
+      }
+
+      ul {
+        @extend %list-item;
+        @include first-last-border-round($default-border-radius / 2);
+        position: absolute;
+        margin-top: -3px;
+        display: none;
+        @include right(0);
+        @include ltr {
+          transform: translateX(calc(100% - 30px));
+        }
+        @include rtl {
+          transform: translateX(calc(-100% + 30px));
+        }
+        color: $triboo-color-fg-neutral;
+        border-radius: $default-border-radius / 2;
+
+        &:hover {
+          display: block;
+        }
+        .action {
+          display: block;
+          font-size: 10px;
+          text-align: left;
+          padding: 3px 10px;
+
+          &:hover {
+            background-color: $triboo-color-brand-primary;
+            &, a {
+              color: $white;
+            }
+          }
+          i {
+            font-size: 12px;
+          }
+          a {
+            font-size: inherit;
+            display: inline-block;
+            padding: 0;
+            @include margin-left(5px);
+          }
+        }
+        .action-rerun {
+          margin-right: 0;
+        }
+        .view-button {
+          padding: 0;
+        }
+
+      }
+    }
+    .course-actions {
+      z-index: 3;
+      >.far {
+        width: 45px;
+        text-align: center;
+      }
+
+      .course-pin-button {
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        margin: 0px 15px 0px 15px;
+        width: 16px;
+        height: auto;
+        padding: 6px 5px 5px 5px;
+        border-radius: 3px;
+      }
+
+      .pinned-hover-status {
+          &:hover {
+              background-color: $triboo-color-brand-primary-5;
+          }
+      }
+
+      .unpinned-hover-status {
+          &:hover {
+              background-color: $fds-global-color-neutral-5;
+          }
+      }
+
+    }
+  }
+
+  #non-courses-view.hide {
+    display: none;
+  }
+
+  #courses_list.hide {
+    display: none;
+  }
+
+  #courses-list.hide {
+    display: none;
+  }
+
+  .items-query-list {
+    border: 1px solid $fds-global-color-neutral-20;
+    border-radius: $default-border-radius;
+    background-color: white;
+    padding: 30px;
+  }
+
+  .find-courses {
+    padding-bottom: 1px;
+
+    %text-style {
+      color: $triboo-color-fg-neutral;
+      font-weight: 400;
+    }
+
+
+    .discovery-button:not(:disabled) {
+      text-align: $bi-app-left;
+      outline: 0 none;
+      box-shadow: none;
+      border: 0;
+      text-decoration: none;
+      text-shadow: none;
+      text-transform: none;
+    }
+
+    .wrapper-search-context {
+      margin-left: auto;
+      margin-right: 5px;
+      flex: auto;
+      @include padding-right(5px);
+
+      @include media-down($xl) {
+        width: 100%;
+        @include padding-right(0);
+      }
+
+      .wrapper-search-input {
+        width: 100%;
+        position: relative;
+        float: left;
+        display: block;
+        border: 1px solid $fds-global-color-neutral-40;
+        border-radius: 5px;
+
+        &:hover {
+            border: 1px solid $fds-global-color-neutral-80;
+        }
+      }
+
+    }
+
+    .discovery-input {
+      @extend %text-style;
+
+      border: 0;
+      border-radius: 3px;
+      @include padding-right(0);
+      @include padding-left(50px);
+      height: fit-content;
+      font-size: 14px;
+      font-style: normal;
+      line-height: 20px;
+      color: $fds-global-color-neutral-70;
+      box-shadow: none;
+      width: 100%;
+      padding-top: 0px !important;
+      padding-left: 45px !important;
+      padding-bottom: 0px !important;
+      min-height: 36px !important;
+
+      &::placeholder {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: $fds-global-color-neutral-70;
+      }
+
+    }
+
+    .discovery-submit {
+      right: auto;
+      margin-left: auto;
+      display: list-item;
+      height: 100%;
+      padding: 0 20px 0 20px;
+      position: absolute;
+      top: 0;
+      //border-radius: ($baseline*0.1);
+      color: $white;
+      text-shadow: none;
+
+      //STATE: hover, focus
+      &, &:hover, &:focus {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        outline: initial;
+      }
+
+      .icon {
+        color: $fds-global-color-neutral-70;
+        font-size: 16px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .courses-container {
+      padding-top: 0;
+
+      @include media-down($lg) {
+        padding: 0 $lg-padding;
+      }
+
+      @include media-down($md) {
+        padding: 0 $md-padding;
+      }
+
+      @include media-down($sm) {
+        padding: 0 $sm-padding;
+      }
+
+      .search-form {
+        padding-bottom: 10px;
+        color: $fds-global-color-neutral-100;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+
+        input[type=text] {
+          font-size: 14px;
+          font-weight: 300;
+          line-height: 20px;
+          height: 36px;
+          padding-top: 13px;
+          padding-bottom: 15px;
+          min-height: 50px;
+          box-shadow: none;
+          color: $fds-global-color-neutral-70;
+
+          &:focus {
+            border: 0;
+          }
+
+          &::placeholder {
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 20px;
+            color: $fds-global-color-neutral-70;
+          }
+
+        }
+
+        .search-status-label {
+          @include search-status-label;
+          margin: 12px 0px 4px 0px;
+        }
+      }
+    }
+
+    .search-facets-lists {
+      display: flex;
+
+      @include media-down($sm) {
+        flex-direction: column;
+        border: 1px solid $grey10;
+      }
+    }
+
+    .search-facets {
+      width: auto;
+      box-shadow: none;
+      margin: 0;
+      background-color: transparent;
+      display: flex;
+
+      @include media-down($xl) {
+        &.phone-menu {
+          padding-top: 13px;
+        }
+      }
+
+      @include media-down($sm) {
+        width: 100%;
+        flex-direction: column;
+
+        &.phone-menu {
+          padding-top: 13px;
+        }
+      }
+
+      &:before {
+        content: normal;
+      }
+
+      .fact-wrapper {
+        @include margin-right(5px);
+        position: relative;
+        display: flex;
+
+        @include media-down($sm) {
+          flex-direction: column;
+          @include margin-right(0);
+        }
+
+      }
+
+      .header-facet {
+        @extend %form-text-box;
+        @extend %text-style;
+
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        padding: 8px 15px;
+        border-radius: $fds-global-border-radius-md;
+        box-shadow: none;
+        cursor: pointer;
+        align-items: center;
+        display: flex;
+        border: 1px solid $fds-global-color-neutral-40;
+
+        &:hover {
+            box-shadow: none;
+            border: 1px solid $fds-global-color-neutral-80;
+        }
+
+        @include media-down($xl) {
+          height: auto;
+        }
+
+        @include media-down($sm) {
+          background-color: $grey3;
+          box-shadow: none;
+          border-radius: 0;
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid $grey10;
+
+          &:hover {
+            background-color: $grey3;
+          }
+        }
+
+        &:after {
+          color: $triboo-color-fg-neutral;
+          font-family: $font-awesome;
+          content: '\f077';
+          @include margin-left(16px);
+          font-size: 10px;
+          font-weight: 600;
+
+          @include media-down($sm) {
+            content: '\f068';
+          }
+        }
+      }
+
+      .hidden-panel {
+        ul {
+          display: none;
+
+          @include media-down($sm) {
+            position: static;
+          }
+        }
+
+        .header-facet {
+          &:after {
+            content: '\f078';
+
+            @include media-down($sm) {
+              content: '\f067';
+            }
+          }
+        }
+      }
+
+      .facet-list {
+        border: none;
+        background-color: $white;
+        position: absolute;
+        min-width: 100%;
+        top: 100%;
+        padding: 0px;
+        box-shadow: $fds-global-shadow-sm;
+        border-radius: $fds-global-border-radius-md;
+        margin-top: 5px;
+        z-index: 4;
+
+        @include media-down($sm) {
+          margin-top: 0;
+          margin-right: 0;
+          border-radius: 0;
+          border-bottom: 1px solid $grey10;
+          position: static;
+
+          &:hover {
+            box-shadow: none;
+          }
+        }
+
+        &.collapse {
+          overflow-y: auto;
+        }
+
+        li {
+          position: relative;
+          padding: 6px 0px 10px 0px;
+          //height: ($baseline*1.5);
+          clear: both;
+
+          &:hover {
+            background-color: $fds-global-color-neutral-5;
+          }
+
+          &:after {
+            content:"";
+            display:table;
+            clear:both;
+          }
+        }
+
+      }
+
+      .facet-option {
+        float: $bi-app-left;
+        position: relative;
+        @include padding-left(45px);
+        color: $triboo-color-fg-neutral;
+        font-size: 14px;
+        -webkit-font-smoothing: unset;
+        opacity: 1;
+        border-radius: 0;
+        width: 100%;
+        transition: all 0.25s ease-out 0s;
+
+        &, &.selected {
+          &, &:hover, &:focus {
+            background: transparent;
+
+            .count {
+              color: inherit;
+
+              &:before {
+                content: normal;
+              }
+
+              .count-number {
+                display: none;
+              }
+            }
+          }
+        }
+
+        &:before {
+          @include left(15px);
+          position: absolute;
+          color: $triboo-color-fg-neutral;
+          font-family: $font-awesome;
+          content: '\f0c8';
+          font-size: 20px;
+          font-weight: 300;
+        }
+
+        &.selected {
+          &:before {
+            content: '\f14a';
+            color: $triboo-color-brand-primary;
+
+          }
+        }
+      }
+
+      .clear-filters {
+        @extend %form-text-box;
+        @extend %text-style;
+
+        border-radius: $fds-global-border-radius-md;
+        box-shadow: $fds-global-shadow-xs;
+        padding: 0px 8px 0 5px;
+        background-color: $triboo-color-brand-primary;
+        border: 1px solid $fds-global-color-neutral-5;
+        color: white;
+        width: 41px;
+        height: 38px;
+
+        &:hover,
+        &:focus {
+          color: $triboo-color-brand-primary;
+        }
+
+        @include media-down($sm) {
+          margin-top: 10px;
+          padding: 10px 20px;
+        }
+
+        .icon {
+            font-size: 14px;
+            font-weight: 400;
+
+            margin-right: 5px; //check the reset icon in studio home when you change it to another value
+        }
+      }
+
+      & + ul {
+        min-width: 130px;
+        position: absolute;
+      }
+    }
+
+    .filters {
+      margin-top: auto;
+      padding-top: 10px;
+      width: 100%;
+      height: auto;
+      max-height: ($baseline*10);
+      overflow: hidden;
+
+      .filters-inner {
+        border-top: 0;
+        border-bottom: 0;
+      }
+
+      ul {
+        margin: 0;
+        list-style: outside none none;
+      }
+
+      li {
+        background-color: transparent;
+        border-radius: $text-box-border-radius;
+        float: left;
+        margin: 10px 15px 10px 0;
+        position: relative;
+        width: auto;
+
+        .facet-option {
+          color: $triboo-color-brand-primary-60;
+          border-radius: 3px;
+          background-color: $triboo-color-brand-primary-5;
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 16px;
+          padding: 5px 6px 5px 6px;
+
+          .fa {
+            font-weight: 300;
+          }
+        }
+
+      }
+    }
+
+    .loading-spinner {
+      right: 20px;
+      background: transparent;
+      transition: all 0.5s ease-out 0s;
+      position: absolute;
+      top: ($baseline*0.36);
+
+      .icon {
+           font-size: 16px;
+           font-weight: 800;
+           margin-right: 5px; //check the reset icon in studio home when you change it to another value
+           color: $fds-global-color-neutral-70;
+      }
+    }
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .hidden {
+    display: none !important;
+    visibility: hidden;
+  }
+}

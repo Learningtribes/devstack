@@ -1,0 +1,125 @@
+
+.courseware-results {
+
+  h2.bookmarks-results-header {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    top: -15px;
+  }
+
+  .paging-header {
+    margin-bottom: 30px;
+
+    .search-count {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+
+  .bookmarks-results-list {
+    .bookmarks-results-list-item {
+      @extend %list-item;
+
+      display: block;
+      padding: 20px 10px 20px 60px;
+      margin-bottom: 30px;
+
+      &:hover, &:active, &:focus {
+        .list-item-breadcrumbtrail {
+          color: $triboo-color-brand-primary;
+        }
+
+        .list-item-date {
+          text-shadow: none;
+        }
+      }
+
+      &:before {
+        position: relative;
+        left: -40px;
+        top: -28px;
+        font-size: 24px;
+        color: $triboo-color-brand-primary;
+        font-weight: 600;
+        font-family: $font-awesome;
+        content: '\f02e';
+        float: left;
+        width: 0;
+      }
+    }
+
+    .list-item-right-section {
+      display: none;
+    }
+
+    .list-item-breadcrumbtrail {
+      color: inherit;
+      font-size: 16px;
+      font-weight: 400;
+
+      .icon {
+        padding: 0 10px;
+      }
+    }
+
+    .list-item-breadcrumbtrail,
+    .list-item-date {
+      text-shadow: none;
+    }
+
+    .list-item-date {
+      color: $black;
+      font-size: 14px;
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    .list-item-right-section {
+      display: none;
+    }
+
+  }
+
+  .paging-footer {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .pagination.pagination-full {
+    width: auto;
+    display: inline-block;
+
+    .nav-item .nav-link {
+      @include primary-medium-button();
+    }
+
+    .pagination-form .page-number-input {
+      @extend %form-text-box;
+      background-color: transparent;
+      border-bottom: none;
+
+      &:hover, &:focus {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+
+// Rules for bookmark icon shown on each sequence nav item
+.course-content {
+
+  .bookmark-button {
+    &::before {
+      font-weight: 400;
+    }
+
+    &.bookmarked {
+      &::before {
+        font-weight: 600;
+      }
+    }
+  }
+}

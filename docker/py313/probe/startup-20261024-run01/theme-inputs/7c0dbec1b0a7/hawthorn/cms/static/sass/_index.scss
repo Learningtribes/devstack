@@ -1,0 +1,56 @@
+// studio - views - how it works
+// ====================
+
+.view-howitworks {
+  &.not-signedin {
+
+    .content-header {
+
+      h1 {
+        border-bottom: 1px solid tint($triboo-color-brand-primary, 20%);
+      }
+
+      .tagline {
+        color: tint($triboo-color-brand-primary, 60%);
+      }
+    }
+
+    .content-features {
+
+      // indiv features
+      .feature {
+
+        .img {
+
+          a {
+
+            .action-zoom {
+              .icon {
+                background: $triboo-color-brand-primary;
+              }
+            }
+
+            &:hover {
+              border-color: $primary45;
+            }
+          }
+
+        }
+
+      }
+    }
+
+
+    .content-cta {
+
+      .list-actions {
+        .action {
+
+          &.action-primary {
+            @extend %btn-primary-primary
+          }
+        }
+      }
+    }
+  }
+}

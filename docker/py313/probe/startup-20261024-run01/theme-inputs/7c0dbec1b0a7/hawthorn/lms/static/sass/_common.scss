@@ -1,0 +1,401 @@
+
+
+.tabs-title {
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0;
+  border-bottom: 1px solid $grey10;
+  display: inline-block;
+
+  &-item {
+    list-style: none;
+    display: inline-block;
+    cursor: pointer;
+    display: inline-block;
+    padding-bottom: 10px;
+
+    font-size: 16px;
+    color: $triboo-color-fg-neutral;
+    font-weight: 300;
+    text-decoration: none !important;
+    letter-spacing: normal;
+    line-height: 20px;
+    -webkit-font-smoothing: antialiased;
+
+    @include media-down($sm) {
+      border: 1px solid $fds-global-color-neutral-100;
+      border-radius: 8px;
+      padding: 5px 8px;
+    }
+
+    &:hover, &:active {
+      @include font-bold($color: $triboo-color-fg-neutral);
+
+      @include media-down($sm) {
+        text-shadow: none;
+      }
+    }
+
+    &:not(:last-child) {
+      margin-right: 25px;
+
+      @include media-down($sm) {
+        margin-right: 0px;
+      }
+    }
+
+    &.active {
+      font-weight: 400;
+      border-bottom: 2px solid $triboo-color-brand-primary;
+
+      @include media-down($sm) {
+        border: 1px solid $triboo-color-brand-primary;
+        color: $triboo-color-brand-primary;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  @include media-down($sm) {
+    border-bottom: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $fds-global-space-xs;
+  }
+}
+
+.content-filter-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: end;
+
+  @include media-down($md) {
+    margin-top: $fds-global-space-lg;
+  }
+
+  .content-sort-options {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    gap: $fds-global-space-sm;
+    color: $fds-global-color-neutral-90;
+    padding: 0;
+    @include typography-body-sm-bold ();
+
+    .filter-toggle {
+      display: flex;
+      align-items: center;
+      gap: $fds-global-space-sm;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      .filter-selected {
+        display: flex;
+        align-items: center;
+
+        .nav_content_counter {
+          margin-left: 16px;
+          background: rgba(114, 114, 114, 0.2);
+          padding: $fds-global-space-xxxs 6px;
+          border-radius: $fds-global-border-radius-sm;
+          font-size: 10px;
+          font-weight: 500;
+        }
+
+        i {
+          font-family: $font-awesome;
+          font-size: 15px;
+          font-weight: 600;
+          margin-left: $fds-global-space-xs;
+        }
+      }
+    }
+
+    .filter-menu {
+      position: absolute;
+      top: 38px;
+      right: 0;
+      padding: $fds-global-space-xs;
+      margin: 0;
+      background-color: $white;
+      border: 1px solid $grey20;
+      border-radius: $fds-global-border-radius-lg;
+      z-index: 10;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+      width: max-content;
+      min-width: 160px;
+
+      .filter-item {
+        padding: 6px $fds-global-space-sm;
+        cursor: pointer;
+        color: $fds-global-color-neutral-70;
+        text-align: left;
+
+        .label {
+          display: inline-block;
+        }
+
+        .nav_content_counter {
+          float: right;
+          font-size: $fds-global-space-sm;
+          background-color: $fds-global-color-neutral-20;
+          padding: $fds-global-space-xxxs 6px;
+          border-radius: $fds-global-border-radius-sm;
+          margin-left: 16px;
+        }
+
+        &:hover {
+          color: $triboo-color-brand-primary;
+        }
+
+        &.active {
+          font-weight: bold;
+          color: $triboo-color-brand-primary;
+        }
+      }
+    }
+  }
+
+  &.dropdown.open {
+    .filter-menu {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .filter-selected i::after {
+      content: "\f0d8";
+    }
+  }
+}
+
+.view-explore,
+.view-my-training-overview, .view-my-training-programs,
+.view-explore-overview, .view-explore-programs,
+.view-external-catalog,
+.view-programs-catalog,
+.view-catalog,
+.view-my-courses-2,
+.view-in-analytics,
+.view-in-course,
+.view-account-setting,
+.view-dashboard,
+.view-admin-panel,
+.view-faq {
+  .marketing-hero {
+    margin-top: $header-height;
+  }
+}
+
+
+.view-in-course.courseware .marketing-hero {
+  margin-top: 0;
+}
+
+.action-primary {
+  @include primary-small-button();
+}
+
+.recommend-content-modal,
+.rating-content-modal,
+.contact-instructor-modal {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba($fds-global-color-neutral-170, 0.7);
+
+  .modal-content {
+    background-color: $fds-global-color-neutral-5;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: $fds-global-border-radius-lg;
+    box-shadow: $fds-global-shadow-xl;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: left;
+
+    .modal-header {
+      padding: 20px;
+
+      .modal-title {
+        @include typography-body-md-bold;
+
+        i {
+          margin-left: 24px;
+          cursor: pointer;
+        }
+
+        .icon {
+          border-radius: 4px;
+          padding: 6px 10px 6px 10px;
+          visibility: hidden;
+          transition-duration: 0.3s;
+        }
+
+        .icon:hover {
+           color: $fds-global-color-neutral-0;
+           background-color: $triboo-color-brand-primary;
+        }
+      }
+
+      .modal-title:hover > .icon {
+        visibility: visible;
+      }
+
+      .close {
+        color: $fds-global-color-neutral-140;
+        float: right;
+        font-weight: bold;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+          color: $fds-global-color-neutral-170;
+          text-decoration: none;
+        }
+      }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: $fds-global-space-md $fds-global-space-xl;
+      gap: $fds-global-space-xxs;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      border-top: 1px solid $fds-global-color-neutral-20;
+      margin-top: 15px;
+      padding: 15px 20px;
+    }
+  }
+}
+
+.recommend-content-modal {
+  .modal-content {
+    width: 1144px;
+
+    .content {
+      .label-group {
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        @include typography-body-sm-medium();
+        color: $fds-global-color-neutral-170;
+      }
+      .ds-textarea {
+        width: 100%;
+
+        textarea {
+          box-shadow: none;
+          min-height: 56px;
+          max-height: 216px;
+          resize: vertical;
+          height: auto;
+        }
+      }
+    }
+  }
+}
+
+.rating-content-modal {
+  .modal-content {
+    width: 680px;
+
+    .content {
+      .stars {
+        font-size: 48px;
+        color: $fds-global-color-caution-40;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.contact-instructor-modal {
+  .modal-content {
+    width: 584px;
+
+    .modal-header {
+      background-color: $fds-global-color-primary-40;
+      color: $fds-global-color-neutral-0;
+      border-top-left-radius: $fds-global-space-xs;
+      border-top-right-radius: $fds-global-space-xs;
+
+      .close {
+        color: $fds-global-color-neutral-0;
+      }
+    }
+
+    .content {
+      @include typography-body-sm-medium();
+      gap: $fds-global-space-md;
+
+      .instructor-info {
+        display: flex;
+        flex-direction: column;
+        gap: $fds-global-space-xs;
+        justify-content: center;
+        align-items: center;
+
+        h2 {
+          @include typography-mobile-h4-bold();
+          color: $fds-global-color-neutral-170;
+          margin: 0;
+        }
+
+        span {
+          color: $fds-global-color-neutral-100;
+        }
+
+        .instructor-avatar {
+          border-radius: 50%;
+          width: 106px;
+          height: 106px;
+        }
+      }
+
+      label {
+        @include typography-body-sm-medium();
+        color: $fds-global-color-neutral-170;
+      }
+      .ds-textarea {
+        width: 100%;
+
+        textarea {
+          box-shadow: none;
+          min-height: 56px;
+          max-height: 216px;
+          resize: vertical;
+          height: auto;
+        }
+      }
+    }
+
+    .buttons {
+      margin-top: 0;
+    }
+  }
+}
+
+.recommend-content-modal,
+.rating-content-modal,
+.contact-instructor-modal {
+  .modal-content {
+    @include media-down($sm) {
+      // padding of the header 20px * 2
+      width: calc(100% - 40px);
+    }
+  }
+}

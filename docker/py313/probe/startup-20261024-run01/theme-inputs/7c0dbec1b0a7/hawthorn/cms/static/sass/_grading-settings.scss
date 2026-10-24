@@ -1,0 +1,414 @@
+.grading.view-settings {
+  @include layout();
+
+  .wrapper-mast {
+    padding: 0;
+    padding-top: 30px;
+    max-width: 1376px;
+    margin: 0 auto;
+
+    .mast .page-header {
+      color: $fds-global-color-neutral-170;
+      @include typography-h4-bold;
+
+      .subtitle {
+        position: static;
+        margin-bottom: $fds-global-space-xs;
+      }
+    }
+  }
+
+  .wrapper-content {
+    max-width: 1376px;
+    margin: 0 auto;
+    padding: 20px 0;
+
+    .content {
+      @include layout();
+
+      .content-primary {
+        width: 100%;
+      }
+    }
+  }
+  #content .content-footer {
+    border-top: none;
+
+    .actions-save {
+      border-top: 1px solid $grey10;
+    }
+    
+    .actions-saved {
+      border-top: 1px solid $grey10;
+    }
+  }
+  .ds-button {
+    &:hover {
+      background-color: $triboo-color-brand-primary;
+      color: var(--fds-global-color-neutral-0);
+    }
+  }
+
+  .content-primary {
+    margin-bottom: 0;
+    border: none;
+    padding: $padding-beside-list;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+
+    .group-settings {
+      display: flex;
+      margin-bottom: 30px;
+      gap: 32px;
+
+      header {
+        color: $fds-global-color-neutral-140;
+        font-size: 12px;
+        padding: 0;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+        border: 0;
+
+        h2 {
+          font-weight: 600;
+          font-size: inherit;
+        }
+
+        label {
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 28px;
+          letter-spacing: 0em;
+          text-align: left;
+          color: $fds-global-color-neutral-170;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          letter-spacing: 0em;
+          text-align: left;
+          color: $fds-global-color-neutral-100;
+        }
+
+        .tip {
+          width: 100%;
+          float: left;
+          text-align: left;
+
+          color: inherit;
+          -webkit-font-smoothing: antialiased;
+        }
+      }
+
+      .ds-input {
+        box-shadow: none;
+        width: 100%;
+        input {
+          box-shadow: none;
+          @include typography-body-sm-regular;
+          &:hover,
+          &:focus {
+            background: transparent;
+          }
+          
+        }
+        .tip-text {
+          margin-top: 4PX;
+          @include typography-body-2xs-regular
+        }
+      }
+
+      label.ds-input {
+        font-weight: 500;
+      }
+
+      .list-input {
+        width: 100%;
+        padding: 0;
+      }
+    }
+
+    .completion-rule {
+      ol.list-input {
+        #field-course-completion-rules {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          gap: 8px;
+
+          section {
+            @extend %list-item;
+            flex: 0.44;
+            text-align: left;
+            padding: 15px 30px;
+            box-shadow: none;
+            border: 1px solid $fds-global-color-neutral-20;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            &.active-rule {
+              box-shadow: none;
+              border: 1px solid $primary45;
+            }
+
+            label {
+              cursor: pointer;
+              font-size: 14px;
+              font-weight: 700;
+              color: $fds-global-color-neutral-170
+            }
+
+            p {
+              @include typography-body-xs-regular;
+            }
+
+            .tip {
+              flex: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-top: 5px;
+              font-size: 12px;
+              font-weight: 400;
+            }
+
+            &:hover {
+              box-shadow: none;
+            }
+
+            div {
+              margin: 0;
+            }
+          }
+          .question-mark-wrapper {
+            align-self: center;
+            @include margin-left(20px);
+          }
+        }
+      }
+    }
+
+    .grade-range {
+      .list-input {
+        .new-grade-button {
+          display: none;
+        }
+        
+        #field-course-grading-range {
+          .course-grading-range {
+            .grade-slider {
+              margin-top: 40px;
+              width: 100%;
+
+              .grade-bar {
+                height: 25px;
+                background-color: transparent;
+
+                .increments {
+                  display: none;
+                }
+                .grades .grade-specific-bar {
+                  height: 13px !important;
+                  border-radius: 6px;
+
+                  &:first-child {
+                    background-color: $fds-global-color-success-40;
+                  }
+
+                  &:nth-of-type(2) {
+                    background-color: $fds-global-color-neutral-20;
+
+                    .letter-grade {
+                      margin-top: 0;
+                    }
+
+                    .range {
+                      width: 34px;
+                      height: 34px;
+                      border-radius: 50%;
+                      background-color: $green; //$grey35;
+                      float: right;
+                      margin-top: -10px;
+                      margin-right: -17px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      font-size: 14px;
+                      color: white;
+                      -webkit-font-smoothing: antialiased;
+                      cursor: e-resize;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .group-settings.assignment-types {
+      header {
+        margin-bottom: 0;
+      }
+
+      .course-grading-assignment {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .list-input {
+        padding: 0;
+        width: 100%;
+
+        .field-group {
+          width: 96%;
+          display: flex;
+          background-color: $fds-global-color-neutral-0;
+          margin-bottom: 0;
+          padding: 26px 16px 16px;
+          border: 1px solid $fds-global-color-neutral-20;
+          margin-top: 20px;
+          border-radius: 4px;
+
+          ol {
+            width: 100%;
+            .list-field {
+              margin-bottom: 15px;
+            }
+          }
+
+          .file-upload {
+            display: flex;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+            width: 216px;
+            height: 150px;
+            float: right;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid $fds-global-color-neutral-20;
+            border-radius: 4px;
+            padding: 8px 16px;
+            background-color: $white; //remove
+            @include margin-right(30px);
+
+            img {
+              max-width: 100%;
+              max-height: 100%;
+            }
+            input[type="file"] {
+              cursor: pointer;
+              font-size: 30px;
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: 100%;
+              opacity: 0;
+              left: -200px;
+            }
+            .file-upload-button {
+              @include primary-small-button();
+              position: absolute;
+              border-radius: 4px;
+              font-size: 12px;
+            }
+          }
+
+          .comment {
+            position: absolute;
+            margin-top: 154px;
+            font-size: 10px;
+            color: $fds-global-color-neutral-100;
+          }
+
+          section {
+            display: flex;
+            position: relative;
+
+            .number-box-wrapper {
+              flex: 1;
+
+              > * {
+                width: 48% !important; //remove
+                @include margin-right(0);
+              }
+            }
+          }
+
+          .name-wrapper {
+            display: flex;
+
+            .field {
+              width: 100%;
+              margin-right: 0;
+            }
+
+            .actions {
+              position: absolute;
+              right: 64px;
+              margin-top: -11px;
+              width: auto;
+              display: block;
+              float: $bi-app-right;
+              border-top: none;
+
+              .remove-item {
+                background-color: transparent;
+                border: none;
+                font-weight: 300;
+                font-size: 18px;
+                padding: 0;
+                &:hover {
+                  box-shadow: none;
+                  color: $triboo-color-brand-primary;
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      > .actions {
+        text-align: $bi-app-right;
+        clear: both;
+        border-top: none;
+        float: none;
+        margin-top: 10px;
+        padding-top: 5px;
+        border-top: none;
+
+        .new-button {
+          @include primary-small-button();
+          padding: 8px 16px;
+          font-size: 14px;
+          -webkit-font-smoothing: antialiased;
+        }
+      }
+    }
+  }
+
+  .content-supplementary {
+    display: none;
+    @include content-supplementary();
+
+    .bit {
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+}

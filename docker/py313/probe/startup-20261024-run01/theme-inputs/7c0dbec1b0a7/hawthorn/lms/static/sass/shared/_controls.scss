@@ -1,0 +1,386 @@
+// lms - elements - UI controls
+// ====================
+%btn-primary-green, %btn-primary-blue,
+%btn-primary-primary {
+  @include primary-small-button();
+}
+
+%btn-secondary-gray {
+  @include grey-small-button();
+}
+
+%btn-pl-default-base, %ui-btn-flat-outline,
+%btn-flat-outline {
+  @include framed-small-button();
+  @include basic-hover-focus {
+    background-color: transparent;
+  }
+}
+
+
+//typography
+
+%xblock-title {
+  font-family: $font-family-header;
+  font-weight: 600;
+  font-size: 22px;
+  text-transform: none;
+  letter-spacing: normal;
+  color: $black;
+  padding-bottom: 10px;
+
+  span {
+    font-family: $font-family-header !important;
+    font-weight: 600 !important;
+    font-size: 22px !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    color: $black !important;
+  }
+}
+
+%xblock-second-title {
+  padding-bottom: 10px;
+  font-weight: 300;
+  font-size: 16px;
+  text-transform: none;
+}
+
+%headline-1 {
+  font-size: 36px;
+  font-family: $font-family-header;
+}
+
+%headline-2 {
+  font-size: 24px;
+  font-family: $font-family-header;
+  font-weight: 600;
+}
+
+%text-button {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+%card-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+%paragraph {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+%filters {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+%sub-info {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+%label-active {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+%infos {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+%label {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+%form-label {
+  font-size: 11px;
+  line-height: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  cursor: default;
+}
+
+%big-title {
+  font-family: $font-family-header;
+}
+
+%list-item {
+  @include list-item();
+}
+
+%content-container {
+  @include list-item();
+  padding: 30px;
+
+  @include media-down($sm) {
+    padding: 20px;
+  }
+}
+
+%form-text-box {
+  background-image: none;
+  background-color: $white;
+  box-shadow: $fds-global-shadow-xs;
+  border-radius: $text-box-border-radius;
+  border-color: $grey5;
+  outline: initial;
+
+  // STATE: hover/focus
+  &:hover,
+  &:focus {
+    background-image: none;
+    background-color: $white;
+    box-shadow: $fds-global-shadow-sm;
+  }
+}
+
+%linner-text-box {
+  font-size: 14px;
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  color: $grey35;
+  border-bottom: 1px solid $grey25;
+  outline: initial;
+
+  &:focus, &:hover {
+    color: $black;
+    border-bottom: 1px solid $triboo-color-brand-primary;
+  }
+}
+
+%dropdown-base {
+  border-bottom: 0;
+  background-size: 11px;
+  background-repeat: no-repeat;
+  background-position: 10px;
+  background-position: right 10px center;
+  background-color: $white;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+%dropdown {
+  @extend %dropdown-base;
+
+  &, &:hover, &:focus {
+    background-image: url(/static/images/chevron-down.svg);
+  }
+}
+
+%dropdown-studio {
+  @extend %dropdown-base;
+
+  &, &:hover, &:focus {
+    background-image: url(/static/studio/images/chevron-down.svg);
+  }
+
+  display: inline-block;
+  padding: 5px 50px 5px 20px;
+  border: 1px solid $grey5;
+  border-radius: $border-radius-v2-half;
+  box-shadow: $fds-global-shadow-xs;
+}
+
+//please don't use it for radio box
+%radiobox-green {
+  @include checkbox-generator($text: '\f111', $checked-text: '\f192', $text-color: $black);
+}
+//please use this one for radio box
+%radiobox {
+  @include checkbox-generator($text: '\f111', $checked-text: '\f192', $checked-color: $triboo-color-brand-primary, $text-color: $black);
+}
+
+
+%text-field {
+  border-radius: $default-border-radius;
+  border-color: $grey25;
+  color: $grey57;
+  box-shadow: none;
+  @include padding-left(26px);
+}
+
+@keyframes triboo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: triboo-spin 1s linear infinite;
+}
+
+.animate-duration-2s {
+  animation-duration: 2s;
+}
+
+%loading-button {
+  position: relative;
+
+  .icon {
+    display: inline-block;
+    position: absolute;
+    left: 20px;
+    top: 12px;
+
+    &:before {
+      animation: triboo-spin 2s linear infinite;
+      content: "\F110";
+      display: inline-block;
+      font-family: $font-awesome;
+      -webkit-font-smoothing: antialiased;
+      color: $white;
+    }
+  }
+}
+
+%icon-circle {
+  display: flex;
+  align-items: baseline;
+
+  &:before {
+    content: '\f111';
+    font-family: $font-awesome;
+    font-weight: 700;
+    font-size: 8px;
+    line-height: 8px;
+    @include padding-right(13px);
+    color: $grey25;
+    text-shadow: none;
+  }
+}
+
+//for business
+%swiper-prev-next-button-style {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: flex;
+    height: 426px;
+    top: 66px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8));
+    background-size: auto;
+    width: 60px;
+
+    font-weight: 400;
+    justify-content: center;
+    align-items: center;
+
+    @include media-down($sm) {
+      display: none;
+
+      &:before {
+        display: none;
+      }
+    }
+
+    &:before {
+      position: absolute;
+      content: '\f104';
+      font-family: $font-awesome;
+      font-weight: 400;
+      font-size: 28px;
+    }
+  }
+
+  .swiper-button-prev {
+    left: 0;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 1px solid $grey5;
+    border-right: 1px solid $grey5;
+    border-bottom: 1px solid $grey5;
+
+    &:before {
+      content: '\f053';
+    }
+  }
+
+  .swiper-button-next {
+    right: 0;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top: 1px solid $grey5;
+    border-bottom: 1px solid $grey5;
+    border-left: 1px solid $grey5;
+
+    &:before {
+      content: '\f054';
+    }
+  }
+}
+
+%time-label {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 16px;
+  padding: 0px 12px;
+  background-color: $grey35;
+  color: $white;
+  @include margin-left(15px);
+
+  /*>* {
+    vertical-align: middle;
+  }*/
+
+  i {
+    font-size: 14px;
+  }
+
+  em {
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    font-family: $font-family-default;
+    font-size: 9px;
+    @include margin-left(3px);
+    font-weight: 800;
+  }
+}
+
+%non-started-card {
+  .mask {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 230px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: $white;
+    background-color: $primary55;
+    border-radius: 8px 8px 0 0;
+    z-index: 10;
+
+    &--archived {
+      background-color: rgba($triboo-color-fg-neutral, 0.6);
+    }
+
+    i {
+      font-size: 30px;
+    }
+
+    .localized-datetime, .localized-date {
+      margin: 20px 20% 0;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}

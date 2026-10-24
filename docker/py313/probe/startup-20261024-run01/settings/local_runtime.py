@@ -47,7 +47,7 @@ def configure(namespace, system):
         DATA_DIR='/runtime/data',
         STUDIO_LOGS_COURSES_CSV_PATH='/runtime/logs/cms.csv',
         STUDIO_LOGS_COURSES_HISTORY_CSV_PATH='/runtime/logs/cms-history.csv',
-        COMPREHENSIVE_THEME_DIRS=['/runtime/themes-dce4781ddd25', str(platform_root / 'themes')],
+        COMPREHENSIVE_THEME_DIRS=['/runtime/themes-7c0dbec1b0a7', str(platform_root / 'themes')],
         COMPREHENSIVE_THEME_LOCALE_PATHS=['/runtime/locale'],
         # Templates request the exact configured LANGUAGE_CODE, including LT
         # variants absent from Django's built-in language registry.

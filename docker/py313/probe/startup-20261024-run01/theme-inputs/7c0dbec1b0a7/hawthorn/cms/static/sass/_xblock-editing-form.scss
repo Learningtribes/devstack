@@ -1,0 +1,1096 @@
+$field: (label-width:0px, component-width: 460px);
+.view-container {
+  .modal-window {
+    .modal-content {
+      padding: 15px $padding-beside-form 0;
+      border-top: 0;
+      border-bottom: 1px solid $editor-border-color;
+      //don't set fixed height here, it affect editing form of ora2 component
+      //height: 632px !important;
+      //border-top: none;
+      $list-input-height: 555px;
+
+      .xblock-studio_view {
+        .tox-editor-header {
+          background-color: $editor-header-background-color;
+        }
+
+        .xblock-actions {
+          background-color: $white;
+          box-sizing: border-box;
+          position: static;
+          .cancel-button {
+            @include grey-small-button()
+          }
+        }
+        .wrapper-comp-settings:not(.pdf-editor-modal) .list-input {
+          //don't use fixed height, some list-input don't need it and will extend very high.
+          //height: 500px;
+          .field {
+            border-top: none;
+            opacity: 1 !important;
+
+            .wrapper-comp-setting {
+              >label {
+                @include label;
+                -webkit-font-smoothing: antialiased;
+              }
+              input[type=file], input[type=text], input[type=number],.setting-input, select {
+                width: map_get($field, 'component-width');
+              }
+              textarea,
+              input[type=text], input[type=number] {
+                @include form-text-box;
+              }
+              select {
+                @include select;
+              }
+              .switcher-wrapper {
+                >div {
+                  vertical-align: middle;
+                }
+              }
+              .question-mark-wrapper {
+                display: inline-block;
+                margin-left: 10px;
+              }
+              //.inactive
+              .action.setting-clear {
+                @include button($font-weight: 400);
+                @include small-button();
+                box-shadow: $fds-global-shadow-xs;
+                transition-duration: 0.25s;
+                color: $white;
+                background-color: rgba($triboo-color-fg-neutral, 0.5);
+                justify-content: center;
+                &:hover {
+                  @include font-bold($color: $black);
+                  color: $black;
+                  background-color: $white;
+                  box-shadow: $fds-global-shadow-sm;
+                }
+
+                >.icon {
+                  margin-right: 0;
+                  font-weight: 400;
+                  font-size: 12px;
+                  -webkit-font-smoothing: antialiased;
+                }
+              }
+            }
+            &.comp-setting-entry.is-set .setting-input {
+              color: $form-textbox-color;
+            }
+          }
+        }
+        .html-editor .CodeMirror {
+          //height: 100% !important;
+        }
+      }
+
+      .xblock-studio_view-pdf {
+        .wrapper-comp-settings:not(.pdf-editor-modal) {
+          .list-input .field .wrapper-comp-setting input[type=text] {
+            width: 200px;
+          }
+        }
+      }
+
+      .xblock-studio_view-library_content {
+        .wrapper-comp-settings .list-input .field {
+          &:first-child {
+            @include question-mark-in-first-line();
+          }
+          .wrapper-comp-setting {
+            +.tip {
+              display: $tip-visibility;
+            }
+          }
+        }
+      }
+      .xblock-studio_view-icxblock {
+        .wrapper-comp-settings .list-input {
+          height: 570px;
+          .field {
+            &:first-child {
+              @include question-mark-in-first-line();
+            }
+            .wrapper-comp-setting {
+              label[for=htmltemplate] {
+                padding-bottom: 10px;
+              }
+              textarea {
+                outline: none;
+              }
+              +.setting-help {
+                display: $tip-visibility;
+              }
+            }
+          }
+          +.xblock-actions {
+            border-top: 1px solid $editor-border-color;
+          }
+        }
+
+      }
+      .xblock-studio_view-problem {
+        .wrapper-comp-settings {
+          .list-input {
+            .field {
+              &:first-child {
+                @include question-mark-in-first-line();
+              }
+              select[name="Show Reset Button"] {
+                display: none;
+              }
+              .tip {
+                display: $tip-visibility;
+              }
+            }
+          }
+        }
+        .wrapper-comp-editor {
+          height: 100%;
+          .problem-editor {
+            flex: 1;
+            >.row {
+              height: 100%;
+            }
+          }
+        }
+      }
+      .xblock-studio_view-ilt {
+        .wrapper-comp-settings {
+          .list-input {
+            .field {
+              &:first-child {
+                @include question-mark-in-first-line();
+              }
+              #xb-field-edit-has_score {
+                display: none;
+              }
+            }
+            .tip {
+              display: $tip-visibility;
+            }
+          }
+          .xblock-actions {
+            border-top: 1px solid $editor-border-color;
+          }
+
+        }
+      }
+      .xblock-studio_view-externality {
+         .wrapper-comp-settings {
+           .xblock-actions {
+             border-top: 1px solid $editor-border-color;
+           }
+
+         }
+      }
+      .xblock-studio_view-word_cloud,
+      .xblock-studio_view-discussion {
+        .wrapper-comp-settings {
+          .list-input .field {
+            &:first-child {
+              @include question-mark-in-first-line;
+            }
+            >.tip {
+              display: $tip-visibility;
+            }
+          }
+          .xblock-actions {
+            border-top: 1px solid $editor-border-color;
+          }
+        }
+      }
+
+      // set fixed height for modal content
+      //.xblock-studio_view-word_cloud,
+      .xblock-studio_view-ilt,
+      .xblock-studio_view-survey,
+      .xblock-studio_view-poll,
+      .xblock-studio_view-discussion,
+      .xblock-studio_view-scormxblock {
+        //>.editor-with-buttons .editor-with-buttons {
+          .list-input.settings-list {
+            height: $list-input-height;
+          }
+        //}
+      }
+
+      .xblock-studio_view-problem {
+        .editor-with-tabs {
+          .editor-tabs {
+            width: 100%;
+            padding: 0 30px;
+            box-sizing: border-box;
+          }
+
+          .tabs-wrapper {
+            .wrapper-comp-editor.visual-editor {
+              .editor {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                height: 100%;
+                margin: 0 30px;
+                padding-bottom: 100px;
+                box-sizing: border-box;
+              }
+              .editor-content {
+                overflow-y: auto;
+
+                .question-wrapper {
+                  margin-bottom: 30px;
+                  padding: 10px 30px;
+                  border: 2px solid $fds-global-color-neutral-5;
+                  border-radius: 10px;
+
+                  legend {
+                    width: 100%;
+                    font-size: 12px;
+                    line-height: 50px;
+                    color: $fds-global-color-neutral-140;
+                    border-bottom: 1px solid rgba($fds-global-color-neutral-140, 0.2);
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    i {
+                      font-size: 20px;
+                      color: $triboo-color-brand-primary;
+                    }
+                  }
+
+                  .question .field {
+                    display: flex;
+                    align-items: flex-start;
+                    margin: 20px 0;
+
+                    label {
+                      font-size: 16px;
+                      flex-basis: 40%;
+                    }
+
+                    .setting {
+                      flex: 1;
+                      display: flex;
+
+                      input,
+                      textarea,
+                      .tox-tinymce {
+                        border-radius: 3px;
+                        font-size: 14px;
+                        background-color: $white;
+                        border: 1px solid $grey10;
+                        box-sizing: border-box;
+                        box-shadow: $fds-global-shadow-xs;
+                        color: $fds-global-color-neutral-140;
+                        flex: 1;
+                      }
+
+                      input {
+                        padding: 8px 12px;
+                        &::placeholder {
+                          color: $fds-global-color-neutral-140;
+                        }
+                      }
+
+                      textarea {
+                        height: 200px;
+                      }
+
+                      .choice {
+                        display: flex;
+                        align-items: center;
+                        &:not(:last-of-type) {
+                          margin-bottom: 10px;
+                        }
+
+                        .input-wrapper {
+                          flex: 1;
+                          position: relative;
+
+                          input {
+                            width: 100%;
+                          }
+                        }
+
+                        .delete {
+                          position: absolute;
+                          border: none;
+                          right: 5px;
+                          top: 50%;
+                          transform: translateY(-50%);
+                          opacity: 0;
+                          will-change: opacity;
+                          transition: all 0.2s ease;
+                        }
+
+                        &:hover .delete,
+                        .delete:hover {
+                          opacity: 1;
+                        }
+                      }
+
+                      .select {
+                        border-radius: 100%;
+                        width: 20px;
+                        height: 20px;
+                        margin: 0 10px 0 0;
+                        border: 1px solid $fds-global-color-neutral-140;
+                        background: $white;
+                        position: relative;
+                        order: -1;
+                        &.hidden {
+                          visibility: hidden;
+                          display: none;
+                        }
+                        &.selected {
+                          border-color: $triboo-color-brand-primary;
+                        }
+
+                        &::after {
+                          content: "";
+                          position: absolute;
+                          top: 50%;
+                          left: 50%;
+                          transform: translate(-50%, -50%);
+                          width: 12px;
+                          height: 12px;
+                          border-radius: 100%;
+                        }
+
+                        &:hover::after {
+                          background: $fds-global-color-neutral-140;
+                        }
+                        &.selected::after {
+                          background: $triboo-color-brand-primary;
+                        }
+                      }
+                    }
+
+                    &.field-single-choice,
+                    &.field-multiple-choice,
+                    &.field-string {
+                      .setting {
+                        flex-direction: column;
+                      }
+                    }
+
+                    &.field-single-choice,
+                    &.field-multiple-choice {
+                      label {
+                        position: relative;
+
+                        .label-sub {
+                          position: absolute;
+                          left: 0;
+                          top: 100%;
+                          color: $fds-global-color-neutral-70;
+                        }
+                      }
+                    }
+
+                    &.field-multiple-choice .select {
+                      border-radius: 4px;
+
+                      &:hover::after,
+                      &.selected::after {
+                        border-radius: 2px;
+                        background: none;
+                        width: 8px;
+                        height: 5px;
+                        border: 2px solid $fds-global-color-neutral-140;
+                        border-top: none;
+                        border-right: none;
+                        transform: rotate(315deg) translate(0px, -100%);
+                      }
+
+                      &.selected::after {
+                        border-color: $triboo-color-brand-primary;
+                      }
+                    }
+
+                    &.field-number .setting {
+                      align-items: center;
+                      gap: 5px;
+
+                      input {
+                        flex-basis: 100px;
+                        flex-grow: 0;
+                      }
+                    }
+                  }
+                }
+
+              }
+            }
+
+            .wrapper-comp-editor.markdown-editor {
+              .editor {
+                margin: 0 30px;
+              }
+            }
+
+            .wrapper-comp-editor .editor.xml,
+            .wrapper-comp-editor.advanced-editor {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100%;
+
+              .editor-header {
+                margin: 0 30%;
+
+                h2 {
+                  margin-bottom: 0.5em;
+                  font-weight: bold;
+                  font-size: 16px;
+                  color: $black;
+                }
+
+                p {
+                  font-size: 14px;
+                  color: $fds-global-color-neutral-140;
+                }
+
+                button {
+                  @include pale-primary-small-button();
+                }
+              }
+            }
+
+            .wrapper-comp-editor.advanced-editor {
+              .xml-box {
+                display: none;
+              }
+            }
+          }
+
+          .editor-bar {
+            border-top: 2px solid rgba($fds-global-color-neutral-140, 0.2);
+            position: absolute;
+          }
+        }
+      }
+
+      .xblock-studio_view-word_cloud {
+        .wrapper-comp-settings {
+          >h4 {
+            display: none;
+          }
+          .list-input.settings-list {
+            height: 100%;
+
+            .field {
+              .wrapper-comp-setting {
+                select[name="Show Percents"] {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
+      }
+      // it has been moved to cms/static/sass/_xblock-drag-and-drop.scss
+      // .xblock-studio_view-drag-and-drop-v2 {}
+      .xblock-studio_view-discussion {
+        .xblock-actions {
+          box-sizing: border-box;
+        }
+      }
+      .xblock-studio_view-survey,
+      .xblock-studio_view-poll {
+        form {
+          .list-input {
+            .field {
+              @include tip();
+              .setting-label,
+              h2 label {
+                @include label();
+                -webkit-font-smoothing: antialiased;
+              }
+
+              &:not(.poll-answer-studio-item):not(.poll-question-studio-item) {
+                .tip {
+                  display: $tip-visibility;
+                }
+              }
+
+              &.high-field {
+                .setting-label {
+                  vertical-align: top;
+                  small {
+                    font-size: 14px;
+                    color: $fds-global-color-neutral-100;
+                  }
+                }
+              }
+
+              .setting-input-wrapper {
+                display: inline-flex;
+                width: auto !important;
+                vertical-align: middle;
+                #poll-question-editor,
+                #poll-feedback-editor {
+                  margin: 0;
+                  width: 430px;
+                }
+                .question-mark-wrapper {
+                  margin-left: 10px;
+                }
+              }
+              .tip {
+                @include tip();
+              }
+              .warning {
+                background: $triboo-color-tag-light-bg-yellow;
+                border-radius: 5px;
+                font-size: 14px;
+                color: $triboo-color-tag-light-fg-yellow;
+                opacity: 0.97;
+                padding: 25px 30px;
+                -webkit-font-smoothing: antialiased;
+                strong {
+                  display: none;
+                }
+              }
+              .question, .answer {
+                padding: 10px 20px 30px;
+                border: 2px solid $fds-global-color-neutral-5;
+                border-right: 12px solid $fds-global-color-neutral-5;
+                border-radius: $default-border-radius;
+                position: relative;
+                .header {
+                  display: flex;
+                  align-items: center;
+                  height: 40px;
+                  justify-content: space-between;
+                  border-bottom: 1px solid $editor-border-color;
+                  h5 {
+                    display: inline-block;
+                    font-weight: 600;
+                    font-size: 12px;
+                    color: $fds-global-color-neutral-140;
+                  }
+                  i {
+                    margin-top: 0;
+                    font-size: 14px;
+                  }
+                }
+                ul {
+                  margin-top: 20px;
+                  li {
+                    margin-top: 10px;
+                  }
+                }
+                .tip {
+                  font-size: 14px;
+                  color: rgba(114, 114, 114, 0.8);
+                  margin-top: 10px;
+                }
+                .header {
+                  .poll-delete-answer {
+                    cursor: pointer;
+                    &:hover {
+                      color: $triboo-color-brand-primary;
+                    }
+                  }
+                }
+                .actions {
+                  position: absolute;
+                  right: 20px;
+                  top: 70px;
+                  .poll-move {
+                    button {
+                      @include framed-small-button();
+                      display: block;
+                      background-color: transparent;
+                    }
+                    .poll-move-down {
+                      margin-top: 10px;
+                    }
+                  }
+                }
+              }
+              .wrapper-comp-setting {
+                .question-mark-wrapper {
+                  vertical-align: middle;
+                }
+              }
+              &.poll-answer-studio-item {
+                .wrapper-comp-setting {
+                  .setting-input {
+                    margin-bottom: 5px;
+                  }
+                }
+
+              }
+              #poll-question-editor-container,
+              #poll-feedback-editor-container {
+                text-align: left;
+              }
+            }
+            select.setting-input {
+              @include select();
+              vertical-align: middle;
+            }
+
+            #poll-feedback-editor,
+            #poll-question-editor,
+            textarea, input[type=number],
+            input[type=text] {
+              box-shadow: none;
+              @include form-text-box();
+              &:focus {
+                outline: none;
+              }
+            }
+          }
+          .appending-actions {
+            .action-item:not(:first-child) {
+              margin-top: 10px;
+            }
+            a {
+              display: inline-block;
+              width: 100%;
+              height: 44px;
+              background: $fds-global-color-neutral-5;
+              border-radius: 5px;
+              color: $triboo-color-fg-neutral;
+              padding: 0 20px;
+              box-sizing: border-box;
+              &:hover {
+                text-shadow: none;
+                color: $triboo-color-brand-primary;
+              }
+              >* {
+                vertical-align: middle;
+              }
+
+              i {
+                font-size: 14px;
+              }
+              span {
+                font-size: 12px;
+                font-weight: 600;
+                line-height: 44px;
+                margin-left: 10px;
+              }
+            }
+
+          }
+          .xblock-actions {
+            box-sizing: border-box;
+            background-color: $white;
+            border-top: 1px solid $editor-border-color;
+          }
+        }
+
+      }
+      .xblock-studio_view-html {
+        .wrapper-comp-editor {
+          border-top: none;
+          box-sizing: border-box;
+          .html-editor .row .tox-tinymce {
+            border: none;
+            +.edit-box +.CodeMirror {
+              display: none;
+            }
+          }
+        }
+        .wrapper-comp-settings {
+          .wrapper-comp-setting-text {
+            .setting-label {
+              @include label();
+              -webkit-font-smoothing: antialiased;
+            }
+            .setting-text {
+              margin-top: 15px;
+              font-size: 14px;
+              color: $triboo-color-fg-neutral;
+              display: block;
+            }
+          }
+          .list-input .field {
+            &:first-child {
+              @include question-mark-in-first-line();
+            }
+            &:nth-of-type(2) {
+              .question-mark-wrapper .icon-question .after {
+                width: 260px;
+              }
+            }
+          }
+
+        }
+
+      }
+      //xblock xblock-studio_view
+
+      div .wrapper-modal-window-assetupload {
+        .modal-type-generic {
+          width: 600px !important;
+          .assetupload-modal {
+            @include assets-upload-modal();
+
+            .modal-header {
+              @include modal-header();
+            }
+            .modal-tab-modes {
+              display: none;
+            }
+            .modal-content {
+              height: 200px !important;
+              padding: 0 15px;
+            }
+            .modal-actions {
+              @include modal-footer();
+            }
+          }
+
+        }
+      }
+      //xmodule_edit xmodule_VideoDescriptor xblock-initialized
+      .xblock-studio_view-scormxblock {
+        >.editor-with-buttons .editor-with-buttons {
+          .list-input {
+            //height: $list-input-height;
+
+            .field {
+              .wrapper-comp-setting {
+                label {
+                  @include label();
+                  width: 160px;
+                }
+                select {
+                  @include select;
+                }
+                input[type=text], input[type=number], input[type=file] {
+                  @include form-text-box;
+                }
+                +.tip {
+                  @include tip;
+                }
+                .question-mark-wrapper,
+                .switcher-wrapper >div {
+                  vertical-align: middle;
+                }
+              }
+              &.comp-setting-entry {
+                opacity: 1;
+              }
+
+              &[data-field-name="scorm_pkg"],
+              &[data-field-name="cover_image"] {
+                .field-file-control-wrapper {
+                  box-shadow: none;
+                  border: 1px dashed $fds-global-color-neutral-100;
+                  border-radius: 4px;
+                  display: inline-block;
+                  padding: 15px 20px;
+
+                  input[type=file] {
+                    display: none;
+                  }
+                  .dangerous, .normal, .browse {
+                    font-weight: 600;
+                    font-size: 16px;
+                  }
+                  .dangerous {
+                    color: $triboo-color-brand-primary;
+                  }
+                  .normal {
+                    color: $black;
+                  }
+                  .browse {
+                    @include primary-small-button();
+                    width: auto;
+                    font-weight: 600;
+                  }
+                  .info {
+                    font-size: 12px;
+                    color: $fds-global-color-neutral-100;
+                    margin-left: 10px;
+                    vertical-align: middle;
+                    max-width: 280px;
+                    display: inline-block;
+                  }
+                }
+
+                .wrapper-comp-setting + .tip {
+                  display: inline-block;
+                  margin-left: 170px;
+                }
+              }
+
+              &[data-field-name="has_score"] {
+                &[data-value="false"] {
+                  + .field {
+                    display: none;
+                  }
+                }
+              }
+
+              &:has(.ds-switch):not(:first-child)::before {
+                content: '';
+                display: block;
+                width: 100%;
+                margin-bottom: $baseline * 2;
+                border-top: 2px solid rgba($triboo-color-fg-neutral, 0.2);
+              }
+
+              .setting-description {
+                position: absolute;
+                @include left(170px);
+                top: 100%;
+                font-size: 10px;
+                color: $triboo-color-fg-neutral;
+              }
+
+              .setting-preview {
+                margin-top: 40px;
+                @include margin-left(170px);
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+
+                img {
+                  aspect-ratio: 965 / 270;
+                  width: 100%;
+                  height: auto;
+                  border-radius: 4px;
+                  box-shadow: $fds-global-shadow-xs;
+                  flex-basis: calc(50% - 10px);
+
+                  &.value {
+                    width: calc(100% - 10px);
+                  }
+                }
+
+                .option-wrapper {
+                  flex-basis: calc(50% - 10px);
+                  position: relative;
+
+                  .icon {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    transform: translate(50%, -50%);
+                    color: $grey35;
+                    background: $white;
+                    border-radius: 100%;
+                    font-size: 20px;
+                  }
+                  .icon--active {
+                    display: none;
+                    color: $green;
+                  }
+
+                  .option.active {
+                    ~ .icon {
+                      display: none;
+                    }
+                    ~ .icon--active {
+                      display: block;
+                    }
+                  }
+                }
+              }
+
+              &[data-field-name="open_new_tab"],
+              &[data-field-name="has_score"],
+              &[data-field-name="scorm_allow_rescore"] {
+                select, .setting-clear {
+                  display: none;
+                }
+              }
+
+              .icon-question .after {
+                width: max-content;
+                max-width: 200px;
+                padding: 8px 16px;
+              }
+            }
+
+          }
+          .xblock-actions {
+            @include modal-footer();
+            box-sizing: border-box;
+            background-color: $white;
+            border-top: 1px solid lightgrey !important;
+          }
+
+        }
+      }
+
+      //.xblock-visibility_view-poll
+      .xblock-visibility_view {
+        form >.modal-section {
+          .modal-section-title {
+            border-bottom: 0;
+            .current-visibility-title {
+              @include label;
+            }
+          }
+          .modal-section-content {
+            label {
+              @include label;
+              select {
+                @include select;
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
+
+.xblock-studio_view-problem .editor-with-tabs,
+.xblock.xblock-author_view.xblock-author_view-problem {
+  .editor-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: 1em;
+    background: $white;
+
+    h3 {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0.8em 0;
+    }
+
+    .format-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0;
+
+      li {
+        position: relative;
+        overflow: visible;
+
+        button {
+          background: none;
+          border: 1px solid transparent;
+          border-radius: 5px;
+          padding: 4px 8px;
+          &:hover {
+            background: $triboo-color-brand-primary-0;
+          }
+
+          i {
+            margin-right: 1ch;
+            color: $triboo-color-brand-primary;
+            font-style: normal;
+          }
+        }
+
+        .introduction {
+          opacity: 0;
+          transition: all 0.2s ease;
+          position: absolute;
+          width: 300px;
+          bottom: -16px;
+          left: calc(100% + 8px);
+          background: $grey5;
+          z-index: 1;
+          padding: 24px;
+          box-sizing: border-box;
+          box-shadow: $fds-global-shadow-xs;
+          border-radius: 10px;
+          pointer-events: none;
+
+          &::after {
+            content: "";
+            position: absolute;
+            border-right: 16px solid $grey5;
+            border-top: 16px solid transparent;
+            border-bottom: 16px solid transparent;
+            bottom: 0px;
+            transform: translate(-50%, -50%);
+            left: 0;
+            z-index: 10;
+            padding: 0;
+          }
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+
+          h5 {
+            font-size: 16px;
+            margin: 15px 0 5px;
+          }
+
+          p {
+            font-size: 12px;
+            line-height: 1.6;
+          }
+        }
+
+        &:nth-of-type(4), &:nth-of-type(5) {
+          .introduction {
+            left: unset;
+            right: calc(100% + 8px);
+
+            &::after {
+              border-left: 16px solid $grey5;
+              border-right: none;
+              left: unset;
+              right: 0;
+              transform: translate(50%, -50%);
+            }
+          }
+        }
+
+        &:hover {
+          button {
+            background: $triboo-color-brand-primary-0;
+          }
+          .introduction {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  .problem-editor {
+    &.empty {
+      .editor-bar {
+        top: 0;
+
+        .format-buttons {
+          li {
+            .introduction {
+              top: -16px;
+              bottom: unset;
+
+              &::after {
+                bottom: unset;
+                top: 0px;
+                transform: translate(-50%, 50%);
+              }
+            }
+
+            &:nth-of-type(4), &:nth-of-type(5) {
+              .introduction {
+                &::after {
+                  transform: translate(50%, 50%);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

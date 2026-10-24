@@ -1,0 +1,280 @@
+%csv-file {
+  font-size: 40px;
+  padding-bottom: 26px;
+  font-weight: 300;
+  color: $triboo-color-fg-neutral;
+}
+
+body.view-in-course .instructor-dashboard-wrapper-2 {
+    border: 0 none;
+    box-shadow: none;
+
+    input[type=checkbox]:not(#certificate-regenerating-form input[type=checkbox]) {
+      @include checkbox-generator($checked-color: $triboo-color-brand-primary);
+    }
+
+    input[type=radio]:not(#white-listed-students input[type=radio]) {
+      @extend %radiobox-green;
+    }
+
+    h3, h4, h5 {
+        @extend %big-title;
+    }
+
+    .instructor-dashboard-content-2 {
+      padding: 32px;
+
+      @include side-auto-padding($top-bottom: 30px);
+
+        .instructor-dashboard-title {
+          @extend %big-title;
+          color: $black;
+        }
+
+        .hd-3 {
+          @extend %big-title;
+
+          font-size: 18px;
+          font-weight: 600;
+          color: $black;
+        }
+
+      .instructor-dashboard-warning {
+        margin-bottom: 20px;
+        padding: 20px 40px;
+        background-color: $triboo-color-tag-light-bg-yellow;
+        border-radius: 5px;
+        color: $triboo-color-tag-light-fg-yellow;
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+
+    .instructor-dashboard-content-wrapper {
+      background: $grey3;
+      box-shadow: none;
+      padding: 17px 0;
+
+      .instructor-nav .nav-item {
+        .btn-link {
+
+        }
+      }
+
+        .instructor-nav {
+            display: inline-block;
+            border-bottom: $fds-global-border-width;
+
+              .nav-item {
+                @include media-down($md) {
+                  padding-bottom: 10px;
+                }
+
+                .btn-link {
+                  padding: 0;
+                  margin-right: 20px;
+                  font-weight: 300;
+                  font-size: 16px;
+                  color: $triboo-color-fg-neutral;
+                  padding-bottom: 3px;
+
+                  &:active, &:hover, &:focus {
+                      @include font-bold();
+                      color: $black;
+                      text-decoration: none !important;
+                      border-bottom: 0;
+                  }
+
+                  &.active-section {
+                      border-bottom: 2px solid $triboo-color-brand-primary;
+                      color: $triboo-color-brand-primary;
+                  }
+                }
+            }
+        }
+
+        .idash-section {
+            h3#header-course_info,
+            h3#header-membership,
+            h3#header-cohort_management,
+            h3#header-discussions_management,
+            h3#header-student_admin,
+            h3#header-data_download,
+            h3#header-open_response_assessment,
+            h3#header-special_exams {
+                display: none;
+            }
+
+            hr {
+                border-top: $fds-global-border-width;
+                width: 100%;
+                margin: 2em auto;
+            }
+
+        }
+    }
+
+    .request-res-section,
+    .request-res-error-section,
+    .results .message,
+    .request-response,
+    .request-response-error {
+      color: $triboo-color-fg-neutral;
+      padding: 10px 10px 10px 50px;
+      text-align: left;
+      font-size: 12px;
+      box-shadow: none;
+      border: 0 none;
+
+      h3 {
+        color: $black !important;
+        text-transform: uppercase;
+        font-size: inherit;
+        font-weight: 600;
+        line-height: initial;
+        margin-bottom: 0;
+      }
+
+      ul {
+        font-size: inherit;
+        line-height: initial;
+        padding: 0;
+      }
+
+      .message-copy {
+        font-size: 12px;
+      }
+    }
+
+    .request-res-section,
+    .results .message.message-confirmation,
+    .request-response.msg.msg-confirm {
+      border-left: 3px solid $green;
+      background: $green25;
+
+      @include media-down($md) {
+        margin-left: 0;
+      }
+
+      &:before {
+        position: relative;
+        left: -30px;
+        width: auto;
+        float: left;
+        color: $green;
+        font-family: $font-awesome;
+        font-size: 14px;
+        content: "\f00c";
+      }
+    }
+
+    .request-res-error-section,
+    .results .message.message-error,
+    .request-response-error {
+      border-left: 3px solid $red;
+      background: $background-grey;
+      color: $black;
+    }
+
+    .running-tasks-container {
+      .no-pending-tasks-message {
+        p {
+          font-style: normal;
+          color: $fds-global-color-neutral-100;
+        }
+      }
+    }
+
+    input[type=text]:not(.ds-search *) {
+      @extend %linner-text-box;
+    }
+}
+
+.proctoring-wrapper {
+  &,
+  .exam-allowances-content,
+  .exam-attempts-content {
+    display: flex;
+    flex-direction: column;
+    gap: $fds-global-space-xs;
+
+    ds-pagination {
+      align-self: flex-end;
+    }
+  }
+
+  .top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h3 {
+      @include typography-body-lg-medium;
+    }
+  }
+
+  .table-wrapper {
+    padding: 1px;
+    overflow-x: auto;
+  }
+
+  table {
+    .remove_allowance,
+    .remove-attempt {
+      color: $fds-global-color-error-40;
+      &:hover, &:active {
+        color: $fds-global-color-error-50;
+      }
+    }
+  }
+}
+
+.modal:has(.modal-header.add-new-allowance) {
+  padding: 0;
+
+  .modal-header {
+    @include typography-body-md-bold;
+    padding: $fds-global-space-md $fds-global-space-xl;
+  }
+
+  .error-response {
+    color: $fds-global-color-error-40;
+    &:empty {
+      display: none;
+    }
+  }
+
+  form {
+    .fields {
+      padding: 0 $fds-global-space-xl $fds-global-space-md;
+      &, .field {
+        display: flex;
+        flex-direction: column;
+        gap: $fds-global-space-xxs;
+      }
+
+      ds-dropdown, .ds-input {
+        width: 100%;
+      }
+      ds-dropdown {
+        z-index: unset;
+        + span {
+          @include typography-body-2xs-regular;
+          color: $fds-global-color-neutral-70;
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: $fds-global-space-md $fds-global-space-xl;
+    border-top: $fds-global-border-width;
+  }
+
+  @include media-down($sm) {
+    width: calc(100vw - #{$fds-global-space-xl} * 2);
+  }
+}

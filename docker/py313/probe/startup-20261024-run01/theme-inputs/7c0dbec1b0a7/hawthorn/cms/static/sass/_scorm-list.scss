@@ -1,0 +1,289 @@
+// studio - views - scorm package list
+// ====================
+
+.scorm-wrapper-assets{
+  padding-top: 30px;
+
+  .assets-library{
+
+    .assets-filters {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 21px;
+
+      .assets-title {
+        margin-top: 12px;
+        margin-bottom: 12px;
+      }
+
+      .searching-field {
+        position: relative;
+
+        .input-wrapper {
+          $icon-size: 16px;
+          $padding-lr: 8px;
+
+          input {
+            width: 243px;
+            height: auto;
+            padding: 12px 24px;
+            font: inherit;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+            color: $triboo-color-fg-neutral;
+            border-radius: 4px;
+            border: 1px solid rgba(114, 114, 114, 0.20);
+            background: var($fds-global-color-neutral-0, $white);
+          }
+
+          i {
+            font-size: $icon-size;
+            color: $fds-global-color-neutral-70;
+            position: absolute;
+            top: 15px;
+            right: 24px;
+          }
+        }
+      }
+    }
+
+    .assets-table{
+      @extend %list-item;
+
+      padding: 0 30px $padding-beside-list;
+      box-sizing: border-box;
+
+      .scorm-row {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+      }
+      .scorm-col {
+        padding: 0 10px 0 0;
+        display: inline-block;
+        float: left;
+      }
+
+      .name-col{
+        width: 50%;
+      }
+
+      .date-col{
+        width: 35%;
+      }
+
+      .actions-col {
+        width: 10%;
+      }
+
+      .js-table-head{
+        display: flex;
+        flex-direction: row;
+
+        .scorm-col{
+          padding: 32px 10px 32px 0;
+          color: $fds-global-color-neutral-140;
+          font-weight: 600;
+          font-family: $font-family-header;
+        }
+
+        .name-col{
+          padding-left: $padding-beside-list-item;
+        }
+
+        button {
+          appearance: none;
+          border: none;
+          background: none;
+          padding: 0;
+          margin: 0;
+          cursor: pointer;
+          outline: none;
+          color: $triboo-color-fg-neutral;
+
+          .col-name {
+            font-family: Open Sans;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+          }
+
+          .fa {
+            width: 12px;
+            height: 12px;
+            margin-left: 8px;
+          }
+        }
+
+        .actions-col {
+          text-align: center;
+        }
+
+
+      }
+      .js-table-body {
+        border: none;
+        box-shadow: none;
+
+        .scorm-row{
+          //border: none;
+          box-sizing: border-box;
+          border: 1px solid $grey5;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: row;
+          padding-left: 30px;
+          margin-bottom: 10px;
+          font-size: 10px;
+          padding: 10px 0px;
+
+          &:first-child{
+            border-top: 1px solid $grey5;
+          }
+
+          &:hover{
+            background-color: transparent !important;
+          }
+
+          &:nth-child(odd){
+            background-color: transparent;
+          }
+
+          &, .date-col{
+            color: $black;
+            font-size: 10px;
+          }
+
+          .name-col{
+            @include list-item-title();
+            font-weight: 400;
+            padding-left: $padding-beside-list-item;
+            -webkit-font-smoothing: antialiased;
+          }
+
+          .actions-col{
+            padding: 0;
+            position: static; //remove
+            align-self: center;
+            text-align: center;
+
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+            .action-icon {
+              font-size: 16px;
+
+              &:hover{
+                + .actions-list{
+                  display: block;
+                }
+              }
+            }
+
+            .actions-list {
+              //@include action-menu-panel();
+              position: static; //remove
+              /*left: 20px;
+              top: 15px;
+              z-index: 30;*/
+              display: inline-block;
+              overflow: hidden;
+              box-shadow: none;
+
+              .action-item  {
+                .action-button {
+                  background-color: transparent;  //remove
+                  color: inherit;  //remove
+                  text-shadow: none;  //remove
+                  &:hover{
+                    color: $triboo-color-brand-primary;
+                    background-color: transparent; //remove
+                  }
+
+                  i {
+                    font-size: 12px;
+                    width: 12px;
+                    height: 12px;
+                    padding: 6px;
+                    border-radius: 4px;
+                    background: var(--neutral-neutral-10, $fds-global-color-neutral-10);
+                  }
+                }
+              }
+
+            }
+          }
+
+          .scorm-row-container {
+            width: 100%;
+            align-items: center;
+            display: flex;
+          }
+
+          .status-col{
+            align-self: center;
+            text-transform: capitalize;
+
+            span{
+              border-radius: 19.5px;
+              padding: 5px 12px;
+              white-space: nowrap;
+              font-weight: 600;
+
+              i{
+                font-size: 8px;
+                margin-right: 5px;
+              }
+            }
+
+            .Unknown {
+              color: $triboo-color-tag-light-fg-orange;
+              background-color: $triboo-color-tag-light-bg-orange;
+            }
+            .Failed {
+              color: $triboo-color-tag-light-fg-red;
+              background-color: $triboo-color-tag-light-bg-red;
+            }
+            .Uploading,
+            .InProgress {
+              color: $triboo-color-tag-light-fg-yellow;
+              background-color: $triboo-color-tag-light-bg-yellow;
+            }
+            .Uploaded,.Imported,
+            .Ready {
+              background: $triboo-color-tag-light-bg-green;
+              color: $triboo-color-tag-light-fg-green;
+            }
+          }
+        }
+      }
+
+      .row {
+        margin-top: 30px;
+        .result-count-wrapper {
+            padding-right: 1rem;
+            padding-bottom: 1rem;
+            font-size: 16px;
+            span {
+              color: $fds-global-color-neutral-170;
+              margin-left: 8px;
+            }
+        }
+      }
+
+      .scorm-head-col{
+        background-color: transparent;
+      }
+
+      .no-content {
+        @include no-content();
+        padding: 30px 0 0;
+        padding-bottom: 0;
+        text-align: center;
+      }
+    }
+  }
+}

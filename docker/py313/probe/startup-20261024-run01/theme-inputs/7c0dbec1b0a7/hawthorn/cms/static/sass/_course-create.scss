@@ -1,0 +1,122 @@
+// studio - views - course creation page
+// ====================
+
+.view-course-create {
+
+  // course re-run form
+  // --------------------
+  .rerun-course {
+
+    .rerun-course-save {
+      @extend %btn-primary-primary
+    }
+
+    .rerun-course-cancel {
+      @extend %btn-secondary-light-gray
+    }
+
+
+    // NOTE: override for modern button styling until all buttons (in _forms.scss) can be converted
+    .actions {
+      .action-primary {
+        @extend %btn-primary-primary
+      }
+
+      .action-secondary {
+        @extend %btn-secondary-light-gray
+      }
+    }
+  }
+
+  #main {
+    padding-bottom: 0;
+  }
+
+  .wrapper-mast {
+    .page-header span {
+      font-weight: 600;
+      font-size: 24px;
+      color: $black;
+
+    }
+    .nav-actions {
+
+    }
+    .page-header-super {
+      display: flex;
+
+      .course-original-title-id {
+        margin-left: 10px;
+        font-size: 14px;
+        font-weight: 400;
+        color: grey;
+      }
+      .course-original-title {
+        font-size: 18px;
+        line-height: normal;
+      }
+
+    }
+  }
+
+  .content-primary {
+    width: 70%;
+    margin-right: 6%;
+
+    .introduction {
+      display: none;
+    }
+
+    .form-create {
+      .wrapper-form {
+        padding-top: 10px;
+        .list-input .field {
+          >label {
+            font-size: 16px;
+            &:after {
+              content: '';
+            }
+          }
+          input {
+            margin-top: 0;
+          }
+
+          &:not(:first-child) {
+            margin-top: 25px;
+          }
+        }
+
+
+        fieldset {
+          @include fieldset();
+        }
+      }
+
+      .actions {
+        @include form-actions();
+        text-align: right;
+        margin-top: 0;
+        padding: 5px 30px 20px;
+
+        .action-primary {
+          margin-left: 5px;
+          &.is-disabled {
+            box-shadow: none;
+          }
+        }
+
+
+      }
+
+    }
+  }
+
+  .content-supplementary {
+    @include content-supplementary();
+
+    .bit {
+      padding-bottom: 0;
+    }
+  }
+
+}

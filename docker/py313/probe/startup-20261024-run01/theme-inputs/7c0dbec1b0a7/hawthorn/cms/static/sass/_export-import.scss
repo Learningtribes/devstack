@@ -1,0 +1,288 @@
+// studio - views - course import
+// ====================
+
+%clean-ui-window {
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+  border: none;
+  background: transparent;
+
+  // STATE: hover/active
+  &:hover,
+  &:active {
+    box-shadow: none;
+  }
+}
+
+.view-export,
+.view-import {
+  .export-controls .action-export,
+  .action-choose-file {
+    display: block;
+  }
+
+  .illustration-intro-controls {
+    display: flex;
+    justify-content: flex-end;
+
+    .illustration {
+      flex: 1;
+      width: 40%;
+
+      img {
+        width: 100%;
+        @include margin-left(-40px);
+        max-height: 600px;
+        object-fit: cover;
+      }
+    }
+
+    .intro-controls {
+      //flex: 0.5;
+      margin-left: 2%;
+      width: 460px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .introduction {
+        .title {
+          width: auto;
+          height: auto;
+          position: static;
+
+          font-weight: 600;
+          font-size: 36px;
+          font-family: $font-family-header;
+          color: $black;
+          line-height: normal;
+
+          &:nth-of-type(2) {
+            display: none;
+          }
+        }
+        .copy {
+          margin-top: 20px;
+          p {
+            font-size: 16px;
+            color: $triboo-color-fg-neutral;
+            &:first-child {
+              margin-bottom: 20px;
+            }
+          }
+        }
+      }
+      %import-export-button {
+        @include primary-medium-button();
+        padding: 12px 26px;
+        margin: 0;
+      }
+      .export-controls {
+        padding: 0;
+        margin-top: 30px;
+        .list-actions {
+          .item-action {
+            a {
+              @extend %import-export-button;
+            }
+          }
+        }
+
+      }
+      .import-form {
+        padding: 0;
+        margin-top: 30px;
+        .action-choose-file {
+          @extend %import-export-button;
+          display: inline-block;
+        }
+        .comment {
+          margin-top: 10px;
+          font-size: 12px;
+          color: $triboo-color-fg-neutral;
+        }
+        .wrapper-file-name {
+          box-shadow: none;
+
+        }
+      }
+    }
+
+  }
+
+  .wrapper-mast {
+    display: none;
+  }
+
+  .content {
+    margin-top: 30px;
+
+    .wrapper-status {
+      // elem - progress list
+      >.title {
+        font-weight: 600;
+        font-size: 24px;
+        color: $black;
+        border-bottom: none;
+      }
+      .list-progress {
+        @include list-item();
+        padding-top: 25px;
+        padding-bottom: 15px;
+
+        .item-progresspoint {
+          border-bottom: none;
+          position: relative;
+          margin-bottom: 0;
+
+          &:not(:last-child) {
+            padding-bottom: 110px;
+            &:after {
+              display: block;
+              width: 0px;
+              border-right: 3px dashed rgba(114, 114, 114, 0.5);
+              left: 33px;
+              position: absolute;
+              top: 30px;
+              bottom: 3px;
+            }
+          }
+
+          &.has-error .fa-circle {
+            visibility: hidden;
+            opacity: 0;
+          }
+          .status-visual {
+            >.icon {
+              line-height: normal;
+              background-color: rgba(41, 203, 151, 0.5);
+              padding: 5px;
+              border-radius: 25px;
+              top: 0;
+              &:before {
+                display: block;
+                color: $green;
+              }
+            }
+          }
+          .status-detail {
+            .title,.copy {
+              float: none;
+            }
+            .title {
+              font-weight: 600;
+              font-size: 18px;
+              //color: $black;
+              color: $triboo-color-fg-neutral;
+            }
+            .copy {
+              font-size: 16px;
+              color: $triboo-color-fg-neutral;
+              margin-top: 5px;
+            }
+            .list-actions .item-action {
+              text-align: right;
+            }
+          }
+
+          // STATE: completed
+          &.is-complete {
+            .icon {
+              color: $triboo-color-fg-neutral;
+            }
+
+            .status-detail {
+              .title {
+                color: $black;
+                font-weight: 600;
+                font-size: 18px;
+              }
+              .copy {
+                font-size: 16px;
+                color: $triboo-color-fg-neutral;
+                word-break: break-all;
+              }
+            }
+
+            .list-actions {
+              display: block;
+            }
+          }
+
+        }
+      }
+    }
+
+    .content-primary {
+      width: 60%;
+      @include margin-right(6.1%);
+
+      .list-actions {
+        margin-top: 23px;
+        .item-action {
+          text-align: right;
+          a {
+            @include primary-medium-button();
+            padding: 12px 46px;
+          }
+        }
+      }
+    }
+    .content-supplementary {
+      width: 33%;
+      padding-top: 65px;
+
+      .bit {
+        border-bottom: none;
+        h3 {
+          font-weight: 600;
+          font-size: 16px;
+          color: $black;
+          margin-bottom: 16px;
+        }
+        p {
+          font-size: 14px;
+          color: $triboo-color-fg-neutral;
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+        .title-not-exported {
+
+        }
+        ul {
+          list-style: disc;
+          line-height: 23px;
+          margin-top: 2px;
+          list-style-position: initial; //remove
+          padding-left: 20px;
+
+          &:first-of-type {
+            padding-bottom: 10px;
+          }
+        }
+      }
+      .external-help {
+        display: none;
+      }
+    }
+
+    .export-contents {
+      display: none;
+    }
+  }
+  // UI: upload progress
+
+}
+
+.view-import {
+  .illustration-intro-controls .illustration img {
+    max-height: none;
+    height: 700px;
+  }
+}
+
+.view-export .export-controls,
+.view-import .import-form {
+  @extend %clean-ui-window;
+}

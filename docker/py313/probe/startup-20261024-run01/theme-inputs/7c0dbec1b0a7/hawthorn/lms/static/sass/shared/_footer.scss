@@ -1,0 +1,298 @@
+.wrapper-footer {
+  box-shadow: none !important;
+  border-top: 0 !important;
+  background: $white;
+  padding: 30px 0 0 !important;
+  font-size: 12px;
+
+  @include media-breakpoint-up(md) {
+    padding: 90px 0 0;
+  }
+
+  footer .copyright {
+
+  }
+
+  footer#footer-openedx,
+  .copyright-wrapper {
+    padding: 0 20px 0;
+
+    @include media-breakpoint-up(md) {
+      padding: 0 $content-side-padding 0;
+    }
+
+    .copyright {
+      @include media-down($sm) {
+        color: $black;
+        font-size: 12px;
+        padding: 0;
+      }
+    }
+
+    a {
+      @include hyper-link($color: $black);
+    }
+  }
+
+  footer#footer-openedx {
+    margin: 0;
+    max-width: initial;
+
+    @include media-breakpoint-up(md) {
+      padding-bottom: 10px;
+    }
+
+    .colophon {
+      float: none;
+      width: auto;
+      display: flex;
+      flex-direction: column;
+
+      @include media-breakpoint-up(md) {
+        flex-direction: row;
+      }
+
+      > * {
+        @include media-breakpoint-up(md) {
+          flex: 0.25;
+
+          &:not(.footer-language-selector) {
+            padding-right: 60px;
+          }
+        }
+      }
+
+      .wrapper-logo {
+        margin: 0;
+        padding-bottom: 20px;
+
+        @include media-down($sm) {
+          order: 2;
+          display: flex;
+          justify-content: flex-start;
+        }
+
+        figure {
+          .logo-triboo {
+            max-width: 100px;
+            padding-bottom: 13px;
+
+            @include media-down($sm) {
+              margin: 0 auto;
+              display: block;
+            }
+          }
+
+          figcaption {
+            //font-size: 14px;
+            display: block;
+            padding-bottom: 4px;
+            line-height: 22px;
+          }
+        }
+      }
+
+      nav {
+        padding-bottom: 20px;
+
+        h6 {
+          font-weight: 700;
+          font-family: $font-family-default;
+          padding-bottom: 10px;
+          font-size: 12px;
+        }
+
+        li {
+          line-height: 30px;
+        }
+
+        .submenu-item {
+          text-indent: 14px;
+        }
+      }
+
+      .nav-colophon {
+        margin: 0;
+        padding-bottom: 20px;
+
+        @include media-down($sm) {
+          order: 3;
+        }
+
+        li {
+          float: none;
+          margin-right: auto;
+          box-shadow: none;
+
+          a {
+            &:hover,
+            &:focus,
+            &:active {
+              color: $link-color;
+            }
+          }
+
+        }
+      }
+
+      .nav-other-systems {
+        padding-bottom: 10px;
+
+        @include media-down($sm) {
+          order: 4;
+        }
+
+        li {
+          box-shadow: none;
+        }
+      }
+
+      .footer-language-selector {
+        padding-bottom: 20px;
+
+        @include media-down($sm) {
+          order: 9;
+          padding-bottom: 40px;
+        }
+      }
+    }
+
+    .logo-triboo {
+      max-width: 110px;
+    }
+
+
+    nav {
+      h6 {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .copyright-wrapper {
+    box-sizing: border-box;
+    border-top: 2px solid $grey10;
+    background-color: $triboo-color-brand-primary;
+
+    .copyright {
+      padding: 15px 0;
+      color: $white;
+
+      @include media-down($sm) {
+        text-align: center;
+      }
+
+      a {
+        @include hyper-link($color: $black);
+      }
+    }
+
+  }
+
+  /* The container must be positioned relative: */
+  .footer-language-selector {
+    position: relative;
+
+    @include media-down($sm) {
+        width: 248px;
+    }
+
+    select {
+      display: none; /*hide original SELECT element: */
+    }
+
+    .select-selected {
+      @extend %form-text-box;
+
+      border-radius: 3px;
+      border: 1px solid $fds-global-color-neutral-40;
+      box-shadow: unset;
+      border-color: $fds-global-color-neutral-40 !important;
+
+      @include media-down($sm) {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+      }
+
+      i {
+        font-size: 1.5em;
+        @include padding-right(0.5em);
+        vertical-align: middle;
+        max-width: 1.5em;
+      }
+    }
+
+    /* Style the arrow inside the select element: */
+    .select-selected:after {
+      font-family: $font-awesome;
+      position: absolute;
+      content: "\f107";
+      top: 10px;
+      @include right(10px);
+      width: auto;
+      height: 0;
+      border-color: $black transparent transparent transparent;
+    }
+
+    /* Point the arrow upwards when the select box is open (active): */
+    .select-selected.select-arrow-active:after {
+      content: "\f106";
+    }
+
+    /* style the items (options), including the selected item: */
+    .select-items li, .select-selected {
+      color: $black;
+      padding: 8px 16px;
+      border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+      cursor: pointer;
+    }
+
+    /* Style items (options): */
+    .select-items {
+      @extend %list-item;
+
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      margin: 0;
+      padding: 0;
+
+      li {
+        list-style: none;
+
+        span {
+          @include padding-left(2.2em);
+        }
+      }
+
+      > li:not(:last-child) {
+        border-bottom: 1px solid $grey10;
+      }
+    }
+
+    /* Hide the items when the select box is closed: */
+    .select-hide {
+      display: none;
+    }
+
+    .select-items li:hover, .same-as-selected {
+      background-color: rgba(0, 0, 0, 0.1);
+
+      span {
+        padding-left: 2.2em;
+      }
+    }
+
+    .select-items li:last-child:hover,
+    .select-items li:last-child.same-as-selected {
+      border-bottom-left-radius: $default-border-radius;
+      border-bottom-right-radius: $default-border-radius;
+    }
+
+  }
+
+}

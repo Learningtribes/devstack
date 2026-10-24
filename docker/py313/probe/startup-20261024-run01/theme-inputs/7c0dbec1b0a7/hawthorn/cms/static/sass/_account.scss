@@ -1,0 +1,256 @@
+// studio - views - sign up/in
+// ====================
+
+.view-signin,
+.view-signup {
+  #main {
+    position: relative;
+  }
+}
+
+.view-signup,
+.view-util {
+
+  min-width: auto;
+
+  #main {
+    padding-bottom: 0;
+  }
+
+  .wrapper-content {
+    margin: 0;
+    padding: 0;
+  }
+
+  .content {
+    max-width: none;
+    min-width: auto;
+    display: flex;
+    font-size: 14px;
+
+    .message-status {
+      border-bottom: 0;
+      border-color: transparent;
+    }
+
+    .introduction {
+      margin: 0;
+    }
+
+    header {
+
+      h1 {
+        //@extend %font-header;
+      }
+
+    }
+
+    aside {
+      display: block;
+      float: left;
+      // width: 60%;
+      flex: 60%;
+
+      @media (max-width: $sm) {
+        display: none;
+      }
+
+      figure {
+        position: relative;
+
+        img {
+          display: block;
+          object-fit: cover;
+          width: 100%;
+          height: 100vh;
+        }
+      }
+    }
+
+    article {
+      float: inherit;
+      // width: 40%;
+      flex: 40%;
+      display: block;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      overflow-y: auto;
+      height: 100vh;
+      min-width: auto;
+
+      > * {
+        max-width: 43rem;
+        text-align: center;
+      }
+
+
+      form {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 450px;
+        margin: 0 auto;
+        height: 90%;
+
+        figure {
+          padding-bottom: 40px;
+
+          img {
+            max-width: 21rem;
+            padding-bottom: 23px;
+          }
+
+          figcaption {
+            color: $fds-global-color-neutral-100;
+            font-size: 14px;
+            font-weight: 300;
+          }
+        }
+
+        .list-input {
+          .field {
+            margin: 0 0 25px 0;
+
+            label {
+              @extend %label;
+              text-transform: uppercase;
+              text-align: left;
+
+              &.is-focused {
+                color: inherit;
+              }
+            }
+
+            input {
+              font-size: 14px;
+              background-color: transparent !important;
+              background-image: none !important;
+              border: 0;
+              box-shadow: none;
+              border-radius: 0;
+              border-bottom: 1px solid $primary25;
+              padding-top: 0;
+            }
+          }
+
+          .field-group {
+            margin: 0 0 25px 0;
+          }
+
+          #field-username .tip {
+            display: none;
+          }
+
+          #field-tos {
+            text-align: left;
+            padding-left: 8px;
+
+            input[type=checkbox] {
+              @include checkbox-generator($checked-color: $triboo-color-brand-primary);
+
+              + label {
+                font-size: 12px;
+                text-transform: initial;
+
+                &:before {
+                  font-size: 16px;
+                }
+              }
+            }
+
+
+          }
+        }
+
+        .form-actions {
+          text-align: center;
+          padding-bottom: 3px;
+
+          .action-primary {
+            @include primary-big-button();
+            font-weight: 600;
+            font-size: 14px;
+            width: auto;
+
+            &.is-disabled {
+              border-color: $fds-global-color-neutral-100;
+              //@include disabled-button();
+            }
+          }
+        }
+      }
+
+      section {
+        margin: 0 auto;
+
+        a {
+          margin: 0 auto;
+          padding: 10px 20px;
+        }
+      }
+    }
+
+    .logo-motto-and-toggle-form {
+      position: absolute;
+      left: 40px;
+      top: 40px;
+
+      .logo-motto {
+        img {
+          height: 32px;
+          width: auto;
+        }
+
+        h1 {
+          display: none;
+        }
+      }
+
+      figcaption {
+        text-align: center;
+        margin-bottom: 10px !important;
+        width: 60%;
+
+        @include media-down($sm) {
+          width: 100%;
+        }
+
+        a {
+          color: $grey25;
+          font-size: 14px;
+          height: 50px;
+          display: inline-flex;
+          align-items: center;
+          padding: 0 30px;
+
+          &:hover {
+            @include font-bold($color: $grey3);
+            color: $grey3;
+          }
+
+          @include media-down($sm) {
+            color: $fds-global-color-neutral-100;
+
+            &:hover {
+              @include font-bold($color: $triboo-color-fg-neutral);
+              color: $triboo-color-fg-neutral;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .content-primary form {
+    width: 70%;
+  }
+
+}
+
+.view-signup .content article form {
+  flex: 1;
+}

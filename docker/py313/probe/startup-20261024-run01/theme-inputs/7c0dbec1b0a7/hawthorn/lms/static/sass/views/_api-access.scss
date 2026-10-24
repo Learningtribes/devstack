@@ -1,0 +1,104 @@
+// lms - renewal credentials page
+// ================================
+body.view-api-credentials .wrapper-footer footer#footer-openedx .colophon .wrapper-logo {
+  flex: 0.8;
+}
+
+#api-access-wrapper.renew-credentials {
+  padding-top: 80px;
+
+  .api-access-container {
+    padding: 80px;
+
+    .api-access-card {
+      border: 1px solid $grey25;
+      border-radius: 4px;
+      padding: 80px;
+      margin-bottom: 30px;
+      background: $fds-global-color-neutral-0;
+
+      #api-header {
+        @include typography-h5-bold;
+        font-family: $font-family-header;
+        color: $black;
+        text-align: left;
+        padding-bottom: 2px;
+        margin-bottom: 0px;
+      }
+
+      .request-status {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 0;
+        color: $fds-global-color-neutral-170;
+        box-shadow: unset;
+
+        p { margin: 20px 0; }
+
+        .application-row {
+          display: flex;
+          align-items: center;
+
+          .copy-container {
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 1px solid $grey25;
+            border-radius: 4px;
+            justify-content: space-between;
+            width: 65%;
+
+            p {
+              @include typography-body-sm-regular;
+              color: rgba(114, 114, 114, 0.8);
+              overflow: hidden;
+              text-overflow: ellipsis;
+              margin: 0;
+            }
+
+            a {
+              @include hyper-link-header;
+              border-bottom: 0;
+              padding: 0;
+              cursor: pointer;
+              &.active {
+                color: $black;
+                font-weight: 600;
+                border-bottom: 0;
+
+                &:hover {
+                  @include font-bold($color: $black);
+                  &:before {
+                    text-shadow: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .application-label {
+          @include typography-body-sm-medium;
+          margin: 20px 0;
+          width: 120px;
+          font-style: normal;
+          color: $fds-global-color-neutral-170;
+        }
+      }
+    }
+
+    #api-form-fields {
+      padding: 0;
+    }
+  }
+
+  #api-generate-client-submit {
+    @include primary-medium-button();
+    line-height: 22px;
+    padding: 6px 12px;
+    font-weight: 300;
+    justify-content: center;
+  }
+}

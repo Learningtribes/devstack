@@ -1,0 +1,373 @@
+// studio - views - textbooks
+// ====================
+
+.view-textbooks {
+  .wrapper-content {
+    position: static;
+    .content {
+      @include layout();
+    }
+  }
+
+  .content-primary {
+    .textbooks-list {
+      @extend %list-item;
+      padding: $padding-beside-list;
+      min-height: 0;
+      position: relative;
+
+      &.editing-view {
+        min-height: 810px;
+      }
+
+      .header {
+        @include list-header();
+      }
+
+      .body {
+        .no-textbook-content {
+          box-shadow: none;
+          .new-button {
+            display: none;
+          }
+        }
+
+        .textbook {
+          background: $white;
+          border: 1px solid $grey5;
+          border-radius: 10px;
+          position: static;
+
+          &:not(:last-child) {
+            margin-bottom: 20px;
+          }
+
+          .view-textbook {
+            position: relative;
+            padding-left: $padding-beside-list-item;
+            .wrap-textbook {
+              header h3 {
+                @include list-item-title();
+                line-height: 20px;
+                font-weight: 400;
+                word-break: break-word;
+                width: 90%;
+              }
+              p {
+                @include list-item-subtitle();
+                margin-bottom: 0;
+                a span {
+                  line-height: normal;
+                }
+              }
+              ol li {
+                font-size: 10px;
+                &, .chapter-name, .chapter-asset-path {
+                  color: $black;
+                }
+              }
+            }
+
+            .action-icon {
+              @include action-icon();
+
+              position: absolute;
+              top: 50px;
+              right: 40px;
+              font-size: 16px;
+            }
+            .actions {
+              @include action-menu-panel();
+              opacity: 1;
+              right: -45px;
+              z-index: 30;
+              top: 66px;
+
+              .action {
+                display: block;
+                margin-right: 0;
+
+                a:hover {
+                  text-shadow: none;
+                }
+
+                button:focus {
+                    outline: none;
+                    border: none;
+                    box-shadow: none;
+                }
+
+                .view, .edit, .delete {
+                  background: none;
+                  color: black;
+                  border: none;
+                  position: static;
+
+                  @include action-menu-item();
+
+                  &:hover {
+                    box-shadow: none;
+                    background-color: $triboo-color-brand-primary;
+                    color: $white;
+                  }
+
+                  .icon {
+                    margin-right: 6px;
+                  }
+                }
+              }
+
+            }
+
+          }
+
+          .edit-textbook-wrapper {
+            @include dialog($width:90%, $height:920px);
+            top: calc((100% - 810px) / 2);
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 7;
+          }
+          .edit-textbook {
+            @include list-item();
+
+            position: static;
+            width: auto;
+            margin-bottom: 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            .wrapper-form {
+              padding: 20px 40px;
+
+              .message {
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                margin-bottom: 0;
+                border: none;
+
+
+                @include notification();
+                font-weight: 600;
+                font-size: 18px;
+                color: $white;
+                width: 530px;
+                display: block;
+
+                @include symbol-and-copy();
+
+                .feedback-symbol:before {
+                  color: $triboo-color-brand-primary;
+                  font-size: 24px;
+                }
+
+                .copy {
+                  margin: 0;
+                }
+
+                &.error {
+                  background-color: $incorrect;
+                }
+              }
+            }
+
+            .wrapper-close {
+              text-align: right;
+              i {
+                font-size: 24px;
+                cursor: pointer;
+                &:hover {
+                  color: $triboo-color-brand-primary;
+                }
+              }
+            }
+
+            h3 {
+              font-weight: 600;
+              font-size: 24px;
+              color: $black;
+              padding-bottom: 40px;
+              border-bottom: 1px solid rgba(114, 114, 114, 0.2);
+              margin-top: 20px;
+            }
+
+            .chapters-fields,
+            .textbook-fields {
+              .field {
+                label {
+                  padding-bottom: 18px;
+
+                  font-family: $font-family-header;
+                  font-weight: 600;
+                  font-size: 16px;
+                  color: $black;
+                }
+                input[type=text] {
+                  border-radius: 8px;
+                }
+                &.required label:after {
+                  content: '';
+                }
+                .tip {
+                  display: none;
+                }
+              }
+            }
+
+            .textbook-fields {
+              margin-top: 35px;
+              #textbook-name-input {
+                width: 30%;
+              }
+              .field input {
+                display: inline-block;
+                width: auto;
+              }
+              .question-mark-container {
+                display: inline-block;
+                margin-left: 20px;
+              }
+            }
+
+            .chapters-fields {
+              .chapters {
+                padding-bottom: 27px;
+                margin-bottom: 0;
+                padding-bottom: 40px;
+                height: 370px;
+                overflow-y: auto;
+                border-bottom: none;
+
+                .field-group {
+                  margin: 35px 0px 0 0;
+                  display: flex;
+                  flex-direction: row;
+
+                  .field {
+                    margin: 0;
+                    padding: 0;
+                    width: auto;
+
+                    input {
+                      height: auto;
+                    }
+
+                    .chapter-asset-path,
+                    .chapter-name {
+                      width: auto;
+                      display: inline-block;
+                    }
+                    .chapter-name {
+                      width: 80%;
+                    }
+                    .chapter-asset-path {
+                      width: 46%;
+                    }
+                    .action-upload {
+                      @include grey-small-button();
+                      position: static;
+                      margin-left: 10px;
+                      background-color: rgba(114, 114, 114, 0.22);
+                      padding: 6px 20px;
+                      vertical-align: middle;
+                      i {
+                        margin-right: 10px;
+                      }
+                    }
+                    .queation-mark-container {
+                      display: inline-block;
+                      margin-left: 10px;
+                    }
+                  }
+
+                  .field-add-chapter-name {
+                    flex: auto;
+                    white-space: nowrap;
+                  }
+
+                  .field-add-chapter-asset {
+                    width: auto;
+                  }
+
+                  .action-close {
+                    color: $primary25;
+                    margin-top: 52px;
+                    width: 40px;
+
+                    &:hover {
+                      color: $triboo-color-brand-primary;
+                    }
+                  }
+                }
+              }
+
+              .action-add-chapter {
+                border: none;
+                font-size: 14px;
+                color: $black;
+                margin: 0;
+                padding: 27px 0 27px 0;
+                border-top: 1px solid rgba(114, 114, 114, 0.2);
+                border-bottom: 1px solid rgba(114, 114, 114, 0.2);
+                border-radius: 0;
+
+                &:hover {
+                  color: $triboo-color-brand-primary;
+                }
+
+                .icon {
+                  font-size: 27px;
+                  margin-right: 8px;
+                }
+              }
+            }
+
+            .actions {
+              box-shadow: none;
+              border-top: 0;
+              background: transparent;
+              text-align: center;
+              margin-top: 30px;
+
+              .action {
+                width: 200px;
+                justify-content: center;
+              }
+
+              .action-primary {
+                @include primary-big-button()
+              }
+
+              .action-secondary {
+                @include grey-big-button();
+                & {
+                  background-color: $fds-global-color-neutral-100;
+                }
+
+              }
+            }
+          }
+        }
+      }
+
+      .no-content {
+        @include no-content();
+        .new-button {
+          @include margin(10px, 0, 0, 10px);
+        }
+      }
+    }
+  }
+
+  .content-supplementary {
+    @include content-supplementary();
+  }
+
+  .modal-window {
+    @include modal-window();
+  }
+}

@@ -1,0 +1,203 @@
+// Shared layout for the Audience Targeting section of Course and Learning Path settings.
+// Include it inside the element that wraps the section markup.
+@mixin audience-targeting-layout {
+  .audience-targeting-selectors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $fds-global-space-sm;
+    list-style: none;
+    margin: 0 0 $fds-global-space-md;
+    padding: 0;
+
+    > .field {
+      display: flex;
+      align-items: center;
+      gap: $fds-global-space-xs;
+      flex: 1 1 140px;
+      min-width: 140px;
+      margin: 0;
+      padding: 0;
+
+      ds-dropdown {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+    }
+  }
+
+  .audience-targeting-composer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: $fds-global-space-md;
+    box-sizing: border-box;
+    margin: 0 0 $fds-global-space-md;
+    padding: $fds-global-space-md;
+    border: 1px solid $fds-global-color-neutral-20;
+    border-radius: $fds-global-border-radius-md;
+
+    .audience-targeting-summary {
+      display: flex;
+      flex: 1 1 260px;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: $fds-global-space-xs;
+      min-width: 0;
+      font-size: 12px;
+    }
+
+    .audience-targeting-summary-label {
+      color: $fds-global-color-neutral-170;
+    }
+
+    .audience-targeting-summary-values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $fds-global-space-xs;
+
+      .selected-target-labels {
+        display: contents;
+        margin: 0;
+
+        ds-tag {
+          margin: 0;
+        }
+      }
+    }
+
+    .audience-targeting-save-rule,
+    .audience-targeting-save-rule-button {
+      flex: 0 0 auto;
+      margin: 0;
+    }
+  }
+
+  .audience-targeting-rules-title {
+    margin: 0 0 $fds-global-space-sm;
+    font-size: 12px;
+    font-weight: 600;
+    color: $fds-global-color-neutral-170;
+  }
+
+  .audience-targeting-rules {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid $fds-global-color-neutral-20;
+    border-radius: $fds-global-border-radius-md;
+    overflow: hidden;
+
+    > .audience-targeting-rule {
+      margin: 0;
+      padding: $fds-global-space-md;
+    }
+
+    .audience-targeting-rule-group {
+      margin: 0;
+      padding: 0;
+
+      + .audience-targeting-rule-group {
+        border-top: 1px solid $fds-global-color-neutral-20;
+      }
+    }
+
+    .audience-targeting-group-toggle {
+      display: flex;
+      align-items: center;
+      gap: $fds-global-space-xs;
+      width: 100%;
+      margin: 0;
+      padding: $fds-global-space-sm $fds-global-space-md;
+      border: 0;
+      background: $fds-global-color-neutral-5;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: left;
+      color: $fds-global-color-neutral-170;
+      cursor: pointer;
+
+      .audience-targeting-group-caret {
+        font-size: 10px;
+        transition: transform 0.15s ease;
+      }
+    }
+
+    .audience-targeting-rule-group.is-collapsed .audience-targeting-group-caret {
+      transform: rotate(-90deg);
+    }
+
+    .audience-targeting-group-rules {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .audience-targeting-group-rules > .audience-targeting-rule {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $fds-global-space-md;
+      margin: 0;
+      padding: $fds-global-space-sm $fds-global-space-md;
+      border-top: 1px solid $fds-global-color-neutral-20;
+      font-size: 12px;
+      color: $fds-global-color-neutral-170;
+    }
+
+    .audience-targeting-rule-delete {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 28px;
+      height: 28px;
+      margin: 0;
+      border: 1px solid $fds-global-color-neutral-20;
+      border-radius: $fds-global-border-radius-md;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        background: $fds-global-color-neutral-5;
+      }
+    }
+  }
+
+  #field-discoverable-only,
+  .discoverable-only {
+    display: flex;
+    align-items: center;
+    gap: $fds-global-space-sm;
+
+    // Order is checkbox, label, info icon.
+    input[type=checkbox] {
+      flex: 0 0 auto;
+      margin: 0;
+    }
+
+    label {
+      margin: 0;
+      padding: 0;
+      font-size: 12px;
+    }
+  }
+
+  .selected-target-labels {
+    margin-top: 10px;
+
+    ds-tag {
+      margin-right: 10px;
+
+      .selected-target-label {
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -1,0 +1,203 @@
+button.ds-button {
+  &, &:active, &:focus, &:hover {
+    &, &:not(:disabled) {
+      border: none;
+      outline: none;
+      background-image: none;
+      box-shadow: none;
+      text-shadow: none;
+    }
+  }
+  border-radius: var(--fds-global-border-radius-md);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  color: var(--fds-global-color-neutral-0);
+  --background-color: #{$triboo-color-brand-primary};
+  --hover-background-color: #{$triboo-color-brand-primary-50};
+  --active-background-color: #{$triboo-color-brand-primary-60};
+
+  background-color: var(--background-color);
+  &, &:not(:disabled) {
+    &:hover {
+      background-color: var(--hover-background-color);
+    }
+    &:active {
+      background-color: var(--active-background-color);
+    }
+  }
+  &:disabled {
+    background-color: var(--fds-global-color-neutral-10) !important;
+    color: var(--fds-global-color-neutral-50) !important;
+  }
+
+  &--text {
+    color: $triboo-color-brand-primary-50;
+    --background-color: transparent;
+    --hover-background-color: #{$triboo-color-brand-primary-5};
+    --active-background-color: #{$triboo-color-brand-primary-10};
+  }
+
+  &--fds {
+    color: var(--fds-global-color-neutral-0);
+    --background-color: var(--fds-global-color-primary-40);
+    --hover-background-color: var(--fds-global-color-primary-50);
+    --active-background-color: var(--fds-global-color-primary-60);
+
+    &.ds-button--text {
+      color: var(--fds-global-color-primary-50);
+      --background-color: transparent;
+      --hover-background-color: var(--fds-global-color-primary-5);
+      --active-background-color: var(--fds-global-color-primary-10);
+    }
+  }
+
+  &--neutral {
+    color: var(--fds-global-color-neutral-140);
+    --background-color: var(--fds-global-color-neutral-10);
+    --hover-background-color: var(--fds-global-color-neutral-20);
+    --active-background-color: var(--fds-global-color-neutral-30);
+
+    &.ds-button--text {
+      --background-color: transparent;
+      --hover-background-color: var(--fds-global-color-neutral-10);
+      --active-background-color: var(--fds-global-color-neutral-20);
+    }
+  }
+}
+
+.ds-button-group {
+  display: flex;
+  flex-wrap: nowrap;
+
+  .ds-button {
+    position: relative;
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &::after {
+        content: "";
+        z-index: 1;
+        display: block;
+        position: absolute;
+        top: var(--fds-global-space-xxs);
+        bottom: var(--fds-global-space-xxs);
+        right: 0;
+        width: 1px;
+        transform: translate(50%);
+        background-color: var(--fds-global-color-neutral-10);
+      }
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+
+    .ds-button {
+      pointer-events: none;
+
+      background-color: var(--fds-global-color-neutral-10) !important;
+      color: var(--fds-global-color-neutral-50) !important;
+      &:not(:last-child) {
+        &::after {
+          background-color: var(--fds-global-color-neutral-40);
+        }
+      }
+    }
+  }
+
+  &--neutral {
+    .ds-button {
+      color: var(--fds-global-color-neutral-140);
+      --background-color: var(--fds-global-color-neutral-10);
+      --hover-background-color: var(--fds-global-color-neutral-20);
+      --active-background-color: var(--fds-global-color-neutral-30);
+      &:not(:last-child) {
+        &::after {
+          background-color: var(--fds-global-color-neutral-40);
+        }
+      }
+    }
+  }
+}
+
+.ds-button,
+.ds-button--md,
+.ds-button--medium,
+.ds-button-group .ds-button,
+.ds-button-group--md .ds-button,
+.ds-button-group--medium .ds-button {
+  --padding-block: var(--fds-global-space-xs);
+  --padding-inline: var(--fds-global-space-md);
+
+  @include typography-body-sm-regular;
+  padding: var(--padding-block) var(--padding-inline);
+  gap: var(--fds-global-space-xs);
+}
+
+.ds-button--sm,
+.ds-button--small,
+.ds-button-group--sm .ds-button,
+.ds-button-group--small .ds-button {
+  --padding-block: var(--fds-global-space-xxs);
+  --padding-inline: var(--fds-global-space-xs);
+
+  @include typography-body-xs-regular;
+  gap: var(--fds-global-space-xxs);
+}
+
+.ds-button--lg,
+.ds-button--large,
+.ds-button-group--lg .ds-button,
+.ds-button-group--large .ds-button {
+  --padding-block: var(--fds-global-space-xs);
+  --padding-inline: var(--fds-global-space-md);
+
+  @include typography-body-lg-regular;
+  gap: var(--fds-global-space-sm);
+}
+
+button.ds-button.ds-button--icon {
+  &,
+  &.ds-button--md,
+  &.ds-button--medium {
+    // actually the line-height of normal buttons
+    --icon-size: var(--fds-global-space-lg);
+    --padding-inline: var(--padding-block);
+    font-size: var(--icon-size);
+  }
+
+  &.ds-button--sm,
+  &.ds-button--small {
+    --icon-size: var(--fds-global-space-md);
+  }
+
+  &.ds-button--lg,
+  &.ds-button--large {
+    --icon-size: 28px;
+  }
+
+  i[class^="fa"],
+  i[class*=" fa"] {
+    font-size: var(--icon-size);
+    inline-size: var(--icon-size);
+  }
+}

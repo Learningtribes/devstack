@@ -1,0 +1,259 @@
+// studio - elements - content modules
+// ====================
+// Patterns for pieces of content - modules - used throughout the app
+
+
+// outline UI - complex
+// --------------------
+%outline-complex-item {
+  border-radius: 8px;
+}
+
+// Add new component menu with big green buttons
+// outermost wrapper for add a new component menu
+// --------------------
+.add-xblock-component {
+  border: 0;
+  box-shadow: none;
+
+  // add component menu inner wrapper
+  .new-component {
+    h5 {
+      color: $triboo-color-fg-neutral;
+    }
+
+    // add component - list of green buttons
+    .new-component-type {
+      .add-xblock-component-button {
+        color: $white;
+        background-color: $triboo-color-brand-primary;
+        padding: initial;
+        display: inline-block;
+
+        &:focus {
+          color: $white;
+          background-color: $triboo-color-brand-primary;
+          outline: 0;
+        }
+
+        &:hover {
+          @include font-bold($color: $black);
+
+          color: $black;
+          background-color: $white;
+        }
+
+        .large-template-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+
+          &:after {
+            content: '\f0c3';
+            font-size: 36px;
+            font-family: $font-awesome;
+            font-weight: 300;
+          }
+        }
+
+        .name {
+          font-weight: 400;
+          color: inherit;
+        }
+
+        .large-advanced-icon {
+          background: transparent;
+
+          &:after {
+            content: '\f0c3';
+            font-weight: 600;
+          }
+        }
+
+        .large-discussion-icon {
+          background: transparent;
+
+          &:after {
+            content: '\f075';
+            font-weight: 300;
+          }
+        }
+
+        .large-html-icon {
+          background: transparent;
+
+          &:after {
+            content: '\f121';
+          }
+        }
+
+        .large-problem-icon {
+          background: transparent;
+
+          &:after {
+            content: '\f059';
+          }
+        }
+
+        .large-video-icon {
+          background: transparent;
+
+          &:after {
+            content: '\f008';
+          }
+        }
+
+        // remember, move below 4 items to courseware.scss
+        .large-template-icon {
+          background: transparent;
+        }
+        .large-resources-icon:after {
+          content: '\f108';
+        }
+        .large-learner_activities-icon:after {
+          content: '\f2bb';
+        }
+        .large-quiz-icon:after {
+          content: '\f2fd';
+        }
+        .large-blended_learning-icon:after {
+          content: '\f517';
+        }
+
+      }
+    }
+  }
+
+  // outer most wrapper div for scroll up component picker menus
+  // swaps in when a green button is clicked
+  // --------------------
+  .new-component-templates {
+
+    .cancel-button {
+      @extend %btn-secondary-light-gray;
+    }
+
+  }
+
+  // individual menus
+  // --------------------
+  .new-component-template {
+    .button-component {
+      &:hover {
+        background: tint($triboo-color-fg-neutral, 30%);
+      }
+    }
+  }
+
+}
+
+
+// CASE: complex outline
+.outline-complex {
+
+  // outline: sections
+  .outline-section {
+    @extend %list-item;
+
+    margin-bottom: 20px;
+
+    .status-message-copy {
+      border-top-color: $grey5;
+    }
+  }
+
+  // outline: subsections
+  .outline-subsection {
+    border-top-color: $grey5;
+    border-right-color: $grey5;
+    border-bottom-color: $grey5;
+  }
+
+  // outline: units
+  .outline-unit {
+    border-color: $grey5;
+  }
+}
+
+.view-outline .outline-complex .outline-section {
+  &.is-collapsible {
+    .ui-toggle-expansion:hover {
+      color: $triboo-color-brand-primary;
+    }
+  }
+}
+
+.view-outline .outline-complex .outline-subsection {
+  .subsection-header .subsection-header-details {
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+
+  .estimated-time-marker {
+
+    @extend %time-label;
+
+    i {
+      transform: none !important;
+      margin-right: 0;
+    }
+  }
+}
+
+.edit-estimated-time {
+  .warning-message {
+    margin-top: 5px;
+    margin-left: 10px;
+    font-size: 12px;
+    color: red;
+  }
+  .estimated-time-instruction {
+    margin: 4px 0 16px 0;
+  }
+}
+
+.view-static-pages {
+  .component,
+  .course-nav-item {
+    &:hover {
+      .drag-handle {
+        background-image: url('/static/studio/images/drag-handles.png');
+      }
+    }
+
+    .drag-handle {
+      background-image: url('/static/studio/images/drag-handles.png');
+
+      &:hover {
+        background-image: url('/static/studio/images/drag-handles.png');
+      }
+    }
+  }
+}
+
+.course-status {
+  .status-release-value, .status-pacing-value {
+    padding: 2px $md-padding;
+    color: $triboo-color-tag-light-fg-yellow;
+    background-color: $triboo-color-tag-light-bg-yellow;
+    border-radius: $text-box-border-radius;
+  }
+}
+
+.wrapper-xblock .wrapper-xblock .header-actions .actions-list,
+.wrapper-xblock .wrapper-xblock-message .xblock-message-actions .actions-list,
+.wrapper-message .message-actions .actions-list,
+[class*="view-"] .modal-window .modal-section-content .list-actions,
+.view-uploads .actions-list,
+.view-outline .course-status .status-actions,
+.view-outline .outline-complex .outline-section .section-header-actions .actions-list,
+.view-outline .outline-complex .outline-subsection .subsection-header-actions .actions-list,
+.view-outline .outline-complex .outline-unit .unit-header-actions .actions-list,
+.view-video-uploads .assets-library .actions-list {
+  .action-item .drag-handle {
+    background-image: url('/static/studio/images/drag-handles.png');
+  }
+}
+

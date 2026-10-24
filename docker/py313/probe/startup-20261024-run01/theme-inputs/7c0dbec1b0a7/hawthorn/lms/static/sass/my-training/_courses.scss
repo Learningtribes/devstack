@@ -1,0 +1,13 @@
+
+.view-my-courses-2 .main-container {
+  .my-courses {
+    padding-top: $fds-global-space-2xl;
+
+    .listing-courses {
+      margin-top: var(--fds-global-space-md);
+      background: var(--fds-global-color-neutral-0);
+      padding: var(--fds-global-space-xl) var(--fds-global-space-2xl);
+      border-radius: var(--fds-global-border-radius-md);
+    }
+  }
+}

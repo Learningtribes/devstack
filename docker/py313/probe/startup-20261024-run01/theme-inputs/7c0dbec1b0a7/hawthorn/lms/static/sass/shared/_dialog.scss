@@ -1,0 +1,190 @@
+.message-dialog-transparent-background, .message-dialog {
+  &.hide {
+    display: none;
+  }
+}
+
+.confirmation-dialog-transparent-background,
+.message-dialog-transparent-background {
+  position: fixed;
+  top: 0px;
+  z-index: 1000;
+  opacity: 0.5;
+  height: 1756px;
+  left: 0px;
+  width: 100%;
+  background-color: $black;
+}
+
+.confirmation-dialog,
+.message-dialog {
+  position: fixed;
+  width: 500px;
+  z-index: 1001;
+  top: 50%;
+  left: 50%;
+  display: block;
+  margin-top: -229px;
+  margin-left: -250px;
+  border-radius: 10px;
+  background: $white;
+  padding: 20px;
+  border: 1px solid $grey10;
+
+  /*.dialog-title {
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    color: $triboo-color-fg-neutral;
+  }*/
+
+  > i {
+    @include hyper-link();
+    float: right;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    color: $triboo-color-fg-neutral;
+  }
+
+  .dialog-content {
+    font-size: 14px;
+    font-family: $font-family-default;
+    line-height: 20px;
+    color: $triboo-color-fg-neutral;
+    word-break: break-word;
+    padding-right: 30px;
+  }
+
+  .actions {
+    text-align: $bi-app-right;
+
+    .btn-primary {
+      @include primary-small-button();
+      @include margin-left(10px);
+
+      &:focus {
+        border: none;
+      }
+
+
+    }
+
+    .btn-secondary {
+      @include grey-small-button($shadow:false);
+      box-shadow: none;
+      &:focus {
+        color: $white !important;
+        background-color: $grey35 !important;
+        box-shadow: none;
+        border: none;
+      }
+    }
+
+    @include media-down($sm) {
+
+
+      .btn-primary , .btn-secondary {
+        display: block;
+        width: 100%;
+        margin-right: 0px;
+        margin-bottom: 10px;
+      }
+
+     }
+
+  }
+
+}
+
+.message-dialog {
+  padding-bottom: 22px;
+}
+
+@include media-down($sm) {
+  .confirmation-dialog,
+  .message-dialog {
+    width: 300px;
+    left: 70%;
+  }
+}
+
+.confirmation-dialog {
+  .dialog-content {
+    padding-bottom: 20px;
+  }
+}
+
+.confirmation-dialog {
+  @include media-down($sm) {
+    margin-top: 0px;
+    margin-left: 0px;
+    top : 30%;
+    width: calc(100vw - 20vw - 20px);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.icon-question {
+
+  position: relative;
+  display: block;
+
+  &:link, &:visited {
+    text-decoration: none;
+    position: relative;
+    color : red;
+  }
+
+  .before {
+    position: absolute;
+    border-top: 26px solid $grey25;
+    border-left: 26px solid transparent;
+    border-right: 26px solid transparent;
+    visibility: hidden;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: calc(100% - 1px);
+    z-index: 10;
+    padding: 0;
+  }
+
+  .after {
+    @include list-item;
+    position: absolute;
+    white-space: normal;
+    top: auto;
+    padding: 5px 10px;
+    left: 50%;
+    transform: translate(-50%);
+    display: none;
+    visibility: hidden;
+    bottom: calc(100% + 4px);
+    font-weight: 400;
+    width: 200px;
+    color: $triboo-color-fg-neutral;
+    text-shadow: none;
+    border: 1px solid $grey20;
+    font-size: 12px;
+    line-height: 18px;
+    z-index: 100;
+    margin-left: auto;
+  }
+
+  &:hover {
+    .before, .after {
+      display: block;
+      visibility: visible;
+    }
+  }
+
+  i {
+    display: block;
+    color: $fds-global-color-neutral-70;
+    font-size: 16px;
+  }
+
+  span {
+    padding-right: 5px;
+  }
+}

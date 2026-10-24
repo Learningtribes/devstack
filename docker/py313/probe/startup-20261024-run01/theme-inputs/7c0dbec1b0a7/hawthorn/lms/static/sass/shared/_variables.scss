@@ -1,0 +1,168 @@
+@import './tokens';
+
+// Theme colors
+$triboo-color-brand-primary: $fds-global-color-primary-40;
+$triboo-color-brand-primary-0: $fds-global-color-primary-0;
+$triboo-color-brand-primary-5: $fds-global-color-primary-5;
+$triboo-color-brand-primary-10: $fds-global-color-primary-10;
+$triboo-color-brand-primary-20: $fds-global-color-primary-20;
+$triboo-color-brand-primary-30: $fds-global-color-primary-30;
+$triboo-color-brand-primary-50: $fds-global-color-primary-50;
+$triboo-color-brand-primary-60: $fds-global-color-primary-60;
+$triboo-color-brand-primary-70: $fds-global-color-primary-70;
+$triboo-color-brand-primary-80: $fds-global-color-primary-80;
+
+$triboo-color-brand-dataviz-01: $triboo-color-brand-primary-30;
+
+$triboo-color-fg-neutral: $fds-global-color-neutral-170;
+$triboo-color-fg-neutral-alt: $fds-global-color-neutral-140;
+$triboo-color-fg-neutral-light: $fds-global-color-neutral-100;
+$triboo-color-fg-neutral-lighter: $fds-global-color-neutral-70;
+$triboo-color-fg-neutral-disabled: $fds-global-color-neutral-50;
+$triboo-color-fg-neutral-emphasis: $fds-global-color-neutral-0;
+
+
+$black: $fds-global-color-neutral-170;
+$black60: #4c4c4c;
+$black55: #5c5c5c;
+$white: $fds-global-color-neutral-0;
+$grey57: #afafaf;
+$grey45: #b0b0cd;
+$grey35: #cecece;
+$grey25: #dcdcdc;
+$grey20: #e3e3e3;
+$grey10: #ececec;
+$grey5: #f4f4f4;
+$grey3: #fafafa;
+$green: $fds-global-color-success-40;
+$green25: rgba($green, 0.25);
+$yellow: $fds-global-color-caution-40;
+$red: $fds-global-color-error-40;
+$incorrect: $red;
+$correct: $green;
+
+$triboo-color-tag-filled-bg-fds-primary: $fds-global-color-primary-40;
+$triboo-color-tag-filled-bg-primary: $triboo-color-brand-primary;
+$triboo-color-tag-filled-bg-neutral: $fds-global-color-neutral-110;
+$triboo-color-tag-filled-bg-red: $fds-global-color-error-40;
+$triboo-color-tag-filled-bg-orange: $fds-global-color-warning-40;
+$triboo-color-tag-filled-bg-yellow: $fds-global-color-caution-40;
+$triboo-color-tag-filled-bg-green: $fds-global-color-success-40;
+$triboo-color-tag-filled-bg-blue: $fds-global-color-info-40;
+$triboo-color-tag-filled-fg: $fds-global-color-neutral-0;
+
+$triboo-color-tag-light-fg-fds-primary: $fds-global-color-primary-60;
+$triboo-color-tag-light-bg-fds-primary: $fds-global-color-primary-0;
+$triboo-color-tag-light-fg-primary: $triboo-color-brand-primary-60;
+$triboo-color-tag-light-bg-primary: $triboo-color-brand-primary-0;
+$triboo-color-tag-light-fg-neutral: $fds-global-color-neutral-110;
+$triboo-color-tag-light-bg-neutral: $fds-global-color-neutral-20;
+$triboo-color-tag-light-fg-red: $fds-global-color-error-70;
+$triboo-color-tag-light-bg-red: $fds-global-color-error-0;
+$triboo-color-tag-light-fg-orange: $fds-global-color-warning-70;
+$triboo-color-tag-light-bg-orange: $fds-global-color-warning-0;
+$triboo-color-tag-light-fg-yellow: $fds-global-color-caution-70;
+$triboo-color-tag-light-bg-yellow: $fds-global-color-caution-0;
+$triboo-color-tag-light-fg-green: $fds-global-color-success-70;
+$triboo-color-tag-light-bg-green: $fds-global-color-success-0;
+$triboo-color-tag-light-fg-blue: $fds-global-color-info-70;
+$triboo-color-tag-light-bg-blue: $fds-global-color-info-0;
+
+$triboo-color-anderspink-primary: #f50057;
+$triboo-color-edflex-primary: #19a8d9;
+$triboo-color-crehana-primary: #6f4ef6;
+
+$triboo-color-studio-view-insert-fg-blue: $fds-global-color-primary-40;
+$triboo-color-studio-view-insert-bg-blue: $fds-global-color-primary-0;
+$triboo-color-studio-view-insert-fg-yellow: $fds-global-color-caution-40;
+$triboo-color-studio-view-insert-bg-yellow: $fds-global-color-caution-5;
+
+$triboo-color-rating-star-bg: $fds-global-color-caution-30;
+
+$uxpl-blue-hover-active: $black; // wcag2a compliant
+
+$background-grey: $grey3;
+
+$disabled: $fds-global-color-neutral-100;
+
+$primary55: rgba($triboo-color-brand-primary, 0.55);
+$primary45: rgba($triboo-color-brand-primary, 0.45);
+$primary35: rgba($triboo-color-brand-primary, 0.35);
+$primary25: rgba($triboo-color-brand-primary, 0.25);
+$primary10: rgba($triboo-color-brand-primary, 0.10);
+
+$link-color: $triboo-color-brand-primary;
+
+// border radius
+$studio-v2-border-radius: 10px;
+$default-border-radius: $fds-global-border-radius-lg;
+$text-box-border-radius: $fds-global-border-radius-xxl;
+$border-radius-half: $fds-global-border-radius-md;
+$border-radius-v2: 10px;
+$border-radius-v2-half: 5px;
+
+//general padding
+$content-side-padding: 60px;
+$content-padding-top: 30px;
+
+$sm-padding: 8px;
+$md-padding: 21px;
+$lg-padding: 23px;
+$xl-padding: 60px;
+
+$padding-beside-list: 30px;
+$padding-beside-list-item: 30px;
+$padding-beside-form: 50px;
+
+/*
+//webfonts
+$fa-font-path:        "../../fonts/webfonts";*/
+
+// Theme fonts
+$font-family-default: 'Noto Sans', sans-serif, 黑体, SimHei, 华文黑体, STHeiti, Helvetica, Arial;
+$font-family-sans-serif: $font-family-default;
+$font-family-header: $font-family-default;
+$font-awesome: 'Font Awesome 7 Pro';
+$font-awesome-duotone: 'Font Awesome 7 Duotone';
+
+// for static path
+$static-path:'/static';
+$studio-static-path:'/static/studio';
+
+
+$xs: 400px;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+
+//studio footer
+$footer-bg: $white;
+$footer-font-color: $black;
+$footer-font-size: 13px;
+
+//modal, form, tinymce
+$editor-header-background-color: $grey3;
+
+
+//temporary variables
+$baseline: 20px;
+$gray: grey;
+$modal-content-font-size: 14px;
+
+
+$notification-margin:(
+        right:60px,
+        bottom: 30px
+);
+
+
+$header-height: 56px;
+
+//symnatic variables, It's safe to use
+$placeholder: $fds-global-color-neutral-100; //it should be used for placeholders in all input boxes, textareas
+$editor-border-color: #e7e7e7; //the color for all horizontal lines in modal, form or tinymce
+
+
+// Default bootstrap theming
+@import 'edx-bootstrap/sass/open-edx/theme';

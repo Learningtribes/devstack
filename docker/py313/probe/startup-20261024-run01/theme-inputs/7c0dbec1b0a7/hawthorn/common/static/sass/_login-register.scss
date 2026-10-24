@@ -1,0 +1,263 @@
+// lms - views - login/register view
+// ====================
+
+.login-register {
+  background-color: $white;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+
+  aside {
+    background: $fds-global-color-neutral-0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    figure {
+      height: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  input:-webkit-autofill {
+    &, &:focus {
+      -webkit-box-shadow:0 0 0 50px $fds-global-color-neutral-0 inset;
+      -webkit-text-fill-color: $fds-global-color-neutral-120;
+    }
+  }
+
+  .form-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-field {
+    text-align: start;
+    width: 100%;
+
+    &.checkbox-remember {
+      display: none;
+    }
+
+    .ds-input {
+      width: 100%;
+    }
+
+    ds-dropdown {
+      z-index: unset;
+      width: 100%;
+    }
+
+    .institution {
+      display: none;
+    }
+  }
+
+  article {
+    background: $fds-global-color-neutral-0;
+    z-index: 1;
+    flex: 1;
+    padding: 48px;
+    max-width: 380px;
+    max-height: 80vh;
+    border-radius: $fds-global-border-radius-xl;
+    box-shadow: $fds-global-shadow-xl, $fds-global-shadow-sm;
+
+    .article-inner-wrapper {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $fds-global-space-xl;
+
+      &, & > * {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: $fds-global-space-xl;
+        align-items: flex-start;
+      }
+
+      h1 {
+        @include typography-h5-semibold;
+        font-weight: 500;
+        color: $fds-global-color-neutral-170;
+        text-align: start;
+        margin: 0;
+        margin-bottom: $fds-global-space-xxs;
+        white-space: pre;
+        text-wrap: auto;
+      }
+
+      .js-form-feedback {
+        width: 100%;
+
+        &:empty {
+          display: none;
+        }
+      }
+
+      .ds-link {
+        color: $triboo-color-brand-primary-50;
+        &::after {
+          content: none;
+        }
+      }
+
+      .forgot-password {
+        margin-top: $fds-global-space-xs;
+      }
+
+      .ds-button {
+        width: 100%;
+      }
+
+      .login-providers {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: $fds-global-space-xs;
+      }
+
+      .login-option-appendix {
+        gap: $fds-global-space-xs;
+      }
+    }
+
+    .toggle-form {
+      width: 100%;
+      @include typography-body-sm-regular;
+      color: $fds-global-color-neutral-140;
+      text-align: center;
+    }
+  }
+
+  .welcome-text {
+    img {
+      height: 28px;
+    }
+
+    figcaption {
+      color: $fds-global-color-neutral-120;
+      @include typography-body-sm-regular;
+      line-height: 24px;
+    }
+  }
+
+  .status {
+    @include typography-body-sm-regular;
+    text-align: start;
+
+    &::before {
+      float: left;
+      letter-spacing: 1ch;
+      font-family: $font-awesome;
+      font-size: 14px;
+    }
+
+    &.submission-error {
+      color: $fds-global-color-error-40;
+      &::before {
+        content: "\f06a";
+      }
+    }
+
+    &.submission-success {
+      color: $fds-global-color-success-40;
+      &::before {
+        content: "\f00c";
+      }
+    }
+
+    .message-title {
+      display: none;
+    }
+  }
+
+  @media (max-width: $sm) {
+    aside {
+      figure img {
+        display: none;
+      }
+    }
+
+    article {
+      box-shadow: none;
+      padding: 40px 48px 56px;
+      max-height: max-content;
+    }
+
+    .form-wrapper {
+      height: max-content;
+    }
+
+    .article-inner-wrapper {
+      padding-bottom: 56px;
+    }
+  }
+
+  @include media-up($sm + 1) {
+    article {
+      overflow-y: auto;
+    }
+  }
+}
+
+.logo-motto-and-toggle-form {
+  z-index: 111;
+  position: absolute;
+  top: $fds-global-space-3xl;
+  @include left($fds-global-space-3xl);
+  width: max-content;
+
+  .brand-logo {
+    height: 32px;
+  }
+  .brand-logo--light {
+    display: none;
+  }
+
+  @media (max-width: $sm) {
+    position: relative;
+    top: 0;
+    margin-top: $fds-global-space-3xl;
+    @include left(48px);
+
+    .brand-logo {
+      display: none;
+      &.brand-logo--light {
+        display: block;
+      }
+    }
+  }
+}
+
+.copyright-footer {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%);
+  display: flex;
+  gap: $fds-global-space-xs;
+  align-items: center;
+  justify-content: center;
+  @include typography-body-xs-medium;
+  color: $fds-global-color-neutral-0;
+
+  @media (max-width: $sm) {
+    z-index: 1;
+    color: $fds-global-color-neutral-80;
+    position: relative;
+  }
+}

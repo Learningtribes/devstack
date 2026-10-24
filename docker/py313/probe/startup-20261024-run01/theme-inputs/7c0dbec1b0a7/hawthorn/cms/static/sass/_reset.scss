@@ -1,0 +1,12 @@
+
+html {
+  height: auto;
+}
+
+a {
+  @include hyper-link;
+}
+
+body {
+  background-color: $fds-global-color-neutral-5;
+}

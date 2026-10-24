@@ -1,0 +1,141 @@
+
+.view-library {
+  @include layout();
+
+  .wrapper-mast .mast {
+    margin-bottom: 0;
+
+    .page-header {
+      .is-editable {
+        .incontext-editor-input {
+          &:focus {
+            box-shadow: none;
+            @include form-text-box();
+            padding: 0 8px;
+            width: 300px;
+          }
+        }
+      }
+    }
+    .nav-actions {
+      .nav-item a {
+        .icon {
+          display: none;
+        }
+        .action-button-text {
+          font-size: 16px;
+        }
+      }
+
+    }
+  }
+  .content-primary {
+    border-radius: $border-radius-half;
+  }
+  .content-supplementary {
+    @include content-supplementary();
+  }
+
+  .wrapper-xblock .container-paging-header .meta-wrap {
+    margin: $fds-global-space-sm 0;
+  }
+
+  .modal-window {
+    background-color: $white;
+    padding: 0;
+    width: 506px;
+
+    .delete-library-modal {
+      .modal-header {
+        border-bottom: 0px;
+        h2 {
+          padding: 16px 24px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 24px;
+        }
+      }
+      .modal-content {
+        padding: 16px 24px;
+        border-bottom: 0px;
+
+        .modal-introduction {
+          display: flex;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 20px;
+          margin: 0;
+          color: $fds-global-color-neutral-170;
+
+          .form-check {
+            .confirm-wrapper {
+              margin-bottom: 10px;
+            }
+          }
+
+          .checkbox-message {
+            margin-left: 8px;
+          }
+        }
+
+        #courses-using-library {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          text-align: left;
+          color: $triboo-color-brand-primary-50;
+        }
+      }
+      .modal-actions {
+        @include modal-footer();
+        border-top: 1px solid $editor-border-color;
+        padding: 16px 24px;
+
+        ul {
+          height: 100%;
+          display: block;
+          text-align: $bi-app-right;
+          li {
+            &:not(:last-child) {
+              @include margin-right(10px);
+            }
+            .action-cancel {
+              @include grey-small-button();
+              background-color: $fds-global-color-neutral-10 !important;
+              color: $fds-global-color-neutral-140 !important;
+            }
+            .action-save {
+              @include primary-small-button();
+              &.delete {
+                background-color: $fds-global-color-error-40;
+              }
+              &.disabled {
+                opacity: 0.5;
+                background-color: $fds-global-color-neutral-10 !important;
+                color: $fds-global-color-neutral-50 !important;
+                border-radius: $fds-global-border-radius-md !important;
+              }
+            }
+            .action-cancel,
+            .action-save {
+              &.disabled {
+                pointer-events: none;
+                cursor: not-allowed;
+              }
+            }
+          }
+
+          .action-item .button {
+            padding: 8px 16px;
+            gap: 8px;
+            border-radius: $fds-global-border-radius-md;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

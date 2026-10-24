@@ -1,0 +1,266 @@
+// colors
+$fds-global-color-primary-0: #e4e4ff;
+$fds-global-color-primary-5: #ccccff;
+$fds-global-color-primary-10: #b1b1ff;
+$fds-global-color-primary-20: #9595fe;
+$fds-global-color-primary-30: #7777f7;
+$fds-global-color-primary-40: #5959eb; /* Base value for the primary brand color */
+$fds-global-color-primary-50: #3535cd;
+$fds-global-color-primary-60: #1717ab;
+$fds-global-color-primary-70: #020288;
+$fds-global-color-primary-80: #000066;
+
+$fds-global-color-neutral-0: #ffffff; /* Pure white color */
+$fds-global-color-neutral-5: #f3f3f7; /* This is the base value for Neutral colors */
+$fds-global-color-neutral-10: #ebebf1;
+$fds-global-color-neutral-20: #d7d7e4;
+$fds-global-color-neutral-30: #c4c4d8;
+$fds-global-color-neutral-40: #b0b0cd;
+$fds-global-color-neutral-50: #9f9fc1;
+$fds-global-color-neutral-60: #8b8bb8;
+$fds-global-color-neutral-70: #7a7aae;
+$fds-global-color-neutral-80: #6767a5;
+$fds-global-color-neutral-90: #59599a;
+$fds-global-color-neutral-100: #4c4c8e;
+$fds-global-color-neutral-110: #3f3f82;
+$fds-global-color-neutral-120: #343476;
+$fds-global-color-neutral-130: #292968;
+$fds-global-color-neutral-140: #1f1f59;
+$fds-global-color-neutral-150: #16164a;
+$fds-global-color-neutral-160: #0f0f3b;
+$fds-global-color-neutral-170: #09092d; /* This is the darkest value in this color group. It replaces pure black */
+
+$fds-global-color-success-0: #d7ffe0;
+$fds-global-color-success-5: #aaefb9;
+$fds-global-color-success-10: #81df96;
+$fds-global-color-success-20: #5ccf76;
+$fds-global-color-success-30: #3cbf59;
+$fds-global-color-success-40: #23ab41; /* Base value for success */
+$fds-global-color-success-50: #0e972c;
+$fds-global-color-success-60: #00831d;
+$fds-global-color-success-70: #007018;
+$fds-global-color-success-80: #005c14;
+
+$fds-global-color-caution-0: #fff8de;
+$fds-global-color-caution-5: #ffeca9;
+$fds-global-color-caution-10: #fee076;
+$fds-global-color-caution-20: #fcd549;
+$fds-global-color-caution-30: #f9cc2b;
+$fds-global-color-caution-40: #f3c316; /* Base value for caution */
+$fds-global-color-caution-50: #e7b707;
+$fds-global-color-caution-60: #cb9f00;
+$fds-global-color-caution-70: #967500;
+$fds-global-color-caution-80: #665000;
+
+$fds-global-color-warning-0: #ffe3d7;
+$fds-global-color-warning-5: #ffc4ab;
+$fds-global-color-warning-10: #ffa680;
+$fds-global-color-warning-20: #ff8c5b;
+$fds-global-color-warning-30: #ff773e;
+$fds-global-color-warning-40: #f96324; /* Base value for warning */
+$fds-global-color-warning-50: #ed5311;
+$fds-global-color-warning-60: #d34204;
+$fds-global-color-warning-70: #a13101;
+$fds-global-color-warning-80: #752300;
+
+$fds-global-color-error-0: #ffdede;
+$fds-global-color-error-5: #feb9ba;
+$fds-global-color-error-10: #fc9294;
+$fds-global-color-error-20: #f96d6e;
+$fds-global-color-error-30: #f64b4c;
+$fds-global-color-error-40: #f22f31; /* Base value for error or severe danger */
+$fds-global-color-error-50: #e01517;
+$fds-global-color-error-60: #d40d0f;
+$fds-global-color-error-70: #aa0608;
+$fds-global-color-error-80: #850305;
+
+$fds-global-color-info-0: #def4ff;
+$fds-global-color-info-5: #a5dcf7;
+$fds-global-color-info-10: #70c5f0;
+$fds-global-color-info-20: #3db0e8;
+$fds-global-color-info-30: #0e9be0;
+$fds-global-color-info-40: #0383c3; /* Base value for information */
+$fds-global-color-info-50: #006ea5;
+$fds-global-color-info-60: #005b88;
+$fds-global-color-info-70: #00476a;
+$fds-global-color-info-80: #00334d;
+
+
+/* NAMES TO BE CONFIRMED */
+$fds-dataviz-color-01: $fds-global-color-primary-30;
+$fds-dataviz-color-02: #65eba5;
+$fds-dataviz-color-03: #ff8d96;
+$fds-dataviz-color-04: #f3e649;
+$fds-dataviz-color-05: #bfa1ff;
+$fds-dataviz-color-06: #a9e554;
+$fds-dataviz-color-07: #f78cf7;
+$fds-dataviz-color-08: #7ce1f8;
+$fds-dataviz-color-09: #ffac5d;
+$fds-dataviz-color-10: #53d5c3;
+/* --------------------- */
+
+
+$fds-global-opacity-default: rgba(9, 9, 45, 0.7);
+
+// borders
+$fds-global-border-width: 1px solid #d7d7e4; /* Default border width for the Foundever design system components */
+
+// measures
+$fds-global-space-xxxs: 2px;
+$fds-global-space-xxs: 4px;
+$fds-global-space-xs: 8px;
+$fds-global-space-sm: 12px;
+$fds-global-space-md: 16px;
+$fds-global-space-lg: 20px;
+$fds-global-space-xl: 24px;
+$fds-global-space-2xl: 32px;
+$fds-global-space-3xl: 40px;
+$fds-global-space-4xl: 64px;
+
+// radius
+$fds-global-border-radius-sharp: 0px;
+$fds-global-border-radius-sm: 2px;
+$fds-global-border-radius-md: 4px;
+$fds-global-border-radius-lg: 8px;
+$fds-global-border-radius-xl: 12px;
+$fds-global-border-radius-xxl: 16px;
+$fds-global-border-radius-pill: 9999px;
+
+// shadows
+$fds-global-shadow-inner: inset 0 1px 4px -1px rgba($fds-global-color-neutral-170, 0.25);
+$fds-global-shadow-xs: 0 2px 5px -1px rgba($fds-global-color-neutral-170, 0.2);
+$fds-global-shadow-sm: 0 5px 10px -2px rgba($fds-global-color-neutral-170, 0.15);
+$fds-global-shadow-md: 0 8px 15px -4px rgba($fds-global-color-neutral-170, 0.13);
+$fds-global-shadow-lg: 0 14px 22px -4px rgba($fds-global-color-neutral-170, 0.13);
+$fds-global-shadow-xl: 0 15px 22px -6px rgba($fds-global-color-neutral-170, 0.18);
+$fds-global-shadow-xxl: 0 25px 50px -12px rgba($fds-global-color-neutral-170, 0.24);
+
+:root {
+  --fds-global-color-primary-0: #{$fds-global-color-primary-0};
+  --fds-global-color-primary-5: #{$fds-global-color-primary-5};
+  --fds-global-color-primary-10: #{$fds-global-color-primary-10};
+  --fds-global-color-primary-20: #{$fds-global-color-primary-20};
+  --fds-global-color-primary-30: #{$fds-global-color-primary-30};
+  --fds-global-color-primary-40: #{$fds-global-color-primary-40};
+  --fds-global-color-primary-50: #{$fds-global-color-primary-50};
+  --fds-global-color-primary-60: #{$fds-global-color-primary-60};
+  --fds-global-color-primary-70: #{$fds-global-color-primary-70};
+  --fds-global-color-primary-80: #{$fds-global-color-primary-80};
+
+  --fds-global-color-neutral-0: #{$fds-global-color-neutral-0};
+  --fds-global-color-neutral-5: #{$fds-global-color-neutral-5};
+  --fds-global-color-neutral-10: #{$fds-global-color-neutral-10};
+  --fds-global-color-neutral-20: #{$fds-global-color-neutral-20};
+  --fds-global-color-neutral-30: #{$fds-global-color-neutral-30};
+  --fds-global-color-neutral-40: #{$fds-global-color-neutral-40};
+  --fds-global-color-neutral-50: #{$fds-global-color-neutral-50};
+  --fds-global-color-neutral-60: #{$fds-global-color-neutral-60};
+  --fds-global-color-neutral-70: #{$fds-global-color-neutral-70};
+  --fds-global-color-neutral-80: #{$fds-global-color-neutral-80};
+  --fds-global-color-neutral-90: #{$fds-global-color-neutral-90};
+  --fds-global-color-neutral-100: #{$fds-global-color-neutral-100};
+  --fds-global-color-neutral-110: #{$fds-global-color-neutral-110};
+  --fds-global-color-neutral-120: #{$fds-global-color-neutral-120};
+  --fds-global-color-neutral-130: #{$fds-global-color-neutral-130};
+  --fds-global-color-neutral-140: #{$fds-global-color-neutral-140};
+  --fds-global-color-neutral-150: #{$fds-global-color-neutral-150};
+  --fds-global-color-neutral-160: #{$fds-global-color-neutral-160};
+  --fds-global-color-neutral-170: #{$fds-global-color-neutral-170};
+
+  --fds-global-color-success-0: #{$fds-global-color-success-0};
+  --fds-global-color-success-5: #{$fds-global-color-success-5};
+  --fds-global-color-success-10: #{$fds-global-color-success-10};
+  --fds-global-color-success-20: #{$fds-global-color-success-20};
+  --fds-global-color-success-30: #{$fds-global-color-success-30};
+  --fds-global-color-success-40: #{$fds-global-color-success-40};
+  --fds-global-color-success-50: #{$fds-global-color-success-50};
+  --fds-global-color-success-60: #{$fds-global-color-success-60};
+  --fds-global-color-success-70: #{$fds-global-color-success-70};
+  --fds-global-color-success-80: #{$fds-global-color-success-80};
+
+  --fds-global-color-caution-0: #{$fds-global-color-caution-0};
+  --fds-global-color-caution-5: #{$fds-global-color-caution-5};
+  --fds-global-color-caution-10: #{$fds-global-color-caution-10};
+  --fds-global-color-caution-20: #{$fds-global-color-caution-20};
+  --fds-global-color-caution-30: #{$fds-global-color-caution-30};
+  --fds-global-color-caution-40: #{$fds-global-color-caution-40};
+  --fds-global-color-caution-50: #{$fds-global-color-caution-50};
+  --fds-global-color-caution-60: #{$fds-global-color-caution-60};
+  --fds-global-color-caution-70: #{$fds-global-color-caution-70};
+  --fds-global-color-caution-80: #{$fds-global-color-caution-80};
+
+  --fds-global-color-warning-0: #{$fds-global-color-warning-0};
+  --fds-global-color-warning-5: #{$fds-global-color-warning-5};
+  --fds-global-color-warning-10: #{$fds-global-color-warning-10};
+  --fds-global-color-warning-20: #{$fds-global-color-warning-20};
+  --fds-global-color-warning-30: #{$fds-global-color-warning-30};
+  --fds-global-color-warning-40: #{$fds-global-color-warning-40};
+  --fds-global-color-warning-50: #{$fds-global-color-warning-50};
+  --fds-global-color-warning-60: #{$fds-global-color-warning-60};
+  --fds-global-color-warning-70: #{$fds-global-color-warning-70};
+  --fds-global-color-warning-80: #{$fds-global-color-warning-80};
+
+  --fds-global-color-error-0: #{$fds-global-color-error-0};
+  --fds-global-color-error-5: #{$fds-global-color-error-5};
+  --fds-global-color-error-10: #{$fds-global-color-error-10};
+  --fds-global-color-error-20: #{$fds-global-color-error-20};
+  --fds-global-color-error-30: #{$fds-global-color-error-30};
+  --fds-global-color-error-40: #{$fds-global-color-error-40};
+  --fds-global-color-error-50: #{$fds-global-color-error-50};
+  --fds-global-color-error-60: #{$fds-global-color-error-60};
+  --fds-global-color-error-70: #{$fds-global-color-error-70};
+  --fds-global-color-error-80: #{$fds-global-color-error-80};
+
+  --fds-global-color-info-0: #{$fds-global-color-info-0};
+  --fds-global-color-info-5: #{$fds-global-color-info-5};
+  --fds-global-color-info-10: #{$fds-global-color-info-10};
+  --fds-global-color-info-20: #{$fds-global-color-info-20};
+  --fds-global-color-info-30: #{$fds-global-color-info-30};
+  --fds-global-color-info-40: #{$fds-global-color-info-40};
+  --fds-global-color-info-50: #{$fds-global-color-info-50};
+  --fds-global-color-info-60: #{$fds-global-color-info-60};
+  --fds-global-color-info-70: #{$fds-global-color-info-70};
+  --fds-global-color-info-80: #{$fds-global-color-info-80};
+
+  --fds-dataviz-color-01: #{$fds-dataviz-color-01};
+  --fds-dataviz-color-02: #{$fds-dataviz-color-02};
+  --fds-dataviz-color-03: #{$fds-dataviz-color-03};
+  --fds-dataviz-color-04: #{$fds-dataviz-color-04};
+  --fds-dataviz-color-05: #{$fds-dataviz-color-05};
+  --fds-dataviz-color-06: #{$fds-dataviz-color-06};
+  --fds-dataviz-color-07: #{$fds-dataviz-color-07};
+  --fds-dataviz-color-08: #{$fds-dataviz-color-08};
+  --fds-dataviz-color-09: #{$fds-dataviz-color-09};
+  --fds-dataviz-color-10: #{$fds-dataviz-color-10};
+
+  --fds-global-opacity-default: #{$fds-global-opacity-default};
+
+  --fds-global-border-width: #{$fds-global-border-width};
+
+  --fds-global-space-xxxs: #{$fds-global-space-xxxs};
+  --fds-global-space-xxs: #{$fds-global-space-xxs};
+  --fds-global-space-xs: #{$fds-global-space-xs};
+  --fds-global-space-sm: #{$fds-global-space-sm};
+  --fds-global-space-md: #{$fds-global-space-md};
+  --fds-global-space-lg: #{$fds-global-space-lg};
+  --fds-global-space-xl: #{$fds-global-space-xl};
+  --fds-global-space-2xl: #{$fds-global-space-2xl};
+  --fds-global-space-3xl: #{$fds-global-space-3xl};
+  --fds-global-space-4xl: #{$fds-global-space-4xl};
+
+  --fds-global-border-radius-sharp: #{$fds-global-border-radius-sharp};
+  --fds-global-border-radius-sm: #{$fds-global-border-radius-sm};
+  --fds-global-border-radius-md: #{$fds-global-border-radius-md};
+  --fds-global-border-radius-lg: #{$fds-global-border-radius-lg};
+  --fds-global-border-radius-xl: #{$fds-global-border-radius-xl};
+  --fds-global-border-radius-xxl: #{$fds-global-border-radius-xxl};
+  --fds-global-border-radius-pill: #{$fds-global-border-radius-pill};
+
+  --fds-global-shadow-inner: #{$fds-global-shadow-inner};
+  --fds-global-shadow-xs: #{$fds-global-shadow-xs};
+  --fds-global-shadow-sm: #{$fds-global-shadow-sm};
+  --fds-global-shadow-md: #{$fds-global-shadow-md};
+  --fds-global-shadow-lg: #{$fds-global-shadow-lg};
+  --fds-global-shadow-xl: #{$fds-global-shadow-xl};
+  --fds-global-shadow-xxl: #{$fds-global-shadow-xxl};
+}

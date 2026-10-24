@@ -1,0 +1,512 @@
+.instructor-dashboard-wrapper-2 section.idash-section#cohort_management {
+  #header-cohort_management {
+    display: none;
+  }
+
+  input[type=checkbox] {
+    @include checkbox-generator($checked-color: $triboo-color-brand-primary);
+  }
+
+  input[type=radio] {
+    @extend %radiobox-green;
+
+    &:checked + span:before {
+      font-weight: 400;
+    }
+  }
+
+  .message-confirmation,
+  .message-error,
+  .message-warning {
+    border-top: 2px solid $triboo-color-fg-neutral;
+    background-color: $grey3;
+
+    .message-title {
+      color: $triboo-color-fg-neutral;
+    }
+  }
+
+  .cohorts-state-section {
+    @extend %list-item;
+
+    padding: 13px 30px;
+    margin-bottom: 30px;
+  }
+
+  div.cohort-management-settings,
+  section.cohort-management-settings {
+    background: transparent;
+
+    %content {
+      @extend %list-item;
+
+      border-top-left-radius: 0;
+      position: relative;
+    }
+
+    .cohort-management-group-header {
+      background: transparent;
+      align-items: center;
+      display: flex;
+      padding-bottom: 15px;
+
+      @include media-down($sm) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      h3.group-header-title {
+        border-bottom: 0;
+        flex: 0.2;
+        padding: 0;
+
+        @include media-down($md) {
+          flex: 0.35;
+        }
+
+        .title-value {
+          font-size: 16px;
+          font-weight: 400;
+        }
+
+        .group-count {
+          background: $triboo-color-brand-primary;
+          border-radius: 4px;
+          font-size: 11px;
+          padding: 0px 6px;
+          color: $white;
+        }
+      }
+
+      .cohort-management-group-setup {
+        flex: 0.8;
+        color: $black;
+        padding: 0;
+
+        @include media-down($md) {
+          flex: 0.65;
+        }
+
+        .setup-value {
+          width: auto;
+        }
+      }
+    }
+
+    .cohort-management-group-add {
+      @extend %content;
+
+      padding: 15px 20px 80px 20px;
+
+      %comment {
+        color: $black;
+        font-style: italic;
+        font-size: 16px;
+      }
+
+      .form-introduction {
+        p {
+          @extend %comment;
+        }
+      }
+
+      .form-fields {
+        padding: 0;
+
+        .label {
+          font-weight: 400;
+          font-size: 16px;
+        }
+
+        .input {
+          @extend %text-field;
+        }
+
+        .tip {
+          @extend %comment;
+
+          margin-top: 0;
+          float: left;
+          margin: 0;
+          padding: 10px 0 0 0;
+
+          @include media-down($md) {
+            float: none;
+          }
+        }
+      }
+
+      .form-actions {
+        padding: 15px 10px 0 0px;
+        right: 0;
+        position: absolute;
+      }
+
+      .form-submit {
+        @extend %btn-primary-primary;
+      }
+    }
+
+    .cohort-management-details {
+      @extend %content;
+
+      padding: 15px 20px 0px 20px;
+
+      hr {
+        display: none;
+      }
+
+      .form-fields {
+        .field-text {
+          .input[type=text] {
+            //@extend %text-field;
+          }
+        }
+      }
+
+    }
+
+    .form-actions {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: center;
+
+      > * {
+        border-radius: $default-border-radius;
+        padding: 14px 30px;
+        font-size: 16px;
+      }
+
+      .form-submit {
+        @include primary-medium-button();
+      }
+
+      .form-cancel {
+        @include grey-medium-button();
+
+        margin-right: 10px;
+      }
+    }
+
+    .field {
+      &:not(:last-child) {
+        padding-bottom: 15px;
+      }
+    }
+
+    .field-radio {
+      label {
+        padding-left: 9px;
+      }
+    }
+  }
+
+  .cohort-management {
+
+    hr {
+      margin: 0 0 30px 10%;
+      position: static;
+      width: 80%;
+      border-top-width: 1px;
+    }
+
+    .cohort-management-nav {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+
+      .cohort-select {
+        @extend %dropdown;
+
+        padding: 5px 10px;
+        border: 0;
+        margin: 0;
+
+        //todo use form-element-shadow replace the code below
+        box-shadow: $fds-global-shadow-xs;
+
+        &:hover, &:focus {
+          box-shadow: $fds-global-shadow-sm;
+        }
+      }
+
+      .cohort-management-nav-form {
+        padding-right: 10px;
+
+        @include media-down($sm) {
+          padding-right: 0;
+          width: 100%;
+          padding-bottom: 10px;
+        }
+      }
+
+      button.action-create {
+        margin-bottom: 0;
+      }
+    }
+
+    .cohort-management-nav button.action-create,
+    .message .message-actions button.action-create {
+      @include primary-medium-button();
+
+      &:hover {
+        background-image: none;
+      }
+
+      &:focus:not(:disabled) {
+        border: none;
+      }
+    }
+
+    .cohort-management-add-form {
+      @extend %list-item;
+
+      .cohort-management-settings {
+        background: transparent;
+        margin-bottom: 40px;
+
+        .form-title {
+          background: transparent;
+          border-bottom: 0;
+          padding: 15px 25px;
+          margin: 0;
+          border: 1px solid $triboo-color-brand-primary;
+          color: $triboo-color-brand-primary;
+          display: flex;
+          align-items: center;
+          border-top-right-radius: 8px;
+
+          span {
+            flex: 1;
+          }
+
+          i {
+            cursor: pointer;
+          }
+        }
+
+        .tab-content {
+          padding: 15px 20px 0px 20px;
+        }
+
+        .form-fields {
+          hr {
+            display: none;
+          }
+
+          .field-text input[type="text"] {
+            //@extend %text-field;
+          }
+
+
+        }
+
+      }
+    }
+
+    .cohort_user_list_container {
+      padding: 30px 0px;
+      margin-top: 30px;
+      border-top: 1px solid var(--color-neutral-20, $fds-global-color-neutral-20);
+
+      .cohort_users_list_title {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 28px;
+        margin: 0px 0px 23px 3px;
+      }
+
+      .cohort_users_list {
+
+        .users_list_table {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          width: 100%;
+
+          .table_header {
+            font-size: 14px;
+            font-weight: 700;
+            background: var(--color-neutral-10, $fds-global-color-neutral-10);
+            border-radius: 5px 5px var(--border-radius-border-radius-sharp, 0px) var(--border-radius-border-radius-sharp, 0px);
+            opacity: 0.6;
+            height: 40px;
+
+            .user_cell {
+              padding-left: 30px;
+              vertical-align: middle;
+            }
+          }
+
+          .table_row {
+            font-size: 14px;
+            height: 35px;
+            border: var(--border-radius-border-radius-sharp, 1px) solid var(--color-neutral-20, $fds-global-color-neutral-20);
+
+            .user_cell {
+              padding-left: 30px;
+              vertical-align: middle;
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+    .cohort_users_list_pagination {
+      margin-top: 30px;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+
+      #id_users_list_selector {
+        margin: 0px 5px 0px 5px;
+      }
+    }
+
+    .wrapper-cohort-supplemental {
+      .toggle-cohort-management-secondary {
+        font-size: 18px;
+        color: $black;
+        font-weight: 600;
+        padding-bottom: 26px;
+        outline: none;
+
+        &:hover, &:focus {
+          text-decoration: none;
+        }
+
+        &.hidden {
+          display: block !important;
+          visibility: visible !important;
+        }
+      }
+
+      .csv-upload {
+
+        .outer-wrapper-form {
+          display: flex;
+          align-items: center;
+
+          @include media-down($sm) {
+            flex-direction: column;
+          }
+
+          .tip {
+            flex: 1;
+            text-align: center;
+            color: $fds-global-color-neutral-100;
+            font-style: italic;
+          }
+        }
+
+        .wrapper-form {
+          border: 2px dashed $grey35;
+          border-radius: $default-border-radius;
+          padding: 20px;
+          width: 600px;
+
+          @include media-down($sm) {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+        }
+
+        .subsection-title {
+          display: none;
+        }
+
+        .file-upload-form {
+          text-align: center;
+
+          .input-file {
+            margin: 0 auto;
+            display: flex;
+          }
+
+          .action-submit {
+            @extend %btn-primary-primary;
+            box-shadow: none;
+          }
+        }
+
+        .icon-file-type {
+          @extend %csv-file;
+        }
+      }
+
+      .cohort-management-supplemental {
+        padding: 20px 30px;
+
+
+        .icon {
+          font-weight: 400;
+          font-size: 18px;
+          margin-right: 20px;
+        }
+
+        p {
+          font-size: 16px;
+        }
+
+        .btn-link {
+          @include hyper-link();
+        }
+      }
+    }
+  }
+
+  .cohort-management-group {
+    padding-bottom: 20px;
+  }
+
+  div.tab-content {
+    border: 0;
+
+    &.new-cohort-form .form-label {
+      margin-top: 0;
+    }
+  }
+
+  ul.wrapper-tabs {
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+
+    .tab {
+      button.toggle-button {
+        color: $triboo-color-fg-neutral;
+        border: 1px solid $grey20;
+        margin: 0;
+        padding: 9px 30px;
+        font-size: 16px;
+        font-weight: 400;
+      }
+
+      &:first-child button.toggle-button {
+        border-top-right-radius: 0;
+        border-top-left-radius: $default-border-radius;
+      }
+
+      &:last-child button.toggle-button {
+        border-top-right-radius: $default-border-radius;
+        border-top-left-radius: 0;
+      }
+
+      &.is-selected button.toggle-button {
+        border: 1px solid $triboo-color-brand-primary;
+        color: $triboo-color-brand-primary;
+        padding: 9px 30px;
+        font-weight: 600;
+      }
+    }
+
+    + div {
+      background-color: $red;
+    }
+  }
+}

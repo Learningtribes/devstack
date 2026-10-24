@@ -1,0 +1,840 @@
+// studio - views - course settings
+// ====================
+// Table of Contents
+// * +Settings - Base / All
+// * +Settings - Licenses
+
+// +Settings - Base / All
+// ====================
+.certificate.view-settings {
+  @include layout();
+
+  .wrapper-mast {
+    padding: 0;
+    padding-top: 30px;
+    max-width: 1376px;
+    margin: 0 auto;
+
+    .mast .page-header {
+      color: $fds-global-color-neutral-170;
+      @include typography-h4-bold;
+
+      .subtitle {
+        position: static;
+        margin-bottom: $fds-global-space-xs;
+      }
+    }
+  }
+
+  .wrapper-content {
+    max-width: 1376px;
+    margin: 0 auto;
+    padding: 20px 0;
+
+    .content {
+      @include layout();
+
+      .content-primary {
+        width: 100%;
+      }
+    }
+  }
+  
+  .ds-link{
+    width: -webkit-fill-available;
+    justify-content: end;
+    &:after {
+      margin-left: 5.33px;
+      margin-top: 4px;
+      text-decoration: none
+    }
+  }
+  .tip-text {
+    margin-top: 4PX;
+    @include typography-body-2xs-regular
+  }
+
+  .greyscale {
+    filter: grayscale(100%);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .content-primary {
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    width: 100%;
+
+    .certificate-settings {
+      .group-settings {
+        padding: 0;
+
+        > header {
+          display: none;
+
+          + .instructions {
+            display: none;
+
+            + .wrapper-options {
+              display: none;
+            }
+          }
+        }
+
+        .list-input {
+          .team-field {
+            &:not(:first-child) {
+              margin-top: 0;
+            }
+
+            &:not(:nth-child(2)) {
+              margin-top: 30px;
+            }
+
+            &:first-child {
+              display: none;
+            }
+
+            h4 {
+              border-bottom: 1px solid rgba(114, 114, 114, 0.2);
+              padding-bottom: 14px;
+              font-weight: 600;
+              font-size: 12px;
+              color: $fds-global-color-neutral-140;
+              font-family: $font-family-header;
+            }
+            > ul {
+              > li {
+                background-color: transparent;
+                padding: 0;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                display: flex;
+                margin-top: 20px;
+                &:last-child {
+                  padding-bottom: 0;
+                }
+
+                .field {
+                  display: flex;
+                  align-items: center;
+                  margin: 0;
+                  .title {
+                    @include label();
+                    margin-top: 0;
+                  }
+                  .question-mark-wrapper {
+                    @include margin-left(10px);
+                  }
+                  &.key {
+                    .tip {
+                      display: none;
+                    }
+                  }
+                  &.value {
+                    width: auto;
+                  }
+                  &.value > .switcher {
+                    margin-right: 8px;
+                  }
+
+                  > select {
+                    border-radius: 5px;
+                    font-size: 12px;
+                    color: $triboo-color-fg-neutral;
+                    width: auto;
+                  }
+
+                  .CodeMirror {
+                    border: 1px solid rgba(114, 114, 114, 0.1);
+                    border-radius: 5px;
+                    font-size: 12px;
+                    font-family: $font-family-default;
+                    min-height: auto;
+                    width: auto;
+
+                    .CodeMirror-scroll {
+                      .CodeMirror-sizer {
+                        top: 0;
+                      }
+                    }
+                  }
+
+                  .checkboxgroup {
+                    ul {
+                      li {
+                        display: inline-block;
+                        width: 25%;
+                        white-space: nowrap;
+                        margin-top: 5px;
+                      }
+                    }
+                  }
+
+                  .switcher {
+                    > div {
+                      vertical-align: middle;
+                    }
+                    @include switcher();
+                  }
+
+                  input.date,
+                  .checkboxgroup,
+                  .switcher {
+                    + textarea + .CodeMirror {
+                      display: none;
+                    }
+                  }
+
+                  input.date {
+                    @include form-text-box();
+                    background-color: $white;
+                    width: 105px;
+                  }
+
+                  .advanced-module-category.checkboxgroup-withsections {
+                    margin-bottom: 10px;
+                    padding: 0px 24px 0px 0px;
+
+                    .category {
+                      font-size: 12px;
+                      font-weight: 700;
+                      margin-bottom: 5px;
+                    }
+                    .checkboxgroup {
+                      ul.lt-react-checkbox-group {
+                        display: grid;
+
+                        li {
+                          display: block;
+                          margin-top: 0px;
+                          margin-bottom: 5px;
+
+                          label {
+                            margin-bottom: 0px;
+                            padding-left: 0px;
+                            display: flex;
+                            align-items: center;
+                            font-size: 12px;
+                            font-weight: normal;
+
+                            span.help-wrapper {
+                              display: inline-block;
+                              vertical-align: text-bottom;
+                              margin-left: 8px;
+
+                              .icon-question i {
+                                font-size: 12px;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                &.advanced_modules {
+                  flex-direction: column;
+
+                  > .key {
+                    width: auto;
+                    display: block;
+                    .tip {
+                      display: block;
+                      -webkit-font-smoothing: antialiased;
+                    }
+                  }
+                  > .value {
+                    align-content: start;
+                    margin-left: 10px;
+                    width: 100%;
+                    margin-top: 10px;
+                    .checkboxgroup {
+                      width: 100%;
+                    }
+                    .question-mark-wrapper {
+                      display: none;
+                    }
+                    &.field.text {
+                      align-items: initial;
+                      margin-left: 0px;
+                      display: flex;
+                      flex-wrap: wrap;
+                    }
+                  }
+
+                  #advanced_modules {
+                    align-items: flex-start;
+                    padding-top: 6px;
+                  }
+                }
+
+                &.discussion_topics,
+                &.html_textbooks,
+                &.discussion_blackouts,
+                &.remote_gradebook,
+                &.teams_configuration,
+                &.annotation_storage_url,
+                &.annotation_token_secret,
+                &.lti_passports,
+                &.display_organization,
+                &.video_upload_pipeline,
+                &.static_asset_path,
+                &.enrollment_domain {
+                  > .value {
+                    .CodeMirror {
+                      width: 100%;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .content-supplementary {
+    @include content-supplementary();
+    margin-top: 50px;
+    width: 27.40426%;
+
+    .bit {
+      &:first-child {
+        border-bottom: none;
+      }
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+
+  // in form - elements
+  .group-settings {
+    display: flex;
+
+    .list-input {
+      width: 70%;
+    }
+    .list-input.enum {
+      .field-group {
+        background: transparent;
+        padding: 2px;
+      }
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 20%;
+      margin: 0;
+      border: 0;
+
+      label {
+        @include typography-body-lg-bold;
+        color: $fds-global-color-neutral-170;
+      }
+    }
+
+    &,
+    &:hover {
+      box-shadow: none;
+      border-radius: 0;
+      background-color: transparent;
+    }
+
+    margin: 0;
+    padding: 20px ($baseline * 1.5);
+
+    &.advanced-policies .CodeMirror .CodeMirror-lines .cm-string {
+      color: $triboo-color-fg-neutral;
+    }
+
+    select {
+      @extend %dropdown-studio;
+
+      padding: 7px 50px 8px 20px;
+    }
+
+    input[type="number"] {
+      border: 1px solid $grey5;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+
+    // buttons
+    .remove-item {
+      @extend %btn-secondary-light-gray;
+    }
+
+    // specific fields - overview
+    #field-course-overview,
+    #field-course-about-sidebar-html {
+      //adds back in CodeMirror border removed due to Unit page styling of component editors
+      .CodeMirror {
+        @extend %form-text-box;
+      }
+    }
+
+    // introduction video
+    #field-course-introduction-video {
+      .video-error {
+        font-size: 1.25em;
+        font-weight: 600;
+        line-height: 1.4em;
+        padding: 4px;
+        background: $black;
+        color: $white;
+        text-align: center;
+      }
+
+      iframe {
+        width: 100%;
+        height: 480px;
+      }
+
+      video {
+        width: 100%;
+      }
+    }
+
+    // specific fields - grading range (artifact styling)
+    &.grade-range {
+      .new-grade-button {
+        @extend %btn-secondary-light-gray;
+      }
+
+      .grade-slider {
+        .grade-bar {
+          height: auto;
+          height: 80px;
+          background: transparent;
+        }
+      }
+    }
+
+    // specific fields - basic
+    &.basic {
+      .list-input {
+        .field {
+          margin-bottom: 40px;
+
+          #course-title,
+          #course-subtitle {
+            width: 50%;
+          }
+        }
+      }
+
+      #field-course-duration {
+        #course-duration-number {
+          display: inline-block;
+          width: 60px;
+          margin-right: 10px;
+        }
+
+        #course-duration-unit {
+          @extend %form-text-box;
+          padding: 10px;
+        }
+      }
+    }
+
+    &.assignment-types {
+      .actions {
+        float: none;
+        width: auto;
+      }
+    }
+
+    // specific fields - advanced settings
+    &.advanced-policies {
+      // specific to code mirror instance in JSON policy editing, need to sync up with other similar code mirror UIs
+      .CodeMirror {
+        @extend %form-text-box;
+
+        &.CodeMirror-focused {
+          background-image: none;
+          background-color: $white;
+        }
+      }
+      .course-certificate-policy-list-1 {
+        width: 58%;
+      }
+
+      .disabled-pdf-certificate-msg {
+        width: 58%;
+
+        p {
+          @include typography-body-sm-regular;
+          margin-top: 5px;
+          color: $fds-global-color-neutral-100;
+        }
+
+      }
+    }
+
+    .list-input #field-course-short-description,
+    #field-course-effort,
+    &.course-learning-info {
+      display: none;
+    }
+
+    &.course-programmatic-enrollments {
+      .list-input {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      ol.list-input {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #field-enrollment-learning-group {
+        flex: 0.6;
+      }
+    }
+
+    &.course-reminders {
+      .list-input.enum {
+        [id^="course-reminder-info-"] {
+          text-align: center;
+          display: inline-block;
+          padding: 8px;
+          margin-right: 5px;
+        }
+
+        input {
+          width: 10%;
+        }
+
+        .delete-button.delete-course-reminder-info {
+          float: right;
+        }
+      }
+
+      .list-input {
+        margin-bottom: 20px;
+
+        #course-due {
+          span {
+            line-height: 2.072rem;
+            color: $black60;
+          }
+        }
+
+        #course-re-enroll {
+          @extend #course-due;
+        }
+
+        #course-finish-days {
+          font-size: 1.4rem;
+          line-height: 2.072rem;
+          color: $black60;
+          font-weight: 600;
+          width: 10%;
+          text-align: center;
+          margin: 0 5px;
+        }
+
+        #course-re-enroll-time {
+          @extend #course-finish-days;
+        }
+
+        #periodic-reminder-day {
+          @extend #course-finish-days;
+        }
+
+        #re-enroll-time-unit {
+          font-size: 1.4rem;
+          line-height: 2.072rem;
+          color: $black60;
+          font-weight: 600;
+        }
+      }
+
+      .actions {
+        .new-button {
+          @extend %btn-primary-primary;
+        }
+
+        .icon {
+          vertical-align: baseline;
+        }
+      }
+    }
+
+    .list-input .field {
+      #course-mandatory-enabled {
+        margin-right: 0;
+      }
+
+      .mce-panel {
+        border: 1px solid $grey5;
+        border-radius: $default-border-radius;
+      }
+    }
+
+    .field-box {
+      display: grid;
+      
+      .img-upload {
+        display: flex;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        width: 680px;
+        height: 481px;
+        border: $fds-global-border-width;
+        margin-top: 16px;
+        p {
+          @include typography-body-sm-regular
+        }
+      }
+
+      .img-is-self-paced {
+        margin-top: 16px;
+        margin-bottom: 16px
+      }
+      h2 {
+        @include typography-body-md-bold;
+        color: $fds-global-color-neutral-170;
+        margin-bottom: 15px;
+      }
+      h2.title {
+        @include typography-body-md-bold;
+        color: $fds-global-color-neutral-170;
+        margin-bottom: 15px;
+        margin-top: 0px;
+      }
+
+      .field-line {
+        .preview-certificate-link {
+          align-content: center;
+
+          #preview-certificate-link {
+            margin-left: 8px;
+            color: $triboo-color-brand-primary-50;
+          }
+        }
+        span.tip-text{
+          @include typography-body-sm-regular;
+          margin-top: 16px;
+          color: $fds-global-color-neutral-100;
+        }
+      }
+
+      #tip_generate_example_certificates_for_the_course {
+        font-size: 16px;
+        color: $fds-global-color-neutral-170;
+      }
+
+      .key {
+        width: auto;
+        display: flex;
+
+        .title {
+          margin-right: 8px;
+        }
+      }
+
+      .is-self-paced {
+        width: -webkit-fill-available;
+        display: flex;
+        justify-content: space-between;
+        a {
+          @include typography-body-xs-regular;
+          color: $fds-global-color-neutral-140;
+          i {
+            margin-right: 3px
+          }
+        }
+
+        span {
+          @include typography-body-sm-regular;
+          color: $fds-global-color-neutral-170;
+
+        }
+      }
+
+      .field {
+        margin: 0 0 16px 0;
+      }
+
+      .tip {
+        margin-top: 5px;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 500;
+        color: $fds-global-color-neutral-100;
+      }
+
+      .explication-box {
+        .explication-balloon {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          width: 95%;
+          padding: 16px;
+          border-radius: $fds-global-border-radius-lg;
+          box-shadow: $fds-global-shadow-sm;
+          background: $fds-global-color-info-0;
+
+          .explication-text {
+            b {
+              @include typography-body-sm-bold;
+              color: $fds-global-color-info-70;
+            }
+            p {
+              @include typography-body-sm-medium;
+              margin-top: 20px;
+              color: $fds-global-color-info-70;
+            }
+          }
+          span {
+            @include typography-body-sm-medium;
+            color: $fds-global-color-info-70;
+
+            .explication-link {
+              color: $triboo-color-brand-primary-50;
+              text-decoration: underline;
+            }
+          }
+          .enable-certificates {
+            display: flex;
+            gap: 10px;
+            p {
+              @include typography-body-sm-regular;
+              color: $fds-global-color-neutral-170;
+            }
+          }
+        }
+      }
+      .preview-generated {
+        display: flex;
+        align-items: center;
+        padding-bottom: 10px;
+        gap: 8px;
+        height: 24px;
+
+        i {
+          color: $triboo-color-brand-primary;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          letter-spacing: 0em;
+          color: $fds-global-color-neutral-170;
+        }
+      }
+    }
+
+    #course-order {
+      display: inline-block;
+      margin: 0 10px;
+      width: 10%;
+    }
+
+    .schedule {
+      margin: 0 0 40px 0;
+
+      .list-input {
+        margin-bottom: ($baseline * 1.5);
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      .field-group {
+        //border-bottom: 1px solid $gray-l5; //please don't use the variables that doesn't exists in the theme.
+        padding-bottom: ($baseline/2);
+
+        &:last-child {
+          border: none;
+          padding-bottom: 0;
+        }
+
+        .is-not-editable {
+          input,
+          textarea {
+            padding: 10px;
+          }
+        }
+
+        .field {
+          float: left;
+          width: auto;
+          margin-bottom: ($baseline/4);
+          margin-right: 2.12766%;
+        }
+
+        .field.time {
+          position: relative;
+
+          .tip {
+            position: absolute;
+            top: 0;
+            right: 0;
+          }
+        }
+      }
+    }
+
+    &.delete-course {
+      h2 {
+        color: $triboo-color-brand-primary;
+      }
+
+      .delete-course-section {
+        .delete-course-btn {
+          @extend %btn-primary-primary;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .ui-datepicker {
+    @include date-picker();
+  }
+
+  .modal-window {
+    background-color: $white;
+    padding: 0;
+    width: 800px;
+    .modal-header {
+      @include modal-header();
+      border-bottom: 0;
+
+      h2 {
+        @include modal-header-title();
+      }
+    }
+    .modal-content .validation-error-modal-content {
+      font-size: $modal-content-font-size;
+
+      .error-list {
+        margin-top: 10px;
+        .error-item-message {
+          background-color: transparent;
+        }
+      }
+    }
+    .modal-actions {
+      @include modal-footer();
+    }
+  }
+}

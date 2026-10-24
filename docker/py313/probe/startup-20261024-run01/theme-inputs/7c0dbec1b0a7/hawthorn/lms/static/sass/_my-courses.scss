@@ -1,0 +1,163 @@
+.my-courses-dashboard {
+  .banner {
+    @include banner();
+
+    //height: auto;
+    margin-bottom: 0px;
+
+    @include media-down($lg) {
+      margin-bottom: 0px;
+    }
+
+    @include media-down($sm) {
+      margin-bottom: 0px;
+    }
+  }
+
+  .main-container {
+    overflow: hidden;
+    padding: 0 0 20px;
+
+    .tabs-wrapper {
+      padding: $fds-global-space-2xl 60px 0px;
+
+      @include media-down($sm) {
+        padding-inline: 0;
+      }
+    }
+
+    .my-courses {
+      padding: 0 $content-side-padding;
+      margin-bottom: 30px;
+
+      .separation_container {
+        display: flex;
+        color: $triboo-color-fg-neutral;
+        cursor: pointer;
+        margin: 20px 0px 20px 0px;
+
+        .separation_title {
+          font-size: 16px;
+          font-weight: 700;
+          letter-spacing: normal;
+          border: none;
+          white-space: nowrap;
+        }
+
+        .courses_counter {
+          font-size: 10px;
+          font-weight: 500;
+          line-height: 16px;
+          text-align: center;
+          @include margin-left(10px);
+          @include margin-right(5px);
+          padding: 1px 5px 1px 5px;
+          box-sizing: border-box;
+          width: fit-content;
+          border-radius: 2px;
+          background: rgba(114, 114, 114, 0.2);
+        }
+
+        .extending_button {
+          @include margin-left(10px);
+        }
+
+        .separation_line {
+          margin: 8px 10px 0px 10px;
+          border-top: $fds-global-border-width;
+          width: 85%;
+        }
+      }
+
+      .my-courses-nav {
+        border-bottom: 1px solid $fds-global-color-neutral-20;
+        margin: 0;
+        padding-bottom: $fds-global-space-md;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0;
+
+        .nav-item {
+          display: inline-block;
+          padding-bottom: 0px;
+
+          &:not(:last-of-type) {
+            margin-inline-end: $fds-global-space-xl;
+          }
+
+          .btn-link {
+            font-size: 16px;
+            color: $triboo-color-fg-neutral;
+            font-weight: 300;
+            text-decoration: none !important;
+            letter-spacing: normal;
+            line-height: initial;
+            padding-bottom: 10px;
+            padding-top: 0;
+            line-height: 20px;
+            border: none;
+            padding-left: 0;
+            padding-right: 0;
+
+            @include media-down($sm) {
+              border: 1px solid $fds-global-color-neutral-100;
+              border-radius: 8px;
+              padding: 5px 8px;
+            }
+
+            &:hover, &:active {
+              @include font-bold($color: $triboo-color-fg-neutral);
+
+              @include media-down($sm) {
+                text-shadow: none;
+              }
+            }
+
+            &.active-section {
+              font-weight: 400;
+              border-bottom: 2px solid $triboo-color-brand-primary;
+
+              @include media-down($sm) {
+                border: 1px solid $triboo-color-brand-primary;
+                color: $triboo-color-brand-primary;
+                border-radius: 8px;
+              }
+            }
+          }
+
+          .nav_courses_counter {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 16px;
+            text-align: center;
+            @include margin-left(10px);
+            padding: 1px 5px 1px 5px;
+            box-sizing: border-box;
+            width: fit-content;
+            border-radius: 2px;
+            color: $triboo-color-fg-neutral;
+            background: rgba(114, 114, 114, 0.2);
+          }
+
+        }
+      }
+
+      @include media-down($sm) {
+        padding: $fds-global-space-md;
+
+        .my-courses-nav {
+          display: flex;
+          flex-wrap: wrap;
+          gap: $fds-global-space-xs;
+          justify-content: flex-end;
+
+          .my-learning-searchbar,
+          .ds-search {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

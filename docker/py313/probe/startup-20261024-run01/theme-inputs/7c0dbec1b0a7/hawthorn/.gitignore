@@ -1,0 +1,8 @@
+lms/static/css/
+cms/static/css/
+*.back
+*.DS_Store
+*.sass-cache
+.idea
+.project
+

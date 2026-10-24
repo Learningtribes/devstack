@@ -1,0 +1,394 @@
+
+//variables temporary placed here
+$tip-visibility: none; // none | block
+$modal-window:(
+        padding-left-right:50px
+);
+
+@mixin layout {
+  display: flex;
+
+  .main-column,
+  .content-primary {
+    width: 69.46809%;
+    @include margin-right(3.12766%);
+    margin-top: 30px;
+  }
+  .course-complementary,
+  .content-supplementary {
+    width: 27.40426%;
+    margin-top: 30px;
+  }
+}
+
+//for a
+@mixin content-supplementary {
+  .bit {
+    border-bottom: none;
+    margin-bottom: 30px;
+
+    h3 {
+      font-weight: 600;
+      font-size: 16px;
+      color: $black;
+    }
+    p {
+      font-size: 14px;
+      color: $triboo-color-fg-neutral;
+      margin-top: 25px;
+    }
+  }
+  .external-help {
+    display: none;
+  }
+}
+
+//common
+@mixin label {
+  font-size: 16px;
+  color: $black;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+@mixin tip {
+  font-size: 10px;
+  color: $triboo-color-fg-neutral;
+  -webkit-font-smoothing: antialiased;
+}
+@mixin select {
+  @include form-text-box();
+  @extend %dropdown-studio;
+  border-radius: 3px;
+  font-size: 14px;
+  color: rgba(114, 114, 114, 0.8);
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-right: 30px;
+  border: none;
+
+  background-color: $white;
+  border: 1px solid rgba(114, 114, 114, 0.1);
+  box-shadow: $fds-global-shadow-xs;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+$form-textbox-color: $fds-global-color-neutral-140;
+@mixin form-text-box {
+  background-color: $white;
+  border: 1px solid $fds-global-color-neutral-5;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 8px 12px;
+  box-shadow: $fds-global-shadow-xs;
+
+  font-size: 14px;
+  color: $form-textbox-color;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+@mixin date-picker {
+  .ui-datepicker-header {
+    background-color: $triboo-color-brand-primary;
+    border-radius: $border-radius-half;
+
+    >a {
+      .ui-icon {
+        display: none;
+      }
+    }
+    .ui-datepicker-prev, .ui-datepicker-next {
+      top: 3px;
+      color: inherit;
+
+      &:before {
+        font-family: $font-awesome;
+        font-size: 16px;
+        font-weight: 600;
+        vertical-align: middle;
+      }
+    }
+
+    .ui-datepicker-prev {
+      left: 5px;
+      &:before {
+        content: '\f32e';
+      }
+    }
+    .ui-datepicker-title {}
+    .ui-datepicker-next {
+      &:before {
+        content:'\f330';
+      }
+    }
+    .ui-state-hover {
+      background-color: transparent;
+    }
+  }
+
+  .ui-datepicker-calendar {
+    thead tr th {
+      font-weight: 400;
+    }
+
+    tbody tr td {
+      a {
+        background-image: none;
+        background-color: $white;
+        border-color: $grey20;
+        color: $fds-global-color-neutral-140;
+
+        &.ui-state-hover {
+          border-color: $fds-global-color-neutral-100;
+          background-color: $fds-global-color-neutral-100;
+          color: $white;
+        }
+      }
+
+      &.ui-datepicker-today {
+        a {
+          border-color: $grey35;
+          background-color: $grey35;
+          color: $white;
+        }
+      }
+
+      &.ui-datepicker-current-day {
+        a {
+          border-color: $triboo-color-brand-primary;
+          background-color: $triboo-color-brand-primary;
+          color: $white;
+        }
+      }
+
+    }
+  }
+  .ui-widget-content {
+    .ui-datepicker-current,
+    .ui-datepicker-close {
+      border-width: 0;
+      color: $triboo-color-brand-primary;
+    }
+  }
+}
+@mixin icon {
+  color: $triboo-color-fg-neutral;
+  font-size: 16px;
+  font-weight: 300;
+  &:hover {
+    color: $white;
+    background-color: $fds-global-color-neutral-140;
+  }
+}
+// mixin for form
+@mixin form-section-title {
+  font-size: 16px;
+  color: $black;
+}
+
+// mixin for modal
+@mixin modal-header {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  display: flex;
+  height: 72px;
+  border-bottom: 1px solid $editor-border-color;
+}
+@mixin modal-header-title {
+  margin: 0;
+  font-size: 18px;
+  color: $black;
+  padding: 13px 30px;
+  font-weight: 600;
+}
+@mixin modal-body {}
+@mixin modal-footer {
+  height: auto;
+  padding: 20px;
+}
+@mixin settings-tabs-header {
+  border: none;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-evenly;
+
+  .settings-tab-buttons {
+    margin-right: 3px;
+    flex: 1;
+    border: none;
+
+    &:not(:last-child) {
+      border-right: none;
+    }
+
+    &:first-of-type {
+      button {
+        border-top-left-radius: $border-radius-v2-half;
+        border-bottom-left-radius: $border-radius-v2-half;
+      }
+    }
+
+    &:last-of-type {
+      button {
+        border-top-right-radius: $border-radius-v2-half;
+        border-bottom-right-radius: $border-radius-v2-half;
+      }
+    }
+
+    button {
+      text-align: center;
+      width: 100%;
+      font-weight: 600;
+      font-size: 12px;
+      color: $triboo-color-fg-neutral;
+      height: 42px;
+      background-color: $grey3;
+
+      &.active, &:focus {
+        background-color: $triboo-color-tag-light-bg-primary;
+        color: $triboo-color-tag-light-fg-primary;
+        border-bottom: 0;
+        outline: none;
+      }
+
+    }
+  }
+}
+
+@mixin editing-modal {
+  border-radius: $border-radius-half;
+  overflow: hidden;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+
+  .modal-header {
+    margin: 0;
+    @include modal-header();
+
+    .modal-window-title {
+      @include modal-header-title();
+      width: auto;
+    }
+    .editor-modes {
+      width: auto;
+    }
+  }
+  .modal-content {
+
+  }
+  .modal-actions {
+    @include modal-footer();
+    .action-item:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+}
+
+//tinymce
+@mixin tox {
+  .tox-dialog {
+    border-radius: 8px;
+    &__ {
+      &header {
+      }
+
+      &content-js {
+        .tox-textarea {
+          border: 1px solid $grey20;
+        }
+      }
+      &body-content {
+        padding: 5px 16px 0;
+
+      }
+      &body-nav-item {
+        &--active {
+          border-bottom-color: $triboo-color-brand-primary;
+          color: $triboo-color-brand-primary;
+
+          &:focus {
+            background-color: $grey3;
+          }
+        }
+
+      }
+      &body-content {
+        .tox-selectfield select,
+        .tox-textfield {
+          &:focus {
+            border-color: $triboo-color-brand-primary;
+          }
+        }
+        .tox-textarea {
+          &, &:focus {
+            border-color: $editor-border-color;
+          }
+        }
+      }
+
+      &footer {
+        border-top: none;
+
+        .tox-button {
+          @include primary-small-button();
+          &--secondary {
+            @include grey-small-button();
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin no-content {
+  color: $black;
+  font-size: 16px;
+  .new-button {
+    @include primary-small-button();
+  }
+}
+
+// common - utilities - mixins and extends
+// ====================
+
+// Table of Contents
+// +Font Bold - Mixin
+// + hyper-link
+
+// +Font Bold - Mixin
+// ====================
+/*@mixin font-bold($sizeValue: 0.25px, $color: $black) {
+  text-shadow: $sizeValue $sizeValue 0 $color;
+}
+
+@mixin hyper-link($color: $triboo-color-brand-primary) {
+  color: $fds-global-color-neutral-100; //Anchor don't inherit color from its ancestor
+  transition-property: color, text-shadow;
+  transition-duration: 0.1s;
+
+  &:hover,
+  &:active,
+  &:focus {
+    @include font-bold($color: $color);
+
+    color: $triboo-color-brand-primary;
+  }
+}
+
+@mixin hyper-link-header() {
+  color: $triboo-color-fg-neutral; //Anchor don't inherit color from its ancestor
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $black;
+    @include font-bold($color: $black);
+  }
+}*/

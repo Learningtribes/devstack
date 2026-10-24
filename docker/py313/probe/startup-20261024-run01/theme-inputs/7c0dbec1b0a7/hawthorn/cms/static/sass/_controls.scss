@@ -1,0 +1,69 @@
+// studio - elements - UI controls
+// ====================
+
+// gray primary button
+%btn-primary-gray {
+  @include grey-small-button();
+}
+
+// +Secondary Button - Extends
+// ====================
+// light-gray secondary button
+%btn-secondary-light-gray {
+  @include grey-small-button();
+}
+
+// it must be used for a specific element, please keep it by the end of July!
+/*// +UI - Window - Extends
+// ====================
+%ui-window {
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+  border: none;
+  background: transparent;
+
+  // STATE: hover/active
+  &:hover,
+  &:active {
+    box-shadow: none;
+  }
+}*/
+
+
+// +UI - Well Archetype - Extends
+// ====================
+%no-content {
+  @extend %list-item;
+}
+
+
+// +form - creating
+// ====================
+%form-creating {
+  @extend %list-item;
+
+  .actions {
+    box-shadow: none;
+    border-top: 0;
+    background: inherit;
+    margin-top: 0;
+
+    .action-primary {
+      @extend %btn-primary-primary
+    }
+
+    .action-secondary {
+      @extend %btn-secondary-light-gray
+    }
+  }
+}
+
+
+// button with no button shell until hover for understated actions
+%ui-btn-non-blue {
+  &:hover,
+  &:focus {
+    background-color: $triboo-color-brand-primary;
+  }
+}

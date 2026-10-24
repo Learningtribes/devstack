@@ -1,0 +1,77 @@
+.ds-radio {
+  --radio-size: 20px;
+  --radio-color: #{$fds-global-color-neutral-40};
+  appearance: none;
+  position: relative;
+  block-size: var(--radio-size);
+  inline-size: var(--radio-size);
+  flex-shrink: 0;
+  line-height: 1;
+  margin: 0 1ch 0 0;
+  display: inline-grid;
+  grid-template-areas: "radio";
+  vertical-align: bottom;
+
+  &::before,
+  &::after {
+    content: "";
+    block-size: 100%;
+    inline-size: 100%;
+    box-sizing: border-box;
+    border-radius: $fds-global-border-radius-pill;
+    grid-area: radio;
+  }
+
+  &::before {
+    border: 1px solid var(--radio-color);
+  }
+  &:checked {
+    &::after {
+      background-color: var(--radio-color);
+      transform: scale(0.6);
+    }
+  }
+
+  &:not(:disabled) {
+    &:hover {
+      --radio-color: #{$fds-global-color-neutral-80};
+    }
+    &:active,
+    &:checked {
+      --radio-color: #{$triboo-color-brand-primary};
+    }
+    &:invalid,
+    &.error {
+      --radio-color: #{$fds-global-color-error-40};
+    }
+
+    &:checked {
+      &:hover {
+        --radio-color: #{$triboo-color-brand-primary-50};
+      }
+      &:active {
+        --radio-color: #{$triboo-color-brand-primary-60};
+      }
+    }
+  }
+
+  &:disabled {
+    --radio-color: #{$fds-global-color-neutral-20};
+    pointer-events: none;
+    &:checked::after {
+      background-color: $fds-global-color-neutral-50;
+    }
+  }
+
+  &.ds-radio--sm,
+  &.ds-radio--small {
+    --radio-size: 16px;
+  }
+}
+
+label:has(> .ds-radio) {
+  display: inline-flex;
+  margin-inline-end: 1ch;
+  align-items: center;
+  cursor: pointer;
+}

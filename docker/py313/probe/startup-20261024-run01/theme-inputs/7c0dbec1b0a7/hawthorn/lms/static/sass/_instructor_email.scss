@@ -1,0 +1,287 @@
+s
+.instructor-dashboard-wrapper-2 section.idash-section#send_email {
+
+  %email-field-label {
+    font-weight: 700;
+    color: $triboo-color-fg-neutral;
+  }
+
+  ul.list-fields {
+    .field {
+      > label {
+        @extend %email-field-label;
+      }
+
+      input[name="send_to"] + label, .send_to_list {
+        font-size: 14px;
+      }
+
+      .email-targets-primary, .email-targets-secondary {
+        columns: auto;
+        -webkit-columns: auto;
+        width: 33%;
+
+        @include media-down($md) {
+          width: 100%;
+        }
+
+        li {
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
+
+        input[type=checkbox] {
+          @include checkbox-generator($checked-color: $triboo-color-brand-primary);
+
+          + label {
+            @include padding-left(0);
+            @include margin-left(30px);
+
+            &:before {
+              @include left(0px);
+            }
+          }
+
+          &:checked + label {
+            &:before {
+              color: $triboo-color-brand-primary;
+            }
+          }
+
+        }
+
+        .subheading {
+          display: none;
+        }
+      }
+
+      &:first-of-type {
+        @include media-down($md) {
+          margin-bottom: 6px;
+        }
+      }
+
+      &:nth-of-type(2) {
+        @include media-down($md) {
+          fieldset {
+            display: flex;
+          }
+        }
+
+      }
+
+      #id_subject {
+        width: 100%;
+      }
+    }
+
+    > li:last-child {
+      > label {
+        @extend %email-field-label;
+      }
+
+    }
+
+    .email-editor {
+      border: unset;
+
+      #mce_21 {
+        border: unset;
+        border-radius: 8px;
+        border: 1px solid $grey20;
+      }
+
+      #mce_22 {
+        background-color: $white;
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+      }
+
+      #mce_23-body {
+        align-items: center;
+        //height: 40px;
+        display: flex;
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      #mce_31 {
+        border-top: 1px solid $grey20;
+        border-bottom-right-radius: $default-border-radius;
+        border-bottom-left-radius: $default-border-radius;
+      }
+
+      .mce-btn {
+        background-color: unset;
+      }
+
+      #mce_0_ifr {
+        border-bottom-right-radius: $default-border-radius;
+        border-bottom-left-radius: $default-border-radius;
+      }
+
+    }
+
+    input[name=subject] {
+      @extend %linner-text-box;
+
+      display: block;
+    }
+
+  }
+
+  div.submit-email-warning .copy,
+  div.submit-email-action .copy {
+    font-style: italic;
+  }
+
+  div.submit-email-warning, div.submit-email-action {
+    float: left;
+    width: 80%;
+  }
+
+  br {
+    display: none;
+  }
+
+  input[name=send] {
+    @include primary-big-button();
+
+    margin-left: auto;
+    display: block;
+    margin-top: 16px;
+  }
+
+  div.request-response-error {
+    display: none;
+  }
+
+  div.running-tasks-container {
+    clear: both;
+    padding-top: 1px;
+
+    hr {
+      /*margin: 0 auto;
+      padding-bottom: 25px;*/
+    }
+
+    .no-pending-tasks-message {
+      p {
+        color: $fds-global-color-neutral-100;
+      }
+    }
+  }
+
+  div.email-background {
+    .task-history-email-content, .task-history-email {
+      //@include primary-medium-button();
+      @include icon-button($icon-code: '\f055');
+
+      border: unset;
+      background: unset;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      @include padding-left(30px);
+
+      &:before {
+        @include margin-left(-30px);
+        color: $triboo-color-brand-primary;
+        font-size: 18px;
+      }
+
+      &:focus {
+        box-shadow: unset;
+        outline: unset;
+      }
+
+      &.opened {
+        &:before {
+          content: '\f056'
+        }
+      }
+    }
+  }
+
+  > div p:first-child {
+    padding-bottom: 10px;
+  }
+}
+
+.instructor-dashboard-content-2 {
+
+  div.content-history-table-inner {
+    padding-bottom: 20px;
+  }
+
+  div.slickgrid {
+    border: 1px solid $grey5;
+    border-radius: 8px;
+
+    .slick-header {
+      border: unset;
+      background: unset;
+    }
+
+    .slick-header-column.ui-state-default {
+      //@extend %table-header-column;
+
+      border-right: unset;
+      background: unset;
+      padding-left: 16px;
+      height: auto;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+
+    .slick-row.odd {
+      background-image: unset;
+      background-color: $grey3;
+    }
+
+    .slick-cell {
+      border: unset;
+      color: $triboo-color-fg-neutral;
+      padding: 16px 0 16px 16px;
+      height: auto;
+
+      p {
+        padding: 0;
+      }
+    }
+  }
+}
+
+
+%button-clean {
+  border: unset;
+  background-color: unset;
+  background-image: unset;
+
+  &:hover {
+    background-color: unset;
+  }
+
+  button {
+    &:hover {
+      background-image: unset;
+    }
+  }
+}
+
+#mce_35 {
+  @extend %button-clean;
+
+  button {
+    @include primary-small-button();
+  }
+}
+
+#mce_36 {
+  @extend %button-clean;
+
+  button {
+    @include grey-small-button();
+  }
+}

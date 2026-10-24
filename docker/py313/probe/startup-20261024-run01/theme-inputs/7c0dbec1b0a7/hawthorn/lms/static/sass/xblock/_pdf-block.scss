@@ -1,0 +1,62 @@
+.pdf_block {
+
+  h2 {
+    @include icon-button($icon-code: '\f1c1');
+    margin-bottom: 6px;
+  }
+
+  .settings-list {
+    .field {
+      .setting-help span {
+        padding-right: 6px;
+      }
+    }
+
+  }
+
+  ul {
+    padding-top: 15px;
+    margin: 0;
+
+    // li
+    .pdf-download-button {
+      @include grey-small-button();
+
+      margin-right: 10px;
+
+      a {
+        @include icon-button($icon-code: '\f1c1', $padding-left: 25px);
+        color: inherit;
+
+        &:before {
+          margin-left: -18px;
+        }
+      }
+
+      a:hover {
+        color: $black;
+        text-shadow: none;
+      }
+
+    }
+
+
+  }
+
+  .pdf-h5-container,.pdf-embed-container {
+    display: none;
+  }
+
+  .h5 {
+    .pdf-h5-container {
+      display: block;
+    }
+  }
+
+  .embed {
+    .pdf-embed-container {
+      display: block;
+    }
+  }
+
+}

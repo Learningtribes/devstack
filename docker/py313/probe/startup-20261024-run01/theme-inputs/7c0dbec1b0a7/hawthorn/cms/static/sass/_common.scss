@@ -1,0 +1,22 @@
+
+.switcher-wrapper {
+  @include switcher();
+}
+
+//for all tinymce editor
+.tox-tinymce {
+  border-radius: $border-radius-half;
+
+  .tox-editor-header {
+    background-color: $editor-header-background-color;
+    //border-bottom: 1px solid lightgray;
+  }
+
+  div.tox-toolbar-overlord {
+    background-color: transparent;
+    .tox-toolbar__primary {
+      background: none;
+    }
+  }
+
+}

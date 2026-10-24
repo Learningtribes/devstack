@@ -1,0 +1,47 @@
+.tos {
+  .banner {
+    @include banner();
+
+    height: auto;
+    margin-bottom: 30px;
+
+
+    @include media-down($lg) {
+      margin-bottom: 20px;
+    }
+
+    @include media-down($sm) {
+      margin-bottom: 0px;
+    }
+  }
+
+  .wrapper-header {
+    border-bottom: 0 none;
+    height: auto;
+    padding-bottom: 0;
+    background-size: cover;
+    background-position: 0 center;
+    max-width: none;
+
+    .header-title {
+      @extend %t-title4;
+      @extend %t-strong;
+
+      color: $white;
+      padding: 50px 5px 0 80px;
+
+      @include media-down($md) {
+        padding: 0;
+        text-align: center;
+      }
+    }
+  }
+
+  .tos-form-button {
+    @include primary-medium-button();
+  }
+
+  .tos-form {
+    text-align: center;
+  }
+}

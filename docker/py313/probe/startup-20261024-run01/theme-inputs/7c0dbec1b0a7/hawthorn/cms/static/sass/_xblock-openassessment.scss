@@ -1,0 +1,406 @@
+
+.view-container {
+  .modal-window {
+    .modal-content {
+      @mixin prompt-block {
+    background: $white;
+    border: 2px solid $grey5;
+    border-radius: $border-radius-v2;
+  }
+      @mixin warning-block {
+        background: $triboo-color-tag-light-bg-yellow;
+        border-radius: 5px;
+        font-size: 14px;
+        color: $triboo-color-tag-light-fg-yellow;
+      }
+
+      .xblock-studio_view-openassessment {
+        #openassessment-editor {
+          display: flex;
+          flex-direction: column;
+
+          .openassessment_editor_content_and_tabs {
+            display: flex;
+            flex-direction: column;
+            /* position: static; */
+            flex: 1;
+            overflow: hidden;
+            #openassessment_editor_header {
+              @include modal-header();
+              background-color: transparent;
+              h6 {
+                @include modal-header-title();
+              }
+            }
+            .modal-tabs {
+              display: block;
+            }
+            .oa_editor_content_outer_wrapper {
+              flex: 1;
+              overflow-y: auto;
+              border-top: 1px solid $editor-border-color;
+              border-bottom: 1px solid $editor-border-color;
+            }
+            .oa_editor_content_wrapper {
+              border: none;
+              height: auto;
+              position: static;
+
+              .openassessment_tab_instructions {
+                background-color: $grey20;
+                border-bottom: none;
+              }
+              >ul {
+                padding: 10px 30px;
+
+                >li {
+                  &:not(:first-child) {
+                    margin-top: 20px;
+                  }
+
+                  .openassessment_container_header {
+                    border-bottom-color: $editor-border-color;
+                    .openassessment_container_header_title_box {
+                      h6 {
+                        font-weight: 600;
+                        font-size: 12px;
+                        color: $fds-global-color-neutral-140;
+                      }
+                      p {
+                        font-size: 14px;
+                        color: $fds-global-color-neutral-100;
+                      }
+                    }
+                    .openassessment_container_remove_button {
+                      background-color: transparent;
+                      @include closing-button;
+                      h2:after {
+                        content:'\f00d';
+                        font-family: $font-awesome;
+                        @include closing-button;
+                      }
+                    }
+                  }
+                  #openassessment_submission_latex_editor {
+                    display: none;
+                  }
+                }
+
+                +div {
+                  text-align: right;
+                  padding: 0 20px;
+                  &, &:hover {
+                    border: none;
+                    background-color: transparent;
+                  }
+                  h6 {
+                    @include primary-small-button();
+                  }
+                }
+              }
+              >.openassessment_description {
+                @include warning-block();
+                border-top: 0 !important;
+                padding: 10px !important;
+              }
+              >#openassessment_assessment_module_settings_editors {
+                >li {
+                  @include prompt-block();
+                  overflow: hidden;
+
+                  &:nth-child(2) {
+                    .openassessment_assessment_module_editor .assessment_settings_wrapper >ul>li {
+                      &:first-child {
+                        @include question-mark-in-first-line();
+                      }
+                    }
+                  }
+                  &:nth-child(3) {
+                    .openassessment_assessment_module_editor .assessment_settings_wrapper >ul>li {
+                      &:first-child {
+                        @include question-mark-in-first-line();
+                      }
+
+                    }
+                  }
+                  .drag-handle {
+                    background-color: $grey5 !important;
+                    &, &:hover {
+                      background-color: $grey5;
+                      border-color: $editor-border-color;
+                    }
+                  }
+                  .openassessment_inclusion_wrapper {
+                    background-color: transparent;
+                    border-bottom: 1px solid $editor-border-color;
+                  }
+                  .openassessment_assessment_module_editor {
+                    .openassessment_description {
+                      font-size: 14px;
+                      color: $fds-global-color-neutral-100;
+                    }
+                    #openassessment_training_example_list {
+                      .openassessment_training_example {
+                        .openassessment_training_example_header  {
+                          border-bottom-color: $editor-border-color;
+                          h6 {
+                            font-size: 12px;
+                            color: $fds-global-color-neutral-140;
+                          }
+                          .openassessment_training_example_remove {
+                            &:hover {
+                              background-color: transparent;
+                              color: $triboo-color-brand-primary;
+                            }
+                            h2 {
+                              &:after {
+                                content: '\f2ed';
+                                font-family: $font-awesome;
+                              }
+                            }
+                          }
+                        }
+                        .openassessment_training_example_body {
+                          width: auto;
+                          display: block;
+                          float: none;
+                          overflow: hidden;
+                          >div {
+                            float: none;
+                            position: static;
+                            width: auto;
+                            display: block;
+                          }
+                          .openassessment_training_example_essay_wrapper {
+                            textarea {
+                              @include form-text-box();
+                              margin: 5px 0 0 0;
+                              &:focus {
+                                outline: none;
+                              }
+                            }
+                          }
+                          .openassessment_training_example_scored_rubric {
+                            margin-top: 20px;
+                            .openassessment_training_example_criteria_selections {
+                              li >.wrapper-comp-setting {
+                                .setting-label {
+                                  .openassessment_training_example_criterion_name_wrapper {
+                                    @include label;
+                                    display: inline-block;
+                                  }
+                                  select {}
+                                }
+                                +.setting-help {
+                                  display: none;
+                                }
+                              }
+
+                            }
+
+                          }
+                        }
+
+                      }
+                    }
+                    #openassessment_add_training_example {
+                      text-align: right;
+                      h2 {
+                        @include primary-small-button();
+                        &:before {
+                          content:'\f067';
+                          font-family: $font-awesome;
+                        }
+                      }
+                    }
+                    .assessment_settings_wrapper  {
+                      >ul>li {
+
+                        input {
+                          background-image: none;
+                        }
+                        .setting-help {
+                          display: none;
+                        }
+                      }
+                    }
+                  }
+
+                }
+              }
+
+              .openassessment_container_add_button {
+                h6:before {
+                  content: '\f067';
+                  font-family: $font-awesome;
+                }
+              }
+
+              &#oa_settings_editor_wrapper {
+                >ul li {
+                  &:first-child {
+                    @include question-mark-in-first-line();
+                  }
+                  .wrapper-comp-setting {
+                    input {
+                      background: transparent;
+                    }
+
+                  }
+                  .setting-help {
+                    display: $tip-visibility;
+                  }
+                }
+              }
+              &#oa_prompts_editor_wrapper {
+                >ul >li {
+                  overflow: hidden;
+                  @include prompt-block();
+                  &.openassessment_prompt {
+                    .openassessment_container_header {
+                      margin: 0;
+                      padding: 10px;
+                    }
+                    .openassessment_prompt_body {
+                      .openassessment_prompt_description_wrapper {
+                        margin: 0;
+                        padding: 0;
+                        .tox-tinymce {
+                          border: none;
+                          .tox-editor-container {
+                            .tox-editor-header {
+                              border-bottom: 1px solid $editor-border-color;
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                  }
+                }
+              }
+              &#oa_rubric_editor_wrapper {
+                >ul {
+                  .openassessment_criterion {
+                    @include prompt-block();
+                    .openassessment_container_header {
+                      border-bottom-color: $editor-border-color;
+                      margin-bottom: 0;
+                      /*.openassessment_container_header_title_box {
+                        h6 {
+                          font-weight: 600;
+                          font-size: 12px;
+                          color: $fds-global-color-neutral-140;
+                        }
+                        p {
+                          font-size: 14px;
+                          color: $fds-global-color-neutral-100;
+                        }
+                      }*/
+                      .openassessment_container_remove_button {
+                        /*h2:after {
+                          content:'\f00d';
+                          font-family: $font-awesome;
+                          @include closing-button;
+                        }*/
+
+                      }
+                    }
+                    .openassessment_criterion_body {
+                      ul {
+                        li {
+                          >div>label {
+                            span {
+                              @include label;
+                            }
+                            input, textarea, textarea.openassessment_criterion_prompt {
+                              @include form-text-box;
+                              outline: none;
+                              background-image: none;
+                            }
+
+                          }
+                        }
+                      }
+                      .openassessment_criterion_option_list {
+                        li {
+                          .openassessment_option_header {
+                            .openassessment_criterion_option_remove_button {
+                              background-color: transparent;
+                              @include closing-button;
+                              h2:after {
+                                content:'\f057';
+                                font-family: $font-awesome;
+                                font-weight: 300;
+                                @include closing-button;
+                              }
+                              /*content:'\f00d';
+                              font-family: $font-awesome;
+                              @include closing-button;*/
+                            }
+
+                          }
+                          .wrapper-comp-settings ul li {
+                            .setting-label-title {
+                              width: 170px;
+                              display: inline-block;
+                            }
+                            .openassessment_criterion_option_points_label {
+                              padding-left: 0;
+                            }
+                            input, textarea {
+                              float: none !important;
+                            }
+                          }
+                        }
+                      }
+                      .openassessment_criterion_add_option {
+                        @include framed-small-button();
+                        &:hover {
+                          background-color: transparent;
+                        }
+                        h2 {
+                          &:before {
+                            content:'\f067';
+                            font-family: $font-awesome;
+                            padding: 0;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                #openassessment_rubric_feedback_wrapper {
+                  ul li .wrapper-comp-setting {
+                    label {
+                      @include label;
+                      margin-right: 0;
+                    }
+                    textarea {
+                      @include form-text-box;
+                      outline: none;
+                      background-image: none;
+                      float: none !important;
+                    }
+                  }
+                }
+              }
+
+            }
+            .covered {
+              display: none; //temporary commented
+            }
+          }
+          .openassessment_editor_buttons {
+            position: static;
+            ul li .openassessment_cancel_button {
+              @include grey-small-button();
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+}

@@ -1,0 +1,17 @@
+.my-training-banner,
+.view-external-catalog .banner {
+  .welcome-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h2 {
+    display: inline-block;
+    @include media-down($md) {
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
+
+}

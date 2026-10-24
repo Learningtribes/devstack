@@ -1,0 +1,613 @@
+// studio - elements - layouts
+// ====================
+
+// ====================
+
+#main {
+  margin-top: 0;
+}
+
+// layout - basic page header
+.wrapper-mast {
+  margin: 0;
+  padding-top: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
+
+  .mast {
+    $header-padding-bottom: $fds-global-space-sm;
+    min-width: auto;
+    padding-bottom: $header-padding-bottom;
+
+    // layout with actions
+    &.has-actions {
+      position: relative;
+
+      .page-header {
+        float: none;
+        display: inline-block;
+        width: 100%;
+        color: $triboo-color-fg-neutral;
+        @include typography-h4-bold;
+        @include margin-right(30px);
+
+        .subtitle {
+          position: static;
+          margin-bottom: $fds-global-space-xs;
+        }
+      }
+
+      .page-header-super {
+        display: inline-flex;
+        border-top: none;
+        width: auto;
+      }
+
+      .nav-actions {
+        position: absolute;
+        right: 0;
+        bottom: $header-padding-bottom;
+
+        ul {
+          display: flex;
+          gap: $fds-global-space-xs;
+        }
+
+        // buttons
+        .button.new-button,
+        .button.button-new,
+        .button {
+          @extend %btn-primary-primary;
+          vertical-align: middle;
+          font-size: 16px;
+
+          &:not(:last-child) {
+            @include margin-right(10px);
+          }
+        }
+      }
+    }
+
+    // layout with breadcrumb navigation
+    &.has-navigation {
+      .nav-actions {
+        bottom: -($baseline*1.5);
+      }
+
+      .navigation-item {
+        color: $gray;
+      }
+
+      .navigation-link:hover {
+        color: $triboo-color-brand-primary;
+      }
+    }
+  }
+
+  #tab-container {
+    .tabs {
+      display: flex;
+
+      li {
+        padding: 16px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: 0em;
+        color: $triboo-color-fg-neutral;
+        text-align: center;
+        border-bottom: 2px solid $fds-global-color-neutral-20;
+
+        &.active {
+          border-bottom: 2px solid $triboo-color-brand-primary;
+
+          a {
+            font-weight: 700;
+            color: $triboo-color-brand-primary;
+          }
+        }
+      }
+
+    }
+  }
+
+}
+
+// layout - basic page content
+.wrapper-content {
+  padding: 0 50px 20px 50px;
+}
+
+// +ui - loading
+.ui-loading {
+  @extend %list-item;
+}
+
+.view-outline,
+.view-dashboard {
+  .content-primary {
+    width: 100%;
+    margin-right: 0;
+
+    .xmodule_student_lang_preference {
+      display: flex;
+      height: 76px;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      background: $fds-global-color-neutral-10;
+      box-shadow: $fds-global-shadow-xs;
+
+      .module-message-title {
+        margin: 24px;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 28px;
+        color: $triboo-color-fg-neutral;
+      }
+
+      .module-message-detail {
+        margin: 16px;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        color: var(--neutral-neutral-170, $triboo-color-fg-neutral);
+        justify-content: center;
+      }
+
+    }
+
+  }
+
+  .content-supplementary {
+    display: none;
+  }
+
+  .outline-complex .add-item .button-new .icon {
+    vertical-align: baseline;
+    margin-right: 6px;
+  }
+}
+
+.modal-cover {
+  z-index: 30;
+}
+
+[class*="view-"] .modal-window-overlay {
+  opacity: 0.3;
+}
+
+@mixin notification() {
+  box-shadow: none;
+  width: 530px;
+  //right: 0;
+  border-radius: $border-radius-v2;
+  padding: 20px 15px;
+}
+
+@mixin symbol-and-copy {
+  .feedback-symbol {
+    float: none;
+    background-color: white;
+    height: auto;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+
+    &:before {
+      color: $yellow;
+    }
+
+    &.fa-warning {
+
+    }
+  }
+
+  .copy {
+    display: inline-block;
+    width: 390px;
+    vertical-align: middle;
+
+    //reset
+    float: none;
+    margin-right: 0;
+    margin-top: 0;
+
+    h2, p {
+      color: $white;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 18px;
+      overflow: visible;
+    }
+
+    p {
+      font-weight: 400;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+}
+
+#page-alert {
+  .wrapper-alert {
+    border-top: none;
+    position: fixed;
+    @include notification();
+    bottom: 30px;
+    right: map_get($notification-margin, 'right') !important;
+    background-color: $green;
+
+    .alert {
+      min-width: auto;
+      .action-close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        color: white;
+        background-color: transparent;
+        .label {
+          display: none;
+        }
+      }
+    }
+
+    @include symbol-and-copy();
+
+    .feedback-symbol:before {
+      color: $green;
+    }
+
+    .copy {
+      display: inline-block;
+      width: 420px;
+    }
+  }
+}
+
+
+#page-notification {
+  .wrapper-notification.wrapper-notification-error {
+    .action-close {
+      position: absolute;
+      right: 30px;
+      top: 20px;
+      color: white;
+      .label {
+        display: none;
+      }
+    }
+  }
+  $bottom-distance: -200px;
+  .wrapper-notification {
+    bottom: -170px !important;
+    right: map_get($notification-margin, 'right') !important;
+
+
+    &.wrapper-notification-error {
+      @include notification();
+      background-color: $incorrect;
+      bottom: $bottom-distance;
+
+      @include symbol-and-copy();
+      .feedback-symbol:before {
+        color: $incorrect;
+      }
+    }
+    &.wrapper-notification-warning {
+      @include notification();
+      background-color: $yellow;
+      bottom: $bottom-distance;
+
+      @include symbol-and-copy();
+
+      .nav-actions {
+        display: block;
+        float: none;
+        width: 100%;
+        margin-top: 10px;
+
+        .action-secondary {
+          color: $white;
+          font-size: 12px;
+        }
+
+        .action-primary {
+          @include primary-small-button();
+          color: $black;
+          background-color: $white;
+          font-weight: 600;
+          color: $triboo-color-fg-neutral;
+          font-size: 12px;
+        }
+      }
+
+      .action-close {
+        position: absolute;
+        right: 30px;
+        top: 20px;
+        color: white;
+        .label {
+          display: none;
+        }
+      }
+    }
+    &.wrapper-notification-mini {
+      @include notification();
+      background-color: $green;
+      bottom: $bottom-distance;
+      border: none;
+      width: 380px;
+
+      @include symbol-and-copy();
+      .feedback-symbol:before {
+        color: $green;
+      }
+
+      .copy {
+        width: auto;
+        /*color: $grey10;*/
+      }
+
+      .notification.mini .feedback-symbol {
+        transform-origin: initial;
+        /*&:before {
+          color: $fds-global-color-neutral-100;
+        }*/
+      }
+
+      .nav-actions {
+        display: block;
+        float: none;
+        width: 100%;
+        margin-top: 10px;
+
+        .action-secondary {
+          color: $white;
+          font-size: 12px;
+        }
+
+        .action-primary {
+          @include primary-small-button();
+          color: $black;
+          background-color: $white;
+          font-weight: 600;
+          color: $triboo-color-fg-neutral;
+          font-size: 12px;
+        }
+      }
+
+      .action-close {
+        position: absolute;
+        right: 30px;
+        top: 20px;
+        color: white;
+        .label {
+          display: none;
+        }
+      }
+    }
+  }
+
+
+  @mixin notification() {
+    box-shadow: none;
+    width: 530px;
+    right: 0;
+    border-radius: $border-radius-v2;
+    padding: 20px 15px;
+
+    .nav-actions {
+      &.hidden {
+        display: none;
+      }
+    }
+
+    @include media-down($md) {
+      width: 430px;
+    }
+  }
+
+  @mixin symbol-and-copy {
+    .feedback-symbol {
+      background-color: white;
+      height: auto;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      &:before {
+        color: $yellow;
+      }
+
+      &.fa-warning {
+
+      }
+    }
+
+    .copy {
+      width: 390px;
+      float: none;
+      margin-right: 0;
+
+      h2, p {
+        color: $white;
+      }
+
+      h2 {
+        font-weight: 600;
+        font-size: 18px;
+        overflow: visible;
+      }
+
+      p {
+        font-weight: 400;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  //.wrapper-notification
+  $bottom-distance: 30px; //-200px;
+  $right-distance: 60px;
+  div.wrapper-notification {
+    @include media-down($md) {
+      left: calc((100% - 430px) / 2);
+      box-shadow: $fds-global-shadow-xs;
+    }
+
+    .nav-actions {
+      display: block;
+      float: none;
+      width: 100%;
+      margin-top: 10px;
+      text-align: right;
+
+      .nav-item {
+        button {
+          line-height: initial;
+        }
+      }
+      .action-secondary {
+        color: $white;
+        font-size: 12px;
+        background-color: transparent !important;
+        background-image: none;
+        border: none;
+        box-shadow: none;
+        text-shadow: none;
+        font-weight: 600;
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .action-primary {
+        @include primary-small-button();
+        font-weight: 600;
+        color: $triboo-color-fg-neutral !important;
+        background-color: $white !important;
+        font-size: 12px;
+      }
+    }
+    .notification {
+      .copy {
+        //display: inline;
+        @include media-down($md) {
+          width: 280px !important;
+        }
+      }
+      .action-close {
+        cursor: pointer;
+        position: absolute;
+        right: 30px;
+        top: 20px;
+        color: $white;
+        font-family: $font-awesome;
+      }
+    }
+
+
+    .notification {
+      padding: 0;
+    }
+  }
+  .wrapper-notification-info {
+      @include notification();
+      background-color: $green;
+      bottom: $bottom-distance;
+      right: $right-distance;
+
+      @include symbol-and-copy();
+      .feedback-symbol:before {
+        color: $correct;
+      }
+    }
+  .wrapper-notification-error {
+    @include notification();
+    background-color: $incorrect;
+    bottom: $bottom-distance;
+    right: $right-distance;
+
+    @include symbol-and-copy();
+    .feedback-symbol:before {
+      color: $incorrect;
+    }
+  }
+  .wrapper-notification-warning {
+    @include notification();
+    background-color: $yellow;
+    bottom: $bottom-distance;
+    right: $right-distance;
+
+    @include symbol-and-copy();
+
+  }
+  .wrapper-notification-mini {
+    @include notification();
+    background-color: $green;
+    bottom: $bottom-distance;
+    right: $right-distance;
+    border: none;
+    width: 380px;
+
+    @include symbol-and-copy();
+    .feedback-symbol:before {
+      color: $green;
+    }
+
+    .copy {
+      width: auto;
+    }
+
+    .notification.mini .feedback-symbol {
+      transform-origin: initial;
+    }
+
+    .nav-actions {
+      display: block;
+      float: none;
+      width: 100%;
+      margin-top: 10px;
+
+      .action-secondary {
+        color: $white;
+        font-size: 12px;
+      }
+
+      .action-primary {
+        @include primary-small-button();
+        color: $black;
+        background-color: $white;
+        font-weight: 600;
+        color: $triboo-color-fg-neutral;
+        font-size: 12px;
+      }
+    }
+
+    .action-close {
+      position: absolute;
+      @include right(30px);
+      top: 20px;
+      color: white;
+      .label {
+        display: none;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,798 @@
+/**
+  This file contains all the necessary styling for a uniform
+  navigation bar that can exist on any of the v1, v2 or bootstrap
+  pages.
+*/
+.global-header {
+  padding-bottom: 0;
+  border-bottom: 0;
+  box-shadow: $fds-global-shadow-sm;
+  padding: 0 20px;
+  overflow: visible;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+
+  @include media-down($lg) {
+    width: 100%;
+  }
+
+  @include media-breakpoint-up(lg) {
+    padding: 0 $content-side-padding;
+  }
+
+  .hamburger-menu {
+    outline: none;
+
+    @include media-up($md) {
+      display: none;
+    }
+
+    @include media-down($lg) {
+      left: $lg-padding;
+    }
+
+    @include media-down($md) {
+      left: $md-padding;
+    }
+  }
+
+  .main-header {
+    display: flex;
+    position: static;
+    height: $header-height;
+  }
+
+  /*
+    Logo and course identification block
+  */
+  .header-logo {
+    height: 100%;
+    margin-bottom: 0;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+
+    @include media-down($md - 1) {
+      display: none;
+    }
+
+    @include media-breakpoint-up(lg) {
+      flex: 0.15;
+      min-width: 200px;
+      justify-content: flex-start;
+
+    }
+
+    a {
+      float: none;
+      margin: 0;
+      align-self: center;
+      height: auto;
+
+      .logo {
+        max-width: 110px;
+        max-height: 35px;
+        height: auto;
+        float: none;
+      }
+
+      @include media-breakpoint-down(md) {
+        margin-left: 0;
+
+        .logo {
+          margin-left: 0;
+        }
+      }
+    }
+
+    .course-header {
+      display: none;
+    }
+  }
+
+
+  /*
+    Main navigation buttons for Courses, programs, profile and explore buttons.
+
+    There are two stylings for the two circumstances, first the mobile, followed
+    by the desktop styling
+  */
+  // Desktop styling
+  .nav-links {
+    display: flex;
+    flex: 0.85;
+    height: 100%;
+
+    @include media-down($md - 1) {
+      flex: 1;
+      justify-content: flex-end;
+      padding-right: 0;
+    }
+
+    .main {
+      float: none;
+      margin: 0;
+      display: flex;
+      flex: 0.8;
+
+      @include media-down($md - 1) {
+        display: none;
+      }
+
+      .nav-tab {
+        display: flex;
+
+        a {
+          margin-bottom: 0;
+          background: transparent;
+          border-color: transparent;
+          color: $triboo-color-fg-neutral;
+          border-radius: 0;
+          border-width: 0;
+          padding: 0;
+          border-right: 2px solid $grey10;
+          min-width: 110px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 14px;
+          text-align: center;
+          padding-left: 20px;
+          padding-right: 20px;
+          box-sizing: border-box;
+
+          @include media-down($xl) {
+            line-height: 16px;
+          }
+
+          &.active,
+          &:hover {
+            border-bottom-style: solid;
+            border-bottom-color: $triboo-color-brand-primary;
+          }
+
+          &:active,
+          &:focus,
+          &:hover {
+            @include font-bold();
+
+            cursor: pointer;
+            border-bottom-color: $triboo-color-brand-primary;
+            color: $black;
+          }
+
+          .label {
+            font-size: 16px;
+            padding-bottom: 3px;
+            padding-right: 8px;
+          }
+        }
+      }
+
+      .nav-tab.platform-switch {
+         .no_border {
+           border: 0;
+         }
+
+         .switcher {
+           border-radius: 24px;
+           display: inline-block;
+           float: left;
+           margin-right: $content-side-padding / 3;
+           background-color: $grey20;
+           white-space: nowrap;
+           cursor: pointer;
+           font-size: 13px;
+
+           @include media-down($md) {
+             margin-right: 30px;
+           }
+
+           .round-button {
+             display: inline-block;
+             border-radius:inherit;
+             font-size: inherit;
+             padding: 6px 17px;
+             background-color: $grey20;
+             color: $grey35;
+             -webkit-font-smoothing: antialiased;
+
+             @include media-down($md) {
+               padding: 8px 16px;
+             }
+
+             &:not(.active) {
+               &:first-child {
+                 padding: 8px 10px 8px 20px;
+                 @include media-down($md) {
+                   padding: 8px 8px 8px 16px;
+                 }
+               }
+               &:last-child {
+                 padding: 8px 20px 8px 10px;
+                 @include media-down($md) {
+                   padding: 8px 16px 8px 8px;
+                 }
+               }
+             }
+           }
+
+           .active {
+             padding: 8px 16px;
+             background-color: $triboo-color-brand-primary;
+             color: $white;
+             border: 1px solid $grey20;
+             @include media-down($md) {
+               padding: 8px 24px;
+             }
+           }
+
+         }
+      }
+
+      .nav-tab.catalog-tab {
+        &:hover, &:focus-within {
+          .dropdown-catalogue-menu {
+            max-height: 300px;
+          }
+        }
+      }
+
+      .nav-tab.my-courses-tab {
+        &:hover, &:focus-within {
+          .dropdown-mytraining-menu {
+            max-height: 300px;
+          }
+        }
+
+        .dropdown-mytraining-menu {
+          min-width: 150px;
+        }
+      }
+
+      .nav-tab.catalog-tab .dropdown-catalogue-menu,
+      .nav-tab.my-courses-tab .dropdown-mytraining-menu {
+          max-height: 0;
+          overflow: hidden;
+          transition: all 0.5s ease-in-out;
+          position: absolute;
+          top: 100%;
+          background: $white;
+          padding: 0px;
+          border-radius: 0 0 5px 5px;
+          box-shadow: $fds-global-shadow-xs;
+
+          &::before {
+            display: block;
+            content: " ";
+            height: 1px;
+            width: 90%;
+            pointer-events: none;
+            background-color: $primary35;
+            border-top: 1px solid $primary25;
+            margin: 0 auto;
+          }
+
+          .dropdown-item:not(:last-child) {
+            border-bottom: 1px solid $grey20;
+          }
+
+          a {
+            border-right: none;
+            display: inline-block;
+            text-align: left;
+            line-height: 21px;
+            padding: 10px 15px;
+          }
+      }
+    }
+
+    .secondary {
+      float: none;
+      margin: 0;
+      display: flex;
+      flex: 0.2;
+      min-width: 200px;
+      justify-content: flex-end;
+      font-size: 14px;
+
+      div.dropdown-user-menu {
+        transition: all 0.5s ease-in-out;
+        display: block !important;
+        height: 0;
+        visibility: hidden;
+        overflow: hidden;
+
+        @include media-down($md - 1) {
+          width: 100%;
+          @include right(0);
+        }
+
+        .dropdown-item a {
+          @include media-down($md - 1) {
+            text-align: center;
+            font-weight: 600;
+            color: $triboo-color-fg-neutral;
+          }
+        }
+      }
+
+      @mixin actived-user-menu {
+        display: block !important;
+        visibility: visible;
+        height: 169.5px;
+
+        &.leaderboard-nav {
+          height: 212px;
+        }
+      }
+
+      @include media-up($md) {
+        &:hover {
+          .dropdown-user-menu {
+            @include actived-user-menu;
+          }
+        }
+      }
+
+      @include media-down($md - 1) {
+        &.showing-user-menu {
+          .dropdown-user-menu {
+            @include actived-user-menu;
+          }
+        }
+      }
+
+
+      a {
+        color: $triboo-color-fg-neutral;
+        text-decoration: none;
+      }
+
+      .username {
+        padding-right: 13px;
+        color: $triboo-color-brand-primary;
+      }
+
+      // All navigation items
+      .nav-item {
+        align-self: center;
+        padding: 0;
+        font-size: inherit;
+        display: inline-block;
+
+        &.leaderboard-nav {
+          display: flex;
+          align-items: center;
+          .score {
+            text-align: right;
+            padding-right: 13px;
+            font-size: 12px;
+          }
+        }
+      }
+
+      a.sign-in-btn,
+      .nav-item a.shopping-cart {
+        @extend %btn-primary-primary;
+      }
+
+      a.sign-in-btn {
+        margin-top: 20px;
+      }
+
+      a.register-btn {
+        @extend %btn-flat-outline;
+      }
+
+      // User information
+      .user-image-frame {
+        margin: 0;
+        border-radius: 50%;
+        border: 0 none;
+
+        @include media-down($lg) {
+          width: 36px;
+        }
+      }
+
+      .dropdown-user-menu {
+        min-width: 101px;
+        box-shadow: $fds-global-shadow-xs;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        border-color: $grey20;
+        border-width: 0;
+        top: $header-height;
+        @include right(20px);
+        position: absolute;
+        z-index: 10;
+        background-color: $white;
+
+        @include media-up($lg) {
+          @include right(70px);
+        }
+
+        &::before {
+          display: block;
+          content: " ";
+          height: 1px;
+          width: 90%;
+          pointer-events: none;
+          background-color: $primary35;
+          border-top: 1px solid $primary25;
+          margin: 0 auto;
+        }
+
+        .dropdown-item {
+          border-bottom: 0;
+          white-space: nowrap;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid $grey20;
+          }
+
+          a {
+            font-weight: 400;
+            padding: 10px 15px;
+            display: block;
+
+            &.download-item {
+              position: relative;
+
+              &.red-dot::after {
+                content: "";
+                position: absolute;
+                right: auto;
+                top: 30%;
+                width: 8px;
+                height: 8px;
+                background: $red;
+                border-radius: 100%;
+              }
+            }
+          }
+
+          a:focus {
+            background-color: transparent;
+            color: $triboo-color-brand-primary;
+          }
+
+          &:hover, &:active {
+            background-color: transparent;
+
+            a {
+              @include font-bold($color: $triboo-color-brand-primary);
+
+              color: $triboo-color-brand-primary;
+            }
+
+          }
+        }
+      }
+
+    }
+  }
+}
+
+.assign_static_position {
+  position: static;
+}
+
+.module-menu-showing {
+  .secondary {
+    display: none !important;
+  }
+}
+
+.usermenu-showing {
+  .hamburger-menu {
+    display: none;
+  }
+}
+
+/*
+  Mobile menu styling
+*/
+
+%mobile-nav-link {
+  position: static;
+  transform: none;
+  overflow: hidden;
+  padding: 0;
+
+  &:last-child {
+    a {
+      border-bottom: none;
+    }
+  }
+
+  a {
+    text-align: $bi-app-left;
+    padding: 12px 0;
+
+    .icon {
+      display: none;
+    }
+
+    @include media-down($md) {
+      &:not(.btn) {
+        color: $triboo-color-fg-neutral;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      background-color: $white;
+      color: $triboo-color-brand-primary;
+    }
+
+    &:after {
+      content: normal;
+    }
+  }
+}
+
+.userinfo-mobile-menu {
+  border-top: 1px solid $triboo-color-brand-primary;
+  opacity: 0;
+  height: 0;
+  transition: all 0.6s;
+  pointer-events: none;
+
+  &.showing {
+    height: 200px;
+    opacity: 1;
+    pointer-events: auto;
+
+    &.leaderboard-nav {
+      height: 250px;
+    }
+
+    @include media-up($md) {
+      display: none !important;
+    }
+  }
+
+  .mobile-nav-link {
+    @extend %mobile-nav-link;
+
+    a {
+      display: block;
+      font-weight: 600;
+      border-bottom: 1px solid theme-color('light');
+
+      &:not(.btn),
+      &:visited:not(.btn){
+        &:hover,
+        &:active,
+        &:focus {
+          border-bottom: 1px solid theme-color('light');
+        }
+      }
+    }
+  }
+}
+
+.mobile-menu {
+  margin: 15px 0 0;
+  transition: all 0.8s;
+  display: block !important;
+  visibility: hidden;
+  transition: all 0.5s ease-in-out;
+
+  @include media-down($md) {
+    border-top-color: $triboo-color-brand-primary;
+    margin-top: 0;
+
+    &.hidden {
+      display: block !important;
+      max-height: 0;
+      overflow: hidden;
+    }
+  }
+
+  &.showing {
+    max-height: 100vh;
+    display: block !important;
+    visibility: visible;
+
+    &.staff-menu {
+      height: auto;
+    }
+
+    @include media-up($md) {
+      display: none !important;
+    }
+  }
+
+  // Override standard styling for the mobile menu links
+  .mobile-nav-link {
+    @extend %mobile-nav-link;
+    padding-left: 20px;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid theme-color('light');
+    }
+
+    .tab-nav-link.focus {
+      color: $triboo-color-brand-primary;
+    }
+
+    &.catalog-tab, &.my-courses-tab {
+      position: relative;
+
+      &.with-dropdown-submenu {
+        &::before {
+          content: "\f0d7";
+        }
+        &.open {
+          &::before {
+            content: "\f0d8";
+          }
+        }
+      }
+
+      &::before {
+        position: absolute;
+        @include right(10px);
+        top: 12px;
+        font-family: $font-awesome;
+        font-weight: 900;
+      }
+    }
+
+    &.catalog-tab.open {
+      .dropdown-catalogue-menu {
+        max-height: 300px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid $grey20;
+      }
+    }
+
+    &.my-courses-tab.open {
+      .dropdown-mytraining-menu {
+        max-height: 300px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid $grey20;
+      }
+    }
+
+    &.catalog-tab.open, &.my-courses-tab.open {
+      .tab-nav-link {
+        border-bottom: none;
+      }
+    }
+
+
+    .dropdown-catalogue-menu, .dropdown-mytraining-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.5s ease-in-out;
+
+      .dropdown-nav-item {
+        a {
+          border-bottom: none;
+          border-left: 1px solid $grey20;
+          padding-left: 30px;
+          padding-top: 6px;
+          padding-bottom: 6px;
+        }
+
+        &:first-of-type a {
+          padding-top: 0;
+        }
+        &:last-of-type a {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+%focused-link-style {
+  color: $black;
+  font-weight: 600;
+}
+
+body.view-dashboard {
+  .nav-links .main .nav-tab.dashboard-tab a {
+    @extend %focused-link-style;
+  }
+  .mobile-menu .mobile-nav-link.focus a {
+    color: $triboo-color-brand-primary;
+  }
+}
+
+body.view-catalog, body.view-external-catalog, body.view-faq {
+  .global-header {
+    .nav-links.unauthenticated {
+      .secondary {
+        .about .about-btn {
+          color: $black60;
+        }
+
+        .login-register-btn {
+          a.sign-in-btn {
+            @include hovering-button(false);
+            color: $black60;
+            background-color: transparent;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+
+    a.explore-courses {
+      display: none;
+    }
+  }
+
+  .mobile-menu .mobile-nav-link:focus a,
+  .mobile-menu .mobile-nav-link.focus a {
+    color: $triboo-color-brand-primary;
+  }
+}
+
+body.view-my-courses-2 {
+  .nav-links .main .nav-tab.my-courses-tab .tab-nav-link {
+    @extend %focused-link-style;
+  }
+  .mobile-menu .mobile-nav-link.focus a {
+    color: $triboo-color-brand-primary;
+  }
+}
+
+body.view-account-setting {
+  .userinfo-mobile-menu .mobile-nav-link:nth-of-type(1) a {
+    color: $triboo-color-brand-primary;
+  }
+}
+
+body.view-in-analytics {
+  .nav-links .main .nav-tab.analytics-tab a {
+    @extend %focused-link-style;
+  }
+  .mobile-menu .mobile-nav-link.focus a {
+    color: $triboo-color-brand-primary;
+  }
+}
+
+body.view-admin-panel {
+  .nav-links .main .nav-tab.admin-panel-tab a {
+    @extend %focused-link-style;
+  }
+  .mobile-menu .mobile-nav-link.focus a {
+    color: $triboo-color-brand-primary;
+  }
+}
+
+body.view-explore,
+body.view-explore-overview,
+body.view-explore-programs,
+body.view-catalog,
+body.view-external-catalog {
+  .global-header .nav-links .main,
+  .mobile-menu {
+    .catalog-tab > a {
+      @extend %focused-link-style;
+    }
+  }
+}
+
+body.view-explore,
+body.view-explore-overview,
+body.view-explore-programs,
+body.view-catalog,
+body.view-external-catalog,
+body.view-my-training-programs,
+body.view-my-courses-2 {
+  .global-header .nav-links .main,
+  .mobile-menu {
+    .my-courses-tab .dropdown-nav-item.focus a,
+    .catalog-tab .dropdown-nav-item.focus a {
+      color: $triboo-color-brand-primary;
+    }
+  }
+}

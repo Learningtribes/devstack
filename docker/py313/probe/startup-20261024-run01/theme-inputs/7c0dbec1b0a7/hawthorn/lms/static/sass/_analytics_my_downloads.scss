@@ -1,0 +1,135 @@
+// lms - application - analytics_my_downloads
+// ====================
+
+#my-downloads {
+
+  .main-container {
+
+    .analytics-wrapper {
+      padding: $fds-global-space-2xl;
+
+      .report-wrapper {
+        padding: 40px 30px;
+        border: $fds-global-border-width;
+        box-shadow: none;
+
+        .search-bar-filter {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+        }
+
+        .list-container {
+            margin-top: 20px;
+            border-radius: 8px;
+            border: 1px hidden $fds-global-color-neutral-20;
+            outline: 1px solid $fds-global-color-neutral-20;
+
+            @include media-down(1300px) {
+                overflow-x: auto;
+            }
+
+            table {
+              width: 100%;
+              border-radius: 8px;
+              border-collapse: collapse;
+              table-layout: auto;
+              transition: all 0.1s ease;
+              will-change: opacity;
+              background: $fds-global-color-neutral-0;
+
+              thead {
+                border-bottom: 1px solid $fds-global-color-neutral-40;
+                @include typography-body-xs-bold;
+                color: $fds-global-color-neutral-80;
+
+                td {
+                  padding: 14px $fds-global-space-sm;
+                  border-color: $fds-global-color-neutral-40;
+
+                  &:has(> i) {
+                    cursor: pointer;
+                  }
+
+                  > i {
+                    margin-left: $fds-global-space-xs;
+                  }
+                }
+              }
+
+              tbody {
+                @include typography-body-sm-regular;
+                color: $fds-global-color-neutral-110;
+
+                td {
+                  padding: 10px $fds-global-space-sm;
+
+                  .item-type, .ds-tag {
+                    margin-right: 1ch;
+                  }
+
+                  .ds-tag {
+                    text-transform: capitalize;
+                  }
+
+                  a {
+                    @include typography-body-sm-regular;
+                    color: $triboo-color-brand-primary;
+                  }
+                }
+              }
+
+              .col-name {
+                  min-width: 400px;
+              }
+              .col-date-time {
+                  min-width: 200px;
+              }
+
+              .col-type {
+                min-width: 200px;
+              }
+
+              .col-size {
+                min-width: 100px;
+              }
+
+              .col-status {
+                width: 100px;
+              }
+
+              .col-action {
+                width: 50px;
+                text-align: center;
+              }
+
+              td {
+                border-bottom: 1px solid $fds-global-color-neutral-20;
+
+                &:first-child {
+                  padding-left: calc(#{$fds-global-space-lg} + #{$fds-global-space-sm});
+                }
+
+                //&:last-child {
+                //  padding-right: calc(#{$fds-global-space-lg} + #{$fds-global-space-sm});
+                //}
+              }
+            }
+        }
+
+        .pagination-container {
+          margin-top: 20px;
+        }
+
+        &.disabled {
+          table {
+            opacity: 0.8;
+            pointer-events: none;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+
+  }
+}

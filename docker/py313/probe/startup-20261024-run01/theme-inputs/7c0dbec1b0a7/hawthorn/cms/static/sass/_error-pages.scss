@@ -1,0 +1,196 @@
+.error-page {
+  #main {
+    padding-bottom: 0;
+
+    #content {
+      display: flex;
+      font-size: 14px;
+
+      article {
+        flex: 0.56;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        overflow-y: auto;
+        height: 100vh;
+        min-width: 500px;
+
+        > * {
+          max-width: 60%;
+          text-align: center;
+        }
+
+        .container {
+          display: flex;
+          flex-direction: column;
+          width: 465px;
+          height: 440px;
+          align-items: center;
+          gap: 24px;
+
+          h1 {
+            @extend %t-title3;
+
+            color: $black;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            text-align: center;
+            color: $fds-global-color-neutral-170;
+            padding: 0;
+
+            em {
+              font-style: normal;
+            }
+          }
+
+          p {
+            @extend %paragraph;
+
+            padding-bottom: 50px;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            text-align: center;
+            color: $fds-global-color-neutral-140;
+            padding: 0;
+            margin: 0;
+
+            a {
+              text-decoration: underline;
+            }
+          }
+
+          .btn {
+            @extend %btn-primary-primary;
+          }
+
+          form {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            figure {
+              padding-bottom: 40px;
+
+              img {
+                max-width: 21rem;
+              }
+
+              figcaption {
+                color: $fds-global-color-neutral-100;
+                font-size: 14px;
+                font-weight: 300;
+              }
+            }
+
+            .list-input {
+              .field {
+                label {
+                  @extend %label;
+                  text-transform: uppercase;
+                  text-align: left;
+                }
+
+                input {
+                  font-size: 14px;
+                  background-color: transparent !important;
+                  background-image: none !important;
+                  border: none;
+                  box-shadow: none;
+                  border-radius: 0;
+                  border-bottom: 1px solid $primary25;
+                }
+              }
+            }
+
+            .form-actions {
+              text-align: center;
+              padding-bottom: 3px;
+
+              .action-primary {
+                background-image: none;
+                border: none;
+                border-radius: 10px;
+                width: auto;
+                font-size: 14px;
+                padding: 12px 25px;
+                display: inline-block;
+                box-shadow: $fds-global-shadow-xs;
+                text-transform: none;
+
+
+                &:visited,
+                &:focus,
+                &:hover,
+                &:active {
+                  background-color: $white;
+                  color: $black;
+                }
+
+                &.disabled, &.is-disabled {
+                  border: none !important;
+                  background: $white !important;
+                  border-radius: 10px !important;
+                  color: $black !important;
+                }
+              }
+            }
+          }
+
+          section {
+            flex: 0.1;
+            display: flex;
+            align-items: center;
+
+            a {
+              padding: 10px 20px;
+            }
+          }
+
+          .instruction-text svg path[fill='#B1B1FF'] {
+            fill: $fds-global-color-primary-10;
+          }
+        }
+      }
+    }
+  }
+}
+
+section.outside-app {
+
+  a:not(.btn) {
+    @include hyper-link;
+  }
+
+  h1 {
+    @extend %t-title3;
+    //@extend %t-strong;
+
+    color: $triboo-color-brand-primary;
+  }
+
+  figure {
+    figcaption {
+      //@extend %t-title5;
+
+      font-weight: 700;
+      padding-bottom: 30px;
+    }
+
+    img {
+      width: 250px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+.separation_container {
+  display: flex;
+  color: $triboo-color-fg-neutral;
+  cursor: pointer;
+  margin: 50px 0px 30px 0px;
+
+  .separation_title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: normal;
+    border: none;
+    white-space: nowrap;
+  }
+
+  .programs_counter {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: center;
+    @include margin-left(10px);
+    @include margin-right(5px);
+    padding: 1px 5px 1px 5px;
+    box-sizing: border-box;
+    width: fit-content;
+    border-radius: 2px;
+    background: rgba(114, 114, 114, 0.2);
+  }
+
+  .extending_button {
+    @include margin-left(10px);
+  }
+
+  .separation_line {
+    margin: 8px 10px 0px 10px;
+    border-top: $fds-global-border-width;
+    width: 85%;
+  }
+}
+
+.nav_programs_counter {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: center;
+  @include margin-left(10px);
+  padding: 1px 5px 1px 5px;
+  box-sizing: border-box;
+  width: fit-content;
+  border-radius: 2px;
+  color: $triboo-color-fg-neutral;
+  background: rgba(114, 114, 114, 0.2);
+}
+
+.container-for-program-cards {
+  background: var(--fds-global-color-neutral-0);
+  padding: var(--fds-global-space-xl) var(--fds-global-space-2xl);
+  border-radius: var(--fds-global-border-radius-md);
+}

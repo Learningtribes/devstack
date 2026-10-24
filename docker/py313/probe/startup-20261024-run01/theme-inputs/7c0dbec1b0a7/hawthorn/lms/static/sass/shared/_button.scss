@@ -1,0 +1,29 @@
+.lt-btn {
+  @include button($font-weight: 400);
+  justify-content: center;
+  @include medium-button();
+
+  &.btn-primary {
+    @include primary-button();
+  }
+  &.btn-grey {
+    @include grey-button();
+  }
+  &.btn-white {
+    @include white-button();
+  }
+  &.btn-framed {
+    @include framed-button();
+  }
+  &:disabled {
+    @include disabled-button();
+    cursor: not-allowed;
+  }
+
+  &.btn-sm {
+    @include small-button();
+  }
+  &.btn-lg {
+    @include big-button();
+  }
+}

@@ -1,0 +1,38 @@
+
+body.view-in-course div.static_tab_wrapper {
+  background-color: $grey3;
+  box-sizing: border-box;
+  border: none;
+  padding: 20px 60px;
+
+  @include media-down($md) {
+    padding: 10px 10px;
+  }
+}
+
+body.view-pdfbook div.book-wrapper {
+
+  padding: 30px $content-side-padding;
+
+  @include media-down($md) {
+    padding: 30px $sm-padding;
+  }
+
+  section.book-sidebar {
+    border: none;
+    background-color: white;
+    border-top-left-radius: 10px;
+    padding-left: 10px;
+
+    #booknav {
+      .chapter {
+        //color: $triboo-color-fg-neutral;
+        @include hyper-link();
+        @extend %icon-circle;
+      }
+    }
+  }
+
+
+}
+

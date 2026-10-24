@@ -1,0 +1,59 @@
+@mixin dsScroller {
+  overflow-y: auto;
+
+  --scroller-color-track: #{$fds-global-color-neutral-20};
+  --scroller-color-thumb: #{$fds-global-color-neutral-70};
+  --scroller-color-thumb-hover: #{$fds-global-color-neutral-110};
+
+  // only works in Chrome 120+ and covers -webkit-scrollbar selectors
+  // see https://developer.chrome.com/docs/css-ui/scrollbar-styling
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroller-color-thumb) var(--scroller-color-track);
+
+  &::-webkit-scrollbar {
+    max-height: $fds-global-space-xs !important;
+    max-width: $fds-global-space-xs !important;
+  }
+
+  &::-webkit-scrollbar-thumb,
+  &::-webkit-scrollbar-track {
+    background: transparent !important;
+    border-radius: $fds-global-space-xs !important;
+  }
+
+  &:hover {
+    --fix: somethingdoesnotexist; /* This custom property invalidates styles on hover, thereby enforcing a style recomputation. This is needed to work around a bug in Safari. */
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--scroller-color-thumb) !important;
+      border: $fds-global-space-xxxs solid var(--scroller-color-track) !important;
+      &:hover {
+        background: var(--scroller-color-thumb-hover) !important;
+      }
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--scroller-color-track) !important;
+    }
+  }
+
+  &.ds-scroller--solid {
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        border: none !important;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent !important;
+      }
+    }
+  }
+
+  &.ds-scroller--x,
+  &.ds-scroller--horizontal {
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+}
+
+.ds-scroller {
+  @include dsScroller;
+}

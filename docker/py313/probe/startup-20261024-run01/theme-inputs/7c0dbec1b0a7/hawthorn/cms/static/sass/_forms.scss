@@ -1,0 +1,60 @@
+// studio - elements - forms
+// ====================
+
+// Table of Contents
+// * +Forms - General
+// * +Field - Is Editable
+// * +Field - With Error
+// * +Forms - Additional UI
+// * +Form - Create New
+// * +Form - Inline Name Edit
+// * +Form - Create New Wrapper
+// * +Form - Grandfathered
+
+// * +Field - Is Editable
+// ====================
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+textarea.text {
+  @extend %form-text-box;
+}
+
+// +Form - Create New
+// ====================
+// form styling for creating a new content item (course, user, textbook)
+// TODO: refactor this into a placeholder to extend.
+.form-create {
+  @extend %form-creating;
+}
+
+
+// +Form - Create New Wrapper
+// ====================
+.wrapper-create-element {
+  @extend %list-item;
+}
+
+.ui-timepicker-list li {
+  &:hover {
+    background-color:$grey5;
+  }
+}
+
+.incontext-editor-open-action,
+.access-button {
+  background: none;
+  border: none;
+  box-shadow: none;
+  font-size: 16px;
+  line-height: 1;
+  border-radius: $fds-global-border-radius-md;
+  padding: $fds-global-space-xxs;
+  height: 24px;
+  &:hover, &:focus {
+    background-color: $triboo-color-brand-primary;
+    border: none;
+    color: $fds-global-color-neutral-0;
+  }
+}

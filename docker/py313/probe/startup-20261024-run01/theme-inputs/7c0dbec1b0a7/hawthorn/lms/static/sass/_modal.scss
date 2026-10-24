@@ -1,0 +1,81 @@
+
+.account-settings-sections ,.report-wrapper {
+  .paragon__fa {
+    font-family: $font-awesome
+  }
+
+  .paragon__modal-header,
+  .paragon__modal-body,
+  .paragon__modal-footer {
+    padding: $fds-global-space-md $fds-global-space-xl;
+  }
+
+  .paragon__modal-header {
+    border-bottom: none;
+  }
+
+  .paragon__modal-title {
+    @include typography-body-md-bold;
+    color: $fds-global-color-neutral-170;
+  }
+
+  .paragon__alert-warning {
+    padding: $fds-global-space-md;
+    background-color: $fds-global-color-info-0;
+    border: none;
+    border-radius: $fds-global-border-radius-md;
+    box-shadow: $fds-global-shadow-sm;
+  }
+
+  .paragon__modal-content {
+    border: none;
+    border-radius: $fds-global-border-radius-lg;
+  }
+
+  .paragon__modal.paragon__show .paragon__modal-dialog {
+    max-width: Min(900px, calc(100vw - 32px));
+    margin: 10vh auto;
+    box-shadow: $fds-global-shadow-xl;
+  }
+
+  .paragon__alert-danger {
+    color: $incorrect;
+  }
+
+  .paragon__modal-footer {
+    gap: $fds-global-space-xs;
+
+    >:not(:last-child),
+    >:not(:first-child) {
+      margin: 0;
+    }
+  }
+}
+
+.account-settings-sections .section .account-deletion-details {
+
+  .btn-outline-primary {
+    @include basic-hover-focus() {
+      background-color: transparent;
+    }
+  }
+
+  .paragon__alert-danger .alert-content .alert-title {
+    color: $triboo-color-fg-neutral-light;
+  }
+
+
+  .paragon__modal-open {
+    .confirm-password-input {
+      @extend %form-text-box;
+    }
+  }
+
+  .delete-confirmation-wrapper .paragon__modal-footer {
+    .paragon__btn-outline-primary {
+      @include basic-hover-focus() {
+        border: none;
+      }
+    }
+  }
+}

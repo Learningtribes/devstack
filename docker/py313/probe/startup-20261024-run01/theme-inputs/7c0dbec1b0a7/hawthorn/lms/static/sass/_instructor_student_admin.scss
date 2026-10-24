@@ -1,0 +1,159 @@
+
+.instructor-dashboard-content-2 section.idash-section#student_admin input[type='text'] {
+  @include media-down($md) {
+    width: 100%;
+  }
+}
+
+section.idash-section#student_admin {
+  .hd-3 {
+    display: none;
+  }
+
+  .hd-4 {
+    color: $black;
+    font-size: 18px;
+    padding-bottom: 7px;
+  }
+
+  input[type='text'] {
+    width: 40%;
+  }
+
+  input[type='button'],
+  .gradebook-link,
+  .progress-link {
+    @include primary-medium-button();
+    text-shadow: none;
+  }
+
+  .progress-link-wrapper {
+    margin-top: 1em !important;
+  }
+
+  .student-specific-container .request-response-error {
+    margin-top: 2em;
+  }
+
+  .action-type-container {
+    label {
+      display: block;
+    }
+
+    label[for=gradebook-link] {
+      display: none;
+    }
+  }
+
+  input[name='student-select-grade'] {
+    margin-bottom: 15px;
+  }
+
+  .location-example {
+    display: block;
+    color: $triboo-color-brand-primary;
+    font-style: normal !important;
+    font-weight: 700;
+
+    @include media-down($md) {
+      word-break: break-all;
+    }
+  }
+
+  .floating-blocks {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 40px 0 0 0;
+
+    li {
+      @include list-item();
+
+      list-style: none;
+      width: 380px;
+      height: 255px;
+      @include margin(0, 30px, 40px, 0);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+
+      @include media-down($md) {
+        width: 100%;
+        height: auto;
+        @include margin-right(0);
+      }
+
+      input[type=button] {
+        margin-top: auto;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+
+      span[name='rescore-actions-all'] {
+        margin-top: auto;
+        margin-bottom: 0;
+      }
+
+      span input[type='button'] {
+        width: 100%;
+      }
+
+      .task-history-single-table {
+        display: none;
+      }
+
+      .override-actions-single {
+        margin-bottom: 0;
+      }
+    }
+
+    .hd-5 {
+      font-weight: normal;
+
+    }
+
+    label {
+      font-size: 13px;
+      line-height: 21px;
+    }
+
+    input[type='button'] {
+      @include primary-small-button();
+    }
+
+    input[name='score-select-single'] {
+      width: auto !important;
+      margin-top: auto;
+      margin-bottom: 15px;
+    }
+
+    & + hr {
+      margin-top: 10px;
+    }
+  }
+
+  .entrance-exam-grade-container {
+    .attempts {
+      order: 1
+    }
+
+    .rescore {
+      order: 2
+    }
+
+    .score-override {
+      order: 5
+    }
+
+    .problem-history {
+      order: 4
+    }
+
+    .task-status {
+      order: 3
+    }
+  }
+}

@@ -1,0 +1,125 @@
+@mixin my-bookmarks-slider() {
+  padding: 0 $content-side-padding;
+  margin-bottom: 30px;
+
+  .listing-bookmarks {
+    display: flex;
+    padding: 0 $content-side-padding;
+    clear: both;
+
+    .bookmark-item {
+      @include list-item();
+
+      border: 1px solid $grey20;
+      padding: 0;
+      width: 399px;
+      display: block;
+      float: left;
+
+      .bookmark-container {
+        border: 0;
+        border-radius: 0;
+      }
+
+      margin-bottom: 30px;
+
+      &:hover, &:active, &:focus {
+        .bookmark-title {
+          color: $black;
+          text-shadow: none;
+        }
+        .path-block-item {
+          color: $triboo-color-fg-neutral;
+          text-shadow: none;
+        }
+      }
+
+      &:before {
+        position: relative;
+        left: 355px;
+        top: 2px;
+        font-size: 24px;
+        color: $triboo-color-brand-primary;
+        font-weight: 600;
+        font-family: $font-awesome;
+        content: '\f02e';
+        float: left;
+        width: 0;
+      }
+
+      .bookmark-title {
+        padding: 15px 5px 0 28px;
+        width: 320px;
+        height: 46px;
+        flex-basis: 100%;
+
+        font-family: $font-family-default;
+        color: $triboo-color-fg-neutral;
+        font-size: 16px;
+        line-height: 23px;
+        margin-bottom: auto;
+        font-weight: 600;
+
+        display: -webkit-box;
+        -webkit-line-clamp:2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-box-pack: center;
+
+        @include media-down($sm) {
+          width: 80%;
+        }
+      }
+
+      .info-path-block-container {
+        padding: 5px 32px 25px 28px;
+        .info-path-block {
+          color: $fds-global-color-neutral-100;
+          font-size: 11px;
+        }
+        .path-block-item {
+          padding: 2px 0;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    @include media-down($lg) {
+      padding: 0 $lg-padding;
+    }
+
+    @include media-down($sm) {
+      padding: 0 $sm-padding;
+      .bookmark-item {
+        width: 95%;
+        &:before {
+          left: 315px;
+        }
+      }
+    }
+  }
+
+  @extend %swiper-prev-next-button-style;
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    top: 98px;
+    height: 100px;
+  }
+
+  .swiper-pagination-bullets {
+    .swiper-pagination-bullet {
+      background-color: $triboo-color-fg-neutral;
+      opacity: initial;
+
+      &.swiper-pagination-bullet-active {
+        background-color: $triboo-color-brand-primary;
+        width: 40px;
+        border-radius: 5px;
+      }
+    }
+  }
+}

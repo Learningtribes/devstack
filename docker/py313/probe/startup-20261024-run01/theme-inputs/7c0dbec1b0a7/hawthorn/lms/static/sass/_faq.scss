@@ -1,0 +1,51 @@
+// lms - views - faq
+// ====================
+
+// +FAQ
+// ====================
+.view-faq {
+  .banner {
+    @include banner();
+
+    height: auto;
+    margin-bottom: 30px;
+
+    @include media-down($lg) {
+      margin-bottom: 20px;
+    }
+
+    @include media-down($sm) {
+      margin-bottom: 0px;
+    }
+  }
+
+  .help-tab-link {
+    display: none;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 2em;
+    margin-bottom: 1.5em;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+  }
+
+  ul, ol {
+    margin-top: 1em;
+    list-style-type: initial;;
+    padding-left: 20px;
+  }
+
+  p, ul, ol {
+    line-height: 1.5rem
+  }
+
+  li {
+    margin-bottom: 0.2rem;
+  }
+}

@@ -1,0 +1,2064 @@
+// lms - views - user/student dashboard
+// ====================
+
+// +Dashboard
+// ====================
+.view-dashboard {
+  .content-wrapper {
+    max-width: initial;
+  }
+}
+
+.dashboard {
+  flex-wrap: wrap;
+
+  .empty-programs-message {
+    text-align: center;
+    width: 100%;
+    color: $white;
+    background-color: $triboo-color-brand-primary;
+    border-radius: 6px;
+    padding: 20px 10px;
+    .small-title {
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+    .normal-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .btn-primary {
+      @include white-small-button();
+      font-size: 12px;
+      color: $triboo-color-fg-neutral;
+
+      .icon {
+        display: none;
+      }
+    }
+
+    h2 {
+      color: $white;
+      font-weight: 700;
+    }
+  }
+
+  div & {
+    flex-direction: row;
+  }
+
+  .flat-button {
+    @extend %btn-flat-outline;
+    background-color: $grey3;
+
+    &:hover {
+      border-bottom: 1px solid $triboo-color-brand-primary !important;
+    }
+  }
+
+  //the red gradient
+  .banner {
+    @include banner();
+
+    height: 260px;
+    position: relative;
+    margin-bottom: 120px;
+    padding: 0 160px;
+    @include media-down($lg) {
+      padding: 0 80px;
+    }
+
+    .welcome-wrapper {
+      padding: 70px 0 20px 0;
+      @include media-down($lg) {
+        @include padding-left(0);
+      }
+
+      h2 {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &, & + h3 {
+          color: $white;
+        }
+      }
+    }
+
+    .whiteboard {
+      padding-top: 20px;
+      display: flex;
+      transform: scale(1);
+      gap: $fds-global-space-md;
+
+      > div {
+        @include list-item();
+
+        border-radius: var(--fds-global-border-radius-md);
+        width: 12%;
+        max-width: 130px;
+        height: 100px;
+        padding: var(--fds-global-space-xl);
+
+        @include media-down($lg) {
+          width: 20%;
+          padding: 18px 6px 20px;
+        }
+
+        @include media-down($md) {
+          width: 17%;
+          padding: 18px 16px 20px;
+        }
+
+        h2 {
+          @extend %big-title;
+
+          font-weight: 600;
+          font-size: 36px;
+          color: $black;
+          margin-bottom: 0;
+        }
+
+        i {
+          padding: 0 0 6px 3px;
+
+          @include media-down($sm) {
+            font-size: 20px;
+          }
+        }
+
+        &:nth-child(1) {
+          i {
+            color: $fds-dataviz-color-01;
+          }
+
+          &:after {
+            background-color: $fds-dataviz-color-01;
+          }
+        }
+
+        &:nth-child(2) {
+          i {
+            color: $fds-dataviz-color-02;
+          }
+
+          &:after {
+            background-color: $fds-dataviz-color-02;
+          }
+        }
+
+        &:nth-child(3) {
+          i {
+            color: $fds-dataviz-color-03;
+          }
+
+          &:after {
+            background-color: $fds-dataviz-color-03;
+          }
+        }
+
+        h3 {
+          font-size: 34px;
+          font-family: $font-family-default;
+          font-weight: 700;
+        }
+
+        p {
+          color: $fds-global-color-neutral-100;
+          padding-bottom: 13px;
+          font-size: 10px;
+
+          @include media-down($sm) {
+            font-size: 12px;
+            height: 22px;
+          }
+        }
+
+        &:after {
+          content: "";
+          display: block;
+          width: 80px;
+          height: 6px;
+          background-color: $triboo-color-brand-primary;
+          border-radius: 3px;
+
+          @include media-down($sm) {
+            width: 100%;
+          }
+        }
+      }
+
+      .view-transcript {
+        margin: auto 0 0 auto;
+        color: $triboo-color-fg-neutral;
+        align-self: baseline;
+
+        @include framed-medium-button();
+
+        @include media-down($xl) {
+          @include framed-small-button();
+        }
+
+        @include media-down($md) {
+          width: 50%;
+          margin: 20px auto 0;
+          justify-content: center;
+        }
+
+        @include media-down($sm) {
+          width: 60%;
+        }
+
+      }
+    }
+  }
+
+  // Contains main course card listings
+  .main-container {
+    overflow: hidden;
+    padding: 0;
+
+    @mixin wrapper-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--fds-global-space-md);
+
+      > h2 {
+        @include dashboard-section-title;
+
+        margin-bottom: 0;
+        flex: 1;
+      }
+    }
+
+    div.skeleton {
+      $light-color: whitesmoke;
+      $dark-color: lightgray;
+      .listing-last-activity {
+        .last-activity-item {
+          &, &:hover {
+            background-color: whitesmoke;
+            box-shadow: none;
+          }
+
+          .course-title {
+            h2 {
+              &:before {
+                display: inline-block;
+                content: ' ';
+                height: 20px;
+                width: 200px;
+                background-color: $dark-color;
+              }
+
+              a {
+                display: none;
+              }
+            }
+            span {
+              display: none;
+            }
+
+            &:after {
+              display: inline-block;
+              content: ' ';
+              height: 15px;
+              width: 150px;
+              background-color: $dark-color;
+            }
+          }
+
+          .progress-icon .progress-ring {
+            background-color: lightgray;
+            border-radius: 50%;
+
+            circle {
+              display: none;
+            }
+
+            +div {
+              &:before {
+                margin-bottom: 10px;
+                width: 30px;
+              }
+
+              &:before, &:after {
+                display: block;
+                content: ' ';
+                height: 15px;
+                width: 60px;
+                background-color: $dark-color;
+              }
+
+              span {
+                display: none;
+              }
+            }
+          }
+
+        }
+
+      }
+    }
+
+    %content-font-size {
+      font-size: 16px;
+
+      @include media-down($lg) {
+        font-size: 14px;
+      }
+
+      @include media-down($md) {
+        font-size: 12px;
+      }
+    }
+
+    .last-activity-and-leader-board {
+      padding: 20px $content-side-padding;
+      display: flex;
+      gap: var(--fds-global-space-xl);
+
+      @include media-down($lg) {
+        flex-direction: column;
+      }
+
+      .last-activity {
+        flex: 1;
+      }
+
+      #leader-side-board {
+        width: 400px;
+        background-color: transparent; //remove
+
+        @include media-down($lg) {
+          margin-top: 20px;
+          width: 100%;
+        }
+
+        .title {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+
+          h3 {
+            @include dashboard-section-title;
+          }
+        }
+
+        .board-content {
+          @include list-item();
+          box-shadow: $fds-global-shadow-sm;
+          padding:0;
+          border: 1px solid $grey10;
+
+          table {
+            @extend %leader-board-table;
+
+            thead tr th:first-child,
+            tbody tr td:first-child {
+              @include padding-left(19px);
+            }
+
+            thead tr th:last-child,
+            tbody tr td:last-child {
+              @include padding-right(19px);
+            }
+
+            thead {
+              border-bottom: 1px solid $grey10;
+
+              tr th {
+                height: 54px;
+              }
+            }
+
+            tbody tr {
+              &:nth-of-type(odd) {
+                background: $grey3;
+              }
+
+              td {
+                font-size: 16px;
+
+                //name
+                &:nth-child(2) {
+                  font-size: 14px;
+                  display: flex;
+                  align-items: center;
+
+                  @include media-down($md) {
+                    font-size: 12px;
+                  }
+
+                  .name {
+                    word-break: break-word;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .last-activity {
+      .wrapper-header-last-activity {
+        height: auto;
+        position: relative;
+        z-index: 9;
+
+        .header-last-activity {
+          @include dashboard-section-title;
+
+          margin-bottom: 0;
+        }
+      }
+
+      .listing-last-activity {
+        padding: 20px;
+
+        .last-activity-item {
+          @include list-item;
+          margin-bottom: 10px;
+          display: flex;
+          padding: 20px;
+          cursor: pointer;
+
+          .course-title {
+            flex: 1;
+            h2 {
+              a {
+                font-family: $font-family-default;
+                color: $triboo-color-fg-neutral;
+                font-size: 16px;
+                line-height: 23px;
+                margin-bottom: auto;
+                font-weight: 600;
+                max-width: 220px;
+
+                &:hover, &:active, &:focus {
+                  color: $black;
+                  text-shadow: none;
+                }
+              }
+            }
+
+            span {
+              color: $fds-global-color-neutral-100;
+              font-size: 12px;
+
+              i {
+                @include margin-right(0.5em);
+              }
+            }
+          }
+
+          .progress-icon {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+
+            @include progress-ring($color: $triboo-color-brand-primary);
+
+            @include media-down($sm) {
+              width: 50px;
+            }
+
+            .progress-ring {
+              height: 38px;
+              width: 38px;
+
+              display: inline-block;
+              vertical-align: middle;
+              .progress-ring__circle-bg {
+                stroke-width: 6;
+              }
+            }
+
+            div {
+              display: inline-block;
+              vertical-align: middle;
+              font-size: 12px;
+              text-align: $bi-app-left;
+
+              span {
+                display: block;
+              }
+
+              .completed {
+                color: $fds-global-color-neutral-100;
+                @include media-down($sm) {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .no-activity {
+        border-radius: $default-border-radius;
+        background-image: url("../images/no-last-activity.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 368px;
+
+        @include media-down($lg) {
+          height: unset;
+        }
+
+        .text-wrapper {
+          padding: 80px;
+
+          @include media-down($sm) {
+            padding: 60px 10px;
+          }
+
+          p {
+            color: $grey57;
+          }
+
+          p + h2 {
+            margin-top: 20px;
+          }
+
+          h2 {
+            font-size: 30px;
+            font-weight: 600;
+            color: $white;
+            max-width: 500px;
+            line-height: 1.5;
+          }
+
+          .start-explore {
+            @include white-big-button;
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+
+    .last-activity .header-last-activity,
+    #leader-side-board .title {
+      padding-bottom: $fds-global-space-xl;
+
+      @include media-down($lg) {
+        padding-bottom: $fds-global-space-md;
+      }
+    }
+
+    #leader-side-board .title a,
+    .view-all-button a {
+      @include hyper-link();
+      @include typography-body-sm-regular;
+      color: $triboo-color-brand-primary-50;
+
+      i {
+        font-size: 14px;
+        @include rtl-reverse-x();
+      }
+    }
+
+    .view-all-button a {
+      @include typography-body-sm-underline;
+      text-decoration: underline;
+    }
+
+    .my-courses {
+      padding: 0 $content-side-padding;
+      margin-bottom: 30px;
+
+      .wrapper-header-courses {
+        @include wrapper-header();
+
+        .view-my-courses {
+          color: $triboo-color-fg-neutral;
+
+          &:hover {
+            color: $triboo-color-brand-primary;
+          }
+        }
+      }
+
+      .listing-courses {
+        padding: var(--fds-global-space-xl) var(--fds-global-space-2xl);
+      }
+    }
+
+    .student-programs-wrapper {
+      padding: var(--fds-global-space-2xl) 60px;
+
+      .wrapper-header-program {
+        @include wrapper-header();
+
+        h2 {
+          display: inline-block;
+        }
+      }
+
+      .program-cards-container {
+        .explore-block {
+          width: 100%;
+        }
+      }
+    }
+
+    .my-bookmarks {
+      @include my-bookmarks-slider();
+      @include swiper-button($top: 48px);
+
+      padding: 30px 0 25px 0;
+
+      .wrapper-header-bookmarks {
+        padding: 0 $content-side-padding 3px $content-side-padding;
+        margin-bottom: 0;
+
+        @include media-down($sm) {
+          padding: 0 $sm-padding;
+        }
+
+        @include media-down($lg) {
+          padding: 0 $lg-padding;
+        }
+
+        .header-bookmarks {
+          @extend %t-title4;
+          @extend %t-strong;
+
+          color: $black;
+          margin-bottom: 0;
+          padding-bottom: 23px;
+          font-size: 16px;
+          float: left;
+        }
+
+        .view-my-bookmarks {
+          margin: auto 0 0 0;
+          float: right;
+          color: $triboo-color-fg-neutral;
+
+          &:hover {
+            color: $triboo-color-brand-primary;
+          }
+        }
+      }
+
+      // UI: bookmark list
+      .listing-bookmarks {
+        .bookmark-item {
+          box-sizing: border-box;
+
+          &:not(:last-of-type) {
+            @include margin-right(0);
+          }
+        }
+      }
+    }
+
+    $ilt-padding-bottom: 30px;
+
+    .ilt-calendar {
+      padding: 0 $content-side-padding 50px $content-side-padding;
+      @include media-down($md) {
+        padding: 0 $fds-global-space-2xl $fds-global-space-2xl;
+      }
+
+      .events-header {
+        @include wrapper-header();
+        height: 40px;
+        display: flex;
+        align-items: center;
+      }
+
+      .ilt-calendar-wrapper {
+        height: 100%;
+        display: flex;
+        position: relative;
+        gap: $fds-global-space-xl;
+
+        @include swiper-button($top: 60px);
+
+        &--type-my {
+          .day-number::after {
+            content: none !important;
+          }
+        }
+
+        .swiper-button-next {
+          background-color: $white;
+          border: 1px solid $grey5;
+          @include right(-30px);
+          @include left(unset);
+          width: 60px;
+          height: 60px;
+
+          @include media-down($md) {
+            display: none !important;
+          }
+
+          @include rtl-reverse-x();
+        }
+
+        .swiper-button-prev {
+          display: none;
+        }
+
+        .swiper-button-next, .swiper-button-prev {
+          box-shadow: $fds-global-shadow-md;
+        }
+
+        &.no-upcoming-session {
+          .swiper-button-next, .swiper-pagination, .ilt-events-type-switcher-wrapper {
+            display: none;
+          }
+          .upcoming-session {
+            display: none !important;
+          }
+
+          #calendar {
+            display: none;
+          }
+
+          #ilt-events {
+            display: flex;
+            background-image: linear-gradient(0deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../images/ilt-calendar/no-upcoming-session-bg.png');
+            background-position: 100% 75%;
+            justify-content: center;
+            height: 375px;
+            flex: 1;
+
+            @include media-down($sm) {
+              height: 198px;
+            }
+
+            .no-event-text {
+              p {
+                line-height: 22px;
+                color: $white;
+
+                &::before, &::after {
+                  content: "";
+                  width: 152px;
+                  border: 1px solid $white;
+                  transform: rotate(-180deg);
+                  display: inline-block;
+                  margin: 5px 20px;
+                }
+              }
+
+              h2 {
+                color: $white;
+                font-size: 28px;
+                line-height: 49px;
+                margin-top: 15px;
+              }
+
+              a {
+                @include white-big-button;
+                @include hovering-button(true);
+                font-size: 12px;
+                line-height: 16px;
+                color: $triboo-color-fg-neutral;
+              }
+
+              @include media-down($md) {
+                p {
+                    &::before, &::after {
+                    width: 100px;
+                  }
+                }
+              }
+
+              @include media-down($sm) {
+                text-align: left;
+                width: 100%;
+                margin: 0 26px;
+                p {
+                  font-size: 10px;
+                  line-height: 14px;
+                  margin-bottom: 11px;
+                  &::before {
+                    width: 37px;
+                    margin: 0 7px 2px 0;
+                  }
+                  &::after {
+                    display: none;
+                  }
+                }
+
+                h2 {
+                  font-size: 16px;
+                  line-height: 22px;
+                  margin: 0;
+                }
+
+                a {
+                  margin-top: 16px;
+                }
+              }
+            }
+
+            .no-ilt-text {
+              display: block;
+              align-self: center;
+              text-align: center;
+
+              h2 {
+                color: $white;
+                font-size: 28px;
+                line-height: 49px;
+                margin: 80px 30px 80px 30px;
+              }
+
+              @include media-down($sm) {
+                text-align: start;
+
+                h2 {
+                  font-size: 24px;
+                  line-height: 32px;
+                  font-weight: 400;
+                  margin: 0;
+                }
+              }
+            }
+
+            .ilt-events-list {
+              display: none;
+            }
+          }
+
+          &.has-past-session {
+            #calendar {
+              display: block;
+            }
+
+            #ilt-events {
+              height: unset;
+
+              .no-ilt-text {
+                display: none;
+              }
+
+              .no-event-text {
+                display: block;
+                align-self: center;
+                text-align: center;
+
+                @include media-down($xl) {
+                  p {
+                    font-size: 14px;
+                    line-height: 19px;
+
+                    &::before, &::after {
+                      width: 75px;
+                    }
+                  }
+
+                  h2 {
+                    font-size: 24px;
+                    line-height: 33px;
+                  }
+                }
+
+                @include media-down($lg) {
+                  p {
+                    &::before, &::after {
+                      width: 45px;
+                    }
+                  }
+                }
+
+                @include media-down($md) {
+                  p {
+                    font-size: 10px;
+                    line-height: 14px;
+                    margin-bottom: 11px;
+                    &::before {
+                      width: 37px;
+                      margin: 0 7px 2px 0;
+                    }
+                    &::after {
+                      display: none;
+                    }
+                  }
+
+                  h2 {
+                    font-size: 16px;
+                    line-height: 22px;
+                    margin: 0;
+                  }
+
+                  a {
+                    margin-top: 16px;
+                  }
+                }
+              }
+            }
+
+            .ilt-events-type-switcher-wrapper {
+              display: flex;
+            }
+          }
+        }
+
+        #calendar {
+          display: inline-block;
+          -webkit-transform: translate3d(0, 0, 0);
+          -moz-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+          margin: 0 auto;
+          overflow: hidden;
+          border-radius: $default-border-radius;
+          padding: 30px 5px;
+          box-shadow: $fds-global-shadow-sm;
+
+          @include media-up($lg + 1) {
+            min-width: 390px;
+            width: 390px;
+          }
+
+          @include media-between($md + 1, $lg) {
+            min-width: 310px;
+            width: 310px;
+          }
+
+          @include media-down($md) {
+            width: 100%;
+            padding: 20px 0;
+          }
+
+          .header {
+            margin: 0 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .month-name {
+              font-size: 16px;
+              font-weight: bold;
+              line-height: 22px;
+              color: $triboo-color-fg-neutral;
+              margin-bottom: 0;
+
+              i {
+                font-size: 22px;
+                @include margin-right(13px);
+                color: $triboo-color-brand-primary;
+              }
+            }
+            .view-session {
+              @include hyper-link($color: $triboo-color-fg-neutral);
+              margin-left: auto;
+              @include margin-right(0);
+              padding: 2px 0 2px 16px;
+              width: fit-content;
+
+              span {
+                font-size: 10px;
+                vertical-align: middle;
+              }
+              i {
+                font-size: 16px;
+                vertical-align: middle;
+                margin-left: 8px;
+              }
+
+              @include media-up($md+1) {
+                display: none;
+              }
+            }
+            .calendar-nav {
+              font-size: 16px;
+              font-weight: bold;
+              color: $white;
+              line-height: 22px;
+              padding: 7px;
+              background: rgba(114, 114, 114, 0.51);
+              border-radius: 15px;
+              display: flex;
+              width: fit-content;
+              gap: 20px;
+
+              .nav-right, .nav-left {
+                padding: 0 5px;
+                cursor: pointer;
+
+                @include rtl-reverse-x();
+              }
+            }
+
+            @include media-down($sm) {
+              .calendar-nav {
+                font-size: 12px;
+                line-height: 16px;
+                margin-inline-start: var(--fds-global-space-xs);
+              }
+
+              .month-name {
+                font-size: 12px;
+                line-height: 16px;
+
+                i {
+                  font-size: 16px;
+                  @include margin-right(8px);
+                }
+              }
+            }
+          }
+
+          .day-name {
+            font-size: 14px;
+            line-height: 19px;
+            color: rgba(29, 29, 29, 0.6);
+            letter-spacing: .7px;
+            display: inline-block;
+            width: 14.28%;
+            text-align: center;
+            padding-top: 15px;
+            padding-bottom: 22px;
+            border-radius: 26px 26px 0 0;
+
+            @include media-down($sm) {
+              font-size: 10px;
+              line-height: 14px;
+            }
+          }
+
+          // .highlight {
+          //   background-color: $primary25;
+          // }
+
+          .month {
+            opacity: 0;
+          }
+
+          .month.new {
+            opacity: 1;
+          }
+
+          .month.in.next {
+            -webkit-animation: moveFromRightFadeMonth .4s ease-out;
+            -moz-animation: moveFromRightFadeMonth .4s ease-out;
+            animation: moveFromRightFadeMonth .4s ease-out;
+            opacity: 1;
+          }
+
+          .month.out.next {
+            -webkit-animation: moveToRightFadeMonth .4s ease-in;
+            -moz-animation: moveToRightFadeMonth .4s ease-in;
+            animation: moveToRightFadeMonth .4s ease-in;
+            opacity: 1;
+          }
+
+          .month.in.prev {
+            -webkit-animation: moveFromLeftFadeMonth .4s ease-out;
+            -moz-animation: moveFromLeftFadeMonth .4s ease-out;
+            animation: moveFromLeftFadeMonth .4s ease-out;
+            opacity: 1;
+          }
+
+          .month.out.prev {
+            -webkit-animation: moveToLeftFadeMonth .4s ease-in;
+            -moz-animation: moveToLeftFadeMonth .4s ease-in;
+            animation: moveToLeftFadeMonth .4s ease-in;
+            opacity: 1;
+          }
+
+          .week:last-child {
+            .day.highlight {
+              border-radius: 0 0 26px 26px;
+            }
+          }
+
+          .day {
+            display: inline-block;
+            width: 14.28%;
+            text-align: center;
+            vertical-align: top;
+            cursor: pointer;
+            position: relative;
+            z-index: 100;
+            color: $triboo-color-fg-neutral;
+            height: 42px;
+
+            &.today {
+              color: $triboo-color-brand-primary;
+            }
+
+            &.other {
+              color: rgba(114, 114, 114,0.4);
+            }
+
+            &.has-event {
+              .day-number {
+                border: 1px solid $triboo-color-brand-primary;
+              }
+            }
+            &.has-open-event {
+              .day-number::after {
+                content: '';
+                position: absolute;
+                bottom: 6px;
+                left: 50%;
+                width: 4px;
+                height: 4px;
+                transform: translate(-50%, -50%);
+                border-radius: 100%;
+                background: $triboo-color-brand-primary;
+              }
+            }
+
+            &.active-day {
+              &.has-event {
+                .day-wrapper {
+                  border: 1px solid $triboo-color-brand-primary;
+                }
+              }
+
+              .day-number {
+                background-color: $triboo-color-brand-primary;
+                color: $white;
+              }
+            }
+
+            .day-wrapper {
+              display: inline-block;
+              border-radius: 50%;
+            }
+
+            .day-number {
+              font-size: 12px;
+              line-height: 32px;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              display: inline-block;
+              margin: 4px;
+            }
+
+            @include media-down($lg) {
+              height: 40px;
+              .day-number {
+                line-height: 28px;
+                width: 28px;
+                height: 28px;
+              }
+            }
+
+            @include media-down($sm) {
+              .day-number {
+                font-size: 10px;
+              }
+            }
+          }
+
+          .blue {
+            background: rgba(156, 202, 235, 1);
+          }
+
+          .orange {
+            background: rgba(247, 167, 0, 1);
+          }
+
+          .green {
+            background: rgba(153, 198, 109, 1);
+          }
+
+          .yellow {
+            background: rgba(249, 233, 0, 1);
+          }
+
+          .ilt-details {
+            display: none;
+            position: relative;
+            height: 75px;
+            background: rgba(164, 164, 164, 1);
+            margin-top: 5px;
+            border-radius: 4px;
+
+            &.in {
+              -webkit-animation: moveFromTopFade .5s ease both;
+              -moz-animation: moveFromTopFade .5s ease both;
+              animation: moveFromTopFade .5s ease both;
+            }
+
+            &.out {
+              -webkit-animation: moveToTopFade .5s ease both;
+              -moz-animation: moveToTopFade .5s ease both;
+              animation: moveToTopFade .5s ease both;
+
+              .events {
+                -webkit-animation: fadeOutShrink .4s ease both;
+                -moz-animation: fadeOutShink .4s ease both;
+                animation: fadeOutShink .4s ease both;
+              }
+            }
+          }
+
+          .arrow {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            margin-left: -2px;
+            width: 0px;
+            height: 0px;
+            border-style: solid;
+            border-width: 0 5px 5px 5px;
+            border-color: transparent transparent rgba(164, 164, 164, 1) transparent;
+            transition: all 0.7s ease;
+          }
+
+          .events {
+            height: 75px;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            &.in {
+              -webkit-animation: fadeIn .3s ease both;
+              -moz-animation: fadeIn .3s ease both;
+              animation: fadeIn .3s ease both;
+            }
+
+            &.in {
+              -webkit-animation-delay: .3s;
+              -moz-animation-delay: .3s;
+              animation-delay: .3s;
+            }
+
+            &.out {
+              -webkit-animation: fadeOut .3s ease both;
+              -moz-animation: fadeOut .3s ease both;
+              animation: fadeOut .3s ease both;
+            }
+
+            .event {
+              font-size: 13px;
+              line-height: 22px;
+              letter-spacing: .5px;
+              padding: 2px 16px;
+              vertical-align: top;
+
+              &.empty {
+                color: $grey10;
+              }
+
+              .event-category {
+                height: 7px;
+                width: 7px;
+                display: inline-block;
+                margin: 7.5px 0 0;
+                vertical-align: top;
+              }
+
+              span {
+                display: inline-block;
+                padding: 0 0 0 7px;
+              }
+            }
+          }
+
+          /* Animations are cool!  */
+          @-webkit-keyframes moveFromTopFade {
+            from {
+              opacity: .3;
+              height: 0px;
+              margin-top: 0px;
+              -webkit-transform: translateY(-100%);
+            }
+          }
+          @-moz-keyframes moveFromTopFade {
+            from {
+              height: 0px;
+              margin-top: 0px;
+              -moz-transform: translateY(-100%);
+            }
+          }
+          @keyframes moveFromTopFade {
+            from {
+              height: 0px;
+              margin-top: 0px;
+              transform: translateY(-100%);
+            }
+          }
+
+          @-webkit-keyframes moveToTopFade {
+            to {
+              opacity: .3;
+              height: 0px;
+              margin-top: 0px;
+              opacity: 0.3;
+              -webkit-transform: translateY(-100%);
+            }
+          }
+          @-moz-keyframes moveToTopFade {
+            to {
+              height: 0px;
+              -moz-transform: translateY(-100%);
+            }
+          }
+          @keyframes moveToTopFade {
+            to {
+              height: 0px;
+              transform: translateY(-100%);
+            }
+          }
+
+          @-webkit-keyframes moveToRightFadeMonth {
+            to {
+              opacity: 0;
+              -webkit-transform: translateX(30%) scale(.95);
+            }
+          }
+          @-moz-keyframes moveToRightFadeMonth {
+            to {
+              opacity: 0;
+              -webkit-transform: translateX(30%);
+            }
+          }
+          @keyframes moveToRightFadeMonth {
+            to {
+              opacity: 0;
+              -webkit-transform: translateX(30%);
+            }
+          }
+
+          @-webkit-keyframes moveFromRightFadeMonth {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(-30%) scale(.95);
+            }
+          }
+          @-moz-keyframes moveFromRightFadeMonth {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(-30%);
+            }
+          }
+          @keyframes moveFromRightFadeMonth {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(-30%);
+            }
+          }
+
+          @-webkit-keyframes moveToLeftFadeMonth {
+            to {
+              opacity: 0;
+              -webkit-transform: translateX(-30%) scale(.95);
+            }
+          }
+          @-moz-keyframes moveToLeftFadeMonth {
+            to {
+              opacity: 0;
+              -webkit-transform: translateX(-30%);
+            }
+          }
+          @keyframes moveToLeftFadeMonth {
+            to {
+              opacity: 0;
+              -webkit-transform: translateX(-30%);
+            }
+          }
+
+          @-webkit-keyframes moveFromLeftFadeMonth {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(30%) scale(.95);
+            }
+          }
+          @-moz-keyframes moveFromLeftFadeMonth {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(30%);
+            }
+          }
+          @keyframes moveFromLeftFadeMonth {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(30%);
+            }
+          }
+
+          @-webkit-keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+          }
+          @-moz-keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+          }
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+          }
+
+          @-webkit-keyframes fadeOut {
+            to {
+              opacity: 0;
+            }
+          }
+          @-moz-keyframes fadeOut {
+            to {
+              opacity: 0;
+            }
+          }
+          @keyframes fadeOut {
+            to {
+              opacity: 0;
+            }
+          }
+
+          @-webkit-keyframes fadeOutShink {
+            to {
+              opacity: 0;
+              padding: 0px;
+              height: 0px;
+            }
+          }
+          @-moz-keyframes fadeOutShink {
+            to {
+              opacity: 0;
+              padding: 0px;
+              height: 0px;
+            }
+          }
+          @keyframes fadeOutShink {
+            to {
+              opacity: 0;
+              padding: 0px;
+              height: 0px;
+            }
+          }
+        }
+
+        .ilt-events-wrapper {
+          display: flex;
+          overflow: hidden;
+          width: 100%;
+          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+
+          .swiper-pagination {
+            display: block;
+            bottom: -25px;
+            .swiper-pagination-bullet {
+              margin: 0 4px;
+              opacity: 1;
+              background-color: $triboo-color-fg-neutral;
+
+              &.swiper-pagination-bullet-active {
+                background-color: $triboo-color-brand-primary;
+              }
+            }
+          }
+
+          @include media-down($md) {
+            border-radius: $default-border-radius;
+            .swiper-pagination {
+              .swiper-pagination-bullet {
+                border-radius: 5px;
+                &.swiper-pagination-bullet-active {
+                  width: 40px;
+                }
+              }
+            }
+
+            &.mobile-events {
+              float: none;
+              display: block;
+              width: auto;
+
+              .swiper-pagination,
+              #ilt-events {
+                display: none;
+              }
+            }
+          }
+        }
+
+        $gap-between-events-field-group: 10px;
+        #ilt-events {
+          color: $white;
+          display: flex;
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+          background-image: linear-gradient(0deg, rgba(29,29,29,0.8), rgba(29,29,29,0.8)), url('../images/ilt-calendar/event-card-bg-pc.png');
+          background-repeat: no-repeat;
+          background-size: cover;
+          border-radius: $default-border-radius;
+          padding: 16px 14px;
+
+          .ilt-events-list {
+            align-self: center;
+            height: unset;
+            padding: 0; //remove
+
+            .ilt-empty-event {
+              font-size: 24px;
+              line-height: 33px;
+              width: 100%;
+              text-align: center;
+              color: $white;
+
+              @include media-down($md) {
+                text-align: left;
+                margin: 30px 0;
+              }
+            }
+
+            .ilt-event {
+              display: flex;
+              flex-wrap: wrap;
+              align-content: flex-start;
+
+              .event-day {
+                width: 80px;
+                display: inline-block;
+                border-radius: $default-border-radius;
+                box-shadow: $fds-global-shadow-sm;
+                @include margin-right(25px);
+                vertical-align: top;
+
+                @include media-down($md) {
+                  display: none;
+                }
+
+                .event-day-name {
+                  padding: 6px 0px;
+                  background-color: $triboo-color-brand-primary;
+                  color: $white;
+                  border-radius: 8px 8px 0 0;
+                  text-align: center;
+                  font-size: 14px;
+                  line-height: 19px;
+
+                  @include media-down($lg) {
+                    font-size: 12px;
+                  }
+                }
+
+                h2.event-day-number {
+                  margin: 0;
+                  text-align: center;
+                  font-size: 36px;
+                  line-height: 49px;
+                  font-weight: 600;
+                  background-color: $white;
+                  border-radius: 0 0 8px 8px;
+
+                  @include media-down($lg) {
+                    font-size: 26px;
+                    line-height: 45px;
+                  }
+                }
+              }
+
+              .event-date {
+                font-weight: 600;
+                font-size: 16px;
+                color: $white;
+                margin: 12px 0 10px 0;
+                width: 100%;
+
+                @include media-up($md+1) {
+                  display: none;
+                }
+              }
+
+              a.ilt-link {
+                text-decoration: none;
+                display: inline-block;
+                width: auto;
+                flex-grow: 1;
+                float: none;
+                padding: 0;
+                vertical-align: middle;
+
+                @include hyper-link($white, $triboo-color-brand-primary);
+
+                @include media-down($sm) {
+                  width: 100%;
+                }
+
+                &:hover, &:focus {
+                  text-decoration: none;
+                  outline: none;
+                  text-shadow: none;
+                }
+
+                .ilt-event-title {
+                  font-size: 24px;
+                  line-height: 33px;
+                  height: auto;
+                  color: inherit;
+
+                  &:first-of-type {
+                    font-size: 20px;
+                    @include media-down($md) {
+                      @include margin-right(5px);
+                    }
+                  }
+
+                  @include media-down($lg) {
+                    font-size: 20px;
+                  }
+
+                  @include media-down($md) {
+                    display: block;
+                    font-size: 16px;
+                    line-height: 22px;
+                    &:first-of-type {
+                      font-size: 12px;
+                    }
+                    &:last-of-type {
+                      margin-top: 8px;
+                    }
+                  }
+                }
+              }
+
+              .ilt-event-info {
+                flex: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 22px;
+                font-size: 14px;
+                line-height: 19px;
+                color: $white;
+
+                .left-info, .right-info {
+                  flex: 0 0 calc(50% - 82px);
+                  background: rgba(155,155,155, 0.3);
+                  border-radius: 8px;
+                  padding: 10px;
+                  @include margin-right(62px);
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  margin-top: 10px;
+                  overflow: hidden;
+                  @include media-down($md) {
+                    @include margin-right(0);
+                    flex: none;
+                    >span {
+                      >i {
+                        vertical-align: middle;
+                      }
+                      margin-top: 5px;
+                    }
+                  }
+                }
+
+                .right-info {
+                  .ilt-event-location {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    height: 19px;
+                  }
+                  @include media-down($md) {
+                    margin-top: $gap-between-events-field-group;
+                  }
+                  ~ .left-info, ~ .right-info {
+                    margin-top: 10px;
+                  }
+                }
+
+                .ilt-event-location-id {
+                  display: none;
+                }
+
+                .ilt-event-address {
+                  i {
+                    visibility: hidden;
+                  }
+                }
+
+                .ilt-event-zip {
+                  i {
+                    visibility: hidden;
+                  }
+                }
+
+                span {
+                  font-weight: 300;
+                  display: block;
+                  margin-top: 1px;
+                  margin-bottom: 1px;
+                }
+
+                i {
+                  @include margin-right(10px);
+                  font-size: 17px;
+                }
+
+                a.ilt-event-location {
+                  @include hyper-link($white, $triboo-color-brand-primary);
+                  display: block;
+                  margin-bottom: 8px;
+                }
+
+                @include media-down($lg) {
+                  font-size: 12px;
+                  margin-top: 25px;
+                }
+
+                @include media-down($md) {
+                  flex-direction: column;
+                  font-size: 10px;
+                  line-height: 14px;
+                  margin-top: $gap-between-events-field-group;
+                }
+              }
+            }
+          }
+
+          .no-event-text {
+            display: none;
+          }
+
+          .no-ilt-text {
+            display: none;
+          }
+
+          .back-to-calendar, .upcoming-session {
+            display: none;
+          }
+
+          @include media-down($md) {
+            box-sizing: border-box;
+            flex-direction: column;
+            background-image: linear-gradient(0deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../images/ilt-calendar/event-card-bg-mobile.png');
+
+            .back-to-calendar {
+              font-size: 10px;
+              line-height: 14px;
+              cursor: pointer;
+              display: block;
+              > i {
+                @include margin-right(5px);
+                font-size: 16px;
+                vertical-align: middle;
+              }
+            }
+
+            .upcoming-session {
+              font-size: 10px;
+              line-height: 14px;
+              font-weight: bold;
+              margin: 13px 0 8px 0;
+            }
+
+            .no-event-text {
+              margin: 30px 0;
+            }
+          }
+        }
+
+        .button-group-wrapper {
+          display: flex;
+          flex-direction: column;
+
+          @include media-down($md) {
+            flex: 1;
+            align-items: center;
+            order: 3;
+          }
+
+          .ical-download {
+          align-self: end;
+          @include margin-right(62px);
+
+          .far {
+            @include margin-right(10px);
+          }
+
+          .ical-download-text {
+            display: none;
+          }
+
+          .secondary-text {
+            font-size: 14px;
+            font-weight: 100;
+            margin-left: 10px;
+          }
+
+          @include media-up($md+1) {
+            @include primary-medium-button();
+            margin-top: 10px;
+
+            .ical-download-text {
+              display: block;
+              font-weight: normal;
+            }
+          }
+
+          @include media-down($lg) {
+            font-size: 14px;
+          }
+
+          @include media-down($md) {
+            font-size: 16px;
+            @include primary-medium-button();
+            margin: auto;
+            margin-top: 10px;
+
+            .ical-download-text {
+              display: block;
+              font-weight: normal;
+            }
+            .enroll-text, .secondary-text {
+              color: $white;
+              display: inline-block;
+            }
+          }
+        }
+        }
+
+        .ilt-events-type-switcher-wrapper {
+          display: flex;
+          width: 100%;
+          gap: $fds-global-space-xs;
+          align-items: center;
+          justify-content: flex-end;
+
+          > h2 {
+            @include dashboard-section-title;
+            display: none;
+            margin: 0px;
+          }
+
+          .ilt-events-type-switcher {
+            cursor: pointer;
+            display: flex;
+            background: $triboo-color-brand-primary;
+            width: auto;
+            border-radius: 100px;
+            margin-bottom: 10px;
+          }
+
+          .ilt-events-type {
+            padding: 10px;
+            font-weight: 100;
+            border-radius: 100px;
+            color: $white;
+            font-size: 12px;
+            border: 1px solid $triboo-color-brand-primary;
+            &.active {
+              background: $white;
+              color: $triboo-color-brand-primary;
+            }
+          }
+
+          ~ .swiper-button-next {
+            top: calc((100% - 20px) / 2);
+          }
+
+          @include media-down($md) {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translateY(-100%);
+          }
+
+          @include media-down($sm) {
+            flex-direction: column;
+            align-items: flex-start;
+
+            > h2 {
+              display: block;
+            }
+          }
+        }
+      }
+
+      @include media-down($sm) {
+        .events-header {
+          h2 {
+            display: none;
+          }
+
+          &:has(+ .no-upcoming-session:not(.has-past-session)) {
+            h2 {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    .goodhabitz-cards-container,
+    .course-cards-container,
+    .program-cards-container {
+      position: relative;
+      overflow: hidden;
+      background: var(--fds-global-color-neutral-0);
+      border-radius: var(--fds-global-border-radius-md);
+
+      .view-all-button {
+        display: inline-block;
+        position: relative;
+        left: 100%;
+        top: var(--fds-global-space-sm);
+        transform: translate(calc(-100% - var(--fds-global-space-2xl)));
+      }
+
+      &.ds-swiper {
+        .ds-swiper-wrapper {
+          background: transparent;
+        }
+
+        .ds-swiper-button-prev,
+        .ds-swiper-button-next {
+          height: calc(100% - var(--fds-global-space-xl) - var(--fds-global-space-xl) - 20px);
+          top: calc(var(--fds-global-space-xl) + 20px);
+          width: 200px;
+          padding: 0 var(--fds-global-space-2xl);
+
+          @include media-down($md) {
+            display: none;
+          }
+        }
+      }
+
+      .item-card .details .title {
+        @include typography-body-md-bold;
+      }
+    }
+  }
+
+  @include media-down($md) {
+    .main-container {
+      .ilt-calendar .ilt-calendar-wrapper.no-upcoming-session:not(.has-past-session) {
+        .ilt-events-wrapper.mobile-events #ilt-events {
+          display: block;
+        }
+      }
+    }
+  }
+
+  @include media-down($sm) {
+    .banner {
+      margin-bottom: 0;
+      padding: $fds-global-space-2xl $fds-global-space-md;
+      height: max-content;
+
+      .welcome-wrapper {
+        padding: 0;
+      }
+
+      .whiteboard {
+        > div {
+          flex-basis: 33%;
+          max-width: 70px;
+          height: max-content;
+          padding: 18px 16px 24px;
+        }
+      }
+    }
+
+    .main-container {
+      .last-activity-and-leader-board,
+      .student-programs-wrapper,
+      .my-courses,
+      .ilt-calendar {
+        margin: $fds-global-space-md 0;
+        padding: $fds-global-space-md;
+      }
+
+      .my-courses {
+        .wrapper-header-courses {
+          padding: 0;
+        }
+      }
+
+      .ilt-calendar {
+        .ilt-calendar-wrapper {
+          flex-direction: column;
+
+          &.no-upcoming-session:not(.has-past-session) {
+            #ilt-events {
+              .back-to-calendar {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.empty-dashboard-message {
+  margin: 0 $content-side-padding;
+  border: none;
+  border-radius: $default-border-radius;
+  background-color: $white;
+  clear: both;
+
+  a.btn {
+    @include primary-big-button();
+  }
+}
+
+.modal-content:not(.recommend-content-modal *):not(.register-learning-activity-modal *):not(.contact-instructor-modal *) {
+  label {
+    font-style: normal;
+    font-weight: normal;
+  }
+  input[type='radio'] {
+    margin-left: 10px;
+  }
+  input[type='text'] {
+    background-image: none;
+    background-color: $white;
+    box-shadow: $fds-global-shadow-sm;
+    border-radius: 16px;
+    border-color: $grey5;
+    outline: initial;
+    width: 60px;
+    margin-left: 10px;
+    font: normal 1em $font-family-default;
+  }
+  textarea {
+    background-image: none;
+    background-color: $white;
+    box-shadow: $fds-global-shadow-xs;
+    border-radius: 16px;
+    border-color: $grey5;
+    outline: initial;
+    display: block;
+    width: 70%;
+    height: 60px;
+    resize: none;
+    font-style: normal;
+  }
+  .field {
+    margin-bottom: 15px;
+  }
+
+  label[for='ilt-return-trip'] {
+    margin-left: 15px;
+  }
+
+  .ilt-registration-trip, .ilt-registration-accommodation {
+    display: flex;
+    align-items: center;
+    label {
+      margin-bottom: 0;
+    }
+    > span {
+      @include margin-right(10px);
+    }
+  }
+
+  .react-switch-handle {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 4px !important;
+  }
+}

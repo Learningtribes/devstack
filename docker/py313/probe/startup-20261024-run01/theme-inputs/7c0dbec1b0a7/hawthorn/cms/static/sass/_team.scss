@@ -1,0 +1,1106 @@
+// studio - views - course users
+// ====================
+
+@mixin role {
+  border-radius: 2px;
+  font-size: 10px;
+  text-transform: capitalize;
+  position: static;
+  padding: 5px 17px;
+}
+
+@mixin role-admin {
+  color: $triboo-color-brand-primary-60;
+  background-color: $triboo-color-brand-primary-5;
+}
+
+@mixin role-staff {
+  color: $triboo-color-tag-light-fg-yellow;
+  background-color: $triboo-color-tag-light-bg-yellow;
+}
+
+@mixin role-instructor {
+  color: $triboo-color-tag-light-fg-blue;
+  background-color: $triboo-color-tag-light-bg-blue;
+}
+
+@mixin role-user {
+  background: $fds-global-color-info-0;
+  color: $fds-global-color-info-70;
+}
+
+
+.program-team {
+  .program-team-title {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: $triboo-color-fg-neutral;
+  }
+  .program-team-summary {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: $fds-global-color-neutral-70;
+    margin-right: 50px;
+  }
+
+  .program-privileges {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 1376px;
+    min-width: 1280px;
+
+    .program-team-privileges-title {
+      @include typography-body-md-bold();
+      color: $triboo-color-fg-neutral;
+    }
+
+    .program-team-privileges-dropdown {
+      width: 100%;
+      margin: 10px 0px;
+
+      label {
+        color: $fds-global-color-neutral-90;
+        margin-bottom: 5px;
+
+        span {
+          margin-left: 1ch;
+        }
+      }
+    }
+
+    #tip-program-team-privileges {
+      @include typography-body-2xs-regular();
+      color: $fds-global-color-neutral-70;
+    }
+
+    .hidden { display: none; }
+
+    .selected-program-privilege-labels {
+      margin-top: 10px;
+
+      ds-tag {
+        margin-right: 10px;
+
+        .selected-program-label {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .wrapper-create-element {
+    box-shadow: none;
+    background-color: transparent;
+    padding: 30px 30px 0;
+    margin-bottom: 0;
+    .form-create {
+      box-shadow: none;
+      background-color: transparent;
+      margin-bottom: 0px;
+
+      .wrapper-form {
+        h3 {
+          font-weight: 600;
+          font-size: 16px;
+          color: $black;
+        }
+        fieldset {
+          padding: 20px 30px 16px;
+
+          ol li {
+            color: $triboo-color-fg-neutral;
+            label {
+              font-weight: 600;
+              font-size: 12px;
+              color: $fds-global-color-neutral-140;
+            }
+            input {
+              background-color: $fds-global-color-neutral-5;
+              border: 1px solid $fds-global-color-neutral-5;
+              border-radius: 3px;
+              font-size: 12px;
+              color: $fds-global-color-neutral-140;
+              width: 300px;
+            }
+            .tip {
+              font-size: 12px;
+              color: $triboo-color-fg-neutral;
+              margin-top: 10px;
+            }
+          }
+        }
+      }
+
+      .actions {
+        text-align: right;
+        padding: 0px 15px 17px;
+
+        .action-secondary {
+          @include grey-medium-button();
+
+        }
+        .action-primary {
+          @include primary-medium-button();
+          margin-left: 10px;
+        }
+        .action-primary, .action-secondary {
+          font-weight: 400;
+          -webkit-font-smoothing: antialiased;
+        }
+      }
+    }
+  }
+  // ELEM: new user form
+  .wrapper-create-user {
+    margin-bottom: 20px;
+    background-color: $white;
+
+    &.is-shown {
+      height: auto;
+    }
+  }
+  .user-list-wrapper {
+    display: block; //remove
+    padding: 10px $padding-beside-list 30px 0;
+
+    &, &:hover {
+      box-shadow: none;
+    }
+
+    .header {
+      @include list-header();
+      padding: 30px;
+    }
+
+    #user-list {
+      margin-top: 30px;
+    }
+  }
+  .privilege-user-list-wrapper {
+    margin-top: 50px;
+
+    .content-user-list {
+      .user-list-wrapper {
+        padding: 0;
+
+        .header {
+          border-bottom: 1px solid $grey25;
+
+          .privileges_user_name {
+            width: 35%;
+          }
+
+          .privileges_user_username {
+            width: 35%;
+          }
+
+          .privileges_user_flags {
+            width: 30%;
+          }
+        }
+
+        .user-list {
+          .user-item {
+            &:hover {
+              box-shadow: none;
+            }
+
+            &:not(:last-child) {
+              margin-bottom: 20px;
+            }
+
+            .item-pu-name {
+              width: 35%;
+              color: $fds-global-color-neutral-70;
+            }
+
+            .item-pu-username {
+              width: 35%;
+              color: $fds-global-color-neutral-70;
+            }
+
+            .item-pu-flags {
+              width: 30%;
+
+              .privileges-user-flags {
+                .privileges-flag {
+                  margin: 0px 6px 0px 0px;
+                  padding: 5px;
+                  border-radius: 2px;
+                  font-weight: 700;
+                  font-size: 12px;
+                  line-height: 16px;
+                  background-color: $triboo-color-brand-primary-5;
+                  color: $triboo-color-brand-primary-60;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .user-list {
+    .user-item {
+      box-sizing: border-box;
+      position: relative;
+      width: 100%;
+      margin: 0 0 10px 0;
+      padding: 25px 30px 20px 30px;
+
+      @include list-item();
+      box-shadow: none;
+      display: inline-flex;
+      align-items: center;
+      padding-left: $padding-beside-list-item;
+
+      &:hover {
+        box-shadow: none;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      .item-metadata, .wrapper-ui-badge, .item-actions {
+        width:auto;
+      }
+
+      .wrapper-ui-badge {
+        position: static;
+        margin: 0;
+        width: 17%;
+      }
+      .item-metadata {
+        margin: 0px;
+
+        &.user-name {
+          width: 30%;
+        }
+        &.user-username {
+          @include list-item-title();
+          width: 17%;
+          line-height: normal;
+        }
+        span {
+          font-size: 14px;
+          line-height: 20px;
+          word-wrap: break-word;
+          color: $fds-global-color-neutral-70;
+        }
+      }
+
+      // ELEM: item - actions
+      .item-actions {
+        @include margin-left(auto);
+        width: 35%;
+        position: static;
+        display: flex;
+
+        .action {
+          display: inline-block;
+          vertical-align: middle;
+          a {
+            transition: all 0.25s linear 0s;
+
+            padding: 3px 10px;
+            border-radius: 4px;
+          }
+        }
+        .action-role {
+          width: auto; //remove
+          margin-right: auto;
+
+          .admin-role {
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            i {
+              margin-right: 5px;
+              font-size: 14px;
+            }
+          }
+
+          .add-admin-role {
+            @extend %btn-primary-primary;
+          }
+
+          .remove-admin-role {
+            @include grey-small-button();
+            & {
+              background-color: rgba(114, 114, 114, 0.39);
+            }
+          }
+          .add-admin-role, .remove-admin-role {
+            font-size: 12px;
+            padding: 4px 12px;
+          }
+          .notoggleforyou {
+            font-size: 14px;
+            color: $fds-global-color-neutral-100;
+          }
+        }
+        .action-save {
+          width: auto;
+          margin-left: 30px;
+
+          .delete {
+            @include icon();
+            &:hover {
+              text-shadow: none;
+            }
+            &.is-disabled {
+              display: none;
+            }
+            &:focus {
+              text-shadow: none;
+              outline: none;
+            }
+          }
+        }
+
+      }
+
+    }
+  }
+
+  .content {
+    display: flex;
+
+  }
+
+  .content-user-list {
+    margin: 30px 0px 10px 0px;
+    float: none;
+    width: 100%;
+  }
+
+  .program-content-supplementary {
+    display: block;
+    width: 36%;
+    margin: 30px 10px 10px 60px;
+    box-sizing: border-box;
+
+    .bit {
+      margin: 0 0 36px 0;
+      .title-3 {
+        font-weight: 600;
+        font-size: 16px;
+        color: $black;
+      }
+      p {
+        display: flex;
+        font-size: 14px;
+        color: $triboo-color-fg-neutral;
+        &:first-of-type {
+          margin-top: 27px;
+        }
+        b {
+          @include role;
+          margin-right: 10px;
+          padding: 2px 12px;
+        }
+        &:nth-of-type(1) b {
+          @include role-admin;
+        }
+        &:nth-of-type(2) b {
+          @include role-staff;
+        }
+        &:nth-of-type(4) b {
+          @include role-instructor;
+        }
+        i {
+          font-size: 29px;
+          margin-right: 0;
+          width: 46px;
+          color: rgba(114, 114, 114, 0.5);
+          margin-top: 10px;
+        }
+        .fa-user-edit {
+          font-size: 24px;
+        }
+        span {
+          flex: 1;
+          font-size: 14px;
+          color: $triboo-color-fg-neutral;
+        }
+      }
+    }
+    .show_transfer_ownership_hint {
+      p {
+        display: block;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .wrapper-mast .mast {
+    margin: 0 auto 20px auto;
+  }
+
+  .modal-window {
+    background-color: $white;
+    padding: 0;
+    width: 506px;
+
+    .delete-library-modal {
+      .modal-header {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        height: 72px;
+
+        h2 {
+          padding: 16px 24px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 24px;
+          margin: 0;
+        }
+      }
+      .modal-content {
+        padding: 16px 24px;
+
+        .modal-introduction {
+          display: flex;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 20px;
+          margin: 0;
+          color: $fds-global-color-neutral-170;
+
+          .form-check {
+            .confirm-wrapper {
+              margin-bottom: 10px;
+            }
+          }
+
+          .checkbox-message {
+            margin-left: 8px;
+          }
+        }
+
+        #courses-using-library {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          text-align: left;
+          color: $triboo-color-brand-primary-50;
+        }
+      }
+      .modal-actions {
+        @include modal-footer();
+        border-top: 1px solid $editor-border-color;
+        padding: 16px 24px;
+
+        ul {
+          height: 100%;
+          display: block;
+          text-align: $bi-app-right;
+          li {
+            &:not(:last-child) {
+              @include margin-right(10px);
+            }
+            .action-cancel {
+              @include grey-small-button();
+              background-color: $fds-global-color-neutral-10 !important;
+              color: $fds-global-color-neutral-140 !important;
+            }
+            .action-save {
+              @include primary-small-button();
+              &.delete {
+                background-color: $fds-global-color-error-40;
+              }
+              &.disabled {
+                opacity: 0.5;
+                background-color: $fds-global-color-neutral-10 !important;
+                color: $fds-global-color-neutral-50 !important;
+                border-radius: $fds-global-border-radius-md !important;
+              }
+            }
+            .action-cancel,
+            .action-save {
+              &.disabled {
+                pointer-events: none;
+                cursor: not-allowed;
+              }
+            }
+          }
+
+          .action-item .button {
+            padding: 8px 16px;
+            gap: 8px;
+            border-radius: $fds-global-border-radius-md;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            text-align: center;
+          }
+
+          .button-disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            opacity: 0.5;
+            background-color: $fds-global-color-neutral-5 !important;
+            color: $fds-global-color-neutral-50 !important;
+          }
+        }
+      }
+    }
+  }
+
+  .view-program-team {
+      .wrapper-create-element {
+        display: block;
+      }
+  }
+
+}
+
+
+@mixin team-page-body {
+
+  .course-privileges {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 1376px;
+    min-width: 1280px;
+
+    .course-team-privileges-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+      color: $triboo-color-fg-neutral;
+    }
+
+    .course-team-privileges-dropdown {
+      width: 100%;
+      margin: 10px 0px 10px 0px;
+
+      label {
+        color: $fds-global-color-neutral-90;
+        margin-bottom: 5px;
+        
+        span {
+          margin-left: 1ch;
+        }
+      }
+    }
+
+    #tip-course-team-privileges {
+      color: $fds-global-color-neutral-70;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #tip-course-team-privileges {
+      font-size: 10px;
+      line-height: 12px;
+      font-weight: 400;
+    }
+
+    .selected-course-privilege-labels {
+      margin-top: 10px;
+
+      ds-tag {
+        margin-right: 10px;
+
+        .selected-course-label {
+          cursor: pointer;
+        }
+      }
+
+    }
+
+  }
+
+  .course-privilege-users-title {
+    margin-top: 50px !important;
+  }
+
+  .course-team-content-title {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+
+    .course-team-title {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: $triboo-color-fg-neutral;
+    }
+
+    .course-team-summary {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      color: $fds-global-color-neutral-70;
+      margin-right: 50px;
+    }
+
+  }
+
+  .wrapper-create-element {
+    box-shadow: none;
+    background-color: transparent;
+    padding: 30px 30px 0;
+    margin-bottom: 0;
+    .form-create {
+      box-shadow: none;
+      background-color: transparent;
+      margin-bottom: 0px;
+
+      .wrapper-form {
+        h3 {
+          font-weight: 600;
+          font-size: 16px;
+          color: $black;
+        }
+        fieldset {
+          padding: 20px 30px 16px;
+
+          ol li {
+            color: $triboo-color-fg-neutral;
+            label {
+              font-weight: 600;
+              font-size: 12px;
+              color: $fds-global-color-neutral-140;
+            }
+            input {
+              background-color: $fds-global-color-neutral-5;
+              border: 1px solid $fds-global-color-neutral-5;
+              border-radius: 3px;
+              font-size: 12px;
+              color: $fds-global-color-neutral-140;
+              width: 300px;
+            }
+            .tip {
+              font-size: 12px;
+              color: $triboo-color-fg-neutral;
+              margin-top: 10px;
+            }
+          }
+        }
+      }
+
+      .actions {
+        text-align: right;
+        padding: 0px 15px 17px;
+
+        .action-secondary {
+          @include grey-medium-button();
+
+        }
+        .action-primary {
+          @include primary-medium-button();
+          margin-left: 10px;
+        }
+        .action-primary, .action-secondary {
+          font-weight: 400;
+          -webkit-font-smoothing: antialiased;
+        }
+      }
+    }
+  }
+  // ELEM: new user form
+  .wrapper-create-user {
+    margin-bottom: 20px;
+    background-color: $white;
+
+    &.is-shown {
+      height: auto;
+    }
+  }
+  .user-list-wrapper {
+    display: block; //remove
+    padding: 10px 0px $padding-beside-list 0px;
+
+    &, &:hover {
+      box-shadow: none;
+    }
+
+    .header {
+      @include list-header();
+      padding: 30px $padding-beside-list 30px $padding-beside-list;
+      border-bottom: 1px solid $grey25;
+
+      .fa-long-arrow-up {
+        color: $grey57;
+        font-size: 12px;
+        font-weight: 400;
+        margin-left: 8px;
+      }
+
+      .fa-long-arrow-down {
+        color: $grey57;
+        font-size: 12px;
+        font-weight: 400;
+        margin-left: 8px;
+      }
+
+      .name {
+        width: 17%;
+      }
+
+      .email {
+        width: 30%;
+      }
+
+      .status {
+        width: 17%;
+      }
+
+      .access {
+        width: 25%;
+      }
+
+      .action {
+        width: 10%;
+        text-align: center;
+      }
+
+      .privileges_user_name {
+        width: 35%;
+      }
+
+      .privileges_user_username {
+        width: 35%;
+      }
+
+      .privileges_user_flags {
+        width: 30%;
+      }
+
+    }
+  }
+
+  .user-list {
+    .user-item {
+      box-sizing: border-box;
+      position: relative;
+      width: 100%;
+      margin: 0 0 10px 0;
+      padding: 25px 30px 20px 30px;
+
+      @include list-item();
+      box-shadow: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: $padding-beside-list-item;
+
+      &:hover {
+        box-shadow: none;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      .item-pu-name {
+        width: 35%;
+        color: $fds-global-color-neutral-70;
+      }
+
+      .item-pu-username {
+        width: 35%;
+        color: $fds-global-color-neutral-70;
+      }
+
+      .item-pu-flags {
+        width: 30%;
+
+        .privileges-user-flags {
+
+          .privileges-flag {
+            margin: 0px 6px 0px 0px;
+            padding: 5px;
+            border-radius: 2px;
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 16px;
+            background-color: $triboo-color-brand-primary-5;
+            color: $triboo-color-brand-primary-60;
+          }
+        }
+      }
+
+      .item-metadata {
+        margin: 0px;
+
+        &.user-name {
+          width: 30%;
+        }
+        &.user-username {
+          width: 17%;
+        }
+        span {
+          font-size: 14px;
+          line-height: 20px;
+          word-wrap: break-word;
+          color: $fds-global-color-neutral-70;
+        }
+      }
+
+      .wrapper-ui-badge {
+        width: 17%;
+        margin: 0px;
+      }
+
+      .item-access {
+        width: 25%;
+      }
+
+      .item-action {
+        width: 10%;
+        text-align: center;
+      }
+
+      .red-remove-icon {
+        color: $red;
+      }
+
+      .wrapper-ui-badge {
+        position: static;
+      }
+
+      // ELEM: item - actions
+      .item-access {
+        position: static;
+
+        .action {
+          display: inline-block;
+          vertical-align: middle;
+          a {
+            transition: all 0.25s linear 0s;
+
+            padding: 3px 10px;
+            border-radius: 4px;
+          }
+        }
+        .action-role {
+          width: auto; //remove
+          margin-right: auto;
+
+          .admin-role {
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            i {
+              margin-right: 5px;
+              font-size: 14px;
+            }
+          }
+
+          .add-admin-role {
+            @extend %btn-primary-primary;
+          }
+
+          .remove-admin-role {
+            @include grey-small-button();
+            & {
+              background-color: $red;
+            }
+          }
+          .add-admin-role, .remove-admin-role {
+            font-size: 12px;
+            padding: 4px 12px;
+          }
+          .notoggleforyou {
+            font-size: 14px;
+            color: $fds-global-color-neutral-100;
+          }
+        }
+        .action-delete {
+          width: auto;
+          margin-left: 30px;
+
+          .delete {
+            @include icon();
+            &:hover {
+              text-shadow: none;
+            }
+            &.is-disabled {
+              display: none;
+            }
+            &:focus {
+              text-shadow: none;
+              outline: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.view-team {
+  @include team-page-body();
+
+  .content {
+    @include layout();
+
+    .content-box {
+        display:flex;
+
+        .content-left {
+            width: 69.46809%;
+            margin-right:3.12766%;
+            margin-top:30px
+        }
+    }
+  }
+
+  .content-user-list {
+    margin-top: 30px;
+    float: none;
+    width: 100%;
+  }
+
+  .content-supplementary {
+    .bit {
+      margin: 0 0 36px 0;
+      .title-3 {
+        font-weight: 600;
+        font-size: 16px;
+        color: $black;
+      }
+
+
+      p {
+        display: flex;
+        font-size: 14px;
+        color: $triboo-color-fg-neutral;
+        &:first-of-type {
+          margin-top: 27px;
+        }
+        b {
+          @include role;
+          margin: 0px 10px 5px 0px;
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 2px;
+          font-weight: 700;
+          font-size: 12px;
+        }
+        &:nth-of-type(1) b {
+          @include role-admin;
+        }
+        &:nth-of-type(2) b {
+          @include role-staff;
+        }
+        &:nth-of-type(4) b {
+          @include role-instructor;
+        }
+        i {
+          font-size: 29px;
+          margin-right: 0;
+          width: 46px;
+          color: rgba(114, 114, 114, 0.5);
+          margin-top: 10px;
+        }
+        .fa-user-edit {
+          font-size: 24px;
+        }
+        span {
+          flex: 1;
+          font-size: 14px;
+          color: $triboo-color-fg-neutral;
+        }
+      }
+
+      .sep-line {
+        padding-bottom: 15px;
+        border-bottom: 1px solid $fds-global-color-neutral-20;
+      }
+    }
+    .show_transfer_ownership_hint {
+      p {
+        display: block;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .wrapper-mast .mast {
+    margin: 0 auto 20px auto;
+  }
+}
+
+.view-team,
+.program-team {
+  .user-list {
+    .ui-loading {
+      box-shadow: none;
+    }
+
+    .user-item {
+      @include typography-body-sm-regular;
+
+      .flag-role {
+        @include role;
+        white-space: nowrap;
+
+        &.flag-role-staff {
+          @include role-staff;
+        }
+
+        &.flag-role-admin,
+        &.flag-role-instructor {
+          @include role-admin;
+        }
+
+        &.flag-role-triboo_instructor {
+          @include role-instructor;
+        }
+
+        &.flag-role-user,
+        &.flag-role-library_user {
+          @include role-user;
+        }
+
+        &.is-hanging::after {
+          display: none;
+        }
+
+        .msg-you {
+          color: $black;
+          font-weight: 600;
+          margin-left: 4px;
+          text-transform: none;
+        }
+      }
+
+      .item-actions .action {
+        .is-disabled {
+          display: none;
+        }
+        .remove-user {
+          color: $fds-global-color-error-40;
+        }
+      }
+
+      .item-access:has(+ .item-action .action.is-disabled) {
+        width: 35%;
+      }
+
+      .item-action:has(> .action.is-disabled) {
+        display: none;
+      }
+
+      .item-access {
+        .action-role {
+          .admin-role + .admin-role {
+            margin-block-start: 1ch;
+          }
+        }
+      }
+    }
+  }
+}

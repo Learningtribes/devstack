@@ -1,0 +1,238 @@
+section.idash-section#data_download {
+  #anonymized-ids,
+  #profile-reports,
+  input[name='calculate-grades-csv'],
+  input[name='problem-grade-report'] {
+    display: none !important;
+  }
+
+  .hd-3 {
+    padding-bottom: 7px;
+  }
+
+  h4 {
+    font-size: 1.1em;
+    padding-bottom: 14px;
+  }
+
+  input[type=button] {
+    @include primary-medium-button();
+  }
+
+  pre {
+    font-size: 14px;
+  }
+
+  .detailed-action-type-container {
+    padding: 40px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    .detailed-action-type {
+      border: $fds-global-border-width;
+      border-radius: 8px;
+      background: $fds-global-color-neutral-0;
+
+      width: calc(100% - 40px);
+      height: 162px;
+      @include margin(0, 30px, 40px, 0);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+
+      @include media-down($md) {
+        height: auto;
+        margin-right: 0;
+      }
+
+      p {
+        font-size: 13px;
+        line-height: 21px;
+
+        &:last-of-type {
+          margin-bottom: 0;
+          margin-top: 16px;
+        }
+
+        .quizzes-dropdown {
+          width: 100%;
+          z-index: auto;
+
+          @include media-down($md) {
+            padding-bottom: 20px;
+          }
+        }
+      }
+
+      input[type=button] {
+        @include primary-small-button();
+      }
+
+      input[name=problem-location] {
+        @extend %linner-text-box;
+
+        line-height: 43px;
+
+        @include media-down($md) {
+          width: 100%;
+        }
+      }
+    }
+
+    .issued_certificates,
+    .grades {
+      height: 110px;
+
+      p:first-of-type {
+        padding-bottom: 10px;
+      }
+    }
+  }
+
+  .certificate-data-display-table .slickgrid {
+    height: 150px !important;
+
+    .slick-header-column.ui-state-default {
+      height: auto;
+    }
+
+  }
+
+  .reports-download-container .report-downloads-table {
+    margin: 20px 0;
+    background: $fds-global-color-neutral-0;
+
+    .slickgrid {
+      height: 252px!important;
+      border: $fds-global-border-width;
+      padding: 10px 0 10px 20px!important;
+
+      &:after {
+        display: none;
+      }
+
+      .slick-header {
+        display: none;
+      }
+
+      .slick-row {
+        background: $fds-global-color-neutral-0;
+        padding: 10px 0;
+      }
+
+      .slick-cell {
+        border: 0;
+        border-collapse: initial;
+        font-weight: 600;
+        line-height: 20px;
+        padding: 0;
+        background: $fds-global-color-neutral-0;
+        width: calc(100% - 24px);
+
+        span {
+          @include typography-body-sm-medium;
+          line-height: 20px;
+          color: $triboo-color-brand-primary;
+        }
+
+        a {
+          @include typography-body-sm-medium;
+          line-height: 20px;
+          color: $triboo-color-brand-primary;
+          text-decoration: none;
+          &:hover {
+            line-height: 20px;
+            text-decoration: underline!important;
+          }
+        }
+      }
+
+      .slick-viewport {
+        height: 100% !important;
+        overflow: hidden !important;
+      }
+
+      &.extended {
+        &:after {
+          content: '\f325';
+        }
+
+        .slick-viewport {
+          overflow-y: auto !important;
+        }
+      }
+    }
+  }
+
+
+  .running-tasks-container {
+    hr {
+      padding-bottom: 10px;
+    }
+
+    #pending_tasks_view {
+      table {
+        width: 100%;
+        border: 1px hidden $fds-global-color-neutral-20;
+        border-radius: $fds-global-border-radius-lg;
+        outline: 1px solid $fds-global-color-neutral-20;
+        border-collapse: collapse;
+        table-layout: auto;
+        transition: all 0.1s ease;
+        will-change: opacity;
+        background: $fds-global-color-neutral-0;
+        margin-top: 20px;
+
+        thead {
+          border-bottom: 1px solid $fds-global-color-neutral-40;
+          @include typography-body-xs-bold;
+          color: $fds-global-color-neutral-80;
+
+          td {
+            padding: 14px $fds-global-space-sm;
+            border-color: $fds-global-color-neutral-40;
+
+            &:has(> i) {
+              cursor: pointer;
+            }
+
+            > i {
+              margin-left: $fds-global-space-xs;
+            }
+          }
+        }
+
+        tbody {
+          @include typography-body-sm-regular;
+          color: $fds-global-color-neutral-110;
+
+          td {
+            padding: 10px $fds-global-space-sm;
+
+            .item-type, .ds-tag {
+              margin-right: 1ch;
+            }
+
+            .ds-tag {
+              text-transform: capitalize;
+            }
+
+            a {
+              @include typography-body-sm-regular;
+              color: $triboo-color-brand-primary;
+            }
+          }
+        }
+
+        td {
+          border-bottom: 1px solid $fds-global-color-neutral-20;
+
+          &:first-child {
+            padding-left: calc(#{$fds-global-space-lg} + #{$fds-global-space-sm});
+          }
+        }
+      }
+    }
+  }
+}

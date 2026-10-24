@@ -1,0 +1,66 @@
+
+html {
+  height: auto;
+}
+
+body {
+  background-color: $fds-global-color-neutral-5;
+
+  * {
+    font-family: $font-family-default;
+  }
+
+  a:not(.btn), a:visited:not(.btn),
+  p a:not(.btn), p a:visited:not(.btn) {
+    @include hyper-link;
+    outline: none;
+
+    &:focus,
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+}
+
+ul, ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+textarea,
+input[type=text] {
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.row {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.content-wrapper {
+  margin-top: 0;
+
+  @include media-breakpoint-up(md) {
+    padding: 0;
+  }
+}
+
+.btn-link {
+  outline: none;
+
+  &:focus,
+  &:hover {
+    text-decoration: none !important;
+  }
+}
+
+.container {
+  > div {
+    background-color: $fds-global-color-neutral-5;
+  }
+}

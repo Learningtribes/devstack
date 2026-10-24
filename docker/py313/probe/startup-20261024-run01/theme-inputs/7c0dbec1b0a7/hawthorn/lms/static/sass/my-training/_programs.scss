@@ -1,0 +1,91 @@
+
+.view-my-training-programs {
+
+  .course-container {
+    @include side-auto-padding($top-bottom: $fds-global-space-3xl);
+
+    .category_tabs {
+      margin-block-end: $fds-global-space-2xl;
+    }
+
+    .my-programs-nav {
+      border-bottom: 1px solid $fds-global-color-neutral-20;
+      margin: 0;
+      padding-bottom: $fds-global-space-md;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0;
+
+      .searching-field {
+        position: relative;
+
+        .input-wrapper {
+          $icon-size: 16px;
+          $padding-lr: 8px;
+
+          input {
+            width: 448px;
+            height: auto;
+            padding: 8px 12px;
+            text-indent: $icon-size + $padding-lr;
+            border: solid 1px $fds-global-color-neutral-40;
+            border-radius: $fds-global-border-radius-md;
+            font: inherit;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+            color: $fds-global-color-neutral-70;
+            background: $fds-global-color-neutral-0;
+
+            @include media-down($md) {
+              width: auto;
+            }
+          }
+
+          i {
+            font-size: $icon-size;
+            color: $fds-global-color-neutral-70;
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translate(0%, -50%);
+          }
+        }
+      }
+
+      #programs-filter {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .category_name-wrapper {
+      @include catalog_name-wrapper();
+      margin-top: $fds-global-space-md;
+    }
+
+    .empty-message-wrapper {
+      margin-top: 20px;
+    }
+
+    @include media-down($sm) {
+      padding: 0;
+
+      .category_tabs {
+        margin-block-end: $fds-global-space-md;
+
+        .ds-tabs {
+          margin: 0 calc(-1 * var(--fds-global-space-md));
+        }
+      }
+
+      .my-programs-nav {
+        flex-direction: column;
+
+        #programs-filter {
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}

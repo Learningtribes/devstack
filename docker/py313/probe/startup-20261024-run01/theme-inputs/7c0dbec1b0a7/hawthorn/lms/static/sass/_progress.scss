@@ -1,0 +1,267 @@
+
+%badge-title {
+  color: $black;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.container .view-as-wrapper-in-progress-tab {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 20px 0px;
+
+  .editor-of-view-as-prompt {
+    .view_as_container {
+      margin: 0 60px;
+
+      .roles_selector {
+        display: flex;
+        align-items: center;
+
+        .view-as-prompt {
+          margin: 0px;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 20px;
+        }
+
+        ds-dropdown {
+          margin-left: 1em;
+          z-index: 2;
+        }
+
+        .view_as-preview-username-container {
+          display: flex;
+          align-items: center;
+          margin-left: 10px;
+
+          .view_as-preview-label {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+          }
+
+          .view_as-preview-username {
+            margin-left: 20px;
+          }
+
+        }
+      }
+
+    }
+
+    .view_as-specific-student-notice {
+      margin: 8px 12px 8px 0px;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+  }
+
+}
+
+body.view-in-course div.badges-wrapper {
+  padding: 50px 0 30px;
+  box-sizing: border-box;
+
+  @include media-down($sm) {
+    padding: 30px 0 0;
+  }
+}
+
+.wrapper-msg.wrapper-auto-cert {
+  border: none;
+
+  #course-success {
+    border: none;
+    padding: 20px 60px;
+
+    @include side-auto-padding(20px);
+
+    .has-actions .msg-content {
+      h2 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.obtained-badges,
+.not-obtained-badges,
+.not-started-badges {
+  padding-bottom: 30px;
+
+  > h2 {
+    @extend %badge-title;
+    padding: 0 $content-side-padding;
+
+    @include side-auto-padding();
+  }
+
+  ul {
+    padding:0 0 10px 0;
+  }
+
+  .badge-card {
+    &:hover {
+      box-shadow: $fds-global-shadow-sm;
+    }
+
+    display: inline-block;
+    border: 1px solid $grey5;
+    border-radius: $default-border-radius;
+
+    padding: 0 10px 46px 10px;
+    background-color: $white;
+    width: 305px;
+
+    @include media-down($md) {
+      padding: 0 10px 25px 10px;
+    }
+
+    &:not(:last-child) {
+      margin: 0 10px 10px 0;
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: auto;
+      align-items: center;
+
+      &.btn {
+        color: $fds-global-color-neutral-100;
+      }
+
+      &:hover {
+        h2 {
+          text-shadow:none;
+        }
+      }
+    }
+
+    img {
+      max-width: 200px;
+      max-height: 200px;
+      margin: 30px auto;
+    }
+
+    h2 {
+      font-size: 16px;
+      color: $black60;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    div:first-of-type {
+      font-size: 14px;
+      font-weight: 300;
+      font-style: italic;
+      text-align: center;
+      padding-bottom: 30px;
+    }
+
+    .icon-wrapper {
+      text-align: center;
+      padding-bottom: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        font-size: 12px;
+        font-weight: 300;
+        padding-right: 5px;
+      }
+
+      i {
+        font-size: 14px;
+      }
+    }
+
+    .progress-bar {
+      @include progress-bar($unextend:$fds-global-color-neutral-100);
+      position: relative;
+    }
+
+    div:last-child {
+      text-align: right;
+      font-size: 12px;
+      font-weight: 300;
+      padding-top: 6px;
+    }
+
+  }
+
+  .swiper-pagination-bullets {
+    .swiper-pagination-bullet {
+      background-color: $triboo-color-fg-neutral;
+      opacity: initial;
+
+      &.swiper-pagination-bullet-active {
+        background-color: $triboo-color-brand-primary;
+        width: 40px;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  @extend %swiper-prev-next-button-style;
+
+  .swiper-button-prev,
+  .swiper-button-next  {
+    top: 66px;
+  }
+}
+
+.not-obtained-badges,
+.not-started-badges {
+  .badge-card {
+    img {
+      filter: grayscale(100%);
+    }
+  }
+}
+
+.obtained-badges {
+  .badge-card {
+    .progress-bar i {
+      width: 100%;
+    }
+  }
+}
+
+%badge-title-style {
+  height: 56px;
+  overflow: hidden;
+  margin-bottom: 19px;
+  padding-bottom: 0;
+}
+
+.not-obtained-badges {
+  .badge-card div:first-of-type {
+    @extend %badge-title-style;
+  }
+}
+
+.not-started-badges {
+  .badge-card {
+
+    div:first-of-type {
+      @extend %badge-title-style;
+    }
+
+    .icon-wrapper i {
+      width: auto;
+    }
+
+  }
+}

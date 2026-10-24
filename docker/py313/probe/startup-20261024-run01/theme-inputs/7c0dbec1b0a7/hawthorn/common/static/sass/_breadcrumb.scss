@@ -1,0 +1,55 @@
+.ds-breadcrumb {
+  color: $fds-global-color-neutral-70;
+  font-size: 0;
+  line-height: 0;
+
+  > * {
+    @include typography-body-sm-regular;
+    text-decoration: none;
+    text-shadow: none;
+    box-shadow: none;
+    margin: 0 $fds-global-space-xxs;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  > a {
+    color: $fds-global-color-neutral-70;
+
+    &:last-child {
+      color: $fds-global-color-neutral-140;
+    }
+
+    &:hover {
+      text-decoration: underline;
+      color: $fds-global-color-neutral-90;
+    }
+
+    &:active,
+    &:focus {
+      text-decoration: underline;
+      color: $fds-global-color-neutral-110;
+    }
+
+    &[role="button"] {
+      text-decoration: none;
+    }
+  }
+
+  > ds-dropdown {
+    --border-color: transparent;
+    --hover-border-color: transparent;
+    --active-border-color: transparent;
+    --chevron-left: 100%;
+
+    transform: translateY(calc(-1 * var(--fds-global-space-xs)));
+    margin-left: calc(-1 * var(--fds-global-space-sm) + var(--fds-global-space-xxs));
+    width: auto;
+    min-width: 100px;
+    vertical-align: top;
+  }
+}

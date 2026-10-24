@@ -1,0 +1,164 @@
+// studio - elements - global footer
+// ====================
+
+.wrapper-footer {
+  background-color: $footer-bg;
+  padding: 0;
+  z-index: 8;
+
+  footer.primary {
+    color: $footer-font-color;
+    font-size: $footer-font-size;
+    max-width: none;
+    min-width: 0;
+
+    .footer-content-primary {
+      background-color: $footer-bg;
+      //padding: 90px 60px 60px 60px;
+      padding: 30px 50px 20px 50px;
+      display: flex;
+	  align-items: center;
+	  height: 50px;
+
+      .wrapper-logo {
+        flex: 0.75;
+	margin-left: 0px;
+
+        img {
+          max-width: 100px;
+        }
+      }
+
+      .footer-language-selector {
+        position: relative;
+        flex: 0.2;
+        font-size: 14px;
+		font-weight: 400;
+		line-height: 20px;
+
+        select {
+          display: none; /*hide original SELECT element: */
+        }
+
+        .select-selected {
+          @extend %form-text-box;
+		  border-radius: 5px;
+		  border: 1px solid $fds-global-color-neutral-40;
+		  color: $fds-global-color-neutral-40;
+
+          &.select-arrow-active {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+
+          i {
+            font-size: 12px;
+            @include padding-right(0.5em);
+            vertical-align: middle;
+            max-width: 1.5em;
+          }
+
+          span {
+            vertical-align: middle;
+          }
+        }
+
+        /* Style the arrow inside the select element: */
+        .select-selected:after {
+          position: absolute;
+          content: "";
+          top: 18px;
+          @include right(10px);
+          width: auto;
+          height: 0;
+          border: 6px solid transparent;
+          border-color: $black transparent transparent transparent;
+        }
+
+        /* Point the arrow upwards when the select box is open (active): */
+        .select-selected.select-arrow-active:after {
+          border-color: transparent transparent $black transparent;
+          top: 11px;
+        }
+
+        /* style the items (options), including the selected item: */
+        .select-items li, .select-selected {
+          color: $fds-global-color-neutral-100;
+          padding: 8px 16px;
+          cursor: pointer;
+        }
+
+        /* Style items (options): */
+        .select-items {
+          @extend %list-item;
+
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+          position: absolute;
+          left: 0;
+          right: 0;
+          z-index: 99;
+          margin: 0;
+          padding: 0;
+
+          li {
+            list-style: none;
+
+            span {
+              @include padding-left(2.2em);
+            }
+          }
+
+          > li:not(:last-child) {
+            border-bottom: 1px solid $grey10;
+          }
+        }
+
+        /* Hide the items when the select box is closed: */
+        .select-hide {
+          display: none;
+        }
+
+        .select-items li:hover, .same-as-selected {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .select-items li:last-child:hover,
+        .select-items li:last-child.same-as-selected {
+          border-bottom-left-radius: $default-border-radius;
+          border-bottom-right-radius: $default-border-radius;
+        }
+      }
+    }
+
+    .footer-content-secondary {
+      margin-top: 0;
+      background-color: $triboo-color-brand-primary;
+      color: $white;
+      padding: 20px 50px;
+      height: 40px;
+
+      a {
+        @include hyper-link;
+        color: $black;
+      }
+
+      .footer-about-copyright {
+        width: auto !important;
+        margin: 10px 0px 0px 0px !important;
+        font-size: 12px;
+	font-weight: 500;
+	line-height: 24px;
+      }
+
+      .footer-about-openedx-copyright, .footer-about-openedx {
+        display: none;
+      }
+    }
+  }
+
+}
+
+.wrapper-view > .wrapper-footer {
+  margin-bottom: 0;
+}

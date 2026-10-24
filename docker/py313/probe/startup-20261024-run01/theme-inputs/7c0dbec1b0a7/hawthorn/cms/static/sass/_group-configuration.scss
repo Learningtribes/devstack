@@ -1,0 +1,390 @@
+// studio - views - group-configurations
+// ====================
+
+/*@mixin content-supplementary-bit {
+  h3 {
+    font-family: $font-family-header;
+    font-weight: 600;
+    font-size: 16px;
+    color: $black;
+  }
+  p {
+    font-size: 14px;
+    color: $triboo-color-fg-neutral;
+
+    &:first-of-type {
+      margin-top: 15px;
+    }
+  }
+}*/
+
+.view-group-configurations {
+  #is-multilingual-course {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    .divider {
+      background: $fds-global-color-neutral-20;
+      width: 1px;
+      height: 30px;
+      margin: 0 32px;
+    }
+
+    label {
+      color: $fds-global-color-neutral-170;
+      font-family: $font-family-default;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      padding-bottom: 5px;
+    }
+  }
+
+  .content {
+    @include layout();
+  }
+
+  .content-primary {
+    .content-groups.cohort {
+      .title {
+        display: block;
+      }
+    }
+    .partition-group-list {
+      @include list-item();
+      padding: $padding-beside-list;
+
+      .list-items {
+        .header {
+          @include list-header();
+        }
+
+        .wrapper-collection {
+          //@extend %list-item;
+          box-shadow: none;
+          background-color: transparent;
+          border: 1px solid $grey5;
+          border-radius: 10px;
+          margin-bottom: 10px;
+
+          .collection-details {
+            padding: 10px 30px;
+            display: flex;
+
+            .collection-header {
+              flex: 1;
+              .title {
+                margin-right: auto;
+                display: inline-block;
+                vertical-align: middle;
+
+                .toggle {
+                  @include hyper-link();
+
+                  color: $black;
+                  font-size: 12px;
+                  font-weight: 400;
+
+                  .icon {
+                    font-size: 16px;
+                  }
+                }
+                .group-configuration-id {
+                  margin-left: 18px;
+                  font-size: 10px;
+                  font-weight: 400;
+                  color: $fds-global-color-neutral-140;
+                }
+              }
+              .usage-count {
+                background-color: $triboo-color-tag-light-bg-yellow;
+                border-radius: 19.5px;
+                margin-left: 80px;
+
+                font-weight: 600;
+                font-size: 12px;
+                color: $triboo-color-tag-light-fg-yellow;
+                padding: 4px 20px;
+
+                &.used {
+                  background-color: $triboo-color-brand-primary-0;
+                  color: $triboo-color-brand-primary-50;
+                }
+              }
+            }
+
+            >i {
+              font-size: 16px;
+              @include action-icon();
+              display: flex;
+              align-items: center;
+              width: 35px;
+              justify-content: center;
+            }
+            >.action-menu {
+              @include action-menu-panel();
+              position: absolute;
+              margin-top: -3px;
+              right: -20px;
+              top: 50px;
+              overflow: hidden;
+              z-index: 8;
+
+              .action-edit,.action-delete {
+                display: block;
+                margin-right: 0;
+                button {
+                  background-color: transparent;
+                  box-shadow: none;
+                  text-align: center;
+                  text-shadow: none;
+                  @include action-menu-item();
+                  text-align: left;
+
+                  &:focus {
+                    outline: none;
+                  }
+
+                  .icon {
+                    float: left;
+                  }
+                }
+              }
+              .action-edit button {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+              }
+              .action-delete button {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+              }
+            }
+          }
+
+          .collection-edit {
+            .wrapper-form {
+              .usage-validation {
+                display: flex;
+                align-items: center;
+                padding: 15px 20px;
+                .fa-warning {
+                  margin: 0 10px 0 0;
+                }
+              }
+
+              .collection-fields .collection-name-input {
+                @include form-text-box();
+                width: 280px;
+              }
+            }
+            .actions {
+              text-align: right;
+
+              .action, .wrapper-delete-button {
+                -webkit-font-smoothing: antialiased;
+              }
+            }
+          }
+
+          .collection-references {
+            box-shadow: none;
+            padding-top: 0;
+            p {
+              @include list-item-title();
+            }
+          }
+
+          .collection-edit {
+            background: transparent;
+
+            .field {
+              &.error {
+                label {
+                  color: inherit;
+                }
+              }
+              &:last-child {
+                label {
+                  &:after {
+                    display: none;
+                  }
+
+                  &:first-child {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    i {
+                      font-size: 24px;
+                      -webkit-font-smoothing: antialiased;
+                      color: $triboo-color-fg-neutral;
+                      cursor: pointer;
+                      &:hover {
+                        color: $triboo-color-brand-primary;
+                      }
+                    }
+                  }
+
+                  &:nth-of-type(2) {
+                    font-weight: 600;
+                    font-size: 12px;
+                    color: $fds-global-color-neutral-140;
+                    margin-top: 10px;
+                  }
+                }
+              }
+            }
+
+            .actions {
+              box-shadow: none;
+              border-top: 0;
+              background: inherit;
+
+              .action {
+                padding: 8px 25px;
+              }
+
+              .action-secondary {
+                border: none;
+              }
+            }
+
+            .wrapper-form {
+              padding: $baseline ($baseline*1.5) 0;
+            }
+
+            .collection-fields {
+              margin-bottom: auto;
+            }
+
+            .action-cancel {
+              @extend %btn-primary-gray;
+              border: none;
+            }
+          }
+
+        }
+      }
+
+      >.action-add {
+        width: auto;
+        display: none;
+      }
+    }
+
+    .enrollment_track {
+      .list-items .wrapper-collection .collection-details {
+        >i {
+          display: none;
+        }
+      }
+    }
+
+    .no-content {
+      &, &:hover {
+        box-shadow: none;
+      }
+      padding: 0;
+    }
+  }
+
+  .content-supplementary {
+    @include content-supplementary();
+
+    .bit {
+      &:first-child, &:last-child {
+        display: block; //remove
+      }
+      //enrollment-track-doc and nav-related
+      &.enrollment-track-doc-wrapper, &.other-course-settings {
+        display: none;
+      }
+
+      //content-groups-doc
+      &:nth-of-type(2) {
+        border-bottom: none;
+        margin-top: 40px;
+      }
+
+      p .external-help-button {
+        display: none;
+      }
+    }
+  }
+
+  #page-prompt {
+    .prompt.warning {
+      width: 500px;
+      font-family: $font-family-default;
+      font-style: normal;
+
+      .copy {
+        border-top: none;
+        padding: 16px 24px;
+
+        #prompt-warning-title {
+          margin-bottom: 32px;
+          color: $fds-global-color-neutral-170;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 24px;
+        }
+
+        #prompt-warning-description {
+          color: $fds-global-color-neutral-170;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+        }
+
+        .confirm-wrapper {
+          display: flex;
+          align-items: center;
+          gap: $fds-global-space-xs;
+
+          #confirm-text {
+            color: $fds-global-color-neutral-170;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+          }
+        }
+
+      }
+
+      .nav-actions {
+        border-top: 1px solid $fds-global-color-neutral-10;
+        background: $fds-global-color-neutral-0;
+
+        .nav-item {
+          margin-right: 3px;
+        }
+
+        .nav-item:last-child {
+          margin-right: 0;
+        }
+
+        button {
+          padding: 8px 16px;
+          border-radius: 4px;
+          text-align: center;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+
+          &.action-secondary {
+            background: $fds-global-color-neutral-10;
+            color: $fds-global-color-neutral-140;
+          }
+
+          @include if-disable {
+            border: none;
+            background: $fds-global-color-neutral-10;
+            color: $fds-global-color-neutral-50;
+          }
+        }
+      }
+    }
+  }
+}

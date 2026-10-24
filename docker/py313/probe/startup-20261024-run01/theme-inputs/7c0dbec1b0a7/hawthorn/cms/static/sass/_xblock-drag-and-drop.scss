@@ -1,0 +1,458 @@
+
+.view-container {
+  .modal-window {
+    .modal-content {
+      .xblock-studio_view-drag-and-drop-v2 {
+        $inputWidth: 300px;
+        $fields-gap: 32px;
+        @mixin field-label {
+          @include label;
+          width: 220px;
+          display: inline-block;
+        }
+        @mixin field {
+          // components
+          > input {
+            @include form-text-box();
+            display: inline-block;
+          }
+        }
+        @mixin shadow-item {
+          background-color: $white;
+          border: 2px solid $grey5;
+          box-shadow: $fds-global-shadow-xs;
+          border-radius: 10px;
+        }
+
+        // styling general components
+        .checkbox-label {
+          display: inline-block;
+
+          input[type=checkbox] {
+            @include checkbox-generator();
+          }
+
+          > span {
+            font-size: 14px;
+            color: $triboo-color-fg-neutral;
+            padding-left: 13px;
+          }
+        }
+        input[type=radio] {
+          @extend %radiobox;
+        }
+        input[type=text] {
+          @include form-text-box;
+        }
+        .question-mark-wrapper {
+          display: inline-block;
+          margin-left: 10px;
+        }
+
+        //main body
+        .drag-builder {
+          border-bottom: 1px solid $editor-border-color;
+
+          .tab {
+            //feedback-tab  zones-tab  items-tab
+            background-color: transparent;
+
+            .tab-content form {
+              >label {
+                select,textarea, input[type=text], input[type=number] {
+                  width: map_get($field, 'component-width');
+                }
+
+                >span {
+                  @include label();
+                  -webkit-font-smoothing: antialiased;
+                }
+
+                select {
+                  @include select();
+                }
+
+                textarea, input {
+                  box-shadow: none;
+                  @include form-text-box();
+                  &:focus {
+                    outline: none;
+                  }
+                }
+
+              }
+              > .h4, > fieldset {
+                @include field;
+                //:not(textarea) be careful when use pseudo, it has high priority
+                > * {
+                  vertical-align: middle;
+                }
+
+                > span {
+                }
+
+                > textarea {
+                  vertical-align: top;
+                  width: 400px;
+                }
+              }
+
+              &.feedback-form {
+                > .h4 {
+                  &:nth-child(2) {
+                    .question-mark-wrapper .after {
+                      width: 360px;
+                    }
+                  }
+
+                  + .form-help {
+                    display: none;
+                  }
+                }
+
+                .question-mark-wrapper { // .icon-question--left
+                  .before {
+                    transform: translateY(50%);
+                    left: unset;
+                    right: 15px;
+                    bottom: 50%;
+                    border-left: 10px solid $grey25;
+                    border-top: 10px solid transparent;
+                    border-bottom: 10px solid transparent;
+                    border-right: none;
+                  }
+                  .after {
+                    top: 50%;
+                    bottom: auto;
+                    right: 20px;
+                    transform: translate(0, -50%);
+                  }
+                }
+              }
+            }
+            h4, .h4 {
+              margin: $fields-gap 0 8px 0;
+            }
+          }
+
+          .feedback-tab {
+            .tab-content form {
+              > .h4 {
+                > span:first-of-type {
+                  @include field-label;
+
+                  .text {
+                    display: block;
+                  }
+
+                  .checkbox-label {
+                    margin-top: 5px;
+                  }
+                }
+              }
+            }
+          }
+
+          .zones-tab {
+            //clean unnecessary effect
+
+            button.btn {
+              &:hover {
+                box-shadow: none;
+              }
+              &:focus {
+                outline: none;
+              }
+            }
+            .tab-content {
+              form > fieldset .h4 +.form-help,
+              form > fieldset .field-component-wrapper .form-help {
+                  display: none;
+              }
+              form {
+                > fieldset {
+                  > label {
+                    @include field-label;
+                    display: inline-block;
+                    margin: 0;
+                  }
+
+                  .field-component-wrapper {
+                    display: inline-block;
+                    vertical-align: middle;
+
+                    .background-image-type {
+                      display: inline-block;
+
+                      &:nth-child(2) {
+                        margin-left: 10px;
+                      }
+                    }
+                    >input[type=text] {
+                      width: $inputWidth
+                    }
+                  }
+
+                  &.background-manual {
+                    margin-top: $fields-gap;
+                    button.btn {
+                      @include primary-small-button();
+                    }
+                  }
+                  &.background-auto {
+                    button.btn {
+                      @include primary-small-button();
+                    }
+                    fieldset {
+                      label {
+                        @include field-label;
+                        display: inline-block;
+                      }
+                      .field-component-wrapper {
+                        >span {
+                          font-size: 12px;
+                          color: $triboo-color-fg-neutral;
+                          margin: 0 6px;
+                        }
+                        input {
+                          width: 77px;
+                          font-size: 12px;
+                        }
+
+                      }
+                    }
+                  }
+                }
+
+                > .h4 {
+                  label {
+                    @include field-label;
+                  }
+
+                  textarea {
+                    @include form-text-box;
+                    display: inline-block;
+                    //vertical-align: middle;
+                    height: 90px;
+                  }
+                }
+
+                > h4 {
+                  @include field-label;
+                }
+
+                > .checkbox-label {
+                  display: inline-block;
+                  input[type=checkbox] {
+                    display: none;
+                  }
+                  .switcher-wrapper {
+                    padding-left: 0;
+                    &,&+span {
+                      vertical-align: middle;
+                    }
+                    &:before {
+                      content:'';
+                    }
+                  }
+                }
+              }
+              .display-labels-form {
+                h4 {
+                  margin-top: 0;
+                }
+              }
+              .zone-editor {
+                .controls {
+                  form {
+                    >fieldset {
+                      @include shadow-item;
+                      button {
+                        background-color: transparent;
+                        border: none;
+
+                        .icon {
+                          color: $triboo-color-fg-neutral;
+                          @include closing-button;
+                        }
+                      }
+                      .form-help {
+                        font-size: 12px;
+                        color: $triboo-color-fg-neutral;
+                        -webkit-font-smoothing: antialiased;
+                      }
+                      >label, >.layout>label, >.alignment>label {
+                        >span {
+                          font-weight: 600;
+                          font-size: 12px;
+                          color: $triboo-color-fg-neutral;
+                        }
+                        input {
+                          //@include form-text-box;
+                          line-height: normal;
+                        }
+                        select {
+                          @include select;
+                          font-size: 12px;
+                          width: 220px;
+                          padding: 12px 13px;
+                        }
+                      }
+                      >label,>.alignment>label {
+                        width: auto;
+                      }
+                      //>label, >.layout>label,
+                    }
+                  }
+                  >button {
+                    background: $fds-global-color-neutral-5;
+                    border-radius: 5px;
+                    border: none;
+                    width: 100%;
+                    height: 44px;
+                    text-align: left;
+                    padding-left: 20px;
+
+                    font-weight: 600;
+                    font-size: 12px;
+                    color: $triboo-color-fg-neutral;
+
+                  }
+
+                }
+                .target {
+                  border: none;
+                  .zones-preview {
+                    .zone {
+                      //border: none; we can't simply remove the border from blocks, it also used in other view.
+                    }
+                  }
+                }
+              }
+            }
+
+          }
+
+          .items-tab {
+            .tab-content form {
+              >.h4, >fieldset.item .row:not(.advanced) >.h4 {
+                +.form-help {
+                  display: none;
+                }
+              }
+              >.h4 {
+                >span {
+                  @include field-label;
+                }
+                >input {
+                  width: $inputWidth
+                }
+
+              }
+              fieldset.item {
+                @include shadow-item;
+                .remove-item {
+                  background-color: transparent;
+                  border: none;
+                  &:hover, &:focus {
+                    box-shadow: none;
+                  }
+                  &:focus {
+                    outline: none;
+                  }
+                  .icon {
+                    color: $triboo-color-fg-neutral;
+                    @include closing-button;
+                  }
+                }
+                .row {
+                  >.h4 {
+                    >span, >label {
+                      @include field-label;
+                      width: 160px;
+                    }
+                    >input, >textarea {
+                      @include form-text-box;
+                      display: inline-block;
+                      width: $inputWidth
+                    }
+                    >textarea {
+                      height: 90px;
+                      &:focus {
+                        outline: none;
+                      }
+                    }
+                    >small {
+                      font-size: 14px;
+                    }
+                  }
+                  >fieldset {
+                    >.h4 {
+                      @include field-label;
+                      width: 160px;
+                    }
+                    >.field-component-wrapper {
+                      display: inline-block;
+                      >.zone-checkbox-row {
+                        display: inline-block;
+                        &:not(:first-child) {
+                          margin-left: 15px;
+                        }
+                      }
+
+                    }
+
+                  }
+                  &.advanced-link {
+                    button {
+
+                      &:focus {
+                        outline: none;
+                      }
+                      &:before {
+                        content: '\f0da';
+                        font-size: 16px;
+                        font-family: $font-awesome;
+                      }
+                    }
+                    +.advanced {
+                      display: none !important;
+                    }
+
+                    &.opening {
+                      button:before {
+                        content: '\f0d7';
+                      }
+                      +.advanced {
+                        display: block !important;
+                      }
+                    }
+                  }
+                }
+              }
+              +button.add-item {
+                @include primary-small-button();
+              }
+            }
+          }
+
+        }
+        .xblock-actions {
+          position: absolute;
+        }
+
+        .xblock--drag-and-drop--editor .zones_settings .setting_flag {
+          align-items: center;
+
+          .switcher {
+            line-height: 1;
+          }
+
+          input[type=checkbox] {
+            display: inline-grid;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+// Extra rules needed for a Studio theme
+//
+// The _extras.scss file is imported after all other rules by
+// the Studio Sass. For your own theme, you can override this file
+// to add any custom rules that you need. You can also import
+// partials directly into this file so that you can break your
+// rules into modular pieces.
+
+
+// studio - views - sign up/in
+// ====================
+
+
+@import "../../../../../../lms/static/sass/shared/variables";
+@import "../../../../../../common/static/sass/fonts";
+@import "../../../typography";
+@import "../../../mixins-inherited";
+
+@import "../../../../../../lms/static/sass/shared/mixins";
+@import "../../../../../../lms/static/sass/shared/controls";
+
+@import "../../../controls";
+@import "../../../reset";
+@import "../../../mixins";
+
+@import "../../../../../../common/static/sass/component";
+@import "../../../../../../common/static/sass/login-register";
+@import "../../../common";
+@import "../../../header";
+@import "../../../index";
+@import "../../../account";
+@import "../../../footer";
+@import "../../../error-pages";
+@import "../../../dashboard";
+@import "../../../layout";
+@import "../../../forms";
+@import "../../../modal-window";
+@import "../../../xblocks";
+@import "../../../modules";
+@import "../../../updates";
+@import "../../../static-pages";
+@import "../../../textbooks";
+@import "../../../schedule-settings";
+@import "../../../grading-settings";
+@import "../../../advanced-settings";
+@import "../../../certificate";
+@import "../../../export-import";
+@import "../../../course-create";
+@import "../../../fileuploads";
+@import "../../../team";
+@import "../../../group-configuration";
+@import "../../../certificates";
+@import "../../../course-reminder";
+@import "../../../outline";
+@import "../../../system-help";
+@import "../../../../../../lms/static/sass/shared/dialog";
+@import "../../../videouploads";
+@import "../../../prompt";
+@import "../../../courseware";
+@import "../../../program";
+@import "../../../scorm-list";
+@import "../../../studio-logs";
+@import "../../../uploads";
+@import "../../../studio-logs-index";
+@import "../../../library";

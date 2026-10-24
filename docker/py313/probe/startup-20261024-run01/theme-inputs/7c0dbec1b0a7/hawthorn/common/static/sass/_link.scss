@@ -1,0 +1,23 @@
+.ds-link {
+  @include typography-body-sm-underline;
+  text-decoration: underline;
+  box-shadow: none;
+  display: inline-flex;
+  color: $triboo-color-brand-primary-60;
+
+  &.ds-link--xs {
+    @include typography-body-xs-underline;
+  }
+
+  &.ds-link--white {
+    color: $fds-global-color-neutral-0;
+  }
+
+  &::after {
+    font-family: $font-awesome;
+    content: "\f08e"; // arrow-up-right-from-square
+    font-weight: 400;
+    line-height: 1;
+    margin-left: $fds-global-space-xxs;
+  }
+}

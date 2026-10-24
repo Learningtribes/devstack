@@ -1,0 +1,397 @@
+.instructor-dashboard-wrapper-2 section.idash-section#membership {
+  .membership-section {
+    margin-bottom: 0 !important;
+  }
+
+  .auto_update_csv,
+  .auto_enroll_csv {
+
+    p {
+      padding-bottom: 20px;
+    }
+
+    .customBrowseBtn {
+      padding: 20px 30px;
+      float: left;
+      border: 2px dashed $grey35;
+      text-align: center;
+      width: 40%;
+      border-radius: $default-border-radius;
+      margin: 0;
+
+      @include media-down($sm) {
+        width: 100%;
+      }
+
+      > * {
+        display: block;
+        margin: 0 auto;
+      }
+
+      .csv-file {
+        @extend %csv-file;
+      }
+
+      label {
+        text-align: center;
+        padding-bottom: 20px;
+      }
+
+      .file-browse {
+        position: static;
+        width: 280px;
+
+        @include media-down($md) {
+          width: auto;
+        }
+
+        .browse {
+          @include primary-small-button();
+
+          @include margin-left(0);
+
+          i {
+            @include padding-right(6px);
+          }
+        }
+
+      }
+    }
+
+    .action-wrapper {
+      float: right;
+      width: 50%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      @include media-down($sm) {
+        width: 100%;
+      }
+
+      .file-field-wrapper {
+        overflow: hidden;
+        padding-bottom: 60px;
+        width: 60%;
+        text-align: left;
+        position: relative;
+
+        @include media-down($sm) {
+          padding-bottom: 20px;
+          width: 80%;
+        }
+
+        .file_field {
+          display: none;
+          width: 100%;
+          @include margin-left(-90px);
+          padding-bottom: 6px;
+          font-weight: 600;
+        }
+
+        .file-name {
+          width: 220px;
+          display: inline-block;
+          font-size: 14px;
+          padding-bottom: 6px;
+        }
+
+        .file-size {
+          font-size: 12px;
+          @include padding-left(20px);
+          color: $triboo-color-fg-neutral;
+          font-weight: 600;
+
+          @include media-down($sm) {
+            @include padding-left(0);
+          }
+        }
+
+        .progress-bar {
+          background-color: $grey25;
+          height: 2px;
+          width: 100%;
+
+          i {
+            position: absolute;
+            background-color: $triboo-color-brand-primary;
+            width: 0%;
+            height: 2px;
+          }
+        }
+      }
+    }
+
+    #browseFileUpdate,
+    #browseFile {
+      display: none;
+    }
+
+    > label {
+      display: inline-block;
+    }
+
+    &.draghovering {
+      background-color: $grey3;
+    }
+
+  }
+
+  .auto_enroll_csv,
+  .batch-beta-testers,
+  .member-lists-management {
+    > .hd-3:first-child {
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+  }
+
+  .auto_enroll_csv,
+  .auto_update_csv,
+  .batch-beta-testers {
+    textarea {
+      display: block;
+      border: 1px solid $grey10;
+      border-radius: $default-border-radius;
+      box-shadow: $fds-global-shadow-xs;
+      padding: 16px;
+      font-style: italic;
+      margin-top: 16px !important;
+      margin-bottom: 16px;
+      width: 100% !important;
+    }
+
+    input[type=button], button[type=submit] {
+      @include primary-big-button(!important);
+    }
+
+    input[data-action=unenroll], input[data-action=remove] {
+      @include grey-big-button();
+      &:focus {
+        text-shadow: none;
+        color: $white;
+        background-color: $grey35 !important;
+
+        &:hover {
+          background-color: $white !important;
+        }
+      }
+    }
+
+    input[type=checkbox] {
+      @include checkbox-generator($checked-color: $triboo-color-brand-primary);
+
+      @include margin-right(10px);
+    }
+
+    textarea[name=reason-field] {
+      height: 180px;
+    }
+
+    .action-wrapper {
+      text-align: center;
+    }
+
+    #update-results,
+    #register-enroll-results {
+      padding-top: 10px;
+      margin-bottom: 30px;
+      clear: both;
+    }
+
+    .loading-wrapper {
+      @extend %loading-button;
+
+      .loading-button {
+        @include padding-left(50px);
+
+        &:hover {
+          + .icon:before {
+            color: $black60;
+          }
+        }
+      }
+    }
+  }
+
+  .member-lists-management .member-lists-selector {
+    @extend %dropdown;
+
+    display: inline-block !important;
+    @include margin-left(15px !important);
+    padding: 5px 50px 5px 20px !important;
+    border: 1px solid $grey5;
+    border-radius: 16px;
+    box-shadow: $fds-global-shadow-xs;
+
+    @include media-down($sm) {
+      display: block !important;
+      @include margin-left(0 !important);
+      margin-top: 10px;
+      width: 100%;
+    }
+  }
+
+  .member-lists-management {
+    .wrapper-member-select {
+      background-color: inherit !important;
+      padding: 0 0 10px 0 !important;
+    }
+
+    .auth-list-container {
+      //margin-bottom: 20px !important;
+
+      .member-list-widget {
+        .info {
+          color: $black !important;
+          border: 0 !important;
+          padding: 0 0 30px !important;
+          font-size: 16px !important;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        .member-list {
+          padding-bottom: 30px;
+
+          table {
+            @extend %list-item;
+          }
+
+          thead {
+            background-color: transparent !important;
+
+            th:first-child {
+              width: 110px;
+
+              @include media-down($md) {
+                width: 50px;
+              }
+            }
+          }
+
+          tbody {
+            tr:nth-of-type(odd) {
+              background-color: $grey3;
+            }
+
+            td:first-child {
+              @include padding-left(25px);
+
+              @include media-down($md) {
+                @include padding-left(5px);
+              }
+            }
+          }
+
+          tr {
+            border-bottom: 0 !important;
+          }
+
+          th,
+          td {
+            border-left: 0 !important;
+            border-right: 0 !important;
+          }
+
+          th {
+            text-transform: uppercase;
+            color: $triboo-color-fg-neutral;
+            padding: 16px 5px !important;
+            font-weight: 600;
+            font-size: 16px !important;
+
+            @include media-down($md) {
+              font-size: 11px !important;
+            }
+          }
+
+          td {
+            color: $triboo-color-fg-neutral !important;
+            font-weight: 300;
+          }
+
+          .portrait {
+            width: 37px;
+            border-radius: 20px;
+          }
+
+        }
+
+        .bottom-bar {
+          background-color: transparent !important;
+          border: 0 !important;
+          box-shadow: none !important;
+
+          .add-field {
+            @extend %linner-text-box;
+
+            width: 40%;
+          }
+
+          .note {
+            display: block;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+          }
+
+          .add-field {
+            @include media-down($md) {
+              width: 80%;
+            }
+
+            @include media-down($sm) {
+              width: 100%;
+            }
+          }
+
+          input[type="button"].add {
+            all: initial;
+
+            @include primary-small-button();
+            font-family: $font-family-default;
+
+            &:focus:not(:disabled) {
+              border: none;
+            }
+
+            @include media-down($md) {
+              left: auto;
+              right: 0;
+            }
+
+            @include media-down($sm) {
+              left: 0;
+              width: 100%;
+              justify-content: center;
+            }
+          }
+
+          > label {
+            @include media-down($sm) {
+              display: block;
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+
+      .revoke {
+        align-items: center;
+        display: flex;
+
+        &:hover,
+        &:focus {
+          @include font-bold($color: $triboo-color-brand-primary);
+        }
+
+        .icon {
+          color: $triboo-color-brand-primary;
+          font-size: 18px;
+          @include padding-right(10px);
+        }
+      }
+    }
+  }
+}

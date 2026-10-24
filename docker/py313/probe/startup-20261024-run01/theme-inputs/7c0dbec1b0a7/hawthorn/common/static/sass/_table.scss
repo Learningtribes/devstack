@@ -1,0 +1,84 @@
+.ds-table {
+  width: 100%;
+  border: 1px hidden $fds-global-color-neutral-40;
+  border-radius: $fds-global-border-radius-lg;
+  outline: 1px solid $fds-global-color-neutral-40;
+  border-collapse: collapse;
+  table-layout: auto;
+  background: $fds-global-color-neutral-0;
+  color: $fds-global-color-neutral-140;
+
+  thead, tr, th, td {
+    vertical-align: middle;
+  }
+
+  thead {
+    @include typography-body-xs-bold;
+
+    td,
+    th {
+      padding: 0 $fds-global-space-sm;
+      height: 44px;
+      border-color: $fds-global-color-neutral-40;
+      text-align: start;
+
+      &:has(> i) {
+        cursor: pointer;
+      }
+
+      > i {
+        margin-left: $fds-global-space-xs;
+      }
+    }
+  }
+
+  tbody {
+    @include typography-body-sm-regular;
+
+    tr {
+      &:hover {
+        background: $fds-global-color-neutral-10;
+      }
+      &:active,
+      &.active {
+        background: $triboo-color-brand-primary-0;
+      }
+    }
+
+    td {
+      padding: 10px $fds-global-space-sm;
+
+      ds-tag {
+        margin-inline-end: 1ch;
+        text-transform: capitalize;
+      }
+
+      .ds-switch {
+        margin: 0;
+      }
+    }
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid $fds-global-color-neutral-20;
+    white-space: nowrap;
+
+    &:first-child {
+      padding-inline-start: calc(#{$fds-global-space-lg} + #{$fds-global-space-sm});
+    }
+    &:last-child {
+      padding-inline-end: calc(#{$fds-global-space-lg} + #{$fds-global-space-sm});
+    }
+
+    ds-badge {
+      margin-inline-start: 1ch;
+    }
+  }
+
+  .ds-checkbox,
+  input.ds-checkbox,
+  input.ds-checkbox[type="checkbox"] {
+    display: flex;
+  }
+}

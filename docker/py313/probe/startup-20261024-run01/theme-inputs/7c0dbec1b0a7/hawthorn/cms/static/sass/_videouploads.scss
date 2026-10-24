@@ -1,0 +1,397 @@
+// studio - views - video uploads
+// ====================
+
+.content-primary {
+  .form-wrapper {
+    background-color: $fds-global-color-neutral-30;
+    padding: 30px 0;
+    border-radius: 10px;
+
+    .file-upload-form {
+      height: auto;
+      background-color: $white;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 800px;
+      margin: auto;
+
+
+      .file-drop-area {
+        width: auto;
+        height: auto;
+        transform: none;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        border-width: 3px;
+        padding: 40px 25px;
+
+        &:hover {
+          background-color: transparent;
+          border-style: dashed;
+          border-color: $grey35;
+
+          .upload-text-link {
+            text-decoration: none;
+          }
+        }
+
+        .icon {
+          font-size: 146px;
+          color: $fds-global-color-neutral-170;
+        }
+
+        .text-container {
+          .video-uploads-header {
+            display: none;
+          }
+          .video-upload-text {
+            font-weight: 600;
+
+            span:first-child {
+              color: $triboo-color-brand-primary;
+            }
+
+            .upload-text-link {
+              @include primary-medium-button();
+              padding: 5px 15px;
+            }
+          }
+          .video-allowed-extensions-text,
+          .video-max-file-size-text {
+            font-size: 12px;
+            color: $triboo-color-fg-neutral;
+            -webkit-font-smoothing: antialiased;
+          }
+
+          .video-max-file-size-text {
+            line-height: 14px;
+          }
+        }
+      }
+    }
+
+    .active-video-upload-container {
+      margin-bottom: 0;
+      margin-top: 20px;
+
+      .active-video-upload-list {
+        text-align: center;
+
+        .active-video-upload {
+          background-color: $white;
+          text-align: left;
+          padding: 10px 15px;
+          border-radius: $border-radius-v2;
+          min-height: auto;
+
+          &.error .video-upload-status {
+            .icon, a, .video-detail-status {
+              color: $triboo-color-brand-primary;
+            }
+          }
+
+          .video-detail-name {
+            text-align: left;
+            font-size: 12px;
+            font-weight: 300;
+            color: $fds-global-color-neutral-140;
+            -webkit-font-smoothing: antialiased;
+          }
+          .video-detail-progress {
+            display: block;
+            border-radius: 3px;
+
+            &::-webkit-progress-bar {
+              background-color: $fds-global-color-neutral-100;
+            }
+            &::-webkit-progress-value {
+              background-color: $green;
+            }
+          }
+          .video-upload-status {
+            .icon, a, .video-detail-status {
+              color: $green;
+            }
+            .icon {
+              font-size: 18px;
+            }
+            a, .video-detail-status {
+              font-size: 12px;
+              font-weight: 400;
+              -webkit-font-smoothing: antialiased;
+            }
+            .video-detail-status {
+              margin-left: 3px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.file-upload-form {
+  height: 500px;
+  background-color: $fds-global-color-neutral-30;
+  border-radius: $default-border-radius;
+
+  .file-drop-area {
+    width: 60%;
+    height: 70%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+    border-radius: $default-border-radius;
+
+    .upload-icon {
+      padding-top: $content-padding-top;
+    }
+
+    .text-container {
+      padding-top: $content-padding-top;
+      text-align: center !important;
+
+      .upload-text-drag {
+        color: $triboo-color-brand-primary;
+      }
+
+      .upload-text-button {
+        @include primary-small-button();
+      }
+    }
+  }
+}
+
+.wrapper-assets {
+  padding-top: 30px;
+
+  .assets-library {
+
+    .assets-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: $black55;
+    }
+
+    .wrapper-encodings-download {
+      a {
+        @include grey-small-button();
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-block;
+        padding: 3px 16px;
+
+        &:first-child {
+          background-color: rgba(114, 114, 114, 0.22);
+        }
+
+        i {
+          font-size: 14px;
+        }
+
+        span {
+          @include margin-left(10px);
+        }
+      }
+
+    }
+    .assets-table {
+      @extend %list-item;
+
+      padding: 0 30px $padding-beside-list;
+      box-sizing: border-box;
+
+      .video-col {
+        padding: 0 10px 0 0;
+        display: inline-block;
+        float: left;
+      }
+
+      .name-col {
+        width: 25%;
+      }
+      .status-col {
+        width: 13%;
+      }
+
+      .date-col {
+        width: 12%;
+      }
+
+      .video-id-col {
+        width: 18%;
+      }
+      .transcripts-col {
+        width: 15%;
+      }
+
+      .js-table-head {
+        display: flex;
+        flex-direction: row;
+
+        .video-col {
+          padding: 32px 10px 32px 0;
+          color: $fds-global-color-neutral-140;
+          font-weight: 600;
+          font-family: $font-family-header;
+        }
+
+        .name-col {
+          padding-left: $padding-beside-list-item;
+        }
+
+        .actions-col {
+          text-align: center;
+        }
+      }
+      .js-table-body {
+        border: none;
+        box-shadow: none;
+
+        .video-row {
+          //border: none;
+          box-sizing: border-box;
+          border: 1px solid $grey5;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: row;
+          padding-left: 30px;
+          margin-bottom: 10px;
+          font-size: 10px;
+          padding: 10px 0px;
+
+          &:first-child {
+            border-top: 1px solid $grey5;
+          }
+
+          &:hover {
+            background-color: transparent !important;
+          }
+
+          &:nth-child(odd) {
+            background-color: transparent;
+          }
+
+          &, .date-col {
+            color: $black;
+            font-size: 10px;
+          }
+
+          .name-col {
+            @include list-item-title();
+            font-weight: 400;
+            padding-left: $padding-beside-list-item;
+            -webkit-font-smoothing: antialiased;
+          }
+
+          .actions-col {
+            padding: 0;
+            position: static; //remove
+            align-self: center;
+            text-align: center;
+
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+            .action-icon {
+              font-size: 16px;
+
+
+              &:hover {
+                + .actions-list {
+                  display: block;
+                }
+              }
+            }
+
+            .actions-list {
+              //@include action-menu-panel();
+              position: static; //remove
+              /*left: 20px;
+              top: 15px;
+              z-index: 30;*/
+              display: inline-block;
+              overflow: hidden;
+              box-shadow: none;
+
+              .action-item  {
+                .action-button {
+                  background-color: transparent;  //remove
+                  color: inherit;  //remove
+                  text-shadow: none;  //remove
+                  &:hover {
+                    color: $triboo-color-brand-primary;
+                    background-color: transparent; //remove
+                  }
+
+                  i {
+                    font-size: 14px;
+                    font-weight: 300;
+                    color: $triboo-color-fg-neutral;
+                  }
+                }
+              }
+
+            }
+          }
+
+          .video-row-container {
+            width: 100%;
+            align-items: center;
+            display: flex;
+          }
+
+          .status-col {
+            align-self: center;
+            text-transform: capitalize;
+
+            span {
+              border-radius: 19.5px;
+              padding: 5px 12px;
+              white-space: nowrap;
+              font-weight: 600;
+
+              i {
+                font-size: 8px;
+                margin-right: 5px;
+              }
+            }
+
+            .Unknown {
+              color: $triboo-color-tag-light-fg-orange;
+              background-color: $triboo-color-tag-light-bg-orange;
+            }
+            .Failed {
+              color: $triboo-color-tag-light-fg-red;
+              background-color: $triboo-color-tag-light-bg-red;
+            }
+            .Uploading,
+            .InProgress {
+              color: $triboo-color-tag-light-fg-yellow;
+              background-color: $triboo-color-tag-light-bg-yellow;
+            }
+            .Uploaded,.Imported,
+            .Ready {
+              background: $triboo-color-tag-light-bg-green;
+              color: $triboo-color-tag-light-fg-green;
+            }
+          }
+        }
+      }
+
+      .video-head-col {
+        background-color: transparent;
+      }
+
+      .no-content {
+        @include no-content();
+        padding: 30px 0 0;
+        padding-bottom: 0;
+        text-align: center;
+      }
+    }
+  }
+}

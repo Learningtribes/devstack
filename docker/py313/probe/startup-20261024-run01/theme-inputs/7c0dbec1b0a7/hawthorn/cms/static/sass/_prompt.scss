@@ -1,0 +1,65 @@
+
+
+//wrapper-prompt wrapper-prompt-warning
+.wrapper-prompt {
+  .prompt {
+    background-color: white;
+    border: none;
+    overflow: hidden;
+    border-radius: 8px;
+
+
+    &.error .copy {
+      border-top-color: $fds-global-color-error-40;
+    }
+    &.warning .copy, &.confirmation .copy {
+      border-top-color: $fds-global-color-caution-40;
+    }
+    &.announcement .copy {
+      border-top-color: $green;
+    }
+
+    .copy {
+      border-top-width: 9px;
+      padding: 13px 16px;
+
+      h2 {
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 14px;
+        color: $black;
+      }
+      p {
+        font-size: 12px;
+        color: $triboo-color-fg-neutral;
+      }
+    }
+    .nav-actions {
+      border-top: none;
+      box-shadow: none;
+      background: $grey5;
+      //border-radius: 0px 0px 10px 10px;
+
+      ul {
+        text-align: right;
+      }
+      .action-primary {
+        @include primary-small-button();
+        box-shadow: none;
+        font-size: 12px;
+      }
+      .action-secondary {
+        font-weight: 600;
+        font-size: 12px;
+        color: $triboo-color-fg-neutral;
+        &:hover {
+          color: $triboo-color-brand-primary;
+        }
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
+
