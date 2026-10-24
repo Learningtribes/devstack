@@ -4,7 +4,33 @@ Captured 2026-10-24. This is a checkpoint of an existing development runtime,
 not a successful empty-environment rebuild or a production migration recipe.
 Do not run initialization or seed scripts against existing/production databases.
 
-## Contents
+## Latest runtime checkpoint (run-26, 2026-10-25)
+
+The current runtime input requires opaque-keys 4.0.0, CCX keys 2.0.2 and
+DOT 3.2.0. The older opaque-keys 0.4.4 dependency-closure result did not pass
+application setup because completion/events require newer key APIs. A fresh
+run-26 volume was installed, incrementally repaired from registered source,
+and initialized as `py313_rebuild_run26`: 149 apps, 301 managed models, 315
+tables, zero historical migrations applied. Natural-key Site seeding created
+new host records and `/runtime/config/site-ids.json`.
+
+LMS/CMS strict checks, mandatory XBlock enumeration, dependency closure,
+Sass/theme/webpack builds, both locale/static collections, LMS internal
+heartbeat 200, CMS internal signin 200 and real worker ready have evidence.
+These are partial runtime results; a final replay of the combined installer
+in another empty venv and real browser/business-task acceptance remain open.
+See the protected run-26 README for failed attempts and exact limitations.
+
+`install.sh` now invokes `install_verified_runtime_additions.py` for the
+registered fs/Poll/JWT/dogapi source repairs and includes python-memcached.
+`PY313_PLATFORM_ROOT` controls source-dependent settings/locale paths.
+`start_http.py` and `start_worker.py` accept `PY313_RUNTIME_CONTAINER`,
+`PY313_PLATFORM_ROOT`, and a mode-600 `PY313_SECRET_ENV_FILE`. The default
+remains the preserved startup runtime, so set the target explicitly.
+`PY313_TASK_QUEUE_PREFIX` names independent priority queues, exchange and
+result keys. Runtime ports come from the protected environment.
+
+## Historical contents (initial checkpoint)
 
 - D01: Dockerfile, local settings, schema inspection/bootstrap/reconciliation,
   seed helpers and HTTP/worker entry points. Schema bootstrap uses model sync;
@@ -34,15 +60,16 @@ source commits. created-resources.json is local resource metadata, not a DB back
 Older Goal A/B and solver directories remain untouched and outside these commits
 and the startup archive. No database or runtime-volume backup was performed.
 
-## Known gaps
+## Remaining gaps
 
-runtime-bootstrap.txt still contains file:///work/patched paths; install.sh
-runs pip check and can stop on the seven known dependency conflicts. This is
-not a portable lock file. Full authorization/organization/LT and SCORM matrices,
+The old file:///work/patched references are replaced by the registered
+writable build-source location. Initial and later dependency-closure checks
+pass, but the final combined installer still needs a fresh replay. This is
+not yet a complete portable reconstruction recipe. Full authorization/organization/LT and SCORM matrices,
 formal schema review, expanded restart persistence, an empty venv with second
 isolated databases, and a complete browser rebuild loop remain pending.
 HS256 issued-token evidence and the separate RS512 JWKS probe are distinct.
-Discussion/wiki plugin loading still needs repair and explicit verification.
+Discussion/wiki strict plugin checks and learner route replay passed on the preserved runtime; final rebuild browser acceptance is still required.
 
 Prior runtime evidence lives under
 /Users/noahwang/docs/hawthorn/py313-startup-artifacts-2026-10-24/run-02/.
