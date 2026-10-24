@@ -66,7 +66,7 @@ with override_settings(ELASTIC_SEARCH_INDEX_PREFIX=prefix):
             program_engine.index('program', [dict(id=pid,uuid=pid,org=doc['org'],title='SearchMatrix '+str(i),raw_title='SearchMatrix '+str(i),creator_id=10,start=doc['start'],status='active',languages=['en'],content={'title':'SearchMatrix '+str(i)}) for i,(pid,doc) in enumerate(zip(program_ids,docs))],refresh=True)
             ProgramAccessRole.objects.create(user=staff,program_id=program_ids[0],role=ProgramStaffRoles.ROLE)
         for username in ('edx','py313_staff','py313_flag','py313_learner',None):
-            client = Client(HTTP_HOST='localhost:18010' if system == 'cms' else 'localhost:18000')
+            client = Client(HTTP_HOST=settings.CMS_BASE if system == 'cms' else settings.LMS_BASE)
             if username:
                 r = client.post('/login_ajax', {'email':users[username].email,'password':password})
                 assert r.status_code == 200 and r.json().get('success'), ('login',username,r.status_code)

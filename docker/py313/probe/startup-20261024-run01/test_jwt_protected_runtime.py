@@ -1,5 +1,6 @@
 """Real DOT issuance -> JWT consumer -> certificate data; SQL fixtures roll back."""
 import secrets
+import os
 import django
 import jwt
 from django.conf import settings
@@ -15,7 +16,7 @@ from lms.djangoapps.certificates.models import GeneratedCertificate
 from opaque_keys.edx.keys import CourseKey
 from waffle.models import Switch
 
-client = Client(HTTP_HOST='localhost:18000')
+client = Client(HTTP_HOST=settings.LMS_BASE)
 switch_cache = Switch(name='oauth2.enforce_jwt_scopes')
 try:
     with transaction.atomic():
@@ -23,7 +24,7 @@ try:
         password = secrets.token_urlsafe(32)
         user = get_user_model().objects.create_user(username='jwt-api-'+suffix, email=suffix+'@example.test', password=password)
         other = get_user_model().objects.create_user(username='jwt-other-'+suffix, email='other-'+suffix+'@example.test')
-        course = CourseKey.from_string('course-v1:PY313+RuntimeChrome26+2026')
+        course = CourseKey.from_string(os.environ.get('PY313_ACCEPTANCE_COURSE_ID', 'course-v1:PY313+RuntimeChrome26+2026'))
         foreign = CourseKey.from_string('course-v1:OTHERORG+Runtime+2026')
         for owner in (user, other):
             for key in (course, foreign):

@@ -12,7 +12,7 @@ from oauth2_provider.models import Application, AccessToken
 from student.models import UserProfile
 from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
 
-client = Client(enforce_csrf_checks=True, HTTP_HOST='localhost:18000')
+client = Client(enforce_csrf_checks=True, HTTP_HOST=settings.LMS_BASE)
 with transaction.atomic():
     suffix = secrets.token_hex(5)
     user = get_user_model().objects.create_user('cookie_' + suffix)
