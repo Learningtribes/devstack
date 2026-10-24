@@ -130,6 +130,12 @@ def configure(namespace, system):
     mongo=dict(namespace['DOC_STORE_CONFIG'],host='mongo',port=27017,db=os.environ.get('PY313_MONGO_DB', 'py313_startup_20261024'),
                user=os.environ.get('PY313_MONGO_USER','edxapp'),password=os.environ['PY313_MONGO_PASSWORD'],authSource='admin')
     namespace['DOC_STORE_CONFIG']=mongo
+    # LT program objects use their own collections but must share this isolated
+    # environment's authenticated database, never the common.py devstack host.
+    namespace['EDX_OBJECTS_MONGODB_SETTINGS'] = {
+        name: {key: mongo[key] for key in ('host', 'port', 'db', 'user', 'password', 'authSource')}
+        for name in namespace['EDX_OBJECTS_MONGODB_SETTINGS']
+    }
     namespace['CONTENTSTORE'] = {
         'ENGINE': 'xmodule.contentstore.mongo.MongoContentStore',
         'DOC_STORE_CONFIG': dict(mongo),
