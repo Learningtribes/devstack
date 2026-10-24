@@ -16,7 +16,7 @@ for _key in dir(_cms_common):
         globals()[_key] = getattr(_cms_common, _key)
 
 # CMS common adds this real app root during its normal startup.
-sys.path.append(str(Path("/edx/app/edxapp/edx-platform/cms/djangoapps")))
+sys.path.append(str(Path(PROJECT_ROOT) / 'cms/djangoapps'))
 
 INSTALLED_APPS = [*INSTALLED_APPS, *['method_override', 'contentstore.apps.ContentstoreConfig', 'xblock_config.apps.XBlockConfig', 'require', 'cms.lib.xblock.tagging', 'rules.apps.AutodiscoverRulesConfig', 'cms_user_tasks.apps.CmsUserTasksConfig', 'cms.djangoapps.api.apps.ApiConfig', 'pipeline_mako', 'rest_framework.authtoken']]
 DATABASE_ROUTERS = []  # One isolated local database owns the complete union.

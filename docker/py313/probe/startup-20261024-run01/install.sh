@@ -1,5 +1,7 @@
 #!/bin/bash
 set -euo pipefail
+# LT ILT configures its real rotating file handler during plugin import.
+install -d -m 700 /edx/var/log/lms /runtime/logs
 test -x /runtime/venv/bin/python || uv venv --python /usr/local/bin/python3.13 /runtime/venv
 /usr/local/bin/python3.13 /startup/prepare_patched_sources.py
 uv pip install --python /runtime/venv/bin/python --build-constraint /startup/build-constraints.txt --no-binary lxml --no-binary xmlsec --no-deps -r /startup/runtime-bootstrap.txt
@@ -22,8 +24,7 @@ else
     uv pip install --python /runtime/venv/bin/python --no-deps -e "$platform_root/$package"
   done
 fi
-uv pip install --python /runtime/venv/bin/python --no-deps 'numpy>=1.24' 'scipy>=1.11' 'pyparsing>=3.0' 'edx-opaque-keys==0.4.4'
-uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/edx-opaque-keys-0.4.4-lt
+uv pip install --python /runtime/venv/bin/python --no-deps 'numpy>=1.24' 'scipy>=1.11' 'pyparsing>=3.0'
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/django-splash-1.3.0
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/django-require-1.0.11
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/jazkarta-edx-jsme-690dbf7

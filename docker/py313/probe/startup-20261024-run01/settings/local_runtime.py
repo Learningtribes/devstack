@@ -5,11 +5,12 @@ import tempfile
 from pathlib import Path
 
 def configure(namespace, system):
+    platform_root = Path(os.environ.get('PY313_PLATFORM_ROOT', '/edx/app/edxapp/edx-platform'))
     namespace.update(
         DEBUG=False,
         MAKO_MODULE_DIR=os.path.join(tempfile.gettempdir(), f'mako_{system}_py313_{os.getpid()}'),
         ROOT_URLCONF='startup_' + system + '_urls',
-        PROJECT_ROOT=os.environ.get('PY313_PLATFORM_ROOT', '/edx/app/edxapp/edx-platform'),
+        PROJECT_ROOT=str(platform_root),
         X_FRAME_OPTIONS='SAMEORIGIN',
         STORAGES={'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
                   'staticfiles': {'BACKEND': 'openedx.core.storage.DevelopmentStorage'}},
@@ -21,7 +22,7 @@ def configure(namespace, system):
         SECRET_KEY=os.environ['PY313_STARTUP_SECRET_KEY'],
         DEFAULT_AUTO_FIELD='django.db.models.AutoField',
         DATABASE_ROUTERS=[],
-        COMMON_TEST_DATA_ROOT='/edx/app/edxapp/edx-platform/common/test/data',
+        COMMON_TEST_DATA_ROOT=str(platform_root / 'common/test/data'),
         DATABASES={'default': {'ENGINE':'django.db.backends.mysql', 'NAME':os.environ.get('PY313_DATABASE_NAME', 'py313_startup_20261024'),
                    'USER':os.environ.get('PY313_MYSQL_USER','edxapp'), 'PASSWORD':os.environ['PY313_MYSQL_PASSWORD'],
                    'HOST':'mysql', 'PORT':'3306', 'OPTIONS':{'charset':'utf8mb4'},
@@ -46,7 +47,7 @@ def configure(namespace, system):
         DATA_DIR='/runtime/data',
         STUDIO_LOGS_COURSES_CSV_PATH='/runtime/logs/cms.csv',
         STUDIO_LOGS_COURSES_HISTORY_CSV_PATH='/runtime/logs/cms-history.csv',
-        COMPREHENSIVE_THEME_DIRS=['/runtime/themes-dce4781ddd25', '/edx/app/edxapp/edx-platform/themes'],
+        COMPREHENSIVE_THEME_DIRS=['/runtime/themes-dce4781ddd25', str(platform_root / 'themes')],
         COMPREHENSIVE_THEME_LOCALE_PATHS=['/runtime/locale'],
         # Templates request the exact configured LANGUAGE_CODE, including LT
         # variants absent from Django's built-in language registry.

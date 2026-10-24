@@ -256,7 +256,7 @@ django-mptt==0.18.0
     #   openedx-django-wiki
 django-mysql==4.19.0
     # via -r solver-s3pA.in
-django-oauth-toolkit==1.7.1
+django-oauth-toolkit==3.2.0
     # via -r solver-s3pA.in
 django-pipeline==4.1.0
     # via -r solver-s3pA.in
@@ -350,7 +350,7 @@ edx-ace==1.15.0
     # via -r solver-s3pA.in
 edx-analytics-data-api-client==0.18.3
     # via -r solver-s3pA.in
-edx-ccx-keys==0.2.1
+edx-ccx-keys==2.0.2
     # via
     #   -r solver-s3pA.in
     #   lti-consumer-xblock
@@ -393,7 +393,7 @@ edx-jsme @ git+https://github.com/jazkarta/edx-jsme.git@690dbf75441fa91c7c4899df
     # via -r solver-s3pA.in
 edx-milestones==2.0.0
     # via -r solver-s3pA.in
-edx-opaque-keys==0.4.4
+edx-opaque-keys==4.0.0
     # via
     #   --override overrides-vcs.txt
     #   -r solver-s3pA.in

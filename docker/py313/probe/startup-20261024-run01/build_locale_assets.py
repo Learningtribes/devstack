@@ -12,7 +12,7 @@ from django.conf import settings
 from django.core.management import call_command
 from django.utils import translation
 
-source = Path('/edx/app/edxapp/edx-platform/conf/locale')
+source = Path(settings.PROJECT_ROOT) / 'conf/locale'
 destination = Path('/runtime/locale')
 manifest = {}
 for po in sorted(source.glob('*/LC_MESSAGES/*.po')):
