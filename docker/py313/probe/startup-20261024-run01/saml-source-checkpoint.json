@@ -1,0 +1,9 @@
+{
+  "upstream_commit": "da3798ea6be76ce392f3d3f26aa75d0fdccbf7fe",
+  "source_directory": "dependencies/djangosaml2idp-lt",
+  "local_changes": [
+    "djangosaml2idp/urls.py",
+    "djangosaml2idp/views.py"
+  ],
+  "capture": "12 source/package/license files stored directly in outer repository; existing nested .git retained locally and excluded from outer commit"
+}
