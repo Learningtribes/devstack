@@ -1,6 +1,7 @@
 # Local credentials and runtime output; preserved in place.
 .env
 .acceptance-credentials.json
+.scorm-isolation-credentials.json
 jwt-private.pem
 __pycache__/
 *.pyc
