@@ -1,0 +1,1938 @@
+{
+  "lms": [
+    {
+      "name": "django.contrib.auth",
+      "label": "auth",
+      "config": "django.contrib.auth.apps.AuthConfig"
+    },
+    {
+      "name": "django.contrib.contenttypes",
+      "label": "contenttypes",
+      "config": "django.contrib.contenttypes.apps.ContentTypesConfig"
+    },
+    {
+      "name": "django.contrib.humanize",
+      "label": "humanize",
+      "config": "django.contrib.humanize.apps.HumanizeConfig"
+    },
+    {
+      "name": "django.contrib.messages",
+      "label": "messages",
+      "config": "django.contrib.messages.apps.MessagesConfig"
+    },
+    {
+      "name": "django.contrib.redirects",
+      "label": "redirects",
+      "config": "django.contrib.redirects.apps.RedirectsConfig"
+    },
+    {
+      "name": "django.contrib.sessions",
+      "label": "sessions",
+      "config": "django.contrib.sessions.apps.SessionsConfig"
+    },
+    {
+      "name": "django.contrib.sites",
+      "label": "sites",
+      "config": "django.contrib.sites.apps.SitesConfig"
+    },
+    {
+      "name": "django.contrib.staticfiles",
+      "label": "staticfiles",
+      "config": "django.contrib.staticfiles.apps.StaticFilesConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.common_initialization",
+      "label": "common_initialization",
+      "config": "openedx.core.djangoapps.common_initialization.apps.CommonInitializationConfig"
+    },
+    {
+      "name": "lms_initialization",
+      "label": "lms_initialization",
+      "config": "lms_initialization.apps.LMSInitializationConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.common_views",
+      "label": "common_views",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "simple_history",
+      "label": "simple_history",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "config_models",
+      "label": "config_models",
+      "config": "config_models.apps.ConfigModelsConfig"
+    },
+    {
+      "name": "waffle",
+      "label": "waffle",
+      "config": "waffle.apps.WaffleConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.service_status",
+      "label": "service_status",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "status",
+      "label": "status",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edxmako",
+      "label": "edxmako",
+      "config": "edxmako.apps.EdxMakoConfig"
+    },
+    {
+      "name": "pipeline",
+      "label": "pipeline",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "static_replace",
+      "label": "static_replace",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "webpack_loader",
+      "label": "webpack_loader",
+      "config": "webpack_loader.apps.WebpackLoaderConfig"
+    },
+    {
+      "name": "web_fragments",
+      "label": "web_fragments",
+      "config": "web_fragments.apps.WebFragmentsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.plugin_api",
+      "label": "plugin_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.contentserver",
+      "label": "contentserver",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.site_configuration",
+      "label": "site_configuration",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.video_config",
+      "label": "video_config",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.video_pipeline",
+      "label": "video_pipeline",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "courseware",
+      "label": "courseware",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "student",
+      "label": "student",
+      "config": "student.apps.StudentConfig"
+    },
+    {
+      "name": "static_template_view",
+      "label": "static_template_view",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "staticbook",
+      "label": "staticbook",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "track",
+      "label": "track",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "eventtracking.django",
+      "label": "eventtracking_django",
+      "config": "eventtracking.django.apps.EventTrackingConfig"
+    },
+    {
+      "name": "util",
+      "label": "util",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.certificates",
+      "label": "certificates",
+      "config": "lms.djangoapps.certificates.apps.CertificatesConfig"
+    },
+    {
+      "name": "dashboard",
+      "label": "dashboard",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.instructor_task",
+      "label": "instructor_task",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.course_groups",
+      "label": "course_groups",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "bulk_email",
+      "label": "bulk_email",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "branding",
+      "label": "branding",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "oauth2_provider",
+      "label": "oauth2_provider",
+      "config": "oauth2_provider.apps.DOTConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.oauth_dispatch",
+      "label": "oauth_dispatch",
+      "config": "openedx.core.djangoapps.oauth_dispatch.apps.OAuthDispatchAppConfig"
+    },
+    {
+      "name": "third_party_auth",
+      "label": "third_party_auth",
+      "config": "third_party_auth.apps.ThirdPartyAuthConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.auth_exchange",
+      "label": "auth_exchange",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "wiki",
+      "label": "wiki",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_notify",
+      "label": "django_notify",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_wiki",
+      "label": "course_wiki",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "mptt",
+      "label": "mptt",
+      "config": "mptt.apps.MpttConfig"
+    },
+    {
+      "name": "sekizai",
+      "label": "sekizai",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "wiki.plugins.links",
+      "label": "links",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_wiki.plugins.markdownedx",
+      "label": "markdownedx",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django.contrib.admin",
+      "label": "admin",
+      "config": "django.contrib.admin.apps.AdminConfig"
+    },
+    {
+      "name": "debug",
+      "label": "debug",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.util",
+      "label": "open_edx_util",
+      "config": "openedx.core.djangoapps.util.apps.UtilConfig"
+    },
+    {
+      "name": "django_comment_client",
+      "label": "django_comment_client",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_comment_common",
+      "label": "django_comment_common",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "discussion_api",
+      "label": "discussion_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.notes",
+      "label": "notes",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edxnotes",
+      "label": "edxnotes",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "splash",
+      "label": "splash",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.datadog",
+      "label": "datadog",
+      "config": "openedx.core.djangoapps.datadog.apps.DatadogConfig"
+    },
+    {
+      "name": "rest_framework",
+      "label": "rest_framework",
+      "config": "rest_framework.apps.RestFrameworkConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.user_api",
+      "label": "user_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "extended_api",
+      "label": "extended_api",
+      "config": "extended_api.apps.EdxExtendedApiConfig"
+    },
+    {
+      "name": "notification_prefs",
+      "label": "notification_prefs",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "notifier_api",
+      "label": "notifier_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_modes",
+      "label": "course_modes",
+      "config": "course_modes.apps.CourseModesConfig"
+    },
+    {
+      "name": "course",
+      "label": "course",
+      "config": "course.apps.CourseConfig"
+    },
+    {
+      "name": "enrollment",
+      "label": "enrollment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.verify_student",
+      "label": "verify_student",
+      "config": "lms.djangoapps.verify_student.apps.VerifyStudentConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.dark_lang",
+      "label": "dark_lang",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "microsite_configuration",
+      "label": "microsite_configuration",
+      "config": "microsite_configuration.apps.MicrositeConfigurationConfig"
+    },
+    {
+      "name": "course_action_state",
+      "label": "course_action_state",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edx_jsme",
+      "label": "edx_jsme",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_countries",
+      "label": "django_countries",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "social_django",
+      "label": "social_django",
+      "config": "social_django.apps.PythonSocialAuthConfig"
+    },
+    {
+      "name": "lms.djangoapps.lms_xblock",
+      "label": "lms_xblock",
+      "config": "lms.djangoapps.lms_xblock.apps.LMSXBlockConfig"
+    },
+    {
+      "name": "submissions",
+      "label": "submissions",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment",
+      "label": "openassessment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.assessment",
+      "label": "assessment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.fileupload",
+      "label": "fileupload",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.workflow",
+      "label": "workflow",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.xblock",
+      "label": "xblock",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edxval",
+      "label": "edxval",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.course_overviews",
+      "label": "course_overviews",
+      "config": "openedx.core.djangoapps.content.course_overviews.apps.CourseOverviewsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.course_structures",
+      "label": "course_structures",
+      "config": "openedx.core.djangoapps.content.course_structures.apps.CourseStructuresConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.block_structure",
+      "label": "block_structure",
+      "config": "openedx.core.djangoapps.content.block_structure.apps.BlockStructureConfig"
+    },
+    {
+      "name": "lms.djangoapps.course_blocks",
+      "label": "course_blocks",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "mailing",
+      "label": "mailing",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "corsheaders",
+      "label": "corsheaders",
+      "config": "corsheaders.apps.CorsHeadersAppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.cors_csrf",
+      "label": "cors_csrf",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "xblock_django",
+      "label": "xblock_django",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.programs",
+      "label": "programs",
+      "config": "openedx.core.djangoapps.programs.apps.ProgramsConfig"
+    },
+    {
+      "name": "lms.djangoapps.program_enrollments",
+      "label": "program_enrollments",
+      "config": "lms.djangoapps.program_enrollments.apps.ProgramEnrollmentsConfig"
+    },
+    {
+      "name": "goodhabitz",
+      "label": "goodhabitz",
+      "config": "goodhabitz.apps.GoodhabitzConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.catalog",
+      "label": "catalog",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.self_paced",
+      "label": "self_paced",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "sorl.thumbnail",
+      "label": "thumbnail",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "milestones",
+      "label": "milestones",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "gating",
+      "label": "gating",
+      "config": "gating.apps.GatingConfig"
+    },
+    {
+      "name": "statici18n",
+      "label": "statici18n",
+      "config": "statici18n.apps.StaticI18NConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.api_admin",
+      "label": "api_admin",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.verified_track_content",
+      "label": "verified_track_content",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "learner_dashboard",
+      "label": "learner_dashboard",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "badges",
+      "label": "badges",
+      "config": "badges.apps.BadgesConfig"
+    },
+    {
+      "name": "django_sites_extensions",
+      "label": "django_sites_extensions",
+      "config": "django_sites_extensions.apps.DjangoSitesExtensionsConfig"
+    },
+    {
+      "name": "email_marketing",
+      "label": "email_marketing",
+      "config": "email_marketing.apps.EmailMarketingConfig"
+    },
+    {
+      "name": "release_util",
+      "label": "release_util",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "celery_utils",
+      "label": "celery_utils",
+      "config": "celery_utils.apps.CeleryUtilsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.crawlers",
+      "label": "crawlers",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "database_fixups",
+      "label": "database_fixups",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.waffle_utils",
+      "label": "waffle_utils",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.course_bookmarks",
+      "label": "course_bookmarks",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.course_experience",
+      "label": "course_experience",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.course_search",
+      "label": "course_search",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.learner_profile",
+      "label": "learner_profile",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.learner_analytics",
+      "label": "learner_analytics",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.portfolio_project",
+      "label": "portfolio_project",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_filters",
+      "label": "django_filters",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "drf_yasg",
+      "label": "drf_yasg",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "triboo_analytics",
+      "label": "triboo_analytics",
+      "config": "triboo_analytics.apps.TribooAnalyticsConfig"
+    },
+    {
+      "name": "django_tables2",
+      "label": "django_tables2",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "user_tasks",
+      "label": "user_tasks",
+      "config": "user_tasks.apps.UserTasksConfig"
+    },
+    {
+      "name": "edx_sga",
+      "label": "edx_sga",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edx_proctoring",
+      "label": "edx_proctoring",
+      "config": "edx_proctoring.apps.EdxProctoringConfig"
+    },
+    {
+      "name": "organizations",
+      "label": "organizations",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.ace_common",
+      "label": "ace_common",
+      "config": "openedx.core.djangoapps.ace_common.apps.AceCommonConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.bookmarks",
+      "label": "bookmarks",
+      "config": "openedx.core.djangoapps.bookmarks.apps.BookmarksConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.credentials",
+      "label": "credentials",
+      "config": "openedx.core.djangoapps.credentials.apps.CredentialsConfig"
+    },
+    {
+      "name": "lms.djangoapps.discussion",
+      "label": "discussion",
+      "config": "lms.djangoapps.discussion.apps.DiscussionConfig"
+    },
+    {
+      "name": "lms.djangoapps.grades",
+      "label": "grades",
+      "config": "lms.djangoapps.grades.apps.GradesConfig"
+    },
+    {
+      "name": "lms.djangoapps.instructor",
+      "label": "instructor",
+      "config": "lms.djangoapps.instructor.apps.InstructorConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.password_policy",
+      "label": "password_policy",
+      "config": "openedx.core.djangoapps.password_policy.apps.PasswordPolicyConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.plugins",
+      "label": "plugins",
+      "config": "openedx.core.djangoapps.plugins.apps.PluginsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.schedules",
+      "label": "schedules",
+      "config": "openedx.core.djangoapps.schedules.apps.SchedulesConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.theming",
+      "label": "theming",
+      "config": "openedx.core.djangoapps.theming.apps.ThemingConfig"
+    },
+    {
+      "name": "lti_consumer",
+      "label": "lti_consumer",
+      "config": "lti_consumer.apps.LTIConsumerApp"
+    },
+    {
+      "name": "edx_when",
+      "label": "edx_when",
+      "config": "edx_when.apps.EdxWhenConfig"
+    },
+    {
+      "name": "edx_toggles",
+      "label": "edx_toggles",
+      "config": "edx_toggles.apps.TogglesConfig"
+    },
+    {
+      "name": "completion",
+      "label": "completion",
+      "config": "completion.apps.CompletionAppConfig"
+    }
+  ],
+  "cms": [
+    {
+      "name": "django.contrib.auth",
+      "label": "auth",
+      "config": "django.contrib.auth.apps.AuthConfig"
+    },
+    {
+      "name": "django.contrib.contenttypes",
+      "label": "contenttypes",
+      "config": "django.contrib.contenttypes.apps.ContentTypesConfig"
+    },
+    {
+      "name": "django.contrib.humanize",
+      "label": "humanize",
+      "config": "django.contrib.humanize.apps.HumanizeConfig"
+    },
+    {
+      "name": "django.contrib.redirects",
+      "label": "redirects",
+      "config": "django.contrib.redirects.apps.RedirectsConfig"
+    },
+    {
+      "name": "django.contrib.sessions",
+      "label": "sessions",
+      "config": "django.contrib.sessions.apps.SessionsConfig"
+    },
+    {
+      "name": "django.contrib.sites",
+      "label": "sites",
+      "config": "django.contrib.sites.apps.SitesConfig"
+    },
+    {
+      "name": "django.contrib.messages",
+      "label": "messages",
+      "config": "django.contrib.messages.apps.MessagesConfig"
+    },
+    {
+      "name": "django.contrib.staticfiles",
+      "label": "staticfiles",
+      "config": "django.contrib.staticfiles.apps.StaticFilesConfig"
+    },
+    {
+      "name": "method_override",
+      "label": "method_override",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.common_initialization",
+      "label": "common_initialization",
+      "config": "openedx.core.djangoapps.common_initialization.apps.CommonInitializationConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.common_views",
+      "label": "common_views",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.api_admin",
+      "label": "api_admin",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "simple_history",
+      "label": "simple_history",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "config_models",
+      "label": "config_models",
+      "config": "config_models.apps.ConfigModelsConfig"
+    },
+    {
+      "name": "waffle",
+      "label": "waffle",
+      "config": "waffle.apps.WaffleConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.service_status",
+      "label": "service_status",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.video_config",
+      "label": "video_config",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.video_pipeline",
+      "label": "video_pipeline",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "contentstore",
+      "label": "contentstore",
+      "config": "contentstore.apps.ContentstoreConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.contentserver",
+      "label": "contentserver",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "student",
+      "label": "student",
+      "config": "student.apps.StudentConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.course_groups",
+      "label": "course_groups",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "xblock_config",
+      "label": "xblock_config",
+      "config": "xblock_config.apps.XBlockConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.util",
+      "label": "open_edx_util",
+      "config": "openedx.core.djangoapps.util.apps.UtilConfig"
+    },
+    {
+      "name": "track",
+      "label": "track",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "eventtracking.django",
+      "label": "eventtracking_django",
+      "config": "eventtracking.django.apps.EventTrackingConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.datadog",
+      "label": "datadog",
+      "config": "openedx.core.djangoapps.datadog.apps.DatadogConfig"
+    },
+    {
+      "name": "edxmako",
+      "label": "edxmako",
+      "config": "edxmako.apps.EdxMakoConfig"
+    },
+    {
+      "name": "pipeline",
+      "label": "pipeline",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "static_replace",
+      "label": "static_replace",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "require",
+      "label": "require",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "webpack_loader",
+      "label": "webpack_loader",
+      "config": "webpack_loader.apps.WebpackLoaderConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.site_configuration",
+      "label": "site_configuration",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.crawlers",
+      "label": "crawlers",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_comment_common",
+      "label": "django_comment_common",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django.contrib.admin",
+      "label": "admin",
+      "config": "django.contrib.admin.apps.AdminConfig"
+    },
+    {
+      "name": "course_modes",
+      "label": "course_modes",
+      "config": "course_modes.apps.CourseModesConfig"
+    },
+    {
+      "name": "course",
+      "label": "course",
+      "config": "course.apps.CourseConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.verified_track_content",
+      "label": "verified_track_content",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.dark_lang",
+      "label": "dark_lang",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "wiki",
+      "label": "wiki",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_notify",
+      "label": "django_notify",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_wiki",
+      "label": "course_wiki",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "mptt",
+      "label": "mptt",
+      "config": "mptt.apps.MpttConfig"
+    },
+    {
+      "name": "sekizai",
+      "label": "sekizai",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.user_api",
+      "label": "user_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_action_state",
+      "label": "course_action_state",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edx_jsme",
+      "label": "edx_jsme",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "submissions",
+      "label": "submissions",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment",
+      "label": "openassessment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.assessment",
+      "label": "assessment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.fileupload",
+      "label": "fileupload",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.workflow",
+      "label": "workflow",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.xblock",
+      "label": "xblock",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edxval",
+      "label": "edxval",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.course_overviews",
+      "label": "course_overviews",
+      "config": "openedx.core.djangoapps.content.course_overviews.apps.CourseOverviewsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.course_structures",
+      "label": "course_structures",
+      "config": "openedx.core.djangoapps.content.course_structures.apps.CourseStructuresConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.block_structure",
+      "label": "block_structure",
+      "config": "openedx.core.djangoapps.content.block_structure.apps.BlockStructureConfig"
+    },
+    {
+      "name": "milestones",
+      "label": "milestones",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.self_paced",
+      "label": "self_paced",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "xblock_django",
+      "label": "xblock_django",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edx_proctoring",
+      "label": "edx_proctoring",
+      "config": "edx_proctoring.apps.EdxProctoringConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.catalog",
+      "label": "catalog",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "oauth2_provider",
+      "label": "oauth2_provider",
+      "config": "oauth2_provider.apps.DOTConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.oauth_dispatch",
+      "label": "oauth_dispatch",
+      "config": "openedx.core.djangoapps.oauth_dispatch.apps.OAuthDispatchAppConfig"
+    },
+    {
+      "name": "courseware",
+      "label": "courseware",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.verify_student",
+      "label": "verify_student",
+      "config": "lms.djangoapps.verify_student.apps.VerifyStudentConfig"
+    },
+    {
+      "name": "completion",
+      "label": "completion",
+      "config": "completion.apps.CompletionAppConfig"
+    },
+    {
+      "name": "microsite_configuration",
+      "label": "microsite_configuration",
+      "config": "microsite_configuration.apps.MicrositeConfigurationConfig"
+    },
+    {
+      "name": "statici18n",
+      "label": "statici18n",
+      "config": "statici18n.apps.StaticI18NConfig"
+    },
+    {
+      "name": "cms.lib.xblock.tagging",
+      "label": "tagging",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_sites_extensions",
+      "label": "django_sites_extensions",
+      "config": "django_sites_extensions.apps.DjangoSitesExtensionsConfig"
+    },
+    {
+      "name": "release_util",
+      "label": "release_util",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "rules",
+      "label": "rules",
+      "config": "rules.apps.AutodiscoverRulesConfig"
+    },
+    {
+      "name": "user_tasks",
+      "label": "user_tasks",
+      "config": "user_tasks.apps.UserTasksConfig"
+    },
+    {
+      "name": "cms_user_tasks",
+      "label": "cms_user_tasks",
+      "config": "cms_user_tasks.apps.CmsUserTasksConfig"
+    },
+    {
+      "name": "database_fixups",
+      "label": "database_fixups",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "celery_utils",
+      "label": "celery_utils",
+      "config": "celery_utils.apps.CeleryUtilsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.waffle_utils",
+      "label": "waffle_utils",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_filters",
+      "label": "django_filters",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "cms.djangoapps.api",
+      "label": "api",
+      "config": "cms.djangoapps.api.apps.ApiConfig"
+    },
+    {
+      "name": "pipeline_mako",
+      "label": "pipeline_mako",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "rest_framework",
+      "label": "rest_framework",
+      "config": "rest_framework.apps.RestFrameworkConfig"
+    },
+    {
+      "name": "rest_framework.authtoken",
+      "label": "authtoken",
+      "config": "rest_framework.authtoken.apps.AuthTokenConfig"
+    },
+    {
+      "name": "drf_yasg",
+      "label": "drf_yasg",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.programs",
+      "label": "programs",
+      "config": "openedx.core.djangoapps.programs.apps.ProgramsConfig"
+    },
+    {
+      "name": "lms.djangoapps.program_enrollments",
+      "label": "program_enrollments",
+      "config": "lms.djangoapps.program_enrollments.apps.ProgramEnrollmentsConfig"
+    },
+    {
+      "name": "edx_sga",
+      "label": "edx_sga",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "organizations",
+      "label": "organizations",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.ace_common",
+      "label": "ace_common",
+      "config": "openedx.core.djangoapps.ace_common.apps.AceCommonConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.bookmarks",
+      "label": "bookmarks",
+      "config": "openedx.core.djangoapps.bookmarks.apps.BookmarksConfig"
+    },
+    {
+      "name": "lms.djangoapps.discussion",
+      "label": "discussion",
+      "config": "lms.djangoapps.discussion.apps.DiscussionConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.password_policy",
+      "label": "password_policy",
+      "config": "openedx.core.djangoapps.password_policy.apps.PasswordPolicyConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.plugins",
+      "label": "plugins",
+      "config": "openedx.core.djangoapps.plugins.apps.PluginsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.schedules",
+      "label": "schedules",
+      "config": "openedx.core.djangoapps.schedules.apps.SchedulesConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.theming",
+      "label": "theming",
+      "config": "openedx.core.djangoapps.theming.apps.ThemingConfig"
+    },
+    {
+      "name": "lti_consumer",
+      "label": "lti_consumer",
+      "config": "lti_consumer.apps.LTIConsumerApp"
+    },
+    {
+      "name": "edx_when",
+      "label": "edx_when",
+      "config": "edx_when.apps.EdxWhenConfig"
+    }
+  ],
+  "union": [
+    {
+      "name": "django.contrib.auth",
+      "label": "auth",
+      "config": "django.contrib.auth.apps.AuthConfig"
+    },
+    {
+      "name": "django.contrib.contenttypes",
+      "label": "contenttypes",
+      "config": "django.contrib.contenttypes.apps.ContentTypesConfig"
+    },
+    {
+      "name": "django.contrib.humanize",
+      "label": "humanize",
+      "config": "django.contrib.humanize.apps.HumanizeConfig"
+    },
+    {
+      "name": "django.contrib.messages",
+      "label": "messages",
+      "config": "django.contrib.messages.apps.MessagesConfig"
+    },
+    {
+      "name": "django.contrib.redirects",
+      "label": "redirects",
+      "config": "django.contrib.redirects.apps.RedirectsConfig"
+    },
+    {
+      "name": "django.contrib.sessions",
+      "label": "sessions",
+      "config": "django.contrib.sessions.apps.SessionsConfig"
+    },
+    {
+      "name": "django.contrib.sites",
+      "label": "sites",
+      "config": "django.contrib.sites.apps.SitesConfig"
+    },
+    {
+      "name": "django.contrib.staticfiles",
+      "label": "staticfiles",
+      "config": "django.contrib.staticfiles.apps.StaticFilesConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.common_initialization",
+      "label": "common_initialization",
+      "config": "openedx.core.djangoapps.common_initialization.apps.CommonInitializationConfig"
+    },
+    {
+      "name": "lms_initialization",
+      "label": "lms_initialization",
+      "config": "lms_initialization.apps.LMSInitializationConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.common_views",
+      "label": "common_views",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "simple_history",
+      "label": "simple_history",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "config_models",
+      "label": "config_models",
+      "config": "config_models.apps.ConfigModelsConfig"
+    },
+    {
+      "name": "waffle",
+      "label": "waffle",
+      "config": "waffle.apps.WaffleConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.service_status",
+      "label": "service_status",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "status",
+      "label": "status",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edxmako",
+      "label": "edxmako",
+      "config": "edxmako.apps.EdxMakoConfig"
+    },
+    {
+      "name": "pipeline",
+      "label": "pipeline",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "static_replace",
+      "label": "static_replace",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "webpack_loader",
+      "label": "webpack_loader",
+      "config": "webpack_loader.apps.WebpackLoaderConfig"
+    },
+    {
+      "name": "web_fragments",
+      "label": "web_fragments",
+      "config": "web_fragments.apps.WebFragmentsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.plugin_api",
+      "label": "plugin_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.contentserver",
+      "label": "contentserver",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.site_configuration",
+      "label": "site_configuration",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.video_config",
+      "label": "video_config",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.video_pipeline",
+      "label": "video_pipeline",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "courseware",
+      "label": "courseware",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "student",
+      "label": "student",
+      "config": "student.apps.StudentConfig"
+    },
+    {
+      "name": "static_template_view",
+      "label": "static_template_view",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "staticbook",
+      "label": "staticbook",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "track",
+      "label": "track",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "eventtracking.django",
+      "label": "eventtracking_django",
+      "config": "eventtracking.django.apps.EventTrackingConfig"
+    },
+    {
+      "name": "util",
+      "label": "util",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.certificates",
+      "label": "certificates",
+      "config": "lms.djangoapps.certificates.apps.CertificatesConfig"
+    },
+    {
+      "name": "dashboard",
+      "label": "dashboard",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.instructor_task",
+      "label": "instructor_task",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.course_groups",
+      "label": "course_groups",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "bulk_email",
+      "label": "bulk_email",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "branding",
+      "label": "branding",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "oauth2_provider",
+      "label": "oauth2_provider",
+      "config": "oauth2_provider.apps.DOTConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.oauth_dispatch",
+      "label": "oauth_dispatch",
+      "config": "openedx.core.djangoapps.oauth_dispatch.apps.OAuthDispatchAppConfig"
+    },
+    {
+      "name": "third_party_auth",
+      "label": "third_party_auth",
+      "config": "third_party_auth.apps.ThirdPartyAuthConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.auth_exchange",
+      "label": "auth_exchange",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "wiki",
+      "label": "wiki",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_notify",
+      "label": "django_notify",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_wiki",
+      "label": "course_wiki",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "mptt",
+      "label": "mptt",
+      "config": "mptt.apps.MpttConfig"
+    },
+    {
+      "name": "sekizai",
+      "label": "sekizai",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "wiki.plugins.links",
+      "label": "links",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_wiki.plugins.markdownedx",
+      "label": "markdownedx",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django.contrib.admin",
+      "label": "admin",
+      "config": "django.contrib.admin.apps.AdminConfig"
+    },
+    {
+      "name": "debug",
+      "label": "debug",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.util",
+      "label": "open_edx_util",
+      "config": "openedx.core.djangoapps.util.apps.UtilConfig"
+    },
+    {
+      "name": "django_comment_client",
+      "label": "django_comment_client",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_comment_common",
+      "label": "django_comment_common",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "discussion_api",
+      "label": "discussion_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.notes",
+      "label": "notes",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edxnotes",
+      "label": "edxnotes",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "splash",
+      "label": "splash",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.datadog",
+      "label": "datadog",
+      "config": "openedx.core.djangoapps.datadog.apps.DatadogConfig"
+    },
+    {
+      "name": "rest_framework",
+      "label": "rest_framework",
+      "config": "rest_framework.apps.RestFrameworkConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.user_api",
+      "label": "user_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "extended_api",
+      "label": "extended_api",
+      "config": "extended_api.apps.EdxExtendedApiConfig"
+    },
+    {
+      "name": "notification_prefs",
+      "label": "notification_prefs",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "notifier_api",
+      "label": "notifier_api",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "course_modes",
+      "label": "course_modes",
+      "config": "course_modes.apps.CourseModesConfig"
+    },
+    {
+      "name": "course",
+      "label": "course",
+      "config": "course.apps.CourseConfig"
+    },
+    {
+      "name": "enrollment",
+      "label": "enrollment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "lms.djangoapps.verify_student",
+      "label": "verify_student",
+      "config": "lms.djangoapps.verify_student.apps.VerifyStudentConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.dark_lang",
+      "label": "dark_lang",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "microsite_configuration",
+      "label": "microsite_configuration",
+      "config": "microsite_configuration.apps.MicrositeConfigurationConfig"
+    },
+    {
+      "name": "course_action_state",
+      "label": "course_action_state",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edx_jsme",
+      "label": "edx_jsme",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_countries",
+      "label": "django_countries",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "social_django",
+      "label": "social_django",
+      "config": "social_django.apps.PythonSocialAuthConfig"
+    },
+    {
+      "name": "lms.djangoapps.lms_xblock",
+      "label": "lms_xblock",
+      "config": "lms.djangoapps.lms_xblock.apps.LMSXBlockConfig"
+    },
+    {
+      "name": "submissions",
+      "label": "submissions",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment",
+      "label": "openassessment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.assessment",
+      "label": "assessment",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.fileupload",
+      "label": "fileupload",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.workflow",
+      "label": "workflow",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openassessment.xblock",
+      "label": "xblock",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edxval",
+      "label": "edxval",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.course_overviews",
+      "label": "course_overviews",
+      "config": "openedx.core.djangoapps.content.course_overviews.apps.CourseOverviewsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.course_structures",
+      "label": "course_structures",
+      "config": "openedx.core.djangoapps.content.course_structures.apps.CourseStructuresConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.content.block_structure",
+      "label": "block_structure",
+      "config": "openedx.core.djangoapps.content.block_structure.apps.BlockStructureConfig"
+    },
+    {
+      "name": "lms.djangoapps.course_blocks",
+      "label": "course_blocks",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "mailing",
+      "label": "mailing",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "corsheaders",
+      "label": "corsheaders",
+      "config": "corsheaders.apps.CorsHeadersAppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.cors_csrf",
+      "label": "cors_csrf",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "xblock_django",
+      "label": "xblock_django",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.programs",
+      "label": "programs",
+      "config": "openedx.core.djangoapps.programs.apps.ProgramsConfig"
+    },
+    {
+      "name": "lms.djangoapps.program_enrollments",
+      "label": "program_enrollments",
+      "config": "lms.djangoapps.program_enrollments.apps.ProgramEnrollmentsConfig"
+    },
+    {
+      "name": "goodhabitz",
+      "label": "goodhabitz",
+      "config": "goodhabitz.apps.GoodhabitzConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.catalog",
+      "label": "catalog",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.self_paced",
+      "label": "self_paced",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "sorl.thumbnail",
+      "label": "thumbnail",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "milestones",
+      "label": "milestones",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "gating",
+      "label": "gating",
+      "config": "gating.apps.GatingConfig"
+    },
+    {
+      "name": "statici18n",
+      "label": "statici18n",
+      "config": "statici18n.apps.StaticI18NConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.api_admin",
+      "label": "api_admin",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.verified_track_content",
+      "label": "verified_track_content",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "learner_dashboard",
+      "label": "learner_dashboard",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "badges",
+      "label": "badges",
+      "config": "badges.apps.BadgesConfig"
+    },
+    {
+      "name": "django_sites_extensions",
+      "label": "django_sites_extensions",
+      "config": "django_sites_extensions.apps.DjangoSitesExtensionsConfig"
+    },
+    {
+      "name": "email_marketing",
+      "label": "email_marketing",
+      "config": "email_marketing.apps.EmailMarketingConfig"
+    },
+    {
+      "name": "release_util",
+      "label": "release_util",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "celery_utils",
+      "label": "celery_utils",
+      "config": "celery_utils.apps.CeleryUtilsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.crawlers",
+      "label": "crawlers",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "database_fixups",
+      "label": "database_fixups",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.waffle_utils",
+      "label": "waffle_utils",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.course_bookmarks",
+      "label": "course_bookmarks",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.course_experience",
+      "label": "course_experience",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.course_search",
+      "label": "course_search",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.learner_profile",
+      "label": "learner_profile",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.learner_analytics",
+      "label": "learner_analytics",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.features.portfolio_project",
+      "label": "portfolio_project",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "django_filters",
+      "label": "django_filters",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "drf_yasg",
+      "label": "drf_yasg",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "triboo_analytics",
+      "label": "triboo_analytics",
+      "config": "triboo_analytics.apps.TribooAnalyticsConfig"
+    },
+    {
+      "name": "django_tables2",
+      "label": "django_tables2",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "user_tasks",
+      "label": "user_tasks",
+      "config": "user_tasks.apps.UserTasksConfig"
+    },
+    {
+      "name": "edx_sga",
+      "label": "edx_sga",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "edx_proctoring",
+      "label": "edx_proctoring",
+      "config": "edx_proctoring.apps.EdxProctoringConfig"
+    },
+    {
+      "name": "organizations",
+      "label": "organizations",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.ace_common",
+      "label": "ace_common",
+      "config": "openedx.core.djangoapps.ace_common.apps.AceCommonConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.bookmarks",
+      "label": "bookmarks",
+      "config": "openedx.core.djangoapps.bookmarks.apps.BookmarksConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.credentials",
+      "label": "credentials",
+      "config": "openedx.core.djangoapps.credentials.apps.CredentialsConfig"
+    },
+    {
+      "name": "lms.djangoapps.discussion",
+      "label": "discussion",
+      "config": "lms.djangoapps.discussion.apps.DiscussionConfig"
+    },
+    {
+      "name": "lms.djangoapps.grades",
+      "label": "grades",
+      "config": "lms.djangoapps.grades.apps.GradesConfig"
+    },
+    {
+      "name": "lms.djangoapps.instructor",
+      "label": "instructor",
+      "config": "lms.djangoapps.instructor.apps.InstructorConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.password_policy",
+      "label": "password_policy",
+      "config": "openedx.core.djangoapps.password_policy.apps.PasswordPolicyConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.plugins",
+      "label": "plugins",
+      "config": "openedx.core.djangoapps.plugins.apps.PluginsConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.schedules",
+      "label": "schedules",
+      "config": "openedx.core.djangoapps.schedules.apps.SchedulesConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.theming",
+      "label": "theming",
+      "config": "openedx.core.djangoapps.theming.apps.ThemingConfig"
+    },
+    {
+      "name": "lti_consumer",
+      "label": "lti_consumer",
+      "config": "lti_consumer.apps.LTIConsumerApp"
+    },
+    {
+      "name": "edx_when",
+      "label": "edx_when",
+      "config": "edx_when.apps.EdxWhenConfig"
+    },
+    {
+      "name": "edx_toggles",
+      "label": "edx_toggles",
+      "config": "edx_toggles.apps.TogglesConfig"
+    },
+    {
+      "name": "completion",
+      "label": "completion",
+      "config": "completion.apps.CompletionAppConfig"
+    },
+    {
+      "name": "method_override",
+      "label": "method_override",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "contentstore",
+      "label": "contentstore",
+      "config": "contentstore.apps.ContentstoreConfig"
+    },
+    {
+      "name": "xblock_config",
+      "label": "xblock_config",
+      "config": "xblock_config.apps.XBlockConfig"
+    },
+    {
+      "name": "require",
+      "label": "require",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "cms.lib.xblock.tagging",
+      "label": "tagging",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "rules",
+      "label": "rules",
+      "config": "rules.apps.AutodiscoverRulesConfig"
+    },
+    {
+      "name": "cms_user_tasks",
+      "label": "cms_user_tasks",
+      "config": "cms_user_tasks.apps.CmsUserTasksConfig"
+    },
+    {
+      "name": "cms.djangoapps.api",
+      "label": "api",
+      "config": "cms.djangoapps.api.apps.ApiConfig"
+    },
+    {
+      "name": "pipeline_mako",
+      "label": "pipeline_mako",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "rest_framework.authtoken",
+      "label": "authtoken",
+      "config": "rest_framework.authtoken.apps.AuthTokenConfig"
+    }
+  ]
+}

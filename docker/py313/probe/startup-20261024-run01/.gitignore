@@ -1,0 +1,10 @@
+# Local credentials and runtime output; preserved in place.
+.env
+.acceptance-credentials.json
+jwt-private.pem
+__pycache__/
+*.pyc
+/themes/
+/theme-inputs/
+/assets/
+/created-resources.json
