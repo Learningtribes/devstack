@@ -6,6 +6,9 @@ from pathlib import Path
 
 def configure(namespace, system):
     platform_root = Path(os.environ.get('PY313_PLATFORM_ROOT', '/edx/app/edxapp/edx-platform'))
+    # File XBlock expiration models must participate in the real app registry.
+    if "djpyfs" not in namespace["INSTALLED_APPS"]:
+        namespace["INSTALLED_APPS"] = [*namespace["INSTALLED_APPS"], "djpyfs"]
     namespace.update(
         DEBUG=False,
         MAKO_MODULE_DIR=os.path.join(tempfile.gettempdir(), f'mako_{system}_py313_{os.getpid()}'),

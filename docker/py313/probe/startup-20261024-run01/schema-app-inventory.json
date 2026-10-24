@@ -694,6 +694,11 @@
       "name": "completion",
       "label": "completion",
       "config": "completion.apps.CompletionAppConfig"
+    },
+    {
+      "name": "djpyfs",
+      "label": "djpyfs",
+      "config": "django.apps.config.AppConfig"
     }
   ],
   "cms": [
@@ -1186,6 +1191,11 @@
       "name": "edx_when",
       "label": "edx_when",
       "config": "edx_when.apps.EdxWhenConfig"
+    },
+    {
+      "name": "djpyfs",
+      "label": "djpyfs",
+      "config": "django.apps.config.AppConfig"
     }
   ],
   "union": [
@@ -1933,6 +1943,11 @@
       "name": "rest_framework.authtoken",
       "label": "authtoken",
       "config": "rest_framework.authtoken.apps.AuthTokenConfig"
+    },
+    {
+      "name": "djpyfs",
+      "label": "djpyfs",
+      "config": "django.apps.config.AppConfig"
     }
   ]
 }

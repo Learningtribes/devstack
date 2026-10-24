@@ -262,7 +262,6 @@ django-pipeline==4.1.0
     # via -r solver-s3pA.in
 django-push-notifications==3.3.0
     # via edx-ace
-django-pyfs @ git+https://github.com/Learningtribes/django-pyfs.git@d52e58dc88d755e332bdcc4ab1dd0b004e11ad11
     # via -r solver-s3pA.in
 django-ratelimit==4.1.0
     # via -r solver-s3pA.in
