@@ -75,7 +75,11 @@ def configure(namespace, system):
             JWT_PRIVATE_SIGNING_KEY=jwt_private_key,
             JWT_EXPIRED_PRIVATE_SIGNING_KEYS=[],
         )
+        # This isolated LMS is both issuer and consumer; no external IDA trusts
+        # its signing key. Restricted claims are enforced by API permissions.
+        namespace['RESTRICTED_APPLICATION_JWT_ISSUER'] = dict(namespace['DEFAULT_JWT_ISSUER'])
         namespace['JWT_AUTH'].update(
+            JWT_ISSUERS=[namespace['DEFAULT_JWT_ISSUER']],
             JWT_ISSUER=jwt_issuer,
             JWT_AUDIENCE=jwt_audience,
             JWT_SECRET_KEY=namespace['SECRET_KEY'],
