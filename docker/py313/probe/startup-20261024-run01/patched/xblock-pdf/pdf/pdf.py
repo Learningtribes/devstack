@@ -4,6 +4,8 @@ import pkg_resources
 from django.template import Context, Template
 
 from xblock.core import XBlock
+from xblock.exceptions import JsonHandlerError
+from student.roles import CourseInstructorRole, CourseStaffRole
 from xblock.fields import Scope, String, Boolean
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
@@ -23,7 +25,7 @@ def get_html(path, data):
 
 
 @XBlock.wants('settings')
-@XBlock.needs('i18n')
+@XBlock.needs('i18n', 'user')
 class PdfBlock(
     XBlock,
     XBlockWithSettingsMixin,
@@ -184,6 +186,10 @@ class PdfBlock(
         """
         The saving handler.
         """
+        user = self.runtime.service(self, 'user')._django_user
+        if not (user.is_staff or CourseInstructorRole(self.course_id).has_user(user)
+                or CourseStaffRole(self.course_id).has_user(user)):
+            raise JsonHandlerError(403, 'Course staff access required')
         self.display_name = data['display_name']
         self.url = data['url']
         self.allow_download = True if data['allow_download'] == "True" else False  # Str to Bool translation

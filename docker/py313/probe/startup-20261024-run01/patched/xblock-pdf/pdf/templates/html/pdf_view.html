@@ -1,10 +1,7 @@
 <%!
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from crequest.middleware import CrequestMiddleware
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
+from urllib.parse import urlparse
 %>
 
 <div class="pdf_placeholder" style="width: auto; height: 480px; display: none;"></div>

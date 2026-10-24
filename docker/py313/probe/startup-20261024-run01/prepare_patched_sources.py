@@ -26,7 +26,12 @@ PACKAGES = (
     'scormxblock-xblock',
     'xblock-pdf',
 )
-IGNORED = shutil.ignore_patterns('build', 'dist', '*.egg-info', '__pycache__', '.git', '.DS_Store')
+def IGNORED(directory, names):
+    """Keep PDF.js public/build runtime assets, excluding build caches."""
+    ignored = shutil.ignore_patterns('build', 'dist', '*.egg-info', '__pycache__', '.git', '.DS_Store')(directory, names)
+    if Path(directory).parts[-2:] == ('pdf', 'public'):
+        ignored.discard('build')
+    return ignored
 
 
 def digest_tree(root):
@@ -35,8 +40,9 @@ def digest_tree(root):
         if not path.is_file():
             continue
         relative = path.relative_to(root)
-        if any(part in {'build', 'dist', '__pycache__', '.git'} or part.endswith('.egg-info')
-               or part == '.DS_Store' for part in relative.parts):
+        if any((part == 'build' and relative.parts[:index] != ('pdf', 'public'))
+               or part in {'dist', '__pycache__', '.git', '.DS_Store'}
+               or part.endswith('.egg-info') for index, part in enumerate(relative.parts)):
             continue
         entries[relative.as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
     digest = hashlib.sha256(json.dumps(entries, sort_keys=True).encode()).hexdigest()
