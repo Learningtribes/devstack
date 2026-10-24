@@ -8,16 +8,18 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import re
 
 root = Path(__file__).resolve().parent
 database = sys.argv[1] if len(sys.argv) == 2 else ''
-if database != 'py313_startup_20261024':
-    raise SystemExit('Only registered working database is implemented; rebuild configuration pending')
+if not re.fullmatch(r'py313_(?:startup|rebuild)_[a-z0-9_]+', database):
+    raise SystemExit('Database name must use a registered local runtime prefix')
+mysql_container = os.environ.get('PY313_MYSQL_CONTAINER', 'py313.mysql')
 ledger = root / 'created-resources.json'
 registered = json.loads(ledger.read_text()) if ledger.exists() else {'mysql_databases': []}
 # SQL is passed as a positional argument and never interpolates a credential.
 def mysql(sql):
-    result = subprocess.run(['docker','exec','py313.mysql','bash','-c',
+    result = subprocess.run(['docker','exec',mysql_container,'bash','-c',
         'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot -N -e "$1"', 'schema-init', sql],
         capture_output=True,text=True)
     if result.returncode:
@@ -31,7 +33,7 @@ if database not in existing:
     registered['mysql_databases'].append(database)
     ledger.write_text(json.dumps(registered, indent=2)+'\n')
 mysql("GRANT ALL PRIVILEGES ON `"+database+"`.* TO 'edxapp'@'%'")
-runner = Path('/Users/noahwang/docs/hawthorn/py313-startup-artifacts-2026-10-24/run-02/run_check.py')
+runner = Path(os.environ.get('PY313_CHECK_RUNNER', '/Users/noahwang/docs/hawthorn/py313-startup-artifacts-2026-10-24/run-02/run_check.py'))
 iteration = os.environ.get('PY313_SCHEMA_ITERATION')
 if not iteration:
     raise SystemExit('Set a fresh PY313_SCHEMA_ITERATION evidence label')

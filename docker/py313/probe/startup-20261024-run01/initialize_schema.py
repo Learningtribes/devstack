@@ -13,7 +13,7 @@ actual = set(apps.app_configs)
 assert expected == actual, 'App inventory changed; review before schema initialization'
 assert set(settings.MIGRATION_MODULES) == actual
 assert all(value is None for value in settings.MIGRATION_MODULES.values())
-assert connection.settings_dict['NAME'] in {'py313_startup_20261024', 'py313_rebuild_20261024'}
+assert connection.settings_dict['NAME'].startswith(('py313_startup_', 'py313_rebuild_'))
 assert not MigrationRecorder(connection).applied_migrations(), 'Historical migration records forbidden here'
 call_command('migrate', run_syncdb=True, interactive=False, skip_checks=True)
 exec(compile(Path('/startup/reconcile_schema.py').read_text(), '/startup/reconcile_schema.py', 'exec'))

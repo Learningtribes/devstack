@@ -350,7 +350,7 @@ edx-ace==1.15.0
     # via -r solver-s3pA.in
 edx-analytics-data-api-client==0.18.3
     # via -r solver-s3pA.in
-edx-ccx-keys==2.0.2
+edx-ccx-keys==0.2.1
     # via
     #   -r solver-s3pA.in
     #   lti-consumer-xblock
@@ -393,7 +393,7 @@ edx-jsme @ git+https://github.com/jazkarta/edx-jsme.git@690dbf75441fa91c7c4899df
     # via -r solver-s3pA.in
 edx-milestones==2.0.0
     # via -r solver-s3pA.in
-edx-opaque-keys==4.0.0
+edx-opaque-keys==0.4.4
     # via
     #   --override overrides-vcs.txt
     #   -r solver-s3pA.in

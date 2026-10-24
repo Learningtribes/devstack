@@ -8,7 +8,8 @@ base_env=root.parents[1] / '.env'
 system=sys.argv[1]
 if system not in {'lms','cms'}:
     raise SystemExit('Choose lms or cms')
-port={'lms':18000,'cms':18010}[system]
+port=int(os.environ.get('PY313_LMS_CONTAINER_PORT' if system == 'lms' else 'PY313_CMS_CONTAINER_PORT',
+                        18000 if system == 'lms' else 18010))
 protected={}
 for env_file in (base_env, root/'.env'):
     protected.update(line.split('=',1) for line in env_file.read_text().splitlines() if '=' in line and not line.startswith('#'))

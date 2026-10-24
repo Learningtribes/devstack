@@ -9,29 +9,34 @@ def configure(namespace, system):
         DEBUG=False,
         MAKO_MODULE_DIR=os.path.join(tempfile.gettempdir(), f'mako_{system}_py313_{os.getpid()}'),
         ROOT_URLCONF='startup_' + system + '_urls',
+        PROJECT_ROOT=os.environ.get('PY313_PLATFORM_ROOT', '/edx/app/edxapp/edx-platform'),
         X_FRAME_OPTIONS='SAMEORIGIN',
         STORAGES={'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
                   'staticfiles': {'BACKEND': 'openedx.core.storage.DevelopmentStorage'}},
         PIPELINE_ENABLED=False,  # Development serves each genuine vendor/Sass output.
         REQUIRE_DEBUG=True,  # RequireJS loads anonymous AMD sources; no optimizer build.
         CMS_SEGMENT_KEY=None,  # No external analytics account for isolated local runtime.
+        WIKI_ENABLED=(system == 'lms'),  # Keep the locally testable course wiki route available.
         ALLOWED_HOSTS=['localhost', '127.0.0.1', 'lms', 'cms'],
         SECRET_KEY=os.environ['PY313_STARTUP_SECRET_KEY'],
         DEFAULT_AUTO_FIELD='django.db.models.AutoField',
         DATABASE_ROUTERS=[],
         COMMON_TEST_DATA_ROOT='/edx/app/edxapp/edx-platform/common/test/data',
-        DATABASES={'default': {'ENGINE':'django.db.backends.mysql', 'NAME':'py313_startup_20261024',
+        DATABASES={'default': {'ENGINE':'django.db.backends.mysql', 'NAME':os.environ.get('PY313_DATABASE_NAME', 'py313_startup_20261024'),
                    'USER':os.environ.get('PY313_MYSQL_USER','edxapp'), 'PASSWORD':os.environ['PY313_MYSQL_PASSWORD'],
                    'HOST':'mysql', 'PORT':'3306', 'OPTIONS':{'charset':'utf8mb4'},
                    'TEST': {'NAME':'py313_goal_scorm_test_20261025', 'CHARSET':None, 'COLLATION':None}}},
         CACHES={'default':{'BACKEND':'django.core.cache.backends.memcached.PyMemcacheCache',
-                          'LOCATION':'memcached:11211','KEY_PREFIX':'py313_startup_20261024'}},
+                          'LOCATION':'memcached:11211','KEY_PREFIX':os.environ.get('PY313_CACHE_PREFIX', 'py313_startup_20261024')}},
         SESSION_ENGINE='django.contrib.sessions.backends.db',
         SESSION_SERIALIZER='django.contrib.sessions.serializers.JSONSerializer',
         SESSION_COOKIE_NAME='py313_startup_session',
         EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend',
-        LMS_ROOT_URL='http://localhost:18000', CMS_ROOT_URL='http://localhost:18010',
-        LMS_BASE='localhost:18000', CMS_BASE='localhost:18010', SITE_NAME='localhost:18000',
+        LMS_ROOT_URL=os.environ.get('PY313_LMS_ROOT_URL', 'http://localhost:18000'),
+        CMS_ROOT_URL=os.environ.get('PY313_CMS_ROOT_URL', 'http://localhost:18010'),
+        LMS_BASE=os.environ.get('PY313_LMS_DOMAIN', 'localhost:18000'),
+        CMS_BASE=os.environ.get('PY313_CMS_DOMAIN', 'localhost:18010'),
+        SITE_NAME=os.environ.get('PY313_LMS_DOMAIN', 'localhost:18000'),
         # Site primary keys are environment data. Resolve them from the
         # nonsecret domain-to-PK map emitted by natural-key site seeding.
         SITE_ID=namespace.get('SITE_ID', 1),
@@ -61,7 +66,7 @@ def configure(namespace, system):
     site_map_path = Path('/runtime/config/site-ids.json')
     if site_map_path.is_file():
         site_ids = json.loads(site_map_path.read_text())
-        site_domain = 'localhost:18000' if system == 'lms' else 'localhost:18010'
+        site_domain = os.environ.get('PY313_LMS_DOMAIN', 'localhost:18000') if system == 'lms' else os.environ.get('PY313_CMS_DOMAIN', 'localhost:18010')
         namespace['SITE_ID'] = int(site_ids[site_domain])
     from local_discovery import configure as configure_discovery
     configure_discovery(namespace)
@@ -99,14 +104,14 @@ def configure(namespace, system):
         )
     namespace.update(SEARCH_ENGINE='search.elastic.ElasticSearchEngine',
                      ELASTIC_SEARCH_CONFIG=[{'host': 'elasticsearch', 'port': 9200, 'use_ssl': False}],
-                     ELASTIC_SEARCH_INDEX_PREFIX='py313_startup_20261024_',
+                     ELASTIC_SEARCH_INDEX_PREFIX=os.environ.get('PY313_ES_INDEX_PREFIX', 'py313_startup_20261024_'),
                      COURSEWARE_INDEX_NAME='courses', PROGRAM_INDEX_NAME='programs')
     # Same explicit fresh-schema contract as the initializer; no old graph loaded.
     inventory = json.loads(Path('/startup/schema-app-inventory.json').read_text())
     namespace['MIGRATION_MODULES'] = {entry['label']: None for entry in inventory['lms'] + inventory['cms']}
     namespace['WEBPACK_LOADER'] = {'DEFAULT': {'BUNDLE_DIR_NAME': 'bundles/', 'STATS_FILE': '/runtime/static/' + system + '/webpack-stats.json'}}
     namespace['MIDDLEWARE']=list(namespace['MIDDLEWARE_CLASSES'])
-    mongo=dict(namespace['DOC_STORE_CONFIG'],host='mongo',port=27017,db='py313_startup_20261024',
+    mongo=dict(namespace['DOC_STORE_CONFIG'],host='mongo',port=27017,db=os.environ.get('PY313_MONGO_DB', 'py313_startup_20261024'),
                user=os.environ.get('PY313_MONGO_USER','edxapp'),password=os.environ['PY313_MONGO_PASSWORD'],authSource='admin')
     namespace['DOC_STORE_CONFIG']=mongo
     namespace['CONTENTSTORE'] = {

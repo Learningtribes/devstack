@@ -1,5 +1,6 @@
 """Register local sites by natural key and emit their runtime PK mapping."""
 import json
+import os
 from pathlib import Path
 
 from django.conf import settings
@@ -10,13 +11,18 @@ from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
 assert settings.DATABASES['default']['NAME'].startswith('py313_')
 site_ids = {}
 with transaction.atomic():
-    for domain in ('localhost:18000', 'localhost:18010'):
+    domains = (
+        os.environ.get('PY313_LMS_DOMAIN', 'localhost:18000'),
+        os.environ.get('PY313_CMS_DOMAIN', 'localhost:18010'),
+    )
+    for domain in domains:
         site, site_created = Site.objects.get_or_create(domain=domain, defaults={'name': domain})
         cfg, created = SiteConfiguration.objects.get_or_create(site=site, defaults={'values': {}, 'enabled': True})
         values = dict(cfg.values)
         for key, value in {
             'course_org_filter': 'PY313', 'site_domain': domain,
-            'LMS_ROOT_URL': 'http://localhost:18000', 'CMS_ROOT_URL': 'http://localhost:18010',
+            'LMS_ROOT_URL': os.environ.get('PY313_LMS_ROOT_URL', 'http://localhost:18000'),
+            'CMS_ROOT_URL': os.environ.get('PY313_CMS_ROOT_URL', 'http://localhost:18010'),
             'show_only_org_on_student_dashboard': True,
         }.items():
             values.setdefault(key, value)
