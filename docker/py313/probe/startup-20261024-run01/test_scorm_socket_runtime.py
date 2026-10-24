@@ -1,5 +1,5 @@
 """Real SCORM HTTP upload, ordinary learner commits and durable isolation."""
-import io,json,secrets
+import io,json,secrets,os
 from pathlib import Path
 import django,requests
 from PIL import Image
@@ -13,7 +13,7 @@ from completion.models import BlockCompletion
 from courseware.models import StudentModule
 
 values=json.loads(Path('/startup/.acceptance-credentials.json').read_text())
-course=CourseKey.from_string('course-v1:PY313+DiscussionRun03+2026')
+course=CourseKey.from_string(os.environ.get('PY313_ACCEPTANCE_COURSE_ID', 'course-v1:PY313+DiscussionRun03+2026'))
 store=modulestore(); users=get_user_model(); staff=users.objects.get(username=values['staff']['username'])
 assert staff.username=='py313_staff'
 # New deterministic component; prior components/completion records stay untouched.
@@ -72,7 +72,11 @@ else:
  second={'username':'py313_scorm_isolation','email':'py313-scorm-isolation@example.test','password':secrets.token_urlsafe(32)}
  u=users.objects.create_user(**second);UserProfile.objects.create(user=u,name='SCORM isolation learner')
  path.write_text(json.dumps(second));path.chmod(0o600)
-u=users.objects.get(username=second['username']); assert not u.is_staff and not u.is_superuser
+u=users.objects.filter(username=second['username']).first()
+if u is None:
+ u=users.objects.create_user(**second);UserProfile.objects.create(user=u,name='SCORM isolation learner')
+assert u.check_password(second['password'])
+assert not u.is_staff and not u.is_superuser
 CourseEnrollment.enroll(u,course)
 learner=users.objects.get(username=values['learner']['username']);assert not learner.is_staff and not learner.is_superuser
 CourseEnrollment.enroll(learner,course)
