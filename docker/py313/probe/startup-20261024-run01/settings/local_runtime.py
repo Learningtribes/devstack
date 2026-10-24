@@ -98,7 +98,7 @@ def configure(namespace, system):
                     'openedx.core.djangoapps.content.block_structure.tasks.update_course_in_cache',
                     'openedx.core.djangoapps.content.block_structure.tasks.update_course_in_cache_v2',
                     'courseware.tasks.send_ilt_course_pre_publish_emails',
-                    'lms.djangoapps.grades.tasks.compute_all_grades_for_course',
+                    'lms.djangoapps.grades.tasks.*',
                 )
             },
             CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS={'global_keyprefix': queue_prefix + ':'},

@@ -3,13 +3,15 @@
 Operator configuration only: keeps staff/learner permissions unchanged. Course and
 unit creation/content authoring/publication remain browser acceptance operations.
 """
+import os
+
 from django.contrib.auth import get_user_model
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 from xblock.core import XBlock
 from xmodule.modulestore.django import modulestore
 
-key = CourseKey.from_string('course-v1:PY313+CleanRebuild28+2026')
+key = CourseKey.from_string(os.environ.get('PY313_ACCEPTANCE_COURSE_ID', 'course-v1:PY313+CleanRebuild28+2026'))
 plugins = ['scormxblock', 'pdf', 'iframe', 'externality', 'lbmdonexblock', 'ilt']
 for name in plugins:
     XBlock.load_class(name)
