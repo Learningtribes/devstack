@@ -37,4 +37,9 @@ if not iteration:
     raise SystemExit('Set a fresh PY313_SCHEMA_ITERATION evidence label')
 result = subprocess.run([sys.executable,str(runner),'lms',iteration,'shell','-c',
     'exec(open("/startup/initialize_schema.py").read())'],env={**os.environ,'PY313_CHECK_SETTINGS':'startup_schema'})
-raise SystemExit(result.returncode)
+if result.returncode:
+    raise SystemExit(result.returncode)
+sites = subprocess.run([sys.executable, str(runner), 'lms', iteration + '-site-seed', 'shell', '-c',
+    'exec(open("/startup/seed_local_host_sites.py").read())'],
+    env={**os.environ, 'PY313_CHECK_SETTINGS':'startup_lms'})
+raise SystemExit(sites.returncode)

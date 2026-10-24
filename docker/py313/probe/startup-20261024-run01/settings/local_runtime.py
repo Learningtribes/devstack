@@ -32,8 +32,9 @@ def configure(namespace, system):
         EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend',
         LMS_ROOT_URL='http://localhost:18000', CMS_ROOT_URL='http://localhost:18010',
         LMS_BASE='localhost:18000', CMS_BASE='localhost:18010', SITE_NAME='localhost:18000',
-        # The acceptance DB retains separate Site rows for the two local hosts.
-        SITE_ID=3 if system == 'lms' else 2,
+        # Site primary keys are environment data. Resolve them from the
+        # nonsecret domain-to-PK map emitted by natural-key site seeding.
+        SITE_ID=namespace.get('SITE_ID', 1),
         STATIC_ROOT='/runtime/static/'+system, MEDIA_ROOT='/runtime/media',
         DJFS={'type': 'osfs', 'directory_root': '/runtime/media/djpyfs',
               'url_root': '/media/djpyfs'},
@@ -57,6 +58,11 @@ def configure(namespace, system):
         BROKER_URL=os.environ.get('PY313_CELERY_BROKER_URL', 'amqp://{user}:{password}@rabbitmq:5672//'.format(user=os.environ.get('PY313_RABBITMQ_USER', 'edxapp'), password=os.environ['PY313_RABBITMQ_PASSWORD'])),
         CELERY_RESULT_BACKEND='cache+memcached://memcached:11211/',
     )
+    site_map_path = Path('/runtime/config/site-ids.json')
+    if site_map_path.is_file():
+        site_ids = json.loads(site_map_path.read_text())
+        site_domain = 'localhost:18000' if system == 'lms' else 'localhost:18010'
+        namespace['SITE_ID'] = int(site_ids[site_domain])
     from local_discovery import configure as configure_discovery
     configure_discovery(namespace)
     # Exercise the canonical DOT routes in this isolated local runtime.

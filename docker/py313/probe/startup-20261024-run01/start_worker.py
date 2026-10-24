@@ -14,6 +14,10 @@ for env_file in (base_env, root / ".env"):
         if "=" in line and not line.startswith("#")
     )
 
+if subprocess.run(["docker", "exec", "py313-startup-runtime-20261024",
+                   "test", "-s", "/runtime/config/site-ids.json"], check=False).returncode:
+    raise SystemExit("Refusing to start worker before natural-key Site seeding")
+
 command = (
     "umask 077; mkdir -p /runtime/logs; "
     "exec /runtime/venv/bin/celery -A lms.celery:APP worker "
