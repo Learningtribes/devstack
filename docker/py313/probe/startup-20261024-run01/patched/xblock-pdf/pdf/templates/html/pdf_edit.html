@@ -1,0 +1,111 @@
+<%!
+from django.utils.translation import ugettext as _
+%>
+
+<div class="wrapper-comp-settings editor-with-buttons is-active settings-pdf" id="settings-tab">
+    <div class="upload-zone_list-input">
+        <div role="region" aria-label="Upload assets" class="upload-zone" id="upload-zone">
+            <div class="alert-field hidden" role="alert">
+                <span class="btn btn-close" id="alert-field-close">x</span>
+                <div class="alert-dialog">
+                    <span class="alert-dialog-text hidden" id="alert-info-text">${_("Uploading...")}</span>
+                    <span class="alert-dialog-text hidden" id="alert-success-text">${_("Uploading finished.")}</span>
+                    <span class="alert-dialog-text hidden" id="alert-error-text">${_("Uploading failed.")}</span>
+                </div>
+            </div>
+            <div class="drop-zone center-text" id="asset-drop-zone" aria-disabled="false">
+                <div class="center-text" id="asset-drop-zone-icon">
+                  <span aria-hidden="true" class="center-text fa fa-cloud-upload fa-7x"></span>
+                </div>
+                <p class="drop-info" id="asset-choose-or-drop">
+                    <span id="browse-button" class="btn btn-browse">${_("Choose your PDF")}</span>
+                    <span>${_("or Drag here")}</span>
+                </p>
+                <p aria-hidden="true" class="center-text" id="asset-drop-zone-max-file-size-label">
+                    ${_("Size limit: ")}10 MB
+                </p>
+                <input type="file" id="file-input" multiple autocomplete="off" style="display: none;">
+            </div>
+            <div class="upload-help center-text">
+                <span id="upload-or-label">${_("or")}</span>
+              <div class="help-info center-text">
+                <label id="pdf-url-info">
+                    <%
+                        course_url = '/assets/' + str(course_id) + '/'
+                        label_text = _("Copy the Web URL of a PDF you previously uploaded in <a href={course_url} target='_blank'>Files & Uploads</a>").format(course_url=course_url)
+                    %>
+                    ${label_text}
+                </label>
+              </div>
+            </div>
+        </div>
+
+        <ul class="list-input settings-list">
+
+        <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="pdf_edit_display_name">${_("Name")}</label>
+            <input class="input setting-input" id="pdf_edit_display_name" value="${ display_name }" type="text">
+              <span class="question-mark-wrapper" data-title='${_("This name appears in the horizontal navigation at the top of the page.")}'/>
+          </div>
+          <span class="tip setting-help">${_("This name appears in the horizontal navigation at the top of the page.")}</span>
+        </li>
+
+        <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="pdf_edit_url">${_("PDF URL")}</label>
+            <input class="input setting-input" id="pdf_edit_url" value="${ url }" type="text">
+              <span class="question-mark-wrapper" data-title='${_("This URL will be automatically updated after you upload a file.")} ${_("Or you can paste here the URL you copied in Files & Uploads.")}'/>
+          </div>
+            <span class="tip setting-help">${_("This URL will be automatically updated after you upload a file.")}</span>
+            <span class="tip setting-help">${_("Or you can paste here the URL you copied in Files & Uploads.")}</span>
+        </li>
+
+        <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="pdf_edit_allow_download">${_("PDF Download Allowed")}</label>
+            <select class="input setting-input" id="pdf_edit_allow_download">
+              ## {% if allow_download %}selected{% endif %}
+              ## {% if not allow_download %}selected{% endif %}
+              <option value="True" ${ "selected" if allow_download else ""}>${_("True")}</option>
+              <option value="False" ${ "selected" if not allow_download else "" }>${_("False")}</option>
+            </select>
+              <span class="switcher-wrapper"></span>
+              <span class="question-mark-wrapper" data-title='${_("Display a download button for this PDF.")}'/>
+          </div>
+          <span class="tip setting-help">${_("Display a download button for this PDF.")}</span>
+        </li>
+
+        <li class="field comp-setting-entry">
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="pdf_edit_source_text">${_("Source document button text")}</label>
+            <input class="input setting-input" id="pdf_edit_source_text" value="${ source_text }" type="text" placeholder=" ${_('Default: Download the source document')}">
+          </div>
+        </li>
+        <li class="field comp-setting-entry is-set">
+          <!--<div class="wrapper-comp-setting">
+            <label class="label setting-label" for="pdf_edit_source_text">${_("Source document button text")}</label>
+            <input class="input setting-input" id="pdf_edit_source_text" value="${ source_text }" type="text" placeholder=" ${_('Default: Download the source document')}">
+          </div>-->
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="pdf_edit_source_url">${_("Source document URL")}</label>
+            <input class="input setting-input" id="pdf_edit_source_url" value="${ source_url }" type="text">
+          </div>
+          <span class="tip setting-help">${_("Add the source document of your PDF (Powerpoint file, ...)")}</span>
+        </li>
+
+      </ul>
+    </div>
+
+
+  <div class="xblock-actions">
+    <ul>
+      <li class="action-item">
+        <a href="#" class="button action-cancel">${_("Cancel")}</a>
+      </li>
+      <li class="action-item">
+        <a href="#" class="button action-primary action-save">${_("Save")}</a>
+      </li>
+    </ul>
+  </div>
+</div>

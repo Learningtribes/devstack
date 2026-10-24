@@ -1,0 +1,31 @@
+{% load i18n %}
+<!-- TODO: Replace by default edit view once available in Studio -->
+<div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
+  <script id="metadata-editor-tpl" type="text/template">// JS crashes when empty //</script>
+  <ul class="list-input settings-list">
+      {% for field in fields %}
+      <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="{{ field.name }}">{{ field.display_name }}</label>
+            {% if field.type == "String" %}
+            <input class="input setting-input" id="{{ field.name }}" value="{{ field.value }}" type="text">
+            {% elif field.type == "Boolean" %}
+            <input class="input setting-input" id="{{ field.name }}" value="True" type="checkbox"{% if field.value %} checked="checked"{% endif %}>
+            {% endif %}
+              <span class="question-mark-wrapper" data-title="{{ field.help }}"></span>
+          </div>
+          <span class="tip setting-help">{{ field.help }}</span>
+      </li>
+      {% endfor %}
+  </ul>
+  <div class="xblock-actions">
+    <span class="xblock-editor-error-message"></span>
+    <ul>
+      <li class="action-item">
+        <a href="#" class="button cancel-button">{% trans "Cancel"%}</a>
+      </li>
+      <li class="action-item">
+        <a href="#" class="button action-primary save-button">{% trans "Save"%}</a>
+      </li>    </ul>
+  </div>
+</div>

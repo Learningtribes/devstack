@@ -1,0 +1,20 @@
+[
+  {
+    "name": "edx-oauth2-provider",
+    "url": "https://files.pythonhosted.org/packages/e7/8b/94617ccc89a781b0c2b39fc60d59f323c63dc03d99c62491f847f4079985/edx-oauth2-provider-1.2.2.tar.gz",
+    "sha256": "0ca96711727bb17eb1cc112afc80fbdf70c47310268d4f661173ed0c4bcf257c",
+    "directory": "edx-oauth2-provider-1.2.2"
+  },
+  {
+    "name": "edx-jsme",
+    "url": "https://api.github.com/repos/jazkarta/edx-jsme/tarball/690dbf75441fa91c7c4899df0b83d77f7deb5458",
+    "sha256": "8ffbdcae9c1f184a01eac11a111160e4616b0e43384a8e7567f393d1919ce0db",
+    "directory": "jazkarta-edx-jsme-690dbf7"
+  },
+  {
+    "name": "django-oauth-plus",
+    "url": "https://api.github.com/repos/edx/django-oauth-plus/tarball/01ec2a161dfc3465f9d35b9211ae790177418316",
+    "sha256": "6b9be209968bfb1f36ae2e15551ce306822d89bb5cb2dbb5e5cb543bacd4a40e",
+    "directory": "edx-django-oauth-plus-01ec2a1"
+  }
+]

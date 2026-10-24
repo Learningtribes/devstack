@@ -1,0 +1,43 @@
+{% load i18n %}
+<div class="themeable-xblock scormxblock_block">
+    <div class="block-header-wrapper scorm-header-wrapper">
+        <h3 class="scorm-header">{{ display_name }}</h3>
+        {% if has_score_value %}
+        <p class="scorm_process">
+            <span class="fal fa-bullseye-pointer"></span>
+            <span class="lesson_score">{{ scorm_score_value }}</span>
+            <span class="static_score">/{% blocktrans count weight_value as num_points %}{{ num_points }} point possible{% plural %}{{num_points }} points possible{% endblocktrans %} ({% trans graded_status %})</span>
+            <span class="success_status">{{ scorm_status_value }}</span>
+        </p>
+        {% endif %}
+    </div>
+      <div class="block-label scorm-label">
+        <span class="fal fa-file-audio block-label-icon"></span>
+        <span class="block-label-text">{% trans 'SCORM' %}</span>
+      </div>
+    <hr class="sep-line">
+    {% if open_new_tab_value and scorm_pkg_value %}
+    <div class="launch-div">
+        <div class="instruction">{{ instruction_value }}</div>
+
+        <div class="scorm_object_container">
+            <div class="scorm-object-header">
+                <div class="exit-fullscreen-button">
+                    <i class="fa-solid fa-compress"></i>
+                    <span class="close-button-text">{% trans 'Exit full screen' %}</span>
+                </div>
+            </div>
+            <iframe id="scorm-object-frame" class="scorm_object" data-src="{{ scorm_pkg_value }}"></iframe>
+        </div>
+
+        <div class="description">
+            <button class="ds-button launch-button">
+                <i class="fa-solid fa-expand"></i>
+                {% trans "Full screen" %}
+            </button>
+        </div>
+    </div>
+    {% elif scorm_pkg_value %}
+        <iframe id="scorm-object-frame" class="scorm_object" data-src="{{ scorm_pkg_value }}"></iframe>
+    {% endif %}
+</div>

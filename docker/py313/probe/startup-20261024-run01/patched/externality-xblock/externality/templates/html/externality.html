@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<div class="themeable-xblock externalityxblock_block">
+    <div class="block-header-wrapper problem-header-wrapper">
+        <h3 class="externality-header">{{ display_name }}</h3>
+    </div>
+    <div class="block-label problem-label">
+        <span class="fal fa-browser Pointing on a Picture-icon block-label-icon"></span>
+        <span class="Pointing on a Picture block-label-text">{% trans "External Web Content" %}</span>
+    </div>
+    <hr class="sep-line">
+    <span class='count'>{{ self.iframe_url | safe }}</span>
+</div>

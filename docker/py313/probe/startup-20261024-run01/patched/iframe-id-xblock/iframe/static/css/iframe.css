@@ -1,0 +1,9 @@
+/* CSS for IframeWithAnonymousIDXBlock */
+
+.iframe_block .count {
+    font-weight: bold;
+}
+
+.iframe_block p {
+    cursor: pointer;
+}

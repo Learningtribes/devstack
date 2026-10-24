@@ -1,0 +1,61 @@
+{% load i18n %}
+
+<div class="externality_block">
+    <p>
+{% if not self.iframe_url%}
+        <div class="supported-tags" id="supported-tags">
+            <ul class="supported-tags-nav" id="supported-tags-nav">
+                <li class="nav-item" id="all-tags">
+                    <button class="btn-link active-section" title="All tags">{% trans "All" %}</button>
+                </li>
+                {% for tag_name in external_resources.listed_tags %}
+                <li class="nav-item" id="{{ tag_name }}">
+                    <button class="btn-link" title="{{ tag_name }}">{% trans tag_name %}</button>
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="supported-resources">
+            {% for resource in external_resources %}
+                <li class="swiper-slide resource-item" data-status="{{ resource.tags|join:',' }}" style="display: block;">
+                    <div class="item-container" onclick=" window.open('{{ resource.site_link }}','_blank')">
+                        <div class="item-title-bar">
+                            <span class="item-title-prefix">
+                            {{ resource.svg_image | safe }}
+                            <a class="item-name">{{ resource.name }}</a>
+                            </span>
+                            {% if resource.paying %}
+                            <span class="item-title-tail">{{ usd_svg | safe }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="item-description">{% trans resource.description %}</div>
+                        <div class="item-tags-bar">
+                            <span class="item-tags-prefix">
+                            {% for tag_name in resource.tags %}
+                                {% if tag_name == 'Infographics' %}
+                                <span class="item-pink-tag">{% trans tag_name %}</span>
+                                {% elif tag_name == 'Presentation' %}
+                                <span class="item-yellow-tag">{% trans tag_name %}</span>
+                                {% elif tag_name == 'Video' %}
+                                <span class="item-blue-tag">{% trans tag_name %}</span>
+                                {% elif tag_name == 'Screen Recorder' %}
+                                <span class="item-red-tag">{% trans tag_name %}</span>
+                                {% elif tag_name == 'Collaborative' %}
+                                <span class="item-green-tag">{% trans tag_name %}</span>
+                                {% elif tag_name == 'Poll' %}
+                                <span class="item-purple-tag">{% trans tag_name context "external-web-content" %}</span>
+                                {% else %}
+                                <span class="item-yellow-tag">{% trans tag_name %}</span>
+                                {% endif %}
+                            {% endfor %}
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+{% else %}
+        <span class='count'>{{ self.iframe_url | safe }}</span>
+{% endif %}
+    </p>
+</div>

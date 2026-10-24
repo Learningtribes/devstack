@@ -1,0 +1,124 @@
+<!--suppress ALL -->
+<!--<div class="ilt-xblock-studio" xmlns:v-on="http://www.w3.org/1999/xhtml">-->
+    <!--<div class="form">-->
+        <!--<div class="field">-->
+            <!--<label for="ilt-title">${_(title)}</label>-->
+            <!--<div>-->
+                <!--<input id="ilt-title" type="text" v-model.trim="title">-->
+                <!--<p class="helper">${_(title_help)}</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="field">-->
+            <!--<label for="ilt-description">${_(desc)}</label>-->
+            <!--<div>-->
+                <!--<textarea id="ilt-description" v-model.trim="description"></textarea>-->
+                <!--<p class="helper">${_(desc_help)}</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="field">-->
+            <!--<label>${_(sess)}</label>-->
+            <!--<div class="ilt-sessions">-->
+                <!--<div v-if="sessions">-->
+                    <!--<div class="ilt-session" v-for="(sess, idx) in sessions">-->
+                        <!--<p>-->
+                            <!--<label>${_("From")}</label>-->
+                            <!--<datepicker v-model="sess[1]['start_at_date']"></datepicker>-->
+                            <!--<timepicker v-model="sess[1]['start_at_time']"></timepicker>-->
+                        <!--</p>-->
+                        <!--<p>-->
+                            <!--<label>${_("To")}</label>-->
+                            <!--<datepicker v-model="sess[1]['end_at_date']"></datepicker>-->
+                            <!--<timepicker v-model="sess[1]['end_at_time']"></timepicker>-->
+                        <!--</p>-->
+                        <!--<p>-->
+                            <!--<label>${_("Timezone")}</label>-->
+                            <!--<select v-model="sess[1]['timezone']">-->
+                                <!--<option v-for="(tz, idx) in timezones" v-bind:value="tz[0]"-->
+                                        <!--:selected="sess[1]['timezone'] === tz[0]">-->
+                                    <!--{{ tz[0] }} {{ tz[1] }}h-->
+                                <!--</option>-->
+                            <!--</select>-->
+                        <!--</p>-->
+                        <!--<p>-->
+                            <!--<label>${_("Location")}</label>-->
+                            <!--<input type="text" v-model="sess[1]['location']">-->
+                        <!--</p>-->
+                        <!--<p>-->
+                            <!--<label>${_("Instructor")}</label>-->
+                            <!--<input type="text" v-model="sess[1]['instructor']">-->
+                        <!--</p>-->
+
+                        <!--<p>-->
+                            <!--<label>${_("Seats")}</label>-->
+                            <!--<input type="number" v-model="sess[1]['total_seats']">-->
+                        <!--</p>-->
+                        <!--<button class="ilt-del-session" v-on:click="sessions.splice(idx, 1)"><i class="fa fa-times"-->
+                                                                                                <!--aria-hidden="true"></i>${_("Remove")}-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="ilt-add-session">-->
+                    <!--<button v-on:click="addNewSession">-->
+                        <!--<i class="fa fa-plus" aria-hidden="true">-->
+
+                        <!--</i>${_("Add more class schedule")}-->
+                    <!--</button>-->
+                    <!--<p class="helper">${_(sess_help)}</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="field">-->
+            <!--<label for="ilt-weight">${_(weight)}</label>-->
+            <!--<div>-->
+                <!--<input id="ilt-weight" type="number" v-model="weight">-->
+                <!--<p class="helper">${_(weight_help)}</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="field">-->
+            <!--<button class="ilt-save-button" v-on:click="saveILT">${_("Save")}</button>-->
+        <!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<div class="wrapper-comp-settings is-active editor-with-buttons ilt-xblock-studio" id="settings-tab">
+    <ul class="list-input settings-list">
+        <li class="field comp-setting-entry is-set">
+            <div class="wrapper-comp-setting">
+                <label class="label setting-label" for="ilt-title">${_(title)}</label>
+                <input class="input setting-input" name="ilt-title" id="ilt-title"
+                       type="text" v-model.trim="title"/>
+            </div>
+            <span class="tip setting-help">${_(title_help)}</span>
+        </li>
+        <li class="field comp-setting-entry is-set">
+            <div class="wrapper-comp-setting">
+                <label class="label setting-label" for="ilt-description">${_(desc)}</label>
+                <input class="input setting-input" name="ilt-description" id="ilt-description"
+                       type="text" v-model.trim="description"/>
+            </div>
+            <span class="tip setting-help">${_(desc_help)}</span>
+        </li>
+        <li class="field comp-setting-entry is-set">
+            <div class="wrapper-comp-setting">
+                <label class="label setting-label" for="ilt-weight">${_(weight)}</label>
+                <input class="input setting-input" name="ilt-weight" id="ilt-weight"
+                       type="text" v-model.trim="weight"/>
+            </div>
+            <span class="tip setting-help">${_(weight_help)}</span>
+        </li>
+    </ul>
+
+    <div class="xblock-actions">
+        <ul>
+            <li class="action-item">
+                <a href="#" class="button action-primary save-button" v-on:click="saveILT">${_("Save")}</a>
+            </li>
+            <li class="action-item">
+                <a href="#" class="button cancel-button" v-on:click="cancelILT">${_("Cancel")}</a>
+            </li>
+        </ul>
+    </div>
+</div>

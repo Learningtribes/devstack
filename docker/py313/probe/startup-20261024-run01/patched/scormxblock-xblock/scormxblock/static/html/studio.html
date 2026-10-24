@@ -1,0 +1,72 @@
+<div class="themeable-xblock wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
+  <ul class="list-input settings-list">
+
+      <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+              <label class="label setting-label" for="display_name">{{ display_name.display_name }}</label>
+              <input class="input setting-input" name="display_name" id="display_name"
+                     value="{{ display_name_value }}" type="text"/>
+          </div>
+          <span class="tip setting-help">{{ display_name.help }}</span>
+      </li>
+
+      <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+              <label class="label setting-label" for="ratio">{{ ratio.display_name }}</label>
+              <select name="ratio" id="ratio">
+                  {% for option in ratio.values %}
+                  <option value="{{ option.value }}">
+                      {{ option.display_name }}
+                  </option>
+                  {% endfor %}
+              </select>
+          </div>
+          <span class="tip setting-help">{{ ratio.help }}</span>
+      </li>
+
+      <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+              <label class="label setting-label" for="scorm_file">{{ scorm_file.display_name }}</label>
+              <input class="input setting-input" name="scorm_file" id="scorm_file" type="file"/>
+          </div>
+      </li>
+
+      <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+              <label class="label setting-label" for="has_score">{{ has_score.display_name }}</label>
+              <select name="has_score" id="has_score">
+                  {% for option in has_score.values %}
+                  <option value="{{ option.value }}" {% if option.value == has_score_value %}selected{% endif %}>
+                      {{ option.display_name }}
+                  </option>
+                  {% endfor %}
+              </select>
+          </div>
+          <span class="tip setting-help">{{ has_score.help }}</span>
+      </li>
+
+
+      <li class="field comp-setting-entry is-set">
+          <div class="wrapper-comp-setting">
+              <label class="label setting-label" for="weight">{{ weight.display_name }}</label>
+              <input class="input setting-input" name="weight" id="weight"
+                     value="{{ weight_value }}" type="number"
+                     step="{{ weight.values.step }}"
+                     min="{{ weight.values.min }}"
+              />
+          </div>
+          <span class="tip setting-help">{{ weight.help }}</span>
+      </li>
+
+  </ul>
+  <div class="xblock-actions">
+      <ul>
+          <li class="action-item">
+              <a href="#" class="button cancel-button">Cancel</a>
+          </li>
+          <li class="action-item">
+              <a href="#" class="button action-primary save-button">Save</a>
+          </li>
+      </ul>
+  </div>
+</div>

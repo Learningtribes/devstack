@@ -1,0 +1,61 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+#: poll/public/handlebars/poll_results.handlebars:5
+#: poll/public/handlebars/survey_results.handlebars:4
+msgid "Results"
+msgstr ""
+
+#: poll/public/handlebars/poll_results.handlebars:32
+#: poll/public/handlebars/survey_results.handlebars:40
+msgid "Results gathered from {total} respondent."
+msgid_plural "Results gathered from {total} respondents."
+msgstr[0] ""
+msgstr[1] ""
+
+#: poll/public/handlebars/poll_results.handlebars:36
+#: poll/public/handlebars/survey_results.handlebars:45
+msgid "Feedback"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:6
+msgid "move poll up"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:7
+msgid "move poll down"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:9
+msgid "Delete"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:11
+msgid "Answer"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:12
+msgid "Question"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:16
+msgid "Image URL"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:18
+msgid "Image alternative text"
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:23
+msgid ""
+"You can make limited use of Markdown in answer texts, preferably only bold "
+"and italics."
+msgstr ""
+
+#: poll/public/handlebars/poll_studio.handlebars:27
+msgid ""
+"This must have an image URL or text, and can have both.  If you add an "
+"image, you must also provide an alternative text that describes the image "
+"in a way that would allow someone to answer the poll if the image did not "
+"load."
+msgstr ""

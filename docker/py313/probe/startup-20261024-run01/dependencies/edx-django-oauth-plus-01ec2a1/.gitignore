@@ -1,0 +1,15 @@
+__/
+*.py[cod]
+build/
+dist/
+sdist/
+*.egg-info/
+.tox/
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.idea/

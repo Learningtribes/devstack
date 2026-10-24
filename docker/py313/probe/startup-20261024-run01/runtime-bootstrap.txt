@@ -1,0 +1,1177 @@
+acid-xblock==0.4.1
+    # via -r solver-s3pA.in
+amqp==5.3.1
+    # via kombu
+analytics-python==1.4.post1
+    # via -r solver-s3pA.in
+annotated-types==0.7.0
+    # via pydantic
+anyio==4.13.0
+    # via httpx
+appdirs==1.4.4
+    # via fs
+asgiref==3.11.1
+    # via
+    #   django
+    #   django-cors-headers
+    #   django-countries
+asttokens==3.0.2
+    # via stack-data
+attrs==26.1.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-ace
+    #   jsonschema
+    #   lti-consumer-xblock
+    #   openedx-events
+    #   referencing
+babel==2.18.0
+    # via -r solver-s3pA.in
+backoff==1.10.0
+    # via analytics-python
+beautifulsoup4==4.14.3
+    # via pynliner
+billiard==4.2.4
+    # via celery
+bleach==6.3.0
+    # via
+    #   -r solver-s3pA.in
+    #   lti-consumer-xblock
+    #   openedx-django-wiki
+    #   ora2
+    #   xblock-drag-and-drop-v2
+    #   xblock-poll
+boto==2.49.0
+    # via -r solver-s3pA.in
+boto3==1.42.97
+    # via
+    #   -r solver-s3pA.in
+    #   django-ses
+    #   fs-s3fs
+    #   ora2
+botocore==1.42.97
+    # via
+    #   -r solver-s3pA.in
+    #   boto3
+    #   s3transfer
+cachecontrol==0.14.4
+    # via firebase-admin
+cachetools==7.0.6
+    # via edxval
+    # via -r solver-s3pA.in
+camel-converter==5.1.0
+    # via meilisearch
+    # via
+    #   -r solver-s3pA.in
+    #   xmodule
+celery==5.6.3
+    # via
+    #   -c hard-es7.txt
+    #   -r solver-s3pA.in
+    #   django-user-tasks
+    #   edx-celeryutils
+    #   event-tracking
+certifi==2026.4.22
+    # via
+    #   -r solver-s3pA.in
+    #   elasticsearch
+    #   httpcore
+    #   httpx
+    #   requests
+cffi==2.0.0
+    # via
+    #   cryptography
+    #   pynacl
+chardet==7.4.3
+    # via
+    #   encutils
+    #   pysrt
+charset-normalizer==3.4.7
+    # via requests
+    # via -r solver-s3pA.in
+click==8.3.3
+    # via
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
+    #   code-annotations
+    #   edx-django-utils
+    #   nltk
+click-didyoumean==0.3.1
+    # via celery
+click-plugins==1.1.1.2
+    # via celery
+click-repl==0.3.0
+    # via celery
+code-annotations==3.0.0
+    # via edx-toggles
+coreapi==2.3.3
+    # via
+    #   django-rest-swagger
+    #   openapi-codec
+coreschema==0.0.4
+    # via coreapi
+crowdsourcehinter-xblock==1.0.0
+    # via -r solver-s3pA.in
+cryptography==47.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   google-auth
+    #   jwcrypto
+    #   pyjwt
+    #   pyopenssl
+    #   pysaml2
+    #   social-auth-core
+cssutils==2.15.0
+    # via pynliner
+ddt==1.7.2
+    # via -r solver-s3pA.in
+decorator==5.3.1
+    # via
+    #   dogapi
+    #   pycontracts
+defusedxml==0.7.1
+    # via
+    #   -r solver-s3pA.in
+    #   ora2
+    #   pysaml2
+    #   python3-openid
+    #   safe-lxml
+    #   social-auth-core
+django==5.2.13
+    # via
+    #   -c hard-es7.txt
+    #   -r solver-s3pA.in
+    #   django-appconf
+    #   django-auth-ldap
+    #   django-classy-tags
+    #   django-config-models
+    #   django-cors-headers
+    #   django-crequest
+    #   django-crum
+    #   django-filter
+    #   django-js-asset
+    #   django-method-override
+    #   django-model-utils
+    #   django-mysql
+    #   django-oauth-toolkit
+    #   django-push-notifications
+    #   django-pyfs
+    #   django-ratelimit-backend
+    #   django-sekizai
+    #   django-ses
+    #   django-simple-history
+    #   django-statici18n
+    #   django-storages
+    #   django-tables2
+    #   django-user-tasks
+    #   django-waffle
+    #   djangorestframework
+    #   djangosaml2idp
+    #   done-xblock
+    #   drf-jwt
+    #   drf-nested-routers
+    #   drf-yasg
+    #   edx-ace
+    #   edx-celeryutils
+    #   edx-completion
+    #   edx-django-release-util
+    #   edx-django-sites-extensions
+    #   edx-django-utils
+    #   edx-drf-extensions
+    #   edx-i18n-tools
+    #   edx-milestones
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-search
+    #   edx-submissions
+    #   edx-toggles
+    #   edx-when
+    #   edxval
+    #   event-tracking
+    #   help-tokens
+    #   jsonfield
+    #   lti-consumer-xblock
+    #   openedx-django-pyfs
+    #   openedx-django-wiki
+    #   openedx-events
+    #   openedx-filters
+    #   ora2
+    #   rest-condition
+    #   social-auth-app-django
+    #   xblock-google-drive
+django-appconf==1.2.0
+    # via django-statici18n
+django-auth-ldap==5.4.0
+    # via -r solver-s3pA.in
+django-classy-tags==4.1.0
+    # via django-sekizai
+django-config-models==3.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   lti-consumer-xblock
+django-cors-headers==4.9.0
+    # via -r solver-s3pA.in
+django-countries==8.2.0
+    # via -r solver-s3pA.in
+django-crequest==2018.5.11
+    # via
+    #   -r solver-s3pA.in
+    #   xblock-pdf
+django-crum==0.7.9
+    # via
+    #   -r solver-s3pA.in
+    #   edx-django-utils
+    #   edx-proctoring
+    #   edx-toggles
+django-filter==25.2
+    # via
+    #   -r solver-s3pA.in
+    #   lti-consumer-xblock
+django-ipware==7.0.1
+    # via
+    #   -r solver-s3pA.in
+    #   edx-proctoring
+django-js-asset==3.1.2
+    # via django-mptt
+django-method-override==1.0.4
+    # via -r solver-s3pA.in
+django-model-utils==5.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   django-user-tasks
+    #   edx-celeryutils
+    #   edx-completion
+    #   edx-milestones
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-submissions
+    #   edx-when
+    #   edxval
+    #   ora2
+django-mptt==0.18.0
+    # via
+    #   -r solver-s3pA.in
+    #   openedx-django-wiki
+django-mysql==4.19.0
+    # via -r solver-s3pA.in
+django-oauth-toolkit==1.7.1
+    # via -r solver-s3pA.in
+django-pipeline==4.1.0
+    # via -r solver-s3pA.in
+django-push-notifications==3.3.0
+    # via edx-ace
+django-pyfs @ git+https://github.com/Learningtribes/django-pyfs.git@d52e58dc88d755e332bdcc4ab1dd0b004e11ad11
+    # via -r solver-s3pA.in
+django-ratelimit==4.1.0
+    # via -r solver-s3pA.in
+django-ratelimit-backend==2.0
+    # via -r solver-s3pA.in
+django-require==1.0.11
+    # via -r solver-s3pA.in
+django-rest-swagger==2.2.0
+    # via -r solver-s3pA.in
+django-sekizai==4.1.0
+    # via
+    #   -r solver-s3pA.in
+    #   openedx-django-wiki
+django-ses==4.7.2
+    # via -r solver-s3pA.in
+django-simple-history==3.11.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-organizations
+    #   edx-proctoring
+    #   ora2
+django-statici18n==2.7.1
+    # via
+    #   -r solver-s3pA.in
+    #   lti-consumer-xblock
+    #   xblock-drag-and-drop-v2
+    #   xblock-poll
+django-storages==1.14.6
+    # via
+    #   -r solver-s3pA.in
+    #   edxval
+django-tables2==3.0.1
+    # via -r solver-s3pA.in
+django-user-tasks==4.0.0
+    # via -r solver-s3pA.in
+django-waffle==5.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-django-utils
+    #   edx-drf-extensions
+    #   edx-proctoring
+    #   edx-toggles
+django-webpack-loader==3.2.3
+    # via
+    #   -r solver-s3pA.in
+    #   edx-proctoring
+djangorestframework==3.17.1
+    # via
+    #   -r solver-s3pA.in
+    #   django-config-models
+    #   django-rest-swagger
+    #   django-user-tasks
+    #   drf-jwt
+    #   drf-nested-routers
+    #   drf-yasg
+    #   edx-completion
+    #   edx-drf-extensions
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-submissions
+    #   ora2
+    #   rest-condition
+djangorestframework-oauth @ git+https://github.com/edx/django-rest-framework-oauth.git@0a43e8525f1e3048efe4bc70c03de308a277197c
+    # via -r solver-s3pA.in
+djangosaml2idp @ git+https://github.com/Learningtribes/djangosaml2idp.git@da3798ea6be76ce392f3d3f26aa75d0fdccbf7fe
+    # via -r solver-s3pA.in
+dnspython==2.8.0
+    # via pymongo
+docopt==0.6.2
+    # via xmodule
+dogapi==1.11.1
+    # via
+    #   -r solver-s3pA.in
+    #   dogstats-wrapper
+    # via -r solver-s3pA.in
+done-xblock==3.0.0
+    # via -r solver-s3pA.in
+drf-jwt==1.19.2
+    # via edx-drf-extensions
+drf-nested-routers==0.95.3
+    # via -r solver-s3pA.in
+drf-yasg==1.21.15
+    # via django-user-tasks
+edx-ace==1.15.0
+    # via -r solver-s3pA.in
+edx-analytics-data-api-client==0.18.3
+    # via -r solver-s3pA.in
+edx-ccx-keys==2.0.2
+    # via
+    #   -r solver-s3pA.in
+    #   lti-consumer-xblock
+    #   openedx-events
+edx-celeryutils==2.0.0
+    # via -r solver-s3pA.in
+edx-codejail==4.1.0
+    # via -r solver-s3pA.in
+edx-completion==5.0.0
+    # via -r solver-s3pA.in
+edx-django-release-util==1.5.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-submissions
+    #   edxval
+edx-django-sites-extensions==6.0.0
+    # via -r solver-s3pA.in
+edx-django-utils==8.0.1
+    # via
+    #   django-config-models
+    #   edx-ace
+    #   edx-drf-extensions
+    #   edx-rest-api-client
+    #   edx-toggles
+    #   edx-when
+    #   event-tracking
+    #   openedx-events
+    #   ora2
+edx-drf-extensions==10.6.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-completion
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-when
+    #   edxval
+edx-i18n-tools==2.0.0
+    # via ora2
+edx-jsme @ git+https://github.com/jazkarta/edx-jsme.git@690dbf75441fa91c7c4899df0b83d77f7deb5458
+    # via -r solver-s3pA.in
+edx-milestones==2.0.0
+    # via -r solver-s3pA.in
+edx-opaque-keys==4.0.0
+    # via
+    #   --override overrides-vcs.txt
+    #   -r solver-s3pA.in
+    #   edx-ccx-keys
+    #   edx-completion
+    #   edx-drf-extensions
+    #   edx-milestones
+    #   edx-organizations
+    #   edx-proctoring
+    #   edx-user-state-client
+    #   edx-when
+    #   lti-consumer-xblock
+    #   openedx-events
+    #   openedx-filters
+    #   ora2
+    #   xmodule
+edx-organizations==8.0.0
+    # via -r solver-s3pA.in
+edx-proctoring==5.2.0
+    # via -r solver-s3pA.in
+edx-rest-api-client==7.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-proctoring
+edx-search==5.0.0
+    # via -r solver-s3pA.in
+edx-sga==0.28.0
+    # via -r solver-s3pA.in
+edx-submissions==4.0.2
+    # via
+    #   -r solver-s3pA.in
+    #   ora2
+edx-toggles==6.0.0
+    # via
+    #   edx-completion
+    #   edx-search
+    #   edxval
+    #   event-tracking
+    #   ora2
+edx-user-state-client==1.3.2
+    # via -r solver-s3pA.in
+edx-when==4.0.0
+    # via edx-proctoring
+edxval==4.0.1
+    # via -r solver-s3pA.in
+elasticsearch==7.17.13
+    # via
+    #   -c hard-es7.txt
+    #   edx-search
+elementpath==4.8.0
+    # via xmlschema
+emoji==2.16.0
+    # via -r solver-s3pA.in
+encutils==1.0.0
+    # via cssutils
+et-xmlfile==2.0.0
+    # via openpyxl
+event-tracking==4.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-completion
+    #   edx-proctoring
+    #   edx-search
+executing==2.3.0
+    # via stack-data
+externality-xblock @ file:///work/patched/externality-xblock
+    # via -r solver-s3pA.in
+fastavro==1.12.2
+    # via openedx-events
+feedparser==6.0.14
+    # via -r solver-s3pA.in
+feedparser-sgmllib==2.1.0
+    # via feedparser
+firebase-admin==7.4.0
+    # via edx-ace
+firebase-token-generator==2.0.1
+    # via -r solver-s3pA.in
+fs==2.4.16
+    # via
+    #   -r solver-s3pA.in
+    #   django-pyfs
+    #   fs-s3fs
+    #   openedx-django-pyfs
+    #   scormxblock-xblock
+    #   xblock
+fs-s3fs==1.1.1
+    # via
+    #   -r solver-s3pA.in
+    #   django-pyfs
+    #   openedx-django-pyfs
+future==1.0.0
+    # via
+    #   pycontracts
+    #   pyjwkest
+glob2==0.7
+    # via -r solver-s3pA.in
+google-api-core==2.30.3
+    # via
+    #   firebase-admin
+    #   google-cloud-core
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-auth==2.49.2
+    # via
+    #   google-api-core
+    #   google-cloud-core
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-cloud-core==2.5.1
+    # via
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-cloud-firestore==2.27.0
+    # via firebase-admin
+google-cloud-storage==3.10.1
+    # via firebase-admin
+google-crc32c==1.8.0
+    # via
+    #   google-cloud-storage
+    #   google-resumable-media
+google-resumable-media==2.8.2
+    # via google-cloud-storage
+googleapis-common-protos==1.74.0
+    # via
+    #   google-api-core
+    #   grpcio-status
+grpcio==1.80.0
+    # via
+    #   google-api-core
+    #   google-cloud-firestore
+    #   grpcio-status
+grpcio-status==1.80.0
+    # via google-api-core
+gunicorn==25.3.0
+    # via -r solver-s3pA.in
+h11==0.16.0
+    # via httpcore
+h2==4.3.0
+    # via httpx
+help-tokens==4.0.0
+    # via -r solver-s3pA.in
+hpack==4.1.0
+    # via h2
+html5lib==1.1
+    # via
+    #   -r solver-s3pA.in
+    #   ora2
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
+    # via
+    #   firebase-admin
+    #   typesense
+hyperframe==6.1.0
+    # via h2
+idna==3.13
+    # via
+    #   anyio
+    #   httpx
+    #   requests
+iframe-id-xblock @ file:///work/patched/iframe-id-xblock
+    # via -r solver-s3pA.in
+ilt-xblock @ file:///work/patched/ilt-xblock
+    # via -r solver-s3pA.in
+inflection==0.5.1
+    # via drf-yasg
+ipython==9.17.1
+    # via -r solver-s3pA.in
+ipython-pygments-lexers==1.1.1
+    # via ipython
+isodate==0.7.2
+    # via python3-saml
+itypes==1.2.0
+    # via coreapi
+jedi==0.20.1
+    # via ipython
+jinja2==3.1.6
+    # via
+    #   code-annotations
+    #   coreschema
+jmespath==1.1.0
+    # via
+    #   boto3
+    #   botocore
+joblib==1.5.3
+    # via nltk
+jsonfield==3.2.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-celeryutils
+    #   edx-proctoring
+    #   edx-submissions
+    #   lti-consumer-xblock
+    #   ora2
+jsonschema==4.26.0
+    # via ilt-xblock
+jsonschema-specifications==2025.9.1
+    # via jsonschema
+jwcrypto==1.5.7
+    # via django-oauth-toolkit
+kombu==5.6.2
+    # via
+    #   -c hard-es7.txt
+    #   celery
+lazy==1.6
+    # via
+    #   -r solver-s3pA.in
+    #   acid-xblock
+    #   lti-consumer-xblock
+    #   ora2
+    #   xblock
+lbmdone-xblock @ file:///work/patched/lbmdone-xblock
+    # via -r solver-s3pA.in
+legacy-cgi==2.6.4
+    # via webob
+levenshtein==0.27.5
+    # via python-levenshtein
+libsass==0.23.0
+    # via -r solver-s3pA.in
+lti-consumer-xblock==11.3.1
+    # via -r solver-s3pA.in
+lxml==5.3.2
+    # via
+    #   -r solver-s3pA.in
+    #   capa
+    #   edx-i18n-tools
+    #   edxval
+    #   iframe-id-xblock
+    #   ilt-xblock
+    #   lbmdone-xblock
+    #   lti-consumer-xblock
+    #   lxml-html-clean
+    #   ora2
+    #   python3-saml
+    #   safe-lxml
+    #   scormxblock-xblock
+    #   xblock
+    #   xblock-pdf
+    #   xmlsec
+lxml-html-clean==0.4.4
+    # via lxml
+mailsnake==1.6.4
+    # via -r solver-s3pA.in
+mako==1.3.12
+    # via
+    #   -r solver-s3pA.in
+    #   acid-xblock
+    #   ilt-xblock
+    #   lti-consumer-xblock
+    #   xblock
+    #   xblock-utils
+markdown==3.10.2
+    # via
+    #   -r solver-s3pA.in
+    #   openedx-django-wiki
+    #   xblock-poll
+markupsafe==3.0.3
+    # via
+    #   -r solver-s3pA.in
+    #   chem
+    #   jinja2
+    #   mako
+    #   xblock
+matplotlib-inline==0.2.2
+    # via ipython
+meilisearch==0.41.0
+    # via edx-search
+mock==5.2.0
+    # via -r solver-s3pA.in
+mongodbproxy @ file:///work/patched/MongoDBProxy
+    # via -r solver-s3pA.in
+mongoengine==0.29.3
+    # via
+    #   -c hard-es7.txt
+    #   -r solver-s3pA.in
+monotonic==1.6
+    # via analytics-python
+more-itertools==11.0.2
+    # via cssutils
+mpmath==1.3.0
+    # via sympy
+msgpack==1.1.2
+    # via cachecontrol
+mysqlclient==2.2.8
+    # via
+    #   -c hard-es7.txt
+    #   -r solver-s3pA.in
+networkx==3.7
+    # via -r solver-s3pA.in
+newrelic==14.1.0
+    # via -r solver-s3pA.in
+nltk==3.9.4
+    # via
+    #   -r solver-s3pA.in
+    #   chem
+nodeenv==1.10.0
+    # via -r solver-s3pA.in
+numpy==2.5.4
+    # via
+    #   --override overrides-vcs.txt
+    #   -r solver-s3pA.in
+    #   calc
+    #   chem
+    #   scipy
+    #   shapely
+oauthlib==3.3.1
+    # via
+    #   -r solver-s3pA.in
+    #   django-oauth-toolkit
+    #   lti-consumer-xblock
+    #   requests-oauthlib
+    #   social-auth-core
+openapi-codec==1.3.2
+    # via django-rest-swagger
+openedx-django-pyfs==4.0.0
+    # via xblock
+openedx-django-wiki==3.1.1
+    # via -r solver-s3pA.in
+openedx-events==11.2.0
+    # via
+    #   event-tracking
+    #   lti-consumer-xblock
+    #   ora2
+openedx-filters==3.4.1
+    # via
+    #   lti-consumer-xblock
+    #   ora2
+openpyxl==3.1.5
+    # via -r solver-s3pA.in
+ora2==7.1.0
+    # via -r solver-s3pA.in
+packaging==26.2
+    # via
+    #   drf-yasg
+    #   gunicorn
+    #   kombu
+    #   wheel
+parse-rest @ git+https://github.com/dgrtwo/ParsePy.git@7949b9f754d1445eff8e8f20d0e967b9a6420639
+    # via -r solver-s3pA.in
+parso==0.8.7
+    # via jedi
+path==16.11.0
+    # via
+    #   edx-i18n-tools
+    #   path-py
+path-py==12.5.0
+    # via
+    #   -r solver-s3pA.in
+    #   ora2
+    #   xmodule
+paver==1.3.4
+    # via -r solver-s3pA.in
+pexpect==4.9.0
+    # via ipython
+piexif==1.1.3
+    # via -r solver-s3pA.in
+pillow==12.2.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-organizations
+    #   edxval
+polib==1.2.0
+    # via edx-i18n-tools
+prompt-toolkit==3.0.52
+    # via
+    #   click-repl
+    #   ipython
+proto-plus==1.27.2
+    # via
+    #   google-api-core
+    #   google-cloud-firestore
+protobuf==6.33.6
+    # via
+    #   google-api-core
+    #   google-cloud-firestore
+    #   googleapis-common-protos
+    #   grpcio-status
+    #   proto-plus
+psutil==7.2.2
+    # via
+    #   -r solver-s3pA.in
+    #   edx-django-utils
+    #   ipython
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.4
+    # via stack-data
+pyasn1==0.6.3
+    # via
+    #   pyasn1-modules
+    #   python-ldap
+pyasn1-modules==0.4.2
+    # via
+    #   google-auth
+    #   python-ldap
+    # via -r solver-s3pA.in
+pycountry==26.2.16
+    # via -r solver-s3pA.in
+pycparser==3.0
+    # via cffi
+pycryptodomex==3.23.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-proctoring
+    #   lti-consumer-xblock
+    #   pyjwkest
+pydantic==2.13.3
+    # via camel-converter
+pydantic-core==2.46.3
+    # via pydantic
+pygeoip @ git+https://github.com/appliedsec/pygeoip.git@95e69341cebf5a6a9fbf7c4f5439d458898bdc3b
+    # via -r solver-s3pA.in
+pygments==2.21.0
+    # via
+    #   -r solver-s3pA.in
+    #   ipython
+    #   ipython-pygments-lexers
+pygraphviz==2.0.4
+    # via -r solver-s3pA.in
+pyjwkest==1.4.4
+    # via -r solver-s3pA.in
+pyjwt==2.12.1
+    # via
+    #   -r solver-s3pA.in
+    #   drf-jwt
+    #   edx-drf-extensions
+    #   edx-proctoring
+    #   edx-rest-api-client
+    #   firebase-admin
+    #   lti-consumer-xblock
+    #   social-auth-core
+pymemcache==4.0.0
+    # via
+    #   -c hard-es7.txt
+    #   -r solver-s3pA.in
+pymongo==4.19.0
+    # via
+    #   -c hard-es7.txt
+    #   -r solver-s3pA.in
+    #   edx-opaque-keys
+    #   event-tracking
+    #   mongodbproxy
+    #   mongoengine
+pynacl==1.6.2
+    # via edx-django-utils
+pynliner==0.8.0
+    # via -r solver-s3pA.in
+pyopenssl==26.1.0
+    # via pysaml2
+pyparsing==3.3.2
+    # via
+    #   --override overrides-vcs.txt
+    #   -r solver-s3pA.in
+    #   calc
+    #   chem
+    #   pycontracts
+pysaml2==7.5.5
+    # via
+    #   -r solver-s3pA.in
+    #   djangosaml2idp
+pysrt==1.1.2
+    # via
+    #   -r solver-s3pA.in
+    #   edxval
+python-dateutil==2.9.0.post0
+    # via
+    #   -r solver-s3pA.in
+    #   analytics-python
+    #   botocore
+    #   celery
+    #   edx-ace
+    #   edx-proctoring
+    #   ora2
+    #   pysaml2
+    #   xblock
+python-ipware==3.0.0
+    # via django-ipware
+python-ldap==3.4.8
+    # via
+    #   -r solver-s3pA.in
+    #   django-auth-ldap
+python-levenshtein==0.27.5
+    # via -r solver-s3pA.in
+python-slugify==8.0.4
+    # via code-annotations
+python-swiftclient==4.10.0
+    # via ora2
+python3-openid==3.2.0
+    # via social-auth-core
+python3-saml==1.16.0
+    # via -r solver-s3pA.in
+pytz==2026.1.post1
+    # via
+    #   -r solver-s3pA.in
+    #   capa
+    #   drf-yasg
+    #   edx-completion
+    #   edx-proctoring
+    #   edx-submissions
+    #   event-tracking
+    #   ora2
+    #   xblock
+pyuca==1.2
+    # via -r solver-s3pA.in
+pyyaml==6.0.3
+    # via
+    #   -r solver-s3pA.in
+    #   code-annotations
+    #   drf-yasg
+    #   edx-django-release-util
+    #   edx-i18n-tools
+    #   xblock
+rapidfuzz==3.14.6
+    # via levenshtein
+rate-xblock @ git+https://github.com/edx/RateXBlock.git@367e19c0f6eac8a5f002fd0f1559555f8e74bfff
+    # via -r solver-s3pA.in
+recommender-xblock==5.0.0
+    # via -r solver-s3pA.in
+redis==7.4.0
+    # via -r solver-s3pA.in
+referencing==0.37.0
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
+regex==2026.4.4
+    # via nltk
+requests==2.33.1
+    # via
+    #   -r solver-s3pA.in
+    #   analytics-python
+    #   cachecontrol
+    #   coreapi
+    #   django-oauth-toolkit
+    #   edx-analytics-data-api-client
+    #   edx-drf-extensions
+    #   edx-rest-api-client
+    #   google-api-core
+    #   google-cloud-storage
+    #   mailsnake
+    #   meilisearch
+    #   pyjwkest
+    #   pysaml2
+    #   python-swiftclient
+    #   requests-oauthlib
+    #   sailthru-client
+    #   social-auth-core
+    #   xblock-google-drive
+requests-oauthlib==2.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   social-auth-core
+rest-condition==1.0.3
+    # via -r solver-s3pA.in
+rpds-py==0.30.0
+    # via
+    #   jsonschema
+    #   referencing
+rules==3.5
+    # via
+    #   -r solver-s3pA.in
+    #   edx-proctoring
+s3transfer==0.16.1
+    # via boto3
+    # via -r solver-s3pA.in
+sailthru-client==2.2.3
+    # via
+    #   -r solver-s3pA.in
+    #   edx-ace
+    # via -r solver-s3pA.in
+scipy==1.17.1
+    # via
+    #   --override overrides-vcs.txt
+    #   -r solver-s3pA.in
+    #   calc
+    #   chem
+scormxblock-xblock @ file:///work/patched/scormxblock-xblock
+    # via -r solver-s3pA.in
+semantic-version==2.10.0
+    # via edx-drf-extensions
+    # via
+    #   capa
+    #   django-pipeline
+    #   edx-analytics-data-api-client
+    #   edx-completion
+    #   edx-milestones
+    #   edx-organizations
+    #   fs
+    #   openedx-events
+    #   openedx-filters
+    #   xmodule
+shapely==2.1.2
+    # via -r solver-s3pA.in
+simplejson==4.1.1
+    # via
+    #   django-rest-swagger
+    #   sailthru-client
+    #   xblock
+    #   xblock-utils
+six==1.17.0
+    # via
+    #   -r solver-s3pA.in
+    #   analytics-python
+    #   crowdsourcehinter-xblock
+    #   django-pyfs
+    #   edx-ace
+    #   edx-ccx-keys
+    #   edx-codejail
+    #   edx-django-release-util
+    #   edx-milestones
+    #   event-tracking
+    #   fs
+    #   fs-s3fs
+    #   html5lib
+    #   parse-rest
+    #   paver
+    #   pycontracts
+    #   pyjwkest
+    #   python-dateutil
+    #   scormxblock-xblock
+social-auth-app-django==5.4.1
+    # via -r solver-s3pA.in
+social-auth-core==4.9.0
+    # via
+    #   -r solver-s3pA.in
+    #   social-auth-app-django
+sorl-thumbnail==13.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   openedx-django-wiki
+sortedcontainers==2.4.0
+    # via -r solver-s3pA.in
+soupsieve==2.8.3
+    # via beautifulsoup4
+sqlparse==0.5.5
+    # via django
+stack-data==0.6.3
+    # via ipython
+stevedore==5.7.0
+    # via
+    #   -r solver-s3pA.in
+    #   code-annotations
+    #   edx-ace
+    #   edx-django-utils
+    #   edx-opaque-keys
+    # via -r solver-s3pA.in
+sympy==1.14.0
+    # via
+    #   -r solver-s3pA.in
+    #   symmath
+tablib==3.10.0
+    # via -r solver-s3pA.in
+text-unidecode==1.3
+    # via python-slugify
+tinycss2==1.4.0
+    # via bleach
+tqdm==4.67.3
+    # via nltk
+traitlets==5.16.1
+    # via
+    #   ipython
+    #   matplotlib-inline
+typesense==2.0.0
+    # via edx-search
+typing-extensions==4.15.0
+    # via
+    #   beautifulsoup4
+    #   django-countries
+    #   edx-opaque-keys
+    #   grpcio
+    #   jwcrypto
+    #   pydantic
+    #   pydantic-core
+    #   typesense
+    #   typing-inspection
+typing-inspection==0.4.2
+    # via pydantic
+tzdata==2026.2
+    # via kombu
+tzlocal==5.3.1
+    # via celery
+ua-parser==1.0.2
+    # via user-agents
+ua-parser-builtins==202610
+    # via ua-parser
+unicodecsv==0.14.1
+    # via -r solver-s3pA.in
+uritemplate==4.2.0
+    # via
+    #   coreapi
+    #   drf-yasg
+urllib3==2.6.3
+    # via
+    #   botocore
+    #   elasticsearch
+    #   requests
+user-agents==2.2.0
+    # via scormxblock-xblock
+vine==5.1.0
+    # via
+    #   amqp
+    #   celery
+    #   kombu
+voluptuous==0.16.0
+    # via ora2
+watchdog==6.0.0
+    # via -r solver-s3pA.in
+wcwidth==0.6.0
+    # via prompt-toolkit
+web-fragments==4.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   crowdsourcehinter-xblock
+    #   edx-sga
+    #   externality-xblock
+    #   iframe-id-xblock
+    #   ilt-xblock
+    #   lbmdone-xblock
+    #   scormxblock-xblock
+    #   xblock
+    #   xblock-pdf
+    #   xblock-utils
+webencodings==0.5.1
+    # via
+    #   bleach
+    #   html5lib
+    #   tinycss2
+webob==1.8.9
+    # via
+    #   xblock
+    #   xmodule
+wheel==0.47.0
+    # via django-pipeline
+wrapt==2.1.2
+    # via -r solver-s3pA.in
+xblock==6.1.0
+    # via
+    #   -r solver-s3pA.in
+    #   acid-xblock
+    #   crowdsourcehinter-xblock
+    #   done-xblock
+    #   edx-completion
+    #   edx-sga
+    #   edx-user-state-client
+    #   edx-when
+    #   externality-xblock
+    #   iframe-id-xblock
+    #   ilt-xblock
+    #   lbmdone-xblock
+    #   lti-consumer-xblock
+    #   ora2
+    #   rate-xblock
+    #   scormxblock-xblock
+    #   xblock-discussion
+    #   xblock-drag-and-drop-v2
+    #   xblock-google-drive
+    #   xblock-pdf
+    #   xblock-review
+    #   xblock-utils
+    # via -r solver-s3pA.in
+xblock-drag-and-drop-v2==5.1.1
+    # via -r solver-s3pA.in
+xblock-google-drive==0.8.2
+    # via -r solver-s3pA.in
+xblock-pdf @ file:///work/patched/xblock-pdf
+    # via -r solver-s3pA.in
+xblock-poll==1.15.1
+    # via -r solver-s3pA.in
+xblock-review==1.1.5
+    # via -r solver-s3pA.in
+xblock-utils==4.0.0
+    # via
+    #   -r solver-s3pA.in
+    #   edx-sga
+    #   xblock-poll
+xmlschema==2.5.1
+    # via pysaml2
+xmlsec==1.3.17
+    # via python3-saml
+    # via -r solver-s3pA.in
+python3-saml==1.16.0
+slumber==0.7.1

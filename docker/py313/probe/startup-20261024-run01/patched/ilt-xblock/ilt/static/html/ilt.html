@@ -1,0 +1,460 @@
+<!--suppress ALL -->
+<%! from django.utils.translation import pgettext %>
+<div id="${view_id}" class="ilt-xblock">
+    <div>
+        <div class="ilt-header">
+            <i class="fa fa-calendar fa-3x"></i>
+            <h2>${_("INSTRUCTOR LED TRAINING")}</h2>
+        </div>
+
+        <div class="ilt-title">
+            <h3>{{ title }}</h3>
+        </div>
+
+        <div class="ilt-description">
+            <p>{{ description }}</p>
+        </div>
+
+        <div class="ilt-sessions">
+
+            <h3 v-if="selectedSession == null && sessions.length != 0 && !hide_list_to_student">${_("CHOOSE A SESSION TO ENROLL")}</h3>
+            <h3 v-else-if="sessions.length == 0">${_("NO SESSIONS AVAILABLE")}</h3>
+            <h3 v-else-if="selectedSession == null && hide_list_to_student">${_("NO INCOMING SESSIONS AVAILABLE")}</h3>
+
+            <div v-if="sessions.length != 0">
+                <select v-model="selectedSession" v-if="(enrollment[0] == null || enrollment[1]['status'] == 'refused') && !hide_list_to_student">
+                    <option v-for="(sess, idx) in dropdown_list" v-bind:class="sess[1]" v-bind:value="idx" :selected="idx === selectedSession" :disabled="isDatePassNow(sess[1]['start_at']) && !isStaff">
+                         {{ sess[0] }}
+                    </option>
+                </select>
+                <div class="ilt-session-detail">
+                    <div v-if="selectedSession != null">
+                        <p><span class="time"><i class="fa fa-calendar-check" aria-hidden="true"></i>${_("From")}:</span> {{ currentSession['start_at'] }}&nbsp&nbsp&nbsp&nbsp<span>${_("To")}:</span> {{ currentSession['end_at'] }}</p>
+                        <p v-if="'duration' in currentSession"><span class="duration"><i class="fa fa-clock-o" aria-hidden="true"></i>${_("Duration")}:</span> {{ currentSession['duration'] }} h</p>
+                        <p><span class="timezone"><i class="fa fa-globe" aria-hidden="true"></i>${_("Timezone")}:</span> {{ currentSession['timezone'] }} {{ currentSession['timezone_offset'] }}h</p>
+                        <p><span class="area-region"><i class="fa fa-globe-stand" aria-hidden="true"></i>${_("Area/Region")}:</span> {{ currentSession['area_region'] }}</p>
+                        <p v-if="is_url_location(currentSession['location'])">
+                            <span class="location">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>${pgettext('xblock-ilt', "Location")}:
+                            </span>
+                            <a class="location-link" :href="currentSession['location']" target="_blank">{{ currentSession['location'] }}</a>
+                        </p>
+                        <p v-else>
+                            <span class="location">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>${pgettext('xblock-ilt', "Location")}:
+                            </span>
+                            {{ currentSession['location'] }}
+                        </p>
+                        <p v-if="'address' in currentSession"><span class="address"><i class="fa fa-map-marker" aria-hidden="true"></i>${pgettext('xblock-ilt', "Address")}:</span> {{ currentSession['address'] }}</p>
+                        <p v-if="'zip_code' in currentSession"><span class="zip-code"><i class="fa fa-map-marker" aria-hidden="true"></i>${_("Zip Code")}:</span> {{ currentSession['zip_code'] }}</p>
+                        <p v-if="'city' in currentSession"><span class="city"><i class="fa fa-map-marker" aria-hidden="true"></i>${_("City")}:</span> {{ currentSession['city'] }}</p>
+                        <p v-if="'location_id' in currentSession"><span class="location-id"><i class="fa fa-map-marker" aria-hidden="true"></i>${_("Location ID")}:</span> {{ currentSession['location_id'] }}</p>
+                        <p v-if="currentSession['instructor']"><span class="instructor"><i class="fa fa-user" aria-hidden="true"></i>${_("Instructor")}:</span> {{ currentSession['instructor'] }}</p>
+                        <p><span class="seats"><i class="fa fa-users" aria-hidden="true"></i>${_("Available seats")}:</span> {{ currentSession['available_seats'] }}</p>
+
+                        <div class="ilt-registration" v-if="enrollment[0] == null || enrollment[1]['status'] == 'refused'">
+                            <div v-if="accommodation_enabled" class="ilt-registration-accommodation">
+                                <span>${_("Accommodation Need")}: </span>
+                                <input type="radio" id="accommodation-yes" name="accomodation" value="yes" v-model="enrollment[1]['accommodation']" :checked="enrollment[1]['accommodation'] === 'yes'" :disabled="enrollment[0] != null && enrollment[1]['status'] != 'refused'">
+                                <label for="accommodation-yes">Yes</label>
+                                <input type="radio" id="accommodation-no" name="accomodation"  v-model="enrollment[1]['accommodation']" value="no" :checked="enrollment[1]['accommodation'] === 'no'" :disabled="enrollment[0] != null && enrollment[1]['status'] != 'refused'">
+                                <label for="accommodation-no">No</label>
+                            </div>
+
+                            <div v-if="accommodation_enabled" class="ilt-registration-comment">
+                                <label for="ilt-comment">${_("Comment")}:</label>
+                                <textarea id="ilt-comment" v-model="enrollment[1]['comment']" placeholder="${_('accommodation, preferences, specific diet ...')}" :disabled="enrollment[0] != null && enrollment[1]['status'] != 'refused'"></textarea>
+                            </div>
+
+                            <div v-if="accommodation_enabled" class="ilt-registration-trip">
+                                <label for="ilt-one-way-trip">${_("Number of one way")}: </label>
+                                <input type="text" id="ilt-one-way-trip" v-model="enrollment[1]['number_of_one_way']" :disabled="enrollment[0] != null && enrollment[1]['status'] != 'refused'">
+
+                                <label for="ilt-return-trip">${_("Number of return")}: </label>
+                                <input type="text" id="ilt-return-trip" v-model="enrollment[1]['number_of_return']" :disabled="enrollment[0] != null && enrollment[1]['status'] != 'refused'">
+                            </div>
+                        </div>
+                        <div class="ilt-registration" v-else>
+                            <div v-if="accommodation_enabled" class="ilt-registration-accommodation">
+                                <span class="ilt-registration-tip">${_("Accommodation Need")}: </span>
+                                <span>{{ enrollment[1]['accommodation'] }}</span>
+                            </div>
+
+                            <div v-if="enrollment[1]['accommodation'] === 'yes'" class="ilt-registration-hotel">
+                                <span class="ilt-registration-tip">${_("Hotel Booked")}: </span>
+                                <span>{{ enrollment[1]['hotel'] }}</span>
+                            </div>
+
+                            <div v-if="accommodation_enabled" class="ilt-registration-comment">
+                                <span class="ilt-registration-tip">${_("Comment")}:</span>
+                                <span>{{ enrollment[1]['comment'] }}</span>
+                            </div>
+
+                            <div v-if="accommodation_enabled" class="ilt-registration-trip">
+                                <span class="ilt-registration-tip">${_("Number of one way")}: </span>
+                                <span>{{ enrollment[1]['number_of_one_way'] }}</span>
+
+                                <span class="ilt-registration-tip return-trip">${_("Number of return")}: </span>
+                                <span>{{ enrollment[1]['number_of_return'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ilt-learners-actions" >
+            <button class="ilt-button-enroll" v-on:click="toggleEnrollment" v-if="(enrollment[0] == null || enrollment[1]['status'] == 'refused') && !disable_enroll_button">${_("Enroll")}</button>
+            <button class="ilt-button-enroll enroll-disabled" v-if="(enrollment[0] == null || enrollment[1]['status'] == 'refused') && disable_enroll_button" :title="enroll_button_title">${_("Enroll")}</button>
+            <button class="ilt-button-enroll" v-on:click="toggleEnrollment" v-else-if="enrollment[1]['status'] == 'pending' || (show_unenroll_button && enrollment[0] != null && enrollment[1]['status'] != 'refused')">${_("Unenroll")}</button>
+            <button class="ilt-button-enroll" v-on:click="addToCalendar(enrollment[0])" v-if="enrollment[1]['status'] == 'confirmed' || enrollment[1]['status'] == 'accepted'">${_("Add to calendar")}</button>
+            <button class="ilt-button-enroll" v-on:click="downloadInvitation(enrollment[0])" v-if="show_ilt_invitation && enrollment[1]['status'] == 'confirmed' || enrollment[1]['status'] == 'accepted'">${_("Download the invitation")}</button>
+        </div>
+
+        <div v-if="enrollment[0] != null" class="ilt-notification">
+            <p v-if="enrollment[1]['status'] == 'pending'" class="status pending">${_("Your request is being validated")}</p>
+            <p v-if="enrollment[1]['status'] == 'accepted'" class="status accepted">${_("Your request has been validated, hotel confirmation pending")}</p>
+            <p v-if="enrollment[1]['status'] == 'confirmed'" class="status confirmed">${_("Your request has been confirmed")}</p>
+            <p v-if="enrollment[1]['status'] == 'refused'" class="status refused">${_("Your request has been refused. You can make a new demand.")}</p>
+        </div>
+
+        <hr v-if="isStaff">
+        <div class="ilt-staff-actions" v-if="isStaff">
+            <div class="ilt-management">
+
+                <h3>
+                    <i class="fa fa-cog"></i>
+                    ${_("ADMIN MANAGEMENT TOOL")}
+                </h3>
+                <ul class="ilt-management-tabs">
+                    <li data-id="3"><a class="ilt-hover" href="javascript:void(0);">${_("SESSION MANAGEMENT")}</a></li>
+                    <li data-id="2"><a href="javascript:void(0);">${_("ENROLLMENT MANAGEMENT")}</a></li>
+                    <li v-if="accommodation_enabled && isAdmin" data-id="4"><a href="javascript:void(0);">${_("ACCOMMODATION MANAGEMENT")}</a></li>
+                    <li data-id="1"><a href="javascript:void(0);">${_("CLASS MANAGEMENT")}</a></li>
+                </ul>
+                <div v-if="editSessions">
+                    <div id="ilt-management-4">
+                        <div v-if="dropdown_list.length > 0 && !hide_list_to_accommodation_admin" class="ilt-admin-selection">
+                            <h3>${_("Choose a session")}</h3>
+                            <select v-model="accommodation_admin_selection">
+                                <option v-for="(sess, idx) in dropdown_list" v-bind:class="sess[1]" v-bind:value="idx" :selected="idx === accommodation_admin_selection" :disabled="isDatePassNow(sess[1]['start_at']) && !isStaff">
+                                     {{ sess[0] }}
+                                </option>
+                            </select>
+                        </div>
+                        <div v-else-if="dropdown_list.length == 0" class="ilt-admin-selection">
+                            <h3>${_("NO SESSIONS AVAILABLE")}</h3>
+                        </div>
+                        <div v-else class="ilt-admin-selection">
+                            <h3>${_("NO INCOMING SESSIONS AVAILABLE")}</h3>
+                        </div>
+                        <h3>${_("Accommodation Management")}</h3>
+                        <p>${_("Add or modify the hotel of the learners enrolled in the selected session. Learners will be notified by email when the session is confirmed.")}</p>
+                        <ul class="ilt-accommodation">
+                            <li class="accommodation-header">
+                                <span class="accommodation-name">${_("Full Name")}</span>
+                                <span class="accommodation-comments">${_("Comments")}</span>
+                                <span class="accommodation-hotel">${_("Hotel booked")}</span>
+                            </li>
+                            <li class="accommodation-list" v-if="accommodation_admin_selection != null" v-for="(info, idx) in currentAccommodationList" >
+                                <span class="accommodation-name">{{ info["name"] }}</span>
+                                <span class="accommodation-comments">{{ info["comment"] }}</span>
+                                <input class="accommodation-hotel" type="text" value="info['hotel']" v-model="info['hotel']">
+                            </li>
+                        </ul>
+                        <button class="accommodation-confirm" v-on:click="accommodationValidate">${_("Confirm")}</button>
+                    </div>
+                    <div id="ilt-management-3">
+                        <h3>${_("Manage ILT sessions")}</h3>
+                        <p>${_("Create or delete your ILT sessions below. Learners will be notified by email if a session is modified or deleted.")}</p>
+
+                        <div class="ilt-session" v-for="(sess, idx) in editSessions" v-on:change="showSave(idx)">
+
+                            <a v-if="sess[0] != ''" v-on:click="addToCalendar(sess[0])" title="${_('Add to calendar')}">
+                                <i class="far fa-calendar-plus ilt-add-calendar"></i>
+                            </a>
+
+                            <a v-on:click="setRemoveIndex(idx)">
+                                <i class="fa fa-times ilt-del-session" aria-hidden="true"></i>
+                            </a>
+
+                            <div class="ilt-session-component">
+
+
+                                <div class="ilt-session-clock">
+                                    <i class="fa fa-calendar-check"></i>
+                                    <label>${_("From")}</label>
+                                    <datepicker v-model="sess[1]['start_at_date']" v-on:input="showSave(idx)"></datepicker>
+                                    <timepicker v-model="sess[1]['start_at_time']" v-on:input="showSave(idx)"></timepicker>
+                                </div>
+                                <div class="ilt-session-clock">
+                                    <label class="ilt-time-to">${_("To")}</label>
+                                    <datepicker v-model="sess[1]['end_at_date']" v-on:input="showSave(idx)"></datepicker>
+                                    <timepicker v-model="sess[1]['end_at_time']" v-on:input="showSave(idx)"></timepicker>
+                                </div>
+                            </div>
+
+                            <div v-if="'duration' in sess[1]" class="ilt-session-component">
+                                <i class="fa fa-clock-o"></i>
+                                <label>${_("Duration")}</label>
+                                <input class="ilt-duration-input" type="number" step="0.5" v-model="sess[1]['duration']"> ${_("hours")}
+                            </div>
+
+                            <div class="ilt-session-component">
+                                <i class="fa fa-globe"></i>
+                                <label>${_("Timezone")}</label>
+                                <select v-model="sess[1]['timezone']">
+                                    <option v-for="(tz, idx) in timezones" v-bind:value="tz[0]"
+                                            :selected="sess[1]['timezone'] === tz[0]">
+                                        {{ tz[0] }} {{ tz[1] }}h
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div v-if="'area_region' in sess[1]" class="ilt-session-component">
+                                <i class="fa fa-globe-stand"></i>
+                                <label>${_("Area/Region")}</label>
+                                <input class="ilt-region-input" v-model="sess[1]['area_region']">
+                            </div>
+
+                            <div class="ilt-session-component">
+                                <i class="fa fa-map-marker"></i>
+                                <label>${pgettext('xblock-ilt', "Location")}</label>
+                                <input class="ilt-locaion-input" v-model="sess[1]['location']">
+                            </div>
+
+                            <div v-if="'address' in sess[1]" class="ilt-session-component">
+                                <i class="fa fa-map-marker"></i>
+                                <label>${pgettext('xblock-ilt', "Address")}</label>
+                                <input class="ilt-address-input" v-model="sess[1]['address']">
+                            </div>
+
+                            <div v-if="'zip_code' in sess[1]" class="ilt-session-component">
+                                <i class="fa fa-map-marker"></i>
+                                <label>${_("Zip Code")}</label>
+                                <input class="ilt-zip-code-input" v-model="sess[1]['zip_code']">
+                            </div>
+
+                            <div v-if="'city' in sess[1]" class="ilt-session-component">
+                                <i class="fa fa-map-marker"></i>
+                                <label>${_("City")}</label>
+                                <input class="ilt-city-input" v-model="sess[1]['city']">
+                            </div>
+
+                            <div v-if="'location_id' in sess[1]" class="ilt-session-component">
+                                <i class="fa fa-map-marker"></i>
+                                <label>${_("Location ID")}</label>
+                                <input class="ilt-location-id-input" v-model="sess[1]['location_id']">
+                            </div>
+
+                            <div v-if="'instructor' in sess[1]" class="ilt-session-component">
+                                <i class="fa fa-user"></i>
+                                <label>${_("Instructor")}</label>
+                                <input class="ilt-instructor-input" v-model="sess[1]['instructor']">
+                            </div>
+
+                            <div class="ilt-session-component">
+                                <i class="fa fa-users"></i>
+                                <label>${_("Seats")}</label>
+                                <input type="number" v-model="sess[1]['total_seats']">
+                            </div>
+
+                            <button class="ilt-save" :id="idx" v-on:click="saveSession(idx)">${_("Save")}</button>
+
+                        </div>
+                        <button v-on:click="addSession"><i class="fa fa-plus"></i>${_("Create a Session")}</button>
+
+                        <div class="ilt-del-overlay" style="z-index: 1001; background-color: rgba(0,0,0,0.4); display: none; position: fixed;top: 0;bottom: 0;left: 0;right: 0"></div>
+                        <div id="ilt-del-confirm" style="display: none; z-index: 1002">
+                            <p>${_("Are you sure to delete this session?")}</p>
+                            <button class="ilt-confirm-del" v-on:click="delSession">${_("Confirm")}</button>
+                            <button class="ilt-cancel-del" v-on:click="cancelDelSession">${_("Cancel")}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ilt-management-2">
+                <div v-if="dropdown_list.length > 0 && !hide_list_to_admin" class="ilt-admin-selection">
+                    <h3>${_("Choose a session")}</h3>
+                    <select v-model="enrollment_admin_selection" v-on:click="enrollment_admin_selection_check">
+                        <option v-for="(sess, idx) in dropdown_list" v-bind:class="sess[1]" v-bind:value="idx" :selected="idx === enrollment_admin_selection" :disabled="isDatePassNow(sess[1]['start_at']) && !isStaff">
+                             {{ sess[0] }}
+                        </option>
+                    </select>
+                </div>
+                <div v-else-if="dropdown_list.length == 0" class="ilt-admin-selection">
+                    <h3>${_("NO SESSIONS AVAILABLE")}</h3>
+                </div>
+                <div v-else class="ilt-admin-selection">
+                    <h3>${_("NO INCOMING SESSIONS AVAILABLE")}</h3>
+                </div>
+                <h3>${_("Bulk Enrollment")}</h3>
+                <p>${_("Enter email addresses and/or usernames separated by new lines or commas. "
+                    "You will not get notification for emails that bounce, so please double-check spelling. "
+                    "The learners will be enrolled into the selected session.")}</p>
+                <textarea v-model.trim="identifiers"></textarea>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" class="ds-checkbox" v-model="notifyByEmail" v-on:change="onNotifyByEmailChange">
+                        <span>${_("Notify learners by email")}</span>
+                    </label>
+                </div>
+
+                <div class="bypass-validation" v-if="bypass_validation_flag == 'optional'">
+                    <label>
+                        <input id="bypass-validation" type="checkbox" class="ds-checkbox" v-model="bypass_validation" :checked="bypass_validation == true">
+                        <span>${_("Bypass validation workflow")}</span>
+                    </label>
+                </div>
+
+                <button class="ilt-button-enroll" v-on:click="batchEnroll">${_("Enroll")}</button>
+
+                <div class="accepted-confirmed-list" v-if="enrollment_admin_selection != null">
+                    <div class="actions">
+                        <div class="change-session-selection">
+                            <select v-if="request_action === 'change_session'" v-model="change_to_session">
+                                <option v-for="(sess, idx) in dropdown_list" v-bind:class="sess[1]" v-bind:value="sess[2]" :selected="change_to_session === sessions[enrollment_admin_selection][0]">
+                                     {{ sess[0] }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="action-set">
+                            <li class="edit-action enabled-action" href="javascript:void(0);" type="button" v-on:click="check_request_action('edit')"><i class="far fa-edit"></i> <span>${_("Edit")}</span></li>
+                            <li v-if="currentAll_list_has_user_selected || request_action === 'change_session'" class="change-action enabled-action" href="javascript:void(0);" type="button" v-on:click="check_request_action('change_session')"><i class="far fa-random"></i><span>${_("Change session")}</span></li>
+                            <li v-else class="change-action" href="javascript:void(0);" type="button"><i class="far fa-random"></i><span>${_("Change session")}</span></li>
+                            <li v-if="currentAll_list_has_user_selected || request_action === 'accept'" class="accept-action enabled-action" href="javascript:void(0);" type="button" v-on:click="check_request_action('accept')"><i class="far fa-user-check"></i><span>${_("Accept")}</span></li>
+                            <li v-else class="accept-action" href="javascript:void(0);" type="button"><i class="far fa-user-check"></i><span>${_("Accept")}</span></li>
+                            <li v-if="currentAll_list_has_user_selected || request_action === 'unenroll'" class="unenroll-action enabled-action" href="javascript:void(0);" type="button" v-on:click="check_request_action('unenroll')"><i class="far fa-user-times"></i><span>${_("Unenroll")}</span></li>
+                            <li v-else class="unenroll-action" href="javascript:void(0);" type="button"><i class="far fa-user-times"></i><span>${_("Unenroll")}</span></li>
+                        </div>
+                    </div>
+                    <div class="results">
+                        <table id="result-list">
+                            <thead>
+                                <tr>
+                                    <th class="column-action-checkbox">
+                                       <input type="checkbox" id="action-toggle" v-model="checkbox_select_all_requests" v-on:click="select_all">
+                                    </th>
+                                    <th class="column-username">
+                                       ${_("Username")}
+                                    </th>
+                                    <th class="column-name">${_("Name")}</th>
+                                    <th class="column-store">${_("Store ID")}</th>
+                                    <th class="column-status">${_("Status")}</th>
+                                    <th class="column-accommodation" v-if="accommodation_enabled">${_("Accommodation")}</th>
+                                    <th class="column-comment" v-if="accommodation_enabled">${_("Comment")}</th>
+                                    <th class="column-one-way" v-if="accommodation_enabled">${_("One way")}</th>
+                                    <th class="column-return" v-if="accommodation_enabled">${_("Return")}</th>
+                                </tr>
+                            </thead>
+                            <tbody v-if="request_action === 'edit'">
+                                <tr v-for="(request, idx) in currentAll_list" v-on:change="update_edited_requests(idx, request.user_id)">
+                                    <td class="column-action-checkbox" style="display: none">
+                                       <input type="checkbox" id="action-toggle" v-model="request.checked">
+                                    </td>
+                                    <td :class="'column-username '+request.status">
+                                       <span>{{ request.employee_id }}</span>
+                                    </td>
+                                    <td class="column-name">{{ request.name }}</td>
+                                    <td class="column-store">{{ request.store_id }}</td>
+                                    <td class="column-status" :class="['column-status-' + request.status]">{{ trans(request.status) }}</td>
+                                    <td class="column-accommodation" v-if="accommodation_enabled">
+                                        <select v-model="request.accommodation">
+                                            <option value="yes">${_("Yes")}</option>
+                                            <option value="no">${_("No")}</option>
+                                        </select>
+                                    </td>
+                                    <td class="column-comment" v-if="accommodation_enabled">
+                                        <textarea v-model="request.comment"></textarea>
+                                    </td>
+                                    <td class="column-one-way" v-if="accommodation_enabled">
+                                        <input v-model="request.number_of_one_way">
+                                    </td>
+                                    <td class="column-return" v-if="accommodation_enabled">
+                                        <input v-model="request.number_of_return">
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
+                                <tr v-for="(request, idx) in currentAll_list">
+                                    <td class="column-action-checkbox">
+                                       <input type="checkbox" id="action-toggle" v-model="request.checked">
+                                    </td>
+                                    <td :class="'column-username '+request.status">
+                                       <span>{{ request.employee_id }}</span>
+                                    </td>
+                                    <td class="column-name">{{ request.name }}</td>
+                                    <td class="column-store">{{ request.store_id }}</td>
+                                    <td class="column-status" :class="['column-status-' + request.status]">{{ trans(request.status) }}</td>
+                                    <td class="column-accommodation" v-if="accommodation_enabled">{{ trans(request.accommodation) }}</td>
+                                    <td class="column-comment" v-if="accommodation_enabled">{{ request.comment }}</td>
+                                    <td class="column-one-way" v-if="accommodation_enabled">{{ request.number_of_one_way }}</td>
+                                    <td class="column-return" v-if="accommodation_enabled">{{ request.number_of_return }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="confirm-buttons">
+                        <button class="btn-save" v-if="request_action === 'edit'" v-on:click="batch_update_accepted_requests">${_("Save")}</button>
+                        <button class="btn-cancel" v-if="request_action === 'edit'" v-on:click="cancel_update_accepted_requests">${_("Cancel")}</button>
+                        <button class="btn-save" v-if="request_action === 'accept'" v-on:click="batch_accept_requests">${_("Save")}</button>
+                        <button v-if="request_action === 'change_session' && change_to_session != null && change_to_session != sessions[enrollment_admin_selection][0] && currentAll_list_has_user_selected" title="${_('Run the selected action')}" v-on:click="batch_switch_session"> ${_("Save")}</button>
+                        <button class="btn-unenroll" v-if="request_action === 'unenroll' && currentAll_list_has_user_selected" v-on:click="show_unenroll_confirm" title="${_('Run the selected action')}"> ${_("Save")}</button>
+                    </div>
+                    <div id="unenroll-confirm" style="display: none; z-index: 1002">
+                        <p>${_("Are you sure that you want to unenroll these learners?")}</p>
+                        <button class="unenroll-yes" v-on:click="batchUnenroll">${_("Yes")}</button>
+                        <button class="unenroll-no" v-on:click="cancel_unenroll">${_("No")}</button>
+                    </div>
+                    <div class="ilt-unenroll-overlay" style="z-index: 1001; background-color: rgba(0,0,0,0.4); display: none; position: fixed;top: 0;bottom: 0;left: 0;right: 0"></div>
+                    <div v-if="request_action === '' && enrollment_tab_confirm_info != ''" class="confirm-information">
+                        <p v-if="enrollment_tab_confirm_info === 'edit'" class="enrollment-status">${_("Your changes have been taken into account.")}</p>
+                        <p v-if="enrollment_tab_confirm_info === 'unenroll'" class="enrollment-status">${_("The learner has been unenrolled.")}</p>
+                        <p v-if="enrollment_tab_confirm_info === 'change_session'" class="enrollment-status">${_("The learner's session has been changed.")}</p>
+                        <p v-if="enrollment_tab_confirm_info === 'accept'" class="enrollment-status">${_("The learner's request has been accepted.")}</p>
+                    </div>
+                </div>
+            </div>
+            <div id="ilt-management-1">
+                <div v-if="dropdown_list.length > 0 && !hide_list_to_admin" class="ilt-admin-selection">
+                    <h3>${_("Choose a session")}</h3>
+                    <select v-model="class_admin_selection">
+                        <option v-for="(sess, idx) in dropdown_list" v-bind:class="sess[1]" v-bind:value="idx" :selected="idx === class_admin_selection" :disabled="isDatePassNow(sess[1]['start_at']) && !isStaff">
+                             {{ sess[0] }}
+                        </option>
+                    </select>
+                </div>
+                <div v-else-if="dropdown_list.length == 0" class="ilt-admin-selection">
+                    <h3>${_("NO SESSIONS AVAILABLE")}</h3>
+                </div>
+                <div v-else class="ilt-admin-selection">
+                    <h3>${_("NO INCOMING SESSIONS AVAILABLE")}</h3>
+                </div>
+                <div class="ilt-enrollees attendance-view">
+                    <h3>${_("View and download the attendance sheet of the learners enrolled in the selected session")}</h3>
+                    <a v-if="sessions.length == 0 || class_admin_selection == null" href="javascript: void(0);"><button>${_("View Attendance Sheet")}</button></a>
+                    <a v-else :href="attendance_sheet_url" target="_blank"><button>${_("View Attendance Sheet")}</button></a>
+                </div>
+
+                <div v-if="isAdmin" class="ilt-ack">
+                    <input v-if="sessions.length == 0 || class_admin_selection == null" v-on:click="alertChooseSession" id="acknowledge-reception" type="checkbox" :checked="ack_attendance_sheet == true">
+                    <input v-else id="acknowledge-reception" type="checkbox" v-on:change="updateAckAttendance(sessions[class_admin_selection][0], sessions[class_admin_selection][1]['ack_attendance_sheet'])" v-model="sessions[class_admin_selection][1]['ack_attendance_sheet']" :checked="ack_attendance_sheet == true">
+                    <label for="acknowledge-reception">${_("Acknowledge reception of the attendance sheet")}</label>
+                </div>
+
+                <div v-if="isAdmin" class="ilt-enrollees">
+                    <h3>${_("Download the CSV file of the learners enrolled in the selected session")}</h3>
+                    <button v-on:click="downloadCSV">${_("Download")}</button>
+                </div>
+                <div v-if="isAdmin" class="ilt-completion">
+                    <h3>${_("After you download the CSV file of the enrolled learners, tick with a 'x' the column 'attendance' if the learner attended the course. "
+                            "Then save the file and upload it back to validate the completion of the module in the platform.")}</h3>
+                    <input type="file" accept="text/csv" @change="onCSVChange" />
+                    <button v-on:click="validateCSV">${_("Validate")}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

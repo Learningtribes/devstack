@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="iframe_block">
+    {% if iframe_url %}
+        <iframe class="iframe" frameborder="0" src="{{iframe_url}}"></iframe>
+    {% elif is_in_studio %}
+        <!--<p class="iframe-default-text component-default-text">
+            {% trans "Use the IFrame tool to embed an exercise or tool from any web site into your course content."%}
+        </p>-->
+    <div class="colorful-boxes">
+        <div class="blue-block">
+            <span class="icon"><span class="fal fa-box"></span></span>
+            <strong>{% trans "Use IFrame Component"%}</strong>
+            <p>{% trans "Add web pages as iframe into your course."%}</p>
+        </div>
+        <div class="yellow-block">
+            <span class="icon"><span class="fal fa-play"></span></span>
+            <strong>{% trans "You are now ready"%}</strong>
+            <p>{% trans "Add iFrame by clicking on the pencil icon."%}</p>
+        </div>
+    </div>
+
+    {% endif %}
+</div>

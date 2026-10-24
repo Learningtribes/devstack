@@ -1,0 +1,71 @@
+{% load i18n %}
+{% if scorm_pkg_value %}
+<div class="themeable-xblock scormxblock_block">
+    <div class="exit-fullscreen-button hidden">
+        <i class="fa-regular fa-xmark-large"></i>
+        <span class="close-button-text">{% trans 'Close' %}</span>
+    </div>
+    {% if open_new_tab_value %}
+    <div class="launch-div">
+        <div class="instruction">{{ instruction_value }}</div>
+
+        <div class="scorm_object_container">
+            <div class="scorm-object-header">
+                <div class="exit-fullscreen-button">
+                    <i class="fa-solid fa-compress"></i>
+                    <span class="close-button-text">{% trans 'Exit full screen' %}</span>
+                </div>
+            </div>
+            <iframe id="scorm-object-frame" class="scorm_object" src="{{ cms_path }}"></iframe>
+        </div>
+
+        <div class="description">
+            <button class="ds-button launch-button">
+                <i class="fa-solid fa-expand"></i>
+                {% trans "Full screen" %}
+            </button>
+        </div>
+    </div>
+    {% else %}
+    <iframe id="scorm-object-frame" class="scorm_object" src="{{ cms_path }}"></iframe>
+    {% endif %}
+</div>
+{% else %}
+<div class="scorm_xblock">
+    <p>
+        <div class="supported-tags" id="supported-tags">
+            <ul class="supported-resources">
+                {% for resource in external_resources %}
+                <li class="swiper-slide resource-item" data-status="{{ resource.tags|join:',' }}" style="display: block;">
+                    <div class="item-container" onclick=" window.open('{{ resource.site_link }}','_blank')">
+                        <div class="item-title-bar">
+                            <span class="item-title-prefix">
+                                {{ resource.svg_image | safe }}
+                                <a class="item-name">{{ resource.name }}</a>
+                            </span>
+                            {% if resource.paying %}
+                            <span class="item-title-tail">{{ usd_svg | safe }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="item-description">{% trans resource.description %}</div>
+                        <div class="item-tags-bar">
+                            <span class="item-tags-prefix">
+                            {% for tag_name in resource.tags %}
+                                {% if tag_name == 'Video' %}
+                                <span class="item-blue-tag">{% trans tag_name %}</span>
+                                {% elif tag_name == 'Quiz' %}
+                                <span class="item-lightblue-tag">{% trans tag_name %}</span>
+                                {% elif tag_name == 'eLearning authoring tools' %}
+                                <span class="item-lightgreen-tag">{% trans tag_name %}</span>
+                                {% endif %}
+                            {% endfor %}
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </p>
+</div>
+{% endif %}

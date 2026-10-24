@@ -1,0 +1,4 @@
+# Build-time only (uv --build-constraint): setuptools 81+ drops pkg_resources, which sdist-only PyPI
+# packages still import in their build backends (drf-yasg 1.1.3 via setuptools_scm).
+# Applied to build environments only; does not pin the runtime environment.
+setuptools<81

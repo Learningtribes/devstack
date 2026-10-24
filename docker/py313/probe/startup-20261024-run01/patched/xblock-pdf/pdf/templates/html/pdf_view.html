@@ -1,0 +1,79 @@
+<%!
+from django.utils.translation import ugettext as _
+from crequest.middleware import CrequestMiddleware
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
+%>
+
+<div class="pdf_placeholder" style="width: auto; height: 480px; display: none;"></div>
+
+<div class="pdf_block">
+  <div class="block-header-wrapper pdf-header-wrapper">
+    <h3>${display_name}</h3>
+  </div>
+  <div class="block-label pdf-label">
+    <span class="fal fa-file-pdf block-label-icon"></span>
+    <span class="block-label-text">${_("PDF")}</span>
+  </div>
+  <hr class="sep-line">
+  <%
+    host_name_of_pdf_file_url = '{uri.netloc}'.format(uri=urlparse(url))
+    current_host_name = CrequestMiddleware.get_request().get_host()
+    if host_name_of_pdf_file_url == current_host_name or (url and url.startswith('/')):
+      mode = 'h5'
+    else:
+      mode = 'embed'
+    endif
+    try:
+      if host_name_of_pdf_file_url.split('.', 1)[1] in current_host_name:
+        pdf_url = urlparse(url).path
+      else:
+          pdf_url = url
+      endif
+    except:
+      pdf_url = url
+  %>
+  % if pdf_url != "":
+  <div class="pdf-wrapper ${mode}">
+    <object class="pdf-h5-container" data-src="${pdf_url}" data="" type="text/html" width="100%" height="600"></object>
+    <object class="pdf-embed-container" data-src="${pdf_url}" data="" type="application/pdf" width="100%" height="600"><p>${_("It appears you don't have a PDF plugin for this browser or the PDF URL is invalid.")}</p></object>
+  </div>
+  % else:
+  <div class="colorful-boxes">
+      <div class="blue-block">
+          <span class="icon"><span class="fal fa-file-pdf"></span></span>
+          <strong>${_('Use PDF Component')}</strong>
+          <p>${_('Add this component to display PDF in iframe.')}</p>
+      </div>
+      <div class="yellow-block">
+          <span class="icon"><span class="fal fa-play"></span></span>
+          <strong>${_('You are now ready')}</strong>
+          <p>${_('Add a PDF by clicking on the pencil icon.')}</p>
+      </div>
+  </div>
+  % endif
+
+  % if source_url != "" or allow_download:
+  <ul>
+    % if allow_download:
+    <li class="pdf-download-button">
+      <a href="${ url }" download>${_("Download the PDF")}</a>
+    </li>
+    % endif
+
+    % if source_url != "":
+    <li class="pdf-download-button">
+      <a href="${ source_url }" download>
+        % if source_text == "":
+          ${_("Download the source document")}
+        % else:
+          ${ source_text }
+        % endif
+      </a>
+    </li>
+    % endif
+  </ul>
+  % endif
+</div>
