@@ -459,7 +459,7 @@ event-tracking==4.0.0
     #   edx-search
 executing==2.3.0
     # via stack-data
-externality-xblock @ file:///work/patched/externality-xblock
+externality-xblock @ file:///runtime/rebuild-sources-20261025/externality-xblock
     # via -r solver-s3pA.in
 fastavro==1.12.2
     # via openedx-events
@@ -554,9 +554,9 @@ idna==3.13
     #   anyio
     #   httpx
     #   requests
-iframe-id-xblock @ file:///work/patched/iframe-id-xblock
+iframe-id-xblock @ file:///runtime/rebuild-sources-20261025/iframe-id-xblock
     # via -r solver-s3pA.in
-ilt-xblock @ file:///work/patched/ilt-xblock
+ilt-xblock @ file:///runtime/rebuild-sources-20261025/ilt-xblock
     # via -r solver-s3pA.in
 inflection==0.5.1
     # via drf-yasg
@@ -605,7 +605,7 @@ lazy==1.6
     #   lti-consumer-xblock
     #   ora2
     #   xblock
-lbmdone-xblock @ file:///work/patched/lbmdone-xblock
+lbmdone-xblock @ file:///runtime/rebuild-sources-20261025/lbmdone-xblock
     # via -r solver-s3pA.in
 legacy-cgi==2.6.4
     # via webob
@@ -663,7 +663,7 @@ meilisearch==0.41.0
     # via edx-search
 mock==5.2.0
     # via -r solver-s3pA.in
-mongodbproxy @ file:///work/patched/MongoDBProxy
+mongodbproxy @ file:///runtime/rebuild-sources-20261025/MongoDBProxy
     # via -r solver-s3pA.in
 mongoengine==0.29.3
     # via
@@ -969,7 +969,7 @@ scipy==1.17.1
     #   -r solver-s3pA.in
     #   calc
     #   chem
-scormxblock-xblock @ file:///work/patched/scormxblock-xblock
+scormxblock-xblock @ file:///runtime/rebuild-sources-20261025/scormxblock-xblock
     # via -r solver-s3pA.in
 semantic-version==2.10.0
     # via edx-drf-extensions
@@ -1157,7 +1157,7 @@ xblock-drag-and-drop-v2==5.1.1
     # via -r solver-s3pA.in
 xblock-google-drive==0.8.2
     # via -r solver-s3pA.in
-xblock-pdf @ file:///work/patched/xblock-pdf
+xblock-pdf @ file:///runtime/rebuild-sources-20261025/xblock-pdf
     # via -r solver-s3pA.in
 xblock-poll==1.15.1
     # via -r solver-s3pA.in
