@@ -43,3 +43,7 @@ uv pip install --python /runtime/venv/bin/python --reinstall --no-deps /runtime/
 uv pip install --python /runtime/venv/bin/python python-memcached==1.62
 
 /runtime/venv/bin/python /startup/install_dogapi.py
+
+mkdir -p /runtime/build-sources/edx-drf-extensions-10.6.0-py313
+cp -a /startup/dependencies/edx_drf_extensions-10.6.0/. /runtime/build-sources/edx-drf-extensions-10.6.0-py313/
+uv pip install --python /runtime/venv/bin/python --reinstall --no-deps /runtime/build-sources/edx-drf-extensions-10.6.0-py313

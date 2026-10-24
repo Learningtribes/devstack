@@ -49,6 +49,18 @@ try:
         normal = issue('certificates:read')
         check('normal-self-data', normal, user, course, 200)
         check('normal-other-denied', normal, other, course, 403)
+        # Constructed negative consumer probes are distinct from actual issuance.
+        claims = jwt.decode(normal, options={'verify_signature': False})
+        for label, changes in [
+            ('wrong-issuer', {'iss':'https://invalid.example.test/'}),
+            ('wrong-audience', {'aud':'invalid-audience'}),
+            ('expired', {'exp':1}),
+        ]:
+            probe = jwt.encode({**claims, **changes}, settings.SECRET_KEY, algorithm='HS256')
+            check('constructed-'+label, probe, user, course, 401)
+        bad = jwt.encode(claims, secrets.token_urlsafe(32), algorithm='HS256')
+        check('constructed-bad-signature', bad, user, course, 401)
+
         switch, _ = Switch.objects.update_or_create(name='oauth2.enforce_jwt_scopes', defaults={'active':True})
         # Waffle defers invalidation to commit; this SQL-only fixture rolls back.
         switch.flush()

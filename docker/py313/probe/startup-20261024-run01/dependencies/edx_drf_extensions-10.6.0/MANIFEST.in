@@ -1,0 +1,8 @@
+include requirements/base.in
+include requirements/test.in
+include requirements/docs.in
+include CHANGELOG.rst
+include LICENSE
+include README.rst
+test_settings.py
+include requirements/constraints.txt
