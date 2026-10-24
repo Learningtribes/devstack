@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 import functools
 import logging
@@ -102,13 +100,10 @@ def get_timezones():
 
 
 def sorted_sessions(sessions):
-    items = sessions.items()
-    for k, v in items:
-        if k == 'counter':
-            items.remove((k, v))
-            break
-    items.sort(key=lambda itm: decode_datetime(itm[1]['start_at']))
-    return items
+    return sorted(
+        ((key, value) for key, value in sessions.items() if key != 'counter'),
+        key=lambda item: decode_datetime(item[1]['start_at']),
+    )
 
 
 def generate_key_for_session():
@@ -586,8 +581,8 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             'accommodation': configuration_helper.get_value("ILT_ACCOMMODATION_ENABLED", False),
             'accommodation_list': all_list[1],
             'all_list': all_list[0],
-            'course_id': unicode(self.course_id),
-            'usage_id': unicode(self.location),
+            'course_id': str(self.course_id),
+            'usage_id': str(self.location),
             'bypass_validation_flag': configuration_helper.get_value("ILT_BYPASS_VALIDATION_WORKFLOW", "hidden"),
             'show_ilt_invitation': configuration_helper.get_value('SHOW_ILT_INVITATION', True)
         })
@@ -620,7 +615,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             self.ilt_sessions[sess_key]['ack_attendance_sheet'] = status
             logger.info("Updated acknowledge reception of the attendance sheet for "
                         "ilt_module: {usage_key}, session_nb: #{sess_key}, status: {status}, User id: {user_id}".format(
-                            usage_key=unicode(self.location), sess_key=sess_key, status=status, user_id=self.runtime.user_id
+                            usage_key=str(self.location), sess_key=sess_key, status=status, user_id=self.runtime.user_id
                         ))
             return self.get_student_data()
         else:
@@ -662,7 +657,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 break
         logger.info("Updated or created a session, ilt_module: {usage_key}, session_nb: #{sess_key}, "
                    "session_info: {sess}, User: {user_id}".format(
-                    usage_key=unicode(self.location),
+                    usage_key=str(self.location),
                     sess_key=sess_key,
                     sess=sess,
                     user_id=self.runtime.user_id
@@ -694,7 +689,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                                   session_info=session_info)
             self.ilt_enrolled_users.pop(sess_key, {})
             logger.info("Deleted a session, ilt_module: {usage_key}, session_nb: #{sess_key}, User: {user_id}".format(
-                usage_key=unicode(self.location),
+                usage_key=str(self.location),
                 sess_key=sess_key,
                 user_id=self.runtime.user_id
             ))
@@ -866,14 +861,14 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         if not session:
             return result
         _ = self.ugettext
-        for sess, stds, in self.enrolled_users.iteritems():
+        for sess, stds, in self.enrolled_users.items():
             if sess != session:
                 continue
             users = User.objects.filter(id__in=stds).prefetch_related('profile')
             for u in users:
                 if stds[str(u.id)]['status'] == "accepted" or stds[str(u.id)]['status'] == "confirmed":
                     result.append({'username': u.username, 'session': self.session_to_str(sess, self.sessions[sess]),
-                                   'country': unicode(u.profile.country.name),
+                                   'country': str(u.profile.country.name),
                                    'full_name': u.profile.name, 'attendance': ''})
         return result
 
@@ -992,7 +987,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                     "session_nb: #{sess_key}, identifiers: {identifiers}, result: {result}".format(
                         action=action,
                         user_id=self.runtime.user_id,
-                        usage_key=unicode(self.location),
+                        usage_key=str(self.location),
                         sess_key=session,
                         identifiers=identifiers,
                         result=result
@@ -1073,7 +1068,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             self._unenroll(enrolled_session[0], user, request)
             logger.info("Self unenroll, learner: {user_id}, ilt_module: {usage_key}, session_nb: #{sess_key}".format(
                 user_id=self.runtime.user_id,
-                usage_key=unicode(self.location),
+                usage_key=str(self.location),
                 sess_key=session
             ))
         else:  # not enrolled
@@ -1083,7 +1078,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                             "session_nb: #{sess_key}, request_info: {info}".format(
                                 user_id=self.runtime.user_id,
                                 sess_key=session,
-                                usage_key=unicode(self.location),
+                                usage_key=str(self.location),
                                 info=request_info
                             ))
             except JsonHandlerError as e:
@@ -1266,7 +1261,7 @@ class ILTXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         for k, v in self.enrolled_users.items():
             sublist = []
             accommodation_sublist = []
-            for u, i in v.items():
+            for u, i in list(v.items()):
                 if i['status'] != 'refused':
                     try:
                         user = User.objects.get(id=u)

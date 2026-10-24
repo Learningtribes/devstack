@@ -1,5 +1,5 @@
 /* Javascript for LbmDoneXBlock. */
-function updateCheck(element, data) {
+function updateCheck(element) {
     if ($('#lbmdonexblock-checkbox', element).prop("checked")) {
         $('.lbmdonexblock_block', element).addClass("done");
         $('.fa-check-square-o', element).removeClass("invisible").addClass("visible");
@@ -13,7 +13,7 @@ function updateCheck(element, data) {
 
 function LbmDoneXBlock(runtime, element, data) {
     $('#lbmdonexblock-checkbox', element).prop("checked", data.done);
-    updateCheck(element, data);
+    updateCheck(element);
     var handlerUrl = runtime.handlerUrl(element, 'toggle_button');
 
     $(function ($) {
@@ -22,25 +22,31 @@ function LbmDoneXBlock(runtime, element, data) {
             $('.lbmdonexblock_block').css('background-color', lbmRed);
         }
 
-        $('.lbmdonexblock_block', element).click(function() {
-            var current_done = data.done;
-            var to_done = !data.done;
-            if (current_done != to_done) {
-                $('#lbmdonexblock-checkbox', element).prop("checked", to_done.done);
+        var checkbox = $('#lbmdonexblock-checkbox', element);
+        var pending = false;
+        $('.lbmdonexblock_block', element).click(function(event) {
+            // A label click also activates its checkbox. Handle it only once.
+            event.preventDefault();
+            if (pending) {
+                return;
             }
-            updateCheck();
+            pending = true;
+            var current_done = checkbox.prop("checked");
             $.ajax({
                 type: "POST",
                 url: handlerUrl,
                 data: JSON.stringify({}),
                 success: function(return_data) {
-                    $('#lbmdonexblock-checkbox', element).prop("checked", return_data.done);
-                    updateCheck();
+                    checkbox.prop("checked", return_data.done);
+                    updateCheck(element);
                 },
                 error: function() {
-                    $('#lbmdonexblock-checkbox', element).prop("checked", current_done.done);
-                    updateCheck();
+                    checkbox.prop("checked", current_done);
+                    updateCheck(element);
                 },
+                complete: function() {
+                    pending = false;
+                }
             });
         });
 
