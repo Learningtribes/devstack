@@ -10,14 +10,8 @@ import shutil
 
 import sass
 
-source = Path('/startup/theme-inputs/7c0dbec1b0a7/hawthorn')
-record = json.loads((source.parent / 'source-sha256.json').read_text())
-actual = {str(p.relative_to(source)): hashlib.sha256(p.read_bytes()).hexdigest()
-          for p in source.rglob('*') if p.is_file()}
-assert actual == record['files'], 'Theme input tree differs from registered commit'
-print('Verified theme source:', record['commit'], len(actual), 'files', flush=True)
-theme = Path('/runtime/themes-7c0dbec1b0a7/hawthorn')
-shutil.copytree(source, theme, dirs_exist_ok=True)
+from prepare_theme_inputs import theme
+
 common = ['common/static', 'common/static/sass', 'node_modules/@edx',
           'node_modules', 'node_modules/edx-pattern-library/node_modules']
 outputs = {}
