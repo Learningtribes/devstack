@@ -71,6 +71,21 @@ def configure(namespace, system):
         namespace['SITE_ID'] = int(site_ids[site_domain])
     from local_discovery import configure as configure_discovery
     configure_discovery(namespace)
+    queue_prefix = os.environ.get('PY313_TASK_QUEUE_PREFIX')
+    if queue_prefix:
+        queue_names = {priority: queue_prefix + '.' + priority
+                       for priority in ('high', 'default', 'low', 'high_mem')}
+        namespace.update(
+            HIGH_PRIORITY_QUEUE=queue_names['high'],
+            DEFAULT_PRIORITY_QUEUE=queue_names['default'],
+            LOW_PRIORITY_QUEUE=queue_names['low'],
+            HIGH_MEM_QUEUE=queue_names['high_mem'],
+            CELERY_DEFAULT_QUEUE=queue_names['default'],
+            CELERY_DEFAULT_ROUTING_KEY=queue_names['default'],
+            CELERY_DEFAULT_EXCHANGE=queue_prefix,
+            CELERY_QUEUES={name: {} for name in queue_names.values()},
+            CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS={'global_keyprefix': queue_prefix + ':'},
+        )
     # Exercise the canonical DOT routes in this isolated local runtime.
     namespace['FEATURES']['ENABLE_OAUTH2_PROVIDER'] = True
     namespace['FEATURES']['ENABLE_COURSEWARE_SEARCH'] = True

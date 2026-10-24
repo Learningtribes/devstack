@@ -6,6 +6,7 @@ test -x /runtime/venv/bin/python || uv venv --python /usr/local/bin/python3.13 /
 /usr/local/bin/python3.13 /startup/prepare_patched_sources.py
 uv pip install --python /runtime/venv/bin/python --build-constraint /startup/build-constraints.txt --no-binary lxml --no-binary xmlsec --no-deps -r /startup/runtime-bootstrap.txt
 uv pip install --python /runtime/venv/bin/python 'setuptools==79.0.1'
+uv pip install --python /runtime/venv/bin/python 'python-memcached==1.62'
 if [[ "${PY313_PLATFORM_SOURCE_ROOT:-}" ]]; then
   source_root="$PY313_PLATFORM_SOURCE_ROOT"
   test -f "$source_root/manage.py"
@@ -34,4 +35,5 @@ uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sour
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/pysaml2-7.5.5
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/edx-sga-0.28.0
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/edx-search-5.0.0-lt
+/runtime/venv/bin/python /startup/install_verified_runtime_additions.py
 uv pip check --python /runtime/venv/bin/python
