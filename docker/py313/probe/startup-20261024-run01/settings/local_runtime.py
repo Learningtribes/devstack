@@ -76,7 +76,7 @@ def configure(namespace, system):
     configure_discovery(namespace)
     queue_prefix = os.environ.get('PY313_TASK_QUEUE_PREFIX')
     if queue_prefix:
-        queue_names = {priority: queue_prefix + '.' + priority
+        queue_names = {priority: queue_prefix + '.' + system + '.' + priority
                        for priority in ('high', 'default', 'low', 'high_mem')}
         namespace.update(
             HIGH_PRIORITY_QUEUE=queue_names['high'],
@@ -86,7 +86,21 @@ def configure(namespace, system):
             CELERY_DEFAULT_QUEUE=queue_names['default'],
             CELERY_DEFAULT_ROUTING_KEY=queue_names['default'],
             CELERY_DEFAULT_EXCHANGE=queue_prefix,
-            CELERY_QUEUES={name: {} for name in queue_names.values()},
+            CELERY_QUEUES={queue_prefix + '.' + service + '.' + priority: {}
+                           for service in ('lms', 'cms')
+                           for priority in ('high', 'default', 'low', 'high_mem')},
+            POLICY_CHANGE_GRADES_ROUTING_KEY=queue_prefix + '.lms.low',
+            CELERY_ROUTES={
+                task: {'queue': queue_prefix + '.lms.default',
+                       'routing_key': queue_prefix + '.lms.default'}
+                for task in (
+                    'completion_aggregator.tasks.update_aggregators',
+                    'openedx.core.djangoapps.content.block_structure.tasks.update_course_in_cache',
+                    'openedx.core.djangoapps.content.block_structure.tasks.update_course_in_cache_v2',
+                    'courseware.tasks.send_ilt_course_pre_publish_emails',
+                    'lms.djangoapps.grades.tasks.compute_all_grades_for_course',
+                )
+            },
             CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS={'global_keyprefix': queue_prefix + ':'},
         )
     # Exercise the canonical DOT routes in this isolated local runtime.
