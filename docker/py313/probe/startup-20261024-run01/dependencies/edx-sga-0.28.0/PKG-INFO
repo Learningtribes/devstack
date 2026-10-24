@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: edx-sga
+Version: 0.28.0
+Summary: edx-sga Staff Graded Assignment XBlock
+Home-page: https://github.com/mitodl/edx-sga
+Author: MITx
+License: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Natural Language :: English
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.2
+Classifier: Framework :: Django :: 4.2
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Education
+License-File: LICENSE
+Requires-Dist: XBlock
+Requires-Dist: xblock-utils
+Requires-Dist: web_fragments
+Dynamic: author
+Dynamic: classifier
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary

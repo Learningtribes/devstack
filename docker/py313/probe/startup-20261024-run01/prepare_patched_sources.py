@@ -5,9 +5,19 @@ from pathlib import Path
 import shutil
 
 INPUT_ROOT = Path('/startup/patched')
-OUTPUT_ROOT = Path('/runtime/rebuild-sources-20261025')
-MANIFEST_PATH = Path('/runtime/rebuild-sources-20261025.manifest.json')
+OUTPUT_ROOT = Path('/runtime/rebuild-sources-20261025-run25')
+MANIFEST_PATH = Path('/runtime/rebuild-sources-20261025-run25.manifest.json')
 PACKAGES = (
+    'edx-opaque-keys-0.4.4-lt',
+    'django-splash-1.3.0',
+    'django-require-1.0.11',
+    'jazkarta-edx-jsme-690dbf7',
+    'django-ratelimit-backend-2.0',
+    'edx_completion-5.0.0',
+    'djangosaml2idp-da3798e',
+    'pysaml2-7.5.5',
+    'edx-sga-0.28.0',
+    'edx-search-5.0.0-lt',
     'externality-xblock',
     'iframe-id-xblock',
     'ilt-xblock',
@@ -35,8 +45,13 @@ def digest_tree(root):
 
 expected = {}
 for package in PACKAGES:
-    source = INPUT_ROOT / package
-    if not (source / 'setup.py').is_file():
+    source = (INPUT_ROOT.parent / 'patched' / package
+              if package == 'edx-opaque-keys-0.4.4-lt' else INPUT_ROOT.parent / 'dependencies' / package
+              if package in {'django-splash-1.3.0', 'django-require-1.0.11', 'jazkarta-edx-jsme-690dbf7', 'django-ratelimit-backend-2.0', 'edx_completion-5.0.0', 'pysaml2-7.5.5', 'edx-sga-0.28.0', 'edx-search-5.0.0-lt'} else INPUT_ROOT.parent / 'dependencies' / package / 'source' if package == 'djangosaml2idp-da3798e' else INPUT_ROOT / package)
+    setup_file = source / 'setup.py'
+    if package == 'pysaml2-7.5.5':
+        setup_file = source / 'pyproject.toml'
+    if not setup_file.is_file():
         raise SystemExit('Missing registered setup.py for ' + package)
     expected[package] = digest_tree(source)
 
@@ -47,11 +62,23 @@ if OUTPUT_ROOT.exists() or MANIFEST_PATH.exists():
     actual = {package: digest_tree(OUTPUT_ROOT / package) for package in PACKAGES}
     if recorded != expected or actual != expected:
         raise SystemExit('Existing build input does not match registered sources; preserving it')
+    shutil.rmtree(OUTPUT_ROOT)
+    for package in PACKAGES:
+        source = (INPUT_ROOT.parent / 'patched' / package
+                  if package == 'edx-opaque-keys-0.4.4-lt' else INPUT_ROOT.parent / 'dependencies' / package
+                  if package in {'django-splash-1.3.0', 'django-require-1.0.11', 'jazkarta-edx-jsme-690dbf7', 'django-ratelimit-backend-2.0', 'edx_completion-5.0.0', 'pysaml2-7.5.5', 'edx-sga-0.28.0', 'edx-search-5.0.0-lt'} else INPUT_ROOT.parent / 'dependencies' / package / 'source' if package == 'djangosaml2idp-da3798e' else INPUT_ROOT / package)
+        shutil.copytree(source, OUTPUT_ROOT / package, ignore=IGNORED)
+    actual = {package: digest_tree(OUTPUT_ROOT / package) for package in PACKAGES}
+    if actual != expected:
+        raise SystemExit('Refreshed writable source copy hash mismatch; preserving copy')
     print('Verified existing writable source copy:', len(PACKAGES), 'packages')
 else:
     OUTPUT_ROOT.mkdir(parents=True)
     for package in PACKAGES:
-        shutil.copytree(INPUT_ROOT / package, OUTPUT_ROOT / package, ignore=IGNORED)
+        source = (INPUT_ROOT.parent / 'patched' / package
+              if package == 'edx-opaque-keys-0.4.4-lt' else INPUT_ROOT.parent / 'dependencies' / package
+              if package in {'django-splash-1.3.0', 'django-require-1.0.11', 'jazkarta-edx-jsme-690dbf7', 'django-ratelimit-backend-2.0', 'edx_completion-5.0.0', 'pysaml2-7.5.5', 'edx-sga-0.28.0', 'edx-search-5.0.0-lt'} else INPUT_ROOT.parent / 'dependencies' / package / 'source' if package == 'djangosaml2idp-da3798e' else INPUT_ROOT / package)
+        shutil.copytree(source, OUTPUT_ROOT / package, ignore=IGNORED)
     actual = {package: digest_tree(OUTPUT_ROOT / package) for package in PACKAGES}
     if actual != expected:
         raise SystemExit('Writable source copy hash mismatch; preserving copy for inspection')
