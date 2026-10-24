@@ -387,47 +387,19 @@
                 }
             });
 
-            if (!window.loadingScormModuleMap) {
-                window.loadingScormModuleMap = {}
-            }
-            if (!window.loadedScormModules) {
-                window.loadedScormModules = [];
-            }
-            Array.from(document.querySelectorAll('.xblock-student_view-scormxblock')).filter(function(xblock) {
-                return xblock.querySelector('.scorm_object')
-            }).forEach(function(xblock, i) {
-                var xblockUsageId = (xblock.dataset && xblock.dataset.usageId) || 
-                                   $(xblock).data('usage-id') || 
-                                   $(xblock).attr('data-usage-id');
-                if (!usageId || xblockUsageId !== usageId) return
-                if (window.loadingScormModuleMap[usageId] !== undefined) return
-
-                var tomb = setInterval(() => {
-                    if (window.loadedScormModules.length === i) loadScormIFrame();
-                }, i * 2000 + 1000);
-
-                function loadScormIFrame() {
-                    if (window.loadingScormModuleMap[usageId] !== undefined) return
-                    window.loadingScormModuleMap[usageId] = tomb
-
-                    window.API = new SCORM_12_API();
-                    window.API_1484_11 = new SCORM_2004_API();
-                    var $iFrame = xblock.querySelector('.scorm_object');
-                    $iFrame.src = $iFrame.dataset.src;
-                    $iFrame.onload = function() {
-                        window.loadedScormModules.push(usageId)
-                        clearInterval(window.loadingScormModuleMap[usageId])
-
-                        // A SCORM pkg can have more than 1 <iframe>, we just setup event listener for the first one:
-                        const keyEventTargetFrame = $iFrame.contentWindow.document.querySelector('iframe') || $iFrame;
-                        keyEventTargetFrame.contentWindow.document.addEventListener('keyup', e => {
-                            if (e.keyCode === 27 || e.key === 'Escape') {
-                                quitFullscreen();       // Quite full screen mode
-                            }
-                        })
-                    }
-                }
-            })
+            // Initialization belongs to this rendered frame. Sequence navigation can
+            // replace a frame while retaining the same usage id in the document.
+            const scormFrame = element.querySelector('.scorm_object');
+            if (!scormFrame || scormFrame.dataset.scormLoading === 'true') return;
+            scormFrame.dataset.scormLoading = 'true';
+            scormFrame.addEventListener('load', function () {
+                const nestedFrame = scormFrame.contentWindow.document.querySelector('iframe');
+                const targetFrame = nestedFrame || scormFrame;
+                targetFrame.contentWindow.document.addEventListener('keyup', function (event) {
+                    if (event.keyCode === 27 || event.key === 'Escape') quitFullscreen();
+                });
+            }, {once: true});
+            scormFrame.src = scormFrame.dataset.src;
 
         });
     }
