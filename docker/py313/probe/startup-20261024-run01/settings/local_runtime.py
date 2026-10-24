@@ -59,6 +59,8 @@ def configure(namespace, system):
     configure_discovery(namespace)
     # Exercise the canonical DOT routes in this isolated local runtime.
     namespace['FEATURES']['ENABLE_OAUTH2_PROVIDER'] = True
+    namespace['FEATURES']['ENABLE_COURSEWARE_SEARCH'] = True
+    namespace['FEATURES']['ENABLE_COURSEWARE_INDEX'] = True
     # Keep the local JWT contract usable without placing a signing secret in source.
     jwt_key_path = Path('/startup/jwt-private.pem')
     if jwt_key_path.is_file():
