@@ -29,7 +29,7 @@ def configure(namespace, system):
         DATABASES={'default': {'ENGINE':'django.db.backends.mysql', 'NAME':os.environ.get('PY313_DATABASE_NAME', 'py313_startup_20261024'),
                    'USER':os.environ.get('PY313_MYSQL_USER','edxapp'), 'PASSWORD':os.environ['PY313_MYSQL_PASSWORD'],
                    'HOST':'mysql', 'PORT':'3306', 'OPTIONS':{'charset':'utf8mb4'},
-                   'TEST': {'NAME':'py313_goal_scorm_test_20261025', 'CHARSET':None, 'COLLATION':None}}},
+                   'TEST': {'NAME':os.environ.get('PY313_TEST_DATABASE_NAME', 'py313_goal_scorm_test_20261025'), 'CHARSET':None, 'COLLATION':None}}},
         CACHES={'default':{'BACKEND':'django.core.cache.backends.memcached.PyMemcacheCache',
                           'LOCATION':'memcached:11211','KEY_PREFIX':os.environ.get('PY313_CACHE_PREFIX', 'py313_startup_20261024')}},
         SESSION_ENGINE='django.contrib.sessions.backends.db',
