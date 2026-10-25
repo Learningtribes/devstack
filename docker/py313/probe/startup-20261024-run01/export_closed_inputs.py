@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import tarfile
@@ -48,7 +49,7 @@ for label, base in [('startup', startup), ('platform', args.destination / 'platf
     for path in sorted(base.rglob('*')):
         relative = str(path.relative_to(base))
         if path.is_symlink():
-            files[relative] = {'link': str(path.readlink())}
+            files[relative] = {'link': os.readlink(path)}
         elif path.is_file():
             files[relative] = {'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
     entries[label] = files
