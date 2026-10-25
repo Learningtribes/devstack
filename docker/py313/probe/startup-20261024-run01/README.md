@@ -146,3 +146,52 @@ Discussion/wiki strict plugin checks and learner route replay passed on the pres
 Prior runtime evidence lives under
 /Users/noahwang/docs/hawthorn/py313-startup-artifacts-2026-10-24/run-02/.
 Never reuse that evidence as proof that each intermediate commit runs alone.
+
+## LT-02 local third-party token exchange rejection
+
+`test_auth_exchange_runtime.py` exercises the production LMS resolver and
+`oauth_dispatch` dispatch/decorators, real PSA backends, middleware, exchange
+form/adapter and DOT models. `settings/exchange_acceptance.py` is loaded in a
+new process before setup, URLs and scope choices are cached. It enables only
+this process's third-party-auth flag, appends installed GoogleOAuth2 and
+TwitterOAuth backends, uses a private in-memory cache, and shares the
+MIDDLEWARE/MIDDLEWARE_CLASSES list so ThirdPartyAuthConfig.ready registers the
+real exception middleware for Django 5.2. The default settings stay unchanged.
+
+Nine rejection cases cover missing access_token/client_id, nonexistent client,
+real confidential client, invalid scope, OAuth1/unknown backend and GET/PUT.
+All other fields use valid local values; the third-party token is an explicit
+nonsecret placeholder and must never reach do_auth. An existing ordinary user
+is read only as fixture owner. Two DOT applications, per-request anonymous
+sessions and pipeline markers are inspected inside SQL transactions and
+rolled back; no login, provider config/secret or existing business-row edit is
+needed. Anonymous country_code/ip_address session rows are expected; only the
+two client rejection cases add auth_entry=login_api. Authentication session
+keys, user/token/grant identities and existing session rows must stay unchanged.
+
+Python call profiling fails on do_auth or token issuance; the Python network
+audit rejects external DNS/connect/sendto and permits SQL/cache plus loopback
+statsd. Native MySQLdb SQL I/O is not a Python socket audit event. This is
+Django Client verification, not a browser or network OAuth/IdP success flow.
+
+Use a separately installed runtime containing the three TPA Django 5.2 import
+fixes (urls.py, api/urls.py, middleware.py); do not patch or restart run39.
+Prepare its registered theme sources and nonsecret site-ids.json mapping.
+For a preserved-database replay, the protected env must select the correct
+existing local database and the fixture owner must exist. No schema seed is
+run against that database. Choose a fresh evidence directory and output label:
+
+```bash
+mkdir -m 700 /absolute/path/to/new-run
+PY313_RUNTIME_CONTAINER=<separate-runtime> \
+PY313_SECRET_ENV_FILE=/absolute/path/to/protected.env \
+uv run --no-project python run_auth_exchange_acceptance.py \
+  --run-dir /absolute/path/to/new-run --label exchange-01
+```
+
+The host runner records command, host/container working directories,
+start/end UTC, role, exit status and input SHA256 values; protected env values
+are injected by variable name and redacted from captured output. It refuses
+to overwrite an existing result. Run41 records the empty-venv installation,
+full source identity comparisons, retained failures and final nine-case pass.
+Historical browser/schema/task evidence remains separately scoped to run39.
