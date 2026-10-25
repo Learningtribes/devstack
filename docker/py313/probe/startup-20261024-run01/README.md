@@ -1,16 +1,16 @@
 # Python 3.13 local runtime checkpoint
 
-Captured 2026-10-24. This is a checkpoint of an existing development runtime,
-not a successful empty-environment rebuild or a production migration recipe.
+Captured 2026-10-24. The final local combined-input rebuild passed in run39.
+This remains a development-only recipe, not a production migration procedure.
 Do not run initialization or seed scripts against existing/production databases.
 
-## Current reproducible local entry sequence (run37)
+## Verified local entry sequence (run39)
 
 Use Python3.13.14/Django5.2.13, an independent empty /runtime volume and new
 py313_rebuild_* MySQL/Mongo/cache/search/queue namespaces. Never point these
 initializers at an existing manual database. Protected env values remain
 outside Git. Exact image, ports, resources and execution evidence are in
-`/Users/noahwang/docs/hawthorn/py313-startup-artifacts-2026-10-24/run-37`.
+`/Users/noahwang/docs/hawthorn/py313-startup-artifacts-2026-10-24/run-39`.
 
 1. Mount this root read-only at /startup and the current platform source
    read-only at /input/platform. Run install.sh with
@@ -43,6 +43,36 @@ Seven old calc/chem/opaque constraints are closed by actual compatible source
 and metadata, target tests and315-package pip check; see runtime-inputs doc.
 Goal status remains in the main docs workspace; this entry is not a production
 migration recipe. Preserve all old containers, volumes and data.
+
+## Accepted local runtime and limits
+
+Final inputs: platform31c50d8bcf23efed8e96798a6f0c9289cdc7d9ff,
+devstack executable inputs c9606c1a7e7fd992ef8586c22cae3550ed2a4219,
+theme7c0dbec1b0a79d7639069f9990b831ba9f31d8bf. run39 empty install,
+independent schema/assets, Chrome staff create/edit/release/publish/upload,
+ordinary learner SCORM completion, real broker/worker business results and
+four-process restart persistence all passed. No post-install source repair.
+Exact replay commands/times/exit codes and recovery scope are in run39.
+
+Running container: py313-rebuild-runtime-20261025-run39. LMS loopback18180,
+CMS18190. Set PY313_RUNTIME_CONTAINER to that name,
+PY313_SECRET_ENV_FILE=/Users/noahwang/.codex/py313-runtime-run39.env and
+PY313_PLATFORM_ROOT=/runtime/platform-source before invoking start_http.py or
+start_worker.py with lms/cms. Inspect exact processes before starting a second
+copy; these scripts dispatch rather than prove readiness. Keep protected
+credentials outside Git and evidence. A new reconstruction must use another
+empty volume and new namespace/ports, not initialize the accepted database.
+
+Optional Discovery sync fails because its external service is absent; local
+Elasticsearch publishing works. The secondary draft-preview link has no
+separate preview-LMS configured; primary published LMS preview works.
+External IdP/OIDC/SAML, LTI provider/outcomes, XQueue/ORA grading and proctoring
+integration remain deferred. Registered LTI consumer OAuth1 signatures pass;
+retired DOP is not installed. HS256 issued-token and synthetic RS512/JWKS
+proofs are separate. Historical migration records0 and74virtual initial
+migration descriptions document local-model-sync only. Existing three LMS
+namespace warnings, deprecations and optional shell historical-model import
+warning remain disclosed in final acceptance, not silenced.
 
 ## Historical runtime checkpoints
 
@@ -102,7 +132,7 @@ source commits. created-resources.json is local resource metadata, not a DB back
 Older Goal A/B and solver directories remain untouched and outside these commits
 and the startup archive. No database or runtime-volume backup was performed.
 
-## Remaining gaps
+## Historical remaining gaps (superseded by run39 acceptance)
 
 The old file:///work/patched references are replaced by the registered
 writable build-source location. Initial and later dependency-closure checks
