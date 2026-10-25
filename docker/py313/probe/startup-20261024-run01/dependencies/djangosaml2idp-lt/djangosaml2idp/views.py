@@ -107,6 +107,13 @@ def sso_entry(request):
 
 
 # TODO Add http redirect logic based on https://github.com/rohe/pysaml2/blob/master/example/idp2_repoze/idp.py#L327
+def get_processor(sp_config):
+    """Return a processor instance for the default or configured local contract."""
+    processor_string = sp_config.get('processor')
+    processor_class = BaseProcessor if processor_string is None else import_string(processor_string)
+    return processor_class()
+
+
 @login_required
 def login_process(request):
     """ View which processes the actual SAML request and returns a self-submitting form with the SAML response.
@@ -152,13 +159,8 @@ def login_process(request):
         raise ImproperlyConfigured("No config for SP %s defined in SAML_IDP_SPCONFIG" % resp_args['sp_entity_id'])
     
     # Create user-specified processor or fallback to all-access base processor
-    processor_string = sp_config.get('processor', None)
-    if processor_string is None:
-        processor = BaseProcessor()
-    else:
-        processor_class = import_string(processor_string)
-        processor = processor_class()
-    
+    processor = get_processor(sp_config)
+
     # Check if user has access to the service of this SP
     if not processor.has_access(request.user):
         raise PermissionDenied

@@ -27,22 +27,14 @@ def hashes(root):
     return result
 
 
+from local_input_contract import REGISTRY, stage
+
 manifest = {}
-for name, source in SOURCES.items():
-    if not (source / 'setup.py').is_file():
-        raise SystemExit('Missing registered package source: ' + name)
-    expected = hashes(source)
+for name in SOURCES:
     target = DESTINATION / name
-    if target.exists():
-        if hashes(target) != expected:
-            raise SystemExit('Preserving mismatched existing build source: ' + name)
-    else:
-        shutil.copytree(source, target, ignore=IGNORED)
-    if hashes(target) != expected:
-        raise SystemExit('Build source hash mismatch: ' + name)
-    manifest[name] = expected
+    stage(name, target)
+    manifest[name] = REGISTRY['packages'][name]
     subprocess.run(['uv', 'pip', 'install', '--python', '/runtime/venv/bin/python',
                     '--no-deps', str(target)], check=True)
-
 (DESTINATION / 'source-hashes.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
 subprocess.run(['uv', 'pip', 'check', '--python', '/runtime/venv/bin/python'], check=True)

@@ -1,5 +1,32 @@
 # Python 3.13 local runtime checkpoint
 
+## Input closure P0 (2026-10-25)
+
+The independent review supersedes the earlier complete claim. Final new-database
+combined replay is required after closing inputs. `frozen-local-inputs.json`
+records every copied local package source file. `local_input_contract.py` rejects
+missing, changed and extra effective files before staging. Old opaque 0.4.4 and
+untracked da3798e/source remain preserved but are no longer execution inputs.
+SAML bootstrap and final install both use committed `djangosaml2idp-lt`.
+
+Vendor SGA JS files are committed source. PDF.js public/build is a registered
+prebuilt vendor archive (local preserved provenance, not an upstream rebuild);
+its archive/member hashes are frozen. Package .mo files are generated from
+committed .po with msgfmt, logged separately. Build caches, egg-info and prior
+platform webpack/XModule/locale/static outputs are not input. Git archive
+preserves all literal platform symlinks without following external targets.
+
+After committing inputs, run `export_closed_inputs.py --destination <new-dir>
+--platform <platform-repo>` with Python 3. It exports only committed trees,
+verifies/extracts the registered vendor archive and emits export-identity.json.
+Mount that exported startup at /startup read-only and exported platform at
+/input/platform read-only. Provide protected credentials and signing key as
+separate read-only file mounts. Never mount the original working checkout.
+Run test_local_input_contract.py before install and
+ test_saml_processor_contract.py with the newly installed interpreter afterward.
+The latter tests processor signatures locally and makes no IdP success claim.
+
+
 Captured 2026-10-24. The final local combined-input rebuild passed in run39.
 This remains a development-only recipe, not a production migration procedure.
 Do not run initialization or seed scripts against existing/production databases.

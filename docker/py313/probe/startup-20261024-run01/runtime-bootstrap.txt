@@ -326,7 +326,6 @@ djangorestframework==3.17.1
     #   rest-condition
 djangorestframework-oauth @ git+https://github.com/edx/django-rest-framework-oauth.git@0a43e8525f1e3048efe4bc70c03de308a277197c
     # via -r solver-s3pA.in
-djangosaml2idp @ git+https://github.com/Learningtribes/djangosaml2idp.git@da3798ea6be76ce392f3d3f26aa75d0fdccbf7fe
     # via -r solver-s3pA.in
 dnspython==2.8.0
     # via pymongo

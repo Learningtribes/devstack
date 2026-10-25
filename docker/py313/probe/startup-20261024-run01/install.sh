@@ -31,7 +31,9 @@ uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sour
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/jazkarta-edx-jsme-690dbf7
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/django-ratelimit-backend-2.0
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/edx_completion-5.0.0
-uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/djangosaml2idp-da3798e
+uv build --wheel --out-dir /runtime/input-wheels /runtime/rebuild-sources-20261025-run25/djangosaml2idp-lt
+sha256sum /runtime/input-wheels/djangosaml2idp-*.whl
+uv pip install --python /runtime/venv/bin/python --no-deps /runtime/input-wheels/djangosaml2idp-*.whl
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/pysaml2-7.5.5
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/edx-sga-0.28.0
 uv pip install --python /runtime/venv/bin/python --no-deps /runtime/rebuild-sources-20261025-run25/edx-search-5.0.0-lt
