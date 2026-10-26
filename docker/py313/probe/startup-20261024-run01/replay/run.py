@@ -8,7 +8,8 @@ import subprocess
 import sys
 
 from core import (SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
-                  fresh_preflight, load_config, ownership, read_json, save_new, shell)
+                  docker_exec, fresh_preflight, load_config, ownership, read_json,
+                  save_new, shell, source_repository_roots, validate_path_isolation)
 
 
 def compose(config):
@@ -85,6 +86,17 @@ def create(config):
         config['images']['runtime'], 'tail', '-f', '/dev/null'])
 
 
+def install(config):
+    ownership(config)
+    capture(config, 'input-preflight', ['docker', 'exec', config['runtime_container'], 'python3', '-B', '/startup/test_local_input_contract.py'])
+    capture(config, 'install', ['docker', 'exec', '-e', 'PY313_PLATFORM_SOURCE_ROOT=/input/platform', config['runtime_container'],
+                              'bash', '-c', 'test ! -e /runtime/venv && bash /startup/install.sh'])
+    capture(config, 'installed-source-identity', docker_exec(
+        config, '/runtime/venv/bin/python', '/startup/replay/verify_installed_identity.py'))
+    capture(config, 'installed-source-report', docker_exec(
+        config, 'cat', '/runtime/installed-input-identity.json'), show_output=False)
+
+
 def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument('--config', required=True, type=Path)
@@ -93,6 +105,7 @@ def main():
     args = parser.parse_args()
     config = load_config(args.config)
     if args.action == 'provision-secrets':
+        validate_path_isolation(config, source_repository_roots(config))
         target = Path(config['secret_env'])
         with os.fdopen(os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600), 'w') as stream:
             stream.write(''.join(key + '=' + secrets.token_hex(24) + '\n' for key in sorted(SECRET_KEYS)))
@@ -104,10 +117,7 @@ def main():
     elif args.action == 'create':
         create(config)
     elif args.action == 'install':
-        ownership(config)
-        capture(config, 'input-preflight', ['docker', 'exec', config['runtime_container'], 'python3', '-B', '/startup/test_local_input_contract.py'])
-        capture(config, 'install', ['docker', 'exec', '-e', 'PY313_PLATFORM_SOURCE_ROOT=/input/platform', config['runtime_container'],
-                                  'bash', '-c', 'test ! -e /runtime/venv && bash /startup/install.sh'])
+        install(config)
     elif args.action == 'check':
         from core import manage
         system, label, *command = args.arguments

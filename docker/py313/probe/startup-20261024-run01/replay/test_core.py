@@ -9,8 +9,10 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+import run as replay_run
 from core import (SECRET_KEYS, SERVICES, capture, check_conflicts, environment, load_config,
-                  physical_names, secret_values)
+                  physical_names, secret_values, source_repository_roots,
+                  validate_path_isolation)
 
 
 def example(root, run_id='run44'):
@@ -35,6 +37,8 @@ class ContractTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
         self.config = example(self.root)
+        Path(self.config['platform_repo']).mkdir()
+        Path(self.config['devstack_repo']).mkdir()
         self.path = self.root / 'config.json'
         self.write()
         self.secret = '1' * 48
@@ -54,6 +58,58 @@ class ContractTests(unittest.TestCase):
         check_conflicts(self.config, {'containers': [], 'volumes': [], 'networks': []})
         second = example(self.root, 'run45')
         self.assertFalse(set(physical_names(self.config)) & set(physical_names(second)))
+
+    def test_output_paths_cannot_overlap_source_repos(self):
+        for key in ('evidence_dir', 'export_dir', 'secret_env'):
+            with self.subTest(path=key):
+                self.config = example(self.root)
+                self.config[key] = str(Path(self.config['platform_repo']) / ('nested-' + key))
+                self.write()
+                with self.assertRaisesRegex(ValueError, key + ' must be outside platform_repo'):
+                    load_config(self.path)
+
+    def test_output_paths_resolve_symlinked_source_aliases(self):
+        alias = self.root / 'platform-alias'
+        alias.symlink_to(self.config['platform_repo'], target_is_directory=True)
+        self.config['evidence_dir'] = str(alias / 'nested-evidence')
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'evidence_dir must be outside platform_repo'):
+            load_config(self.path)
+
+    def test_protected_inputs_cannot_overlap_outputs_but_may_be_in_checkout(self):
+        self.config['credentials_file'] = str(Path(self.config['evidence_dir']) / 'credentials.json')
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'paths must be disjoint after resolution'):
+            load_config(self.path)
+        self.config = example(self.root)
+        self.config['credentials_file'] = str(Path(self.config['platform_repo']) / 'credentials.json')
+        self.config['jwt_file'] = str(Path(self.config['platform_repo']) / 'jwt.pem')
+        self.write()
+        self.assertEqual(load_config(self.path), self.config)
+
+    def test_output_path_cannot_be_an_ancestor_of_a_source_repo(self):
+        external = tempfile.TemporaryDirectory()
+        self.addCleanup(external.cleanup)
+        external_root = Path(external.name)
+        self.config['evidence_dir'] = str(self.root)
+        self.config['export_dir'] = str(external_root / 'export')
+        self.config['secret_env'] = str(external_root / 'secret.env')
+        self.config['credentials_file'] = str(external_root / 'credentials.json')
+        self.config['jwt_file'] = str(external_root / 'jwt.pem')
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'evidence_dir must be outside platform_repo'):
+            load_config(self.path)
+
+    def test_actual_repository_root_is_checked_for_path_overlap(self):
+        roots = {'platform': Path(self.config['platform_repo']).parent.resolve(),
+                 'devstack': Path(self.config['devstack_repo']).resolve()}
+        with self.assertRaisesRegex(ValueError, 'evidence_dir must be outside platform_repo'):
+            validate_path_isolation(self.config, roots)
+
+    def test_configured_repo_must_be_checkout_root(self):
+        with patch('core.subprocess.check_output', return_value=str(self.root)):
+            with self.assertRaisesRegex(ValueError, 'platform_repo must name the Git checkout root'):
+                source_repository_roots(self.config)
 
     def test_every_existing_physical_resource_rejected(self):
         for resource in physical_names(self.config):
@@ -105,6 +161,19 @@ class ContractTests(unittest.TestCase):
         self.assertNotIn(self.secret, (outputs / 'mutation.txt').read_text())
         self.assertIn('<redacted>', (outputs / 'mutation.txt').read_text())
         self.assertEqual(len((outputs / 'commands.jsonl').read_text().splitlines()), 1)
+
+    def test_install_captures_installed_source_identity_after_install(self):
+        with patch.object(replay_run, 'ownership') as ownership, \
+             patch.object(replay_run, 'capture') as capture, \
+             patch.object(replay_run, 'docker_exec', return_value=['docker', 'exec', 'identity']) as docker_exec:
+            replay_run.install(self.config)
+        self.assertEqual([call.args[1] for call in capture.call_args_list], [
+            'input-preflight', 'install', 'installed-source-identity', 'installed-source-report'])
+        docker_exec.assert_has_calls([
+            unittest.mock.call(self.config, '/runtime/venv/bin/python', '/startup/replay/verify_installed_identity.py'),
+            unittest.mock.call(self.config, 'cat', '/runtime/installed-input-identity.json')])
+        self.assertEqual(capture.call_args_list[-1].kwargs, {'show_output': False})
+        ownership.assert_called_once_with(self.config)
 
 
 if __name__ == '__main__':

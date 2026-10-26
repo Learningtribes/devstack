@@ -24,6 +24,13 @@ with `py313_rebuild_` because this is the existing local model-sync initializer.
 The course key is a complete opaque `course-v1:` key containing the run id. Ports
 are host loopback mappings to the fixed internal LMS/CMS ports 18000/18010.
 The export and evidence directories must be new and separate from protected env.
+After resolving symlinked ancestors, each output path must also be disjoint from
+both source checkouts; evidence, export, and secret-env paths cannot alias or
+contain one another. Protected credentials/JWT inputs must be disjoint from each
+other and all outputs after path resolution. Output paths must be disjoint from
+both source checkouts. Protected inputs may use existing private fixture paths;
+the exporter copies committed sources only. Existing broken output symlinks are
+rejected as occupied.
 
 `provision-secrets` creates only six random service secrets in a new protected
 file. Namespace values cannot appear in this file and cannot override the JSON
@@ -39,7 +46,8 @@ With an explicit operator-created JSON config, run `run.py --config ...` with:
 3. `prepare` (rechecks, creates evidence, exports committed sources only).
 4. `create` (rechecks physical resources, creates a new network and fresh service
    data, then a new runtime volume/container).
-5. `install` (frozen positive/negative preflight, then empty venv installation).
+5. `install` (frozen positive/negative preflight, then empty venv installation,
+   followed by installed-source identity verification and private report capture).
 
 Then `replay_after_install.py --config ... schema`, `assets`, and `services`.
 The schema phase uses fresh local model synchronization, not historical migration.
@@ -50,6 +58,10 @@ business steps; these commands do not seed a passing published course.
 It also supports CMS and explicit registered settings such as `startup_schema`.
 `run.py --config ... exchange <unique-label>` runs the existing nine-case process
 contract with explicit isolated settings; it does not contact a real IdP.
+
+`install` records the identity probe's pass output and stores the detailed package
+identity report in the evidence directory with mode 600. It does not echo the
+report to the terminal because package direct-URL metadata may be sensitive.
 
 After business checks, use `audit_and_collect.py --config ... --label <unique>`.
 This checks exact exported/runtime source identity, captures selected inspect and

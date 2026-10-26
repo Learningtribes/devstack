@@ -33,6 +33,55 @@ def save_new(path, value):
         stream.write(json.dumps(value, indent=2, sort_keys=True) + '\n')
 
 
+def related_paths(left, right):
+    return left == right or left in right.parents or right in left.parents
+
+
+def resolved_path(path):
+    try:
+        return Path(path).resolve(strict=False)
+    except (OSError, RuntimeError) as exc:
+        fail('Unable to resolve path: ' + str(path) + ': ' + str(exc))
+
+
+def validate_path_isolation(config, source_repositories=None):
+    paths = {key: resolved_path(config[key]) for key in (
+        'evidence_dir', 'export_dir', 'secret_env', 'credentials_file', 'jwt_file'
+    )}
+    for index, (left_name, left) in enumerate(paths.items()):
+        for right_name, right in list(paths.items())[index + 1:]:
+            if related_paths(left, right):
+                fail('Replay output and protected input paths must be disjoint after resolution: ' +
+                     left_name + '=' + str(left) + ' ' + right_name + '=' + str(right))
+    sources = source_repositories if source_repositories is not None else {
+        key.removesuffix('_repo'): config[key] for key in ('platform_repo', 'devstack_repo')
+    }
+    sources = {name: resolved_path(path) for name, path in sources.items()}
+    for output_name in ('evidence_dir', 'export_dir', 'secret_env'):
+        output = paths[output_name]
+        for source_name, source in sources.items():
+            if related_paths(output, source):
+                fail(output_name + ' must be outside ' + source_name + '_repo after path resolution')
+
+
+def source_repository_roots(config):
+    roots = {}
+    for key in ('platform', 'devstack'):
+        configured = resolved_path(config[key + '_repo'])
+        try:
+            actual = Path(subprocess.check_output(
+                ['git', '-C', str(config[key + '_repo']), 'rev-parse', '--show-toplevel'], text=True
+            ).strip()).resolve(strict=True)
+        except (OSError, subprocess.CalledProcessError) as exc:
+            fail('Unable to identify ' + key + ' repository root: ' + str(exc))
+        if configured != actual:
+            fail(key + '_repo must name the Git checkout root: ' + str(actual))
+        roots[key] = actual
+    if related_paths(roots['platform'], roots['devstack']):
+        fail('platform_repo and devstack_repo must be separate checkouts')
+    return roots
+
+
 def load_config(path):
     config = read_json(path)
     if set(config) != REQUIRED:
@@ -45,9 +94,7 @@ def load_config(path):
         value = Path(config[key])
         if not value.is_absolute() or '..' in value.parts:
             fail('Expected absolute normalized path: ' + key)
-    paths = [Path(config[k]) for k in ('evidence_dir', 'export_dir', 'secret_env')]
-    if any(a == b or a in b.parents or b in a.parents for i, a in enumerate(paths) for b in paths[i+1:]):
-        fail('Evidence, export, and protected env paths must be disjoint')
+    validate_path_isolation(config)
     for key in ('platform_commit', 'devstack_commit', 'theme_commit'):
         if not re.fullmatch(r'[0-9a-f]{40}', config[key]):
             fail('Expected full commit SHA: ' + key)
@@ -149,11 +196,14 @@ def environment(config):
 
 
 def fresh_preflight(config, *, before_prepare):
+    repositories = source_repository_roots(config)
+    validate_path_isolation(config, repositories)
     check_conflicts(config, inventory())
-    if Path(config['export_dir']).exists() and before_prepare:
-        fail('Refusing existing export directory')
-    if Path(config['evidence_dir']).exists() and before_prepare:
-        fail('Refusing existing evidence directory')
+    if before_prepare:
+        if os.path.lexists(config['export_dir']):
+            fail('Refusing existing export directory')
+        if os.path.lexists(config['evidence_dir']):
+            fail('Refusing existing evidence directory')
     for port in (config['lms_port'], config['cms_port']):
         with socket.socket() as sock:
             sock.bind(('127.0.0.1', port))
@@ -193,7 +243,7 @@ def docker_exec(config, *args, settings=None, detached=False):
             *flags, config['runtime_container'], *args]
 
 
-def capture(config, label, command):
+def capture(config, label, command, *, show_output=True):
     if not re.fullmatch(r'[a-zA-Z0-9_-]+', label):
         fail('Invalid output label')
     root = Path(config['evidence_dir'])
@@ -219,7 +269,7 @@ def capture(config, label, command):
         with (root / 'commands.jsonl').open('a') as stream:
             stream.write(json.dumps(record, sort_keys=True) + '\n')
         (root / 'commands.jsonl').chmod(0o600)
-        print(label, 'exit_code=' + str(result.returncode), output[-1400:], flush=True)
+        print(label, 'exit_code=' + str(result.returncode), output[-1400:] if show_output else '[output captured privately]', flush=True)
         if result.returncode:
             raise SystemExit(result.returncode)
     finally:
