@@ -57,6 +57,9 @@ With an explicit operator-created JSON config, run `run.py --config ...` with:
 
 Then `replay_after_install.py --config ... schema`, `assets`, and `services`.
 The schema phase uses fresh local model synchronization, not historical migration.
+The assets phase uses `build_frontend.sh` with a 2 GiB Node heap and no
+development source maps; both LMS and CMS webpack stats must still report the
+expected login bundle. Locale and static collection run after that build.
 After the schema phase, run the run-scoped `seed_acceptance_users.py` through the
 LMS settings. Use a browser for Studio course creation/edit/release and the
 enrolled learner flow; do not treat the seed helper or HTTP readiness as browser

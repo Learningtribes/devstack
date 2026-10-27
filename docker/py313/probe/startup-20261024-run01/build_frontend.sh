@@ -3,10 +3,13 @@
 set -euo pipefail
 export STATIC_ROOT_LMS=/runtime/static/lms
 export STATIC_ROOT_CMS=/runtime/static/cms
+# Bound the full-platform Webpack heap for the default Docker Desktop VM size.
+# Source maps are development-only and substantially increase peak memory.
+export NODE_OPTIONS=--max-old-space-size=2048
 mkdir -p "$STATIC_ROOT_LMS" "$STATIC_ROOT_CMS"
 /runtime/venv/bin/python /startup/build_static_assets.py
 /runtime/venv/bin/python /startup/build_theme_assets.py
-./node_modules/.bin/webpack --config webpack.dev.config.js
+./node_modules/.bin/webpack --config webpack.dev.config.js --no-devtool
 /runtime/venv/bin/python - <<'PY'
 import json
 from pathlib import Path

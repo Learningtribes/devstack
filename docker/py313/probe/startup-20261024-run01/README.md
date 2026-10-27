@@ -54,7 +54,11 @@ outside Git. Exact image, ports, resources and execution evidence are in
    Then run **bash /startup/build_frontend.sh** from the writable platform
    root. This exports STATIC_ROOT_LMS/CMS and generates webpack stats in
    both runtime static roots. Running webpack alone without these variables
-   does not complete the resource build and causes login500.
+   does not complete the resource build and causes login500. The delivery
+   script caps Node's heap at 2 GiB and disables development source maps to
+   keep the full 120-chunk Webpack build within the default Docker Desktop
+   memory budget; runtime bundles and stats are still checked for both LMS
+   and CMS.
 5. For each system run build_locale_assets.py and collectstatic. Seed local
    acceptance users/completion only in the new DB. SiteTheme is
    get_or_create by the naturally resolved Site; never replace manual rows.
