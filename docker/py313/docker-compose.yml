@@ -2,7 +2,7 @@ name: py313
 
 services:
   mysql:
-    image: mysql:8.4
+    image: mysql@sha256:76f0358884cb92d9a086d24e5671c38048d3fef40f2588703d73eb55392d6b69
     container_name: py313.mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
     environment:
@@ -21,7 +21,7 @@ services:
       retries: 30
 
   mongo:
-    image: mongo:8.0
+    image: mongo@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907
     container_name: py313.mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${PY313_MONGO_USER:-edxapp}
@@ -37,7 +37,7 @@ services:
       retries: 30
 
   rabbitmq:
-    image: rabbitmq:4.3-management
+    image: rabbitmq@sha256:84352fa7b36f80b3669f5c40963cb2f0f4cf0ecc67d4cf77a5282c2b5934cffc
     container_name: py313.rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: ${PY313_RABBITMQ_USER:-edxapp}
@@ -56,7 +56,7 @@ services:
 
   # Control group for the pidbox matrix: same broker, default deprecated-feature policy.
   rabbitmq-noperm:
-    image: rabbitmq:4.3-management
+    image: rabbitmq@sha256:84352fa7b36f80b3669f5c40963cb2f0f4cf0ecc67d4cf77a5282c2b5934cffc
     container_name: py313.rabbitmq-noperm
     profiles: ["noperm"]
     environment:
@@ -69,13 +69,13 @@ services:
       retries: 30
 
   memcached:
-    image: memcached:1.6
+    image: memcached@sha256:ab65f39bfa5b1e31bff3bdccfd48af85fee6fdcbf0eb877175fcb170a4e1bd2f
     container_name: py313.memcached
     ports:
       - "127.0.0.1:11311:11211"
 
   valkey:
-    image: valkey/valkey:8.1
+    image: valkey/valkey@sha256:640c5e62cea04b6d6f2084232651d0cc70362d31f4f805e7be94dbed6855e8f2
     container_name: py313.valkey
     ports:
       - "127.0.0.1:16379:6379"
@@ -86,7 +86,7 @@ services:
       retries: 20
 
   elasticsearch:
-    image: elasticsearch:8.19.0
+    image: elasticsearch@sha256:8eb0ee819c020d1275e7f7b82aefdea5d50014c8986bb5be64d80232b58119a5
     container_name: py313.elasticsearch
     environment:
       discovery.type: single-node
