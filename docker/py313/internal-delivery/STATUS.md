@@ -2,6 +2,37 @@
 
 Updated: 2026-10-28 (Asia/Shanghai). Goal remains active. State: **local delivery candidate incomplete**.
 
+## Latest replay: delivery61 (runtime gates pass; test selection/import failed)
+
+Delivery61 inputs: platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
+`4f085f413ff60d407680ed527f9f27f3d2011aa3`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, Docker Desktop runtime image ID
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`.
+Native linux/arm64, Python 3.13.14, Django 5.2.13. Canonical config hash
+`b5b5904449d403f61878d0bccc035a98916bb58cd4296b84b7bb561a311b6faa`; evidence
+`/Users/noahwang/workspace/hawthorn/py313-delivery61-evidence/`. New resources
+are isolated to network `10.254.61.0/24`, ports 19580/19590, database and
+cache/search/queue namespace `delivery61`, with dedicated volumes.
+
+D0 export/resources, D1 full installation (315 packages, `uv pip check`, 20
+source identities), D3 local-model-sync schema, LMS/CMS checks, and full assets
+all passed. The targeted CMS test action ran but test collection failed before
+its assertion because the selected legacy `test_course_index.py` module imports
+`factory_boy`, which is intentionally absent from the full runtime dependency
+lock. Evidence: `cms-course-reindex-auth01.txt` and `commands.jsonl`. This is a
+test-selection/dependency limitation, not an installation or product failure.
+
+Platform commit `aed8961d6920954068949afbcf34440ee94bd4cd` adds a smaller focused
+endpoint test without factory fixtures; it asserts own-course reindex passes,
+unrelated-course reindex is denied, and the indexer is not invoked for the
+unrelated course. Delivery62 must replay this platform SHA with current devstack
+`4f085f413ff60d407680ed527f9f27f3d2011aa3` in new resources. Delivery61 remains
+incomplete and its containers/data are not reused for acceptance.
+
+Browser LMS/CMS sign-in, real Studio course create/edit/publish, learner content,
+permission/organization matrix, real search/worker result, storage, SCORM, ILT,
+restart persistence and D4 remain open on the final pair.
+
 ## Latest replay: delivery60 (host test-dispatch failure; replay not candidate)
 
 Delivery60 used platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
@@ -63,7 +94,7 @@ Platform commit `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02` removes the redundant
 platform-role gate and adds a regression test for own-course instructor access
 and denial on an unrelated course. Devstack commit `17ab66a5e15db0571dc0f8d0221bf5ea9f050c34`
 adds an explicit, recorded targeted Django test action using the replay's
-platform root. The delivery60 replay exposed a host test-dispatch defect before any runtime test. The next full replay is delivery61; it must use exact clean paired commits and new containers, volumes, DB, ports, network and namespaces.
+platform root. Delivery61 passed runtime gates but its legacy test module could not import the test-only `factory_boy` package. The next full replay is delivery62 with the focused test and exact clean paired commits; use new containers, volumes, DB, ports, network and namespaces.
 Do not patch or restart delivery59.
 
 Learner-visible publication and draft isolation, complete role/organization

@@ -80,6 +80,32 @@ target course's author permissions. Platform commit
 own-course instructor / unrelated-course denial coverage. Delivery59 remains
 immutable failure history; do not patch or restart its runtime.
 
+### Delivery61 — runtime gates pass; legacy test import failed
+
+Inputs: platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
+`4f085f413ff60d407680ed527f9f27f3d2011aa3`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, Docker Desktop runtime image ID
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`;
+Python 3.13.14, native linux/arm64, canonical config hash
+`b5b5904449d403f61878d0bccc035a98916bb58cd4296b84b7bb561a311b6faa`.
+Resources: network `py313-delivery61-network` (`10.254.61.0/24`), ports
+19580/19590, SQL `py313_rebuild_delivery61`, Mongo/service namespaces
+`py313_delivery61`, dedicated volumes. Evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery61-evidence/`.
+
+| Scenario | Delivery61 result | Evidence |
+| --- | --- | --- |
+| D0 paired source/resource isolation | PASS | `preflight.json`, `export.txt`, `commands.jsonl`, labeled resources |
+| D1 full locked installation/source identity | PASS: 315 distributions, `uv pip check`, all 20 source trees | `install.txt`, `installed-source-identity.txt` |
+| D3 fresh schema and LMS/CMS checks | PASS: 149 apps, 316 models/tables, zero historical migration rows; checks with recorded warnings | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 resource/asset build | PASS: npm/XModule, 120 Webpack chunks per system, locale/static | `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, locale/static logs |
+| D3 targeted CMS reindex regression | **FAIL collection/import**: legacy module imports missing test-only `factory_boy` before any test assertion | `cms-course-reindex-auth01.txt`, `commands.jsonl` |
+| D3 browser, publish, learner, permission/org, search/worker, storage, SCORM/ILT, restart | NOT RUN | Re-run on delivery62 after focused test passes |
+| D4 independent checkout | NOT RUN | Requires final paired source |
+| D5 local candidate | NOT RUN | No push/PR |
+
+The runtime dependency lock intentionally remains the complete delivery runtime set; this failure identifies a test-selector issue. Platform `aed8961d6920954068949afbcf34440ee94bd4cd` adds a focused test without factory fixtures. Delivery61 is not candidate evidence and no resources are reused.
+
 ### Delivery60 — schema/assets pass; host test-dispatch failure
 
 Inputs: platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack

@@ -2,6 +2,26 @@
 
 Archived status text from before the delivery54/55 runs. This is retained for audit history only; current state is in `STATUS.md` and `ACCEPTANCE-MATRIX.md`.
 
+## Delivery61 — 2026-10-28
+
+Inputs were platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
+`4f085f413ff60d407680ed527f9f27f3d2011aa3`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, Docker Desktop runtime image
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`,
+Python 3.13.14, Django 5.2.13, native linux/arm64. It used network
+`py313-delivery61-network` (`10.254.61.0/24`), ports 19580/19590, a new SQL DB,
+Mongo DB, service namespaces and volumes. Canonical config hash:
+`b5b5904449d403f61878d0bccc035a98916bb58cd4296b84b7bb561a311b6faa`; evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery61-evidence/`.
+
+D0, D1 installation/source identity, schema/settings and assets passed. The
+selected CMS test module failed collection because `factory_boy` was absent
+from the runtime lock; the test assertion never ran. This is a test harness
+selection limitation, not a product result. Log and exact command remain in
+`cms-course-reindex-auth01.txt` and `commands.jsonl`. Platform
+`aed8961d6920954068949afbcf34440ee94bd4cd` now includes a focused
+factory-independent endpoint test. Delivery62 must replay it on fresh resources.
+
 ## Delivery60 — 2026-10-28
 
 Inputs were platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
