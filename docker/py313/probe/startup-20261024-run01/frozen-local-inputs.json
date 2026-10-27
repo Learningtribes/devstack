@@ -1526,7 +1526,7 @@
           "sha256": "f2977380a3ccd042321b5825ea521dc1c0f6aab8da8c2a2bef81aedd4a2ac982"
         },
         "setup.py": {
-          "sha256": "d992a4518111cc597f056d64fe576fb2aadf82d2b6f9ca5dc4d219afeb895dfd"
+          "sha256": "46956eb55ef798b7158d761aeb3b08256b5b98f1960f8c4e5c4ae33233732877"
         }
       },
       "source": "dependencies/edx_drf_extensions-10.6.0"

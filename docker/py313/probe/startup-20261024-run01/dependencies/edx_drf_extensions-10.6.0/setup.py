@@ -141,7 +141,7 @@ setup(
         'Framework :: Django :: 4.2',
         'Framework :: Django :: 5.2',
     ],
-    packages=find_packages(exclude=["tests"]),
+    packages=find_packages(exclude=["tests", "tests.*", "docs", "docs.*"]),
     install_requires=load_requirements('requirements/base.in'),
     tests_require=load_requirements('requirements/test.in'),
 )

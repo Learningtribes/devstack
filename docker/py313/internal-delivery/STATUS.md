@@ -55,3 +55,9 @@ this is dependency evidence only, not acceptance of the current product SHA.
 New arm64 toolchain image: `sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63`.
 Preserved failures: d1-resolve01 (dangling bind-mount symlink copying),
 d1-install01 (unsupported uv flag). Installer fixes are committed before replay.
+
+D3 delivery47: fresh complete installation and pip check PASS; installed-source
+identity FAIL: edx-drf-extensions and django-pipeline both install docs/conf.py.
+Evidence: delivery47 installed-source-identity.txt; failure preserved.
+Registered edx-drf-extensions setup excludes docs and nested tests for next replay.
+This is a source packaging correction, with updated frozen setup.py hash.
