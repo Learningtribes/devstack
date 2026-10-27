@@ -13,6 +13,7 @@ def main():
     config = load_config(args.config)
     ownership(config)
     if args.phase == 'schema':
+        capture(config, 'local-runtime-log-dirs', docker_exec(config, 'mkdir', '-p', '/edx/var/log/lms', '/edx/var/log/cms'))
         capture(config, 'saml-contract', docker_exec(config, '/runtime/venv/bin/python', '/startup/test_saml_processor_contract.py'))
         capture(config, 'stage-theme', docker_exec(config, '/runtime/venv/bin/python', '/startup/prepare_theme_inputs.py'))
         shell(config, 'lms', 'initialize-schema', '/startup/initialize_schema.py', settings='startup_schema')

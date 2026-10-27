@@ -61,3 +61,13 @@ identity FAIL: edx-drf-extensions and django-pipeline both install docs/conf.py.
 Evidence: delivery47 installed-source-identity.txt; failure preserved.
 Registered edx-drf-extensions setup excludes docs and nested tests for next replay.
 This is a source packaging correction, with updated frozen setup.py hash.
+
+Runtime import diagnostics (read-only overlays, package environment unchanged):
+LMS discovered and fixed per-iteration: current Social Auth exception names,
+student app duplicate module identity, Django middleware MRO, edx-search removed
+legacy endpoints, Django staticfinder API, invalid `fake2` language. Evidence
+`d2-current-import01..17*.txt` retains failures; `d2-diagnostic-export01..12.txt`
+retains each source overlay identity. LMS check reached warnings only at import17;
+ILT's fixed log handler could not open its directory, addressed in replay schema
+preflight before final checks. The current package volume is still the first
+experimental install and is not acceptance of the latest paired source.
