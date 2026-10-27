@@ -15,9 +15,10 @@ Theme: `7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`; export Git content only.
 Remote platform delivery: `421a93f08fda9f849384ff96525b9ce6e952f962`;
 remote devstack matches initial local commit (fresh ls-remote).
 
-Latest diagnostic run: `delivery51`, prefix `py313-delivery51`, host ports
+Delivery51 is a historical diagnostic run, prefix `py313-delivery51`, host ports
 18580/18590; SQL `py313_rebuild_delivery51`, Mongo/cache/ES/queue
-`py313_delivery51`. Every environment has its own labeled resources.
+`py313_delivery51`. The latest diagnostic run is `delivery52` below. Every
+environment has its own labeled resources.
 Delivery47/48 experiments are stopped with data and logs preserved after OOM;
 delivery49/50/51 remain running with their separate data and evidence.
 Only environments created by this task were stopped. Older run39/run42 and
@@ -38,18 +39,18 @@ own evidence directory. Final portable sanitized evidence has not been assembled
 
 | Gate | Command / expected behavior | Status | Evidence |
 | --- | --- | --- | --- |
-| D0 source/resources | Git status/HEAD/remotes, refs, Docker and listening ports | PASS | d0-baseline.json; fresh ls-remote tool capture |
-| D1 full dependency closure | New venv; complete graph resolve/install and pip check | PASS delivery51; final candidate pending | delivery51 install.txt, installed-source-identity.txt: 315 distributions, all 20 registered sources verified |
+| D0 source/resources | Git status/HEAD/remotes, refs, Docker and listening ports | PASS delivery52; final pair pending | `delivery52-evidence/config.json`, `preflight.json`, fresh `ls-remote` entries in `commands.jsonl` |
+| D1 full dependency closure | New venv; complete graph resolve/install and pip check | PASS delivery52; final pair pending | `delivery52-evidence/install.txt`, `installed-source-identity.txt`: 315 distributions; all 20 registered sources verified |
 | D1 SAML contract | LT installed processor/identity contract | PASS offline LT; comparison documented | d1-saml-lt-contract01.txt; SOURCES.md; no IdP |
 | D2 reconciliation | Semantic disposition of every wip-only change, especially access/security | IN PROGRESS | Semantic review found and ported missing guards/filters; real runtime checks pending |
-| D3 schema/startup | Fresh local-model-sync; complete LMS/CMS app registry and checks | PASS delivery51; new-source replay pending | delivery51 initialize-schema.txt, natural-sites.txt, checks; no historical migration claim |
-| D3 browser author/learner | Login; Studio create/edit/publish; learner reads publication | FAIL delivery51; final-source replay pending | delivery51 browser-course-create-failure.log: Studio course creation reached a Python 3 permission-name/database-width defect |
-| D3 permissions | Anonymous, unenrolled, learner, staff, cross-org allow/deny | NOT RUN | Current delivery required |
-| D3 delayed publish/draft | First publish after >60s; draft remains private | NOT RUN | Current delivery required |
-| D3 asset CRUD | Real Mongo/GridFS + SQL agree with HTTP | NOT RUN | Current delivery required |
-| D3 search/worker | Org filters; real broker worker result | NOT RUN | Current delivery required |
-| D3 resources/LT | Fresh theme/static/Chinese build; LT/File/SCORM flows | PARTIAL delivery51: builds PASS; business flows NOT RUN | delivery51 stage-theme, npm-ci, xmodule-assets, frontend-assets, lms-locale-static, cms-locale-static |
-| D3 restart | Course, assets and learning state persist | NOT RUN | Current delivery required |
+| D3 schema/startup | Fresh local-model-sync; complete LMS/CMS app registry and checks | PASS delivery52; final-source replay pending | `delivery52-evidence/initialize-schema.txt`, `natural-sites.txt`, LMS/CMS checks; no historical migration claim |
+| D3 browser author/learner | Login; Studio create/edit/publish; learner reads publication | PARTIAL delivery52 | `browser-cms-http-tail52.txt`, `course-state-after-release52.txt`: CMS browser created, edited and released a course. Enrolled learner browser study flow remains NOT RUN |
+| D3 permissions | Anonymous, unenrolled, learner, staff, cross-org allow/deny | PARTIAL delivery52 | `course-read-routing52.txt` denies anonymous and unenrolled courseware access; ES permission matrix passes. Full enrolled learner and course-role browser matrix remains NOT RUN |
+| D3 delayed publish/draft | First publish after >60s; draft remains private | NOT RUN | Delivery52 timestamps do not establish the required first-publish interval or draft-privacy matrix |
+| D3 asset CRUD | Real Mongo/GridFS + SQL agree with HTTP | PARTIAL delivery52 | `mongo-gridfs52.txt`: real save/read/list/sort/page/MIME filter pass. Update/delete and HTTP-to-SQL consistency NOT RUN |
+| D3 search/worker | Org filters; published course indexed/searchable by browser/API; real broker worker result | FAIL delivery52 | `publication-worker-index52.txt` search assertion failed; `publication-worker-index-inspect52.txt` found no published course document. CMS worker executed `contentstore.tasks.update_search_index` successfully. `search-matrix52-retry1.txt` and `search-matrix-cms52-retry1.txt` pass permission filters. Discovery connection refused; BLOCKED/out of scope |
+| D3 resources/LT | Fresh theme/static/Chinese build; LT/File/SCORM flows | PARTIAL delivery52: builds PASS; business flows NOT RUN | `stage-theme.txt`, `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, `lms-locale-static-resume52.txt`, `cms-locale-static-resume52.txt`; CMS log contains Noto Sans font 404s. SCORM/File/ILT business flows remain NOT RUN |
+| D3 restart | Course, assets and learning state persist | NOT RUN | Delivery52 has no before/after restart snapshot |
 | D4 independent rebuild | New checkout, portable inputs, documented sequence | NOT RUN | Same host limitation if applicable |
 | D5 local candidate | Clean paired commits/manifest, all local gates pass | NOT RUN | Push authorization only after completion |
 
@@ -123,3 +124,58 @@ permission name string when inheriting forum permissions and adds
 `common/djangoapps/django_comment_common/tests.py`. `compileall` and `git diff
 --check` passed; the full regression run and final environment replay must still
 exercise this exact commit. Delivery51 resources and evidence remain untouched.
+
+## Delivery52 diagnostic replay
+
+Input was platform `990cdc0d7df7f0a817d026a7ab4e1e23db721e54`, devstack
+`7f4415098f8e69a1826358905d5406601a278ce6`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image
+`sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63`,
+Python 3.13.14, configuration hash
+`3adb432ab5deca11f58e2be357435718657bb16a108939ee53dcb44a05b23634`.
+It used new container/volumes/network, host ports `18680/18690`, SQL
+`py313_rebuild_delivery52`, Mongo/cache/ES/queue namespace `py313_delivery52`.
+See `/Users/noahwang/workspace/hawthorn/py313-delivery52-evidence/config.json`
+and `commands.jsonl`. Environment and evidence remain intact; do not write to
+Delivery52 again. A new run is required for any changed harness or product SHA.
+
+PASS: clean installation without dependency skipping, 315 distributions,
+`pip check`, 20 installed-source identities, local-model-sync new-schema
+initialization, full LMS/CMS checks, theme/npm/XModule/webpack/locale/static
+builds, LMS/CMS login, browser Studio course create/edit/release, real Mongo
+GridFS save/read/sort/page/MIME filter, and LMS/CMS Elasticsearch permission
+matrices. These do not close the remaining acceptance gates in the matrix.
+
+FAIL/NOT RUN: published course search returned no course document even though
+the CMS worker received `contentstore.tasks.update_search_index` and reported
+SUCCESS; direct lookup also returned 404. The failed assertion and inspection
+are retained in `publication-worker-index52.txt` and
+`publication-worker-index-inspect52.txt`. No Discovery service is registered;
+its business task logged connection refused at `0.0.0.0:18381` in
+`start_worker-cms` runtime log and is not an internal-delivery pass. Enrolled
+learner browser study, delayed first-publish timing, private draft, real GridFS
+update/delete, File/SCORM/ILT business flows and restart persistence were NOT
+RUN. Current `browser-cms-http-tail52.txt` also contains missing Noto Sans font
+requests; this remains a static-resource defect to investigate on the next run.
+
+Diagnostic exception with restoration: while tracing the missing search
+document, one probe called `CoursewareSearchIndexer.index` directly against the
+Delivery52 ES namespace and wrote three course documents. It then deleted only
+those course-matching documents; the final `_count` returned to zero and the
+course query to zero, matching the observed pre-probe state. The reindex output
+is `publication-indexer-reindex52-diagnostic.txt`; the failed worker assertion
+is preserved. This operation was limited to the new Delivery52 namespace and
+is not a passing publication result. No further Delivery52 service/database/
+search writes are authorized by the run contract.
+
+## Verification command corrections
+
+The first host `compileall` swept committed dependency source, including
+vendored Python 2 South migrations; it failed on Python 2 syntax outside the
+changed harness. A direct unittest invocation from the repository root failed
+because the legacy test module imports sibling `run.py`. A subsequent
+`python3.9` compile command also used repository-root paths while already in the
+`replay/` directory. These command failures are retained here; they are not
+product test results. Correct targeted verification used Python 3.13.14 from
+the replay directory: 26 tests passed, and `py_compile` passed for every changed
+or added harness module. `git diff --check` passed.

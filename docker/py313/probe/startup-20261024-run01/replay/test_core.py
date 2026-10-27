@@ -11,6 +11,7 @@ from unittest.mock import patch
 
 import run as replay_run
 import audit_and_collect
+from provision_acceptance import provision
 from core import (SECRET_KEYS, SERVICES, capture, check_conflicts, environment, load_config,
                   physical_names, secret_values, source_repository_roots,
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
@@ -62,6 +63,13 @@ class ContractTests(unittest.TestCase):
         check_conflicts(self.config, {'containers': [], 'volumes': [], 'networks': []})
         second = example(self.root, 'run45')
         self.assertFalse(set(physical_names(self.config)) & set(physical_names(second)))
+
+    def test_generated_search_service_uses_bounded_heap(self):
+        document = replay_run.compose(self.config)
+        self.assertEqual(
+            document['services']['elasticsearch']['environment']['ES_JAVA_OPTS'],
+            '-Xms256m -Xmx256m',
+        )
 
     def test_output_paths_cannot_overlap_source_repos(self):
         for key in ('evidence_dir', 'export_dir', 'secret_env'):
@@ -283,6 +291,41 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(env['PY313_RUNTIME_CONTAINER'], self.config['runtime_container'])
         self.assertEqual(env['PY313_DATABASE_NAME'], self.config['database'])
         self.assertEqual(env['PY313_ACCEPTANCE_COURSE_ID'], self.config['course_key'])
+        self.assertEqual(env['PY313_REPLAY_ID'], self.config['run_id'])
+
+    def test_run_scoped_acceptance_identities_are_private_and_not_overwritten(self):
+        identity_dir = self.root / 'identities'
+        identity_dir.mkdir(mode=0o700)
+        identity_dir.chmod(0o700)
+        target = identity_dir / 'acceptance.json'
+        self.config.update(run_id='run53', credentials_file=str(target))
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            provision(self.config)
+        self.assertEqual(target.stat().st_mode & 0o777, 0o600)
+        credentials = json.loads(target.read_text())
+        self.assertEqual(credentials['run_id'], 'run53')
+        self.assertEqual(set(credentials), {'run_id', 'staff', 'learner', 'learner2', 'other_org'})
+        self.assertEqual({credentials[role]['username'] for role in ('staff', 'learner', 'learner2', 'other_org')},
+                         {f'py313_run53_{role}' for role in ('staff', 'learner', 'learner2', 'other_org')})
+        self.assertNotIn(credentials['staff']['password'], output.getvalue())
+        original = target.read_bytes()
+        with self.assertRaisesRegex(SystemExit, 'Refusing to overwrite'):
+            provision(self.config)
+        self.assertEqual(target.read_bytes(), original)
+
+    def test_run_scoped_identity_provisioning_rejects_unsafe_run_id_and_shared_directory(self):
+        identity_dir = self.root / 'identities'
+        identity_dir.mkdir(mode=0o700)
+        identity_dir.chmod(0o700)
+        self.config['credentials_file'] = str(identity_dir / 'acceptance.json')
+        self.config['run_id'] = '../outside'
+        with self.assertRaisesRegex(SystemExit, 'run_id must be'):
+            provision(self.config)
+        self.config['run_id'] = 'run53'
+        identity_dir.chmod(0o755)
+        with self.assertRaisesRegex(SystemExit, 'mode 700'):
+            provision(self.config)
 
     def test_duplicate_label_rejected_before_second_side_effect_and_secrets_redacted(self):
         Path(self.config['evidence_dir']).mkdir()

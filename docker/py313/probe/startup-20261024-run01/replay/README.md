@@ -35,24 +35,41 @@ rejected as occupied.
 `provision-secrets` creates only six random service secrets in a new protected
 file. Namespace values cannot appear in this file and cannot override the JSON
 contract. Existing `PY313_*` host environment values are discarded.
+The generated Elasticsearch service uses a bounded 256 MiB JVM heap; raise it
+only after sizing the complete host/container memory budget.
 
 ## Execution order
 
 With an explicit operator-created JSON config, run `run.py --config ...` with:
 
 1. `provision-secrets` (refuses an existing file).
-2. `preflight` (read-only dry check; containers/volumes/networks, ports, paths,
+2. `provision-acceptance` after creating the identity file's parent as a new
+   mode-700 directory (refuses to overwrite credentials). Generate the private
+   JWT key separately in the same protected directory and keep both files mode
+   600. Passwords and private key material are not printed.
+3. `preflight` (read-only dry check; containers/volumes/networks, ports, paths,
    private mounts, source HEAD and tracked cleanliness).
-3. `prepare` (rechecks, creates evidence, exports committed sources only).
-4. `create` (rechecks physical resources, creates a new network and fresh service
+4. `prepare` (rechecks, creates evidence, exports committed sources only).
+5. `create` (rechecks physical resources, creates a new network and fresh service
    data, then a new runtime volume/container).
-5. `install` (frozen positive/negative preflight, then empty venv installation,
+6. `install` (frozen positive/negative preflight, then empty venv installation,
    followed by installed-source identity verification and private report capture).
 
 Then `replay_after_install.py --config ... schema`, `assets`, and `services`.
 The schema phase uses fresh local model synchronization, not historical migration.
-Actual staff authoring/publication and ordinary learner acceptance remain separate
-business steps; these commands do not seed a passing published course.
+After the schema phase, run the run-scoped `seed_acceptance_users.py` through the
+LMS settings. Use a browser for Studio course creation/edit/release and the
+enrolled learner flow; do not treat the seed helper or HTTP readiness as browser
+acceptance. After browser authoring, `seed_rebuild_course_acceptance.py` assigns
+the named account a course-scoped instructor role (without Django staff or
+superuser access), enables the registered plugins, and enrolls the learner.
+`test_scorm_socket_runtime.py` then exercises routed multipart upload, role
+denials, ordinary learner SCORM commits and per-user state isolation.
+`probe_content_assets.py` covers real GridFS create/read/update/delete,
+sorting/pagination and MIME filtering. Capture persistence before restart with
+`snapshot_delivery_before_restart.py`; restart only the owned runtime services,
+then verify the persisted course/assets/learning state with
+`verify_delivery_after_restart.py`.
 
 `run_check.py --config ... lms <unique-label> check` runs a bounded manage command.
 It also supports CMS and explicit registered settings such as `startup_schema`.

@@ -338,7 +338,8 @@ def secret_values(config):
 def redact_values(config):
     values = list(secret_values(config).values())
     fixture = read_json(require_protected(config['credentials_file']))
-    values += [row['password'] for row in fixture.values()]
+    values += [row['password'] for row in fixture.values()
+               if isinstance(row, dict) and isinstance(row.get('password'), str)]
     values += [line for line in require_protected(config['jwt_file']).read_text().splitlines() if not line.startswith('---')]
     return sorted(set(filter(None, values)), key=len, reverse=True)
 
@@ -350,6 +351,7 @@ def environment(config):
     env.update(PY313_MYSQL_USER='edxapp', PY313_MONGO_USER='edxapp', PY313_RABBITMQ_USER='edxapp',
                PY313_RUNTIME_CONTAINER=config['runtime_container'], PY313_SECRET_ENV_FILE=config['secret_env'],
                PY313_PLATFORM_ROOT='/runtime/platform-source', PYTHONPATH='/startup/settings',
+               PY313_REPLAY_ID=config['run_id'],
                PY313_DATABASE_NAME=config['database'], PY313_TEST_DATABASE_NAME=config['test_database'], PY313_MONGO_DB=config['mongo_database'],
                PY313_CACHE_PREFIX=config['cache_prefix'], PY313_ES_INDEX_PREFIX=config['es_prefix'],
                PY313_TASK_QUEUE_PREFIX=config['queue_prefix'], PY313_ACCEPTANCE_COURSE_ID=config['course_key'],

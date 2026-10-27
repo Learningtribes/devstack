@@ -18,7 +18,7 @@ def compose(config):
             'MYSQL_DATABASE': config['database'], 'MYSQL_USER': 'edxapp', 'MYSQL_PASSWORD': '${PY313_MYSQL_PASSWORD}'}),
         'mongo': ('/data/db', {'MONGO_INITDB_ROOT_USERNAME': 'edxapp', 'MONGO_INITDB_ROOT_PASSWORD': '${PY313_MONGO_PASSWORD}'}),
         'rabbitmq': ('/var/lib/rabbitmq', {'RABBITMQ_DEFAULT_USER': 'edxapp', 'RABBITMQ_DEFAULT_PASS': '${PY313_RABBITMQ_PASSWORD}'}),
-        'elasticsearch': ('/usr/share/elasticsearch/data', {'discovery.type': 'single-node', 'xpack.security.enabled': 'false', 'ES_JAVA_OPTS': '-Xms512m -Xmx512m'}),
+        'elasticsearch': ('/usr/share/elasticsearch/data', {'discovery.type': 'single-node', 'xpack.security.enabled': 'false', 'ES_JAVA_OPTS': '-Xms256m -Xmx256m'}),
         'memcached': (None, {}), 'valkey': (None, {}),
     }
     services, volumes = {}, {}
@@ -100,7 +100,7 @@ def install(config):
 def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument('--config', required=True, type=Path)
-    parser.add_argument('action', choices=['provision-secrets', 'preflight', 'prepare', 'create', 'install', 'check', 'exchange'])
+    parser.add_argument('action', choices=['provision-secrets', 'provision-acceptance', 'preflight', 'prepare', 'create', 'install', 'check', 'exchange'])
     parser.add_argument('arguments', nargs='*')
     args = parser.parse_args()
     config = load_config(args.config)
@@ -110,6 +110,9 @@ def main():
         with os.fdopen(os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600), 'w') as stream:
             stream.write(''.join(key + '=' + secrets.token_hex(24) + '\n' for key in sorted(SECRET_KEYS)))
         print('PASS created protected secrets; values withheld')
+    elif args.action == 'provision-acceptance':
+        from provision_acceptance import provision
+        provision(config)
     elif args.action == 'preflight':
         print(json.dumps(fresh_preflight(config, before_prepare=True), indent=2))
     elif args.action == 'prepare':
