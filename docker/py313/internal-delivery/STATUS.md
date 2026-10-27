@@ -71,3 +71,11 @@ retains each source overlay identity. LMS check reached warnings only at import1
 ILT's fixed log handler could not open its directory, addressed in replay schema
 preflight before final checks. The current package volume is still the first
 experimental install and is not acceptance of the latest paired source.
+
+Delivery48 full install: PASS 315 distributions, pip check and all 20 installed
+source identities (platform 39d2bd3bbeac006c024366dddf1cc4c4c7346e1a,
+devstack 7be23cf9f87492d97c241bb99c089dba832199a4).
+Schema FAIL before initialization: inventory retained edx_jsme, retired in platform
+919e976409d1a04b542fc2ee04b3b3b0a6a7cad5. Strict inventory updated; no
+historical migrations touched. LT program/mixed HTTP contracts restored from
+registered upstream commit instead of conditional URL omission. New replay pending.

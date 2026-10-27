@@ -361,11 +361,6 @@
       "config": "django.apps.config.AppConfig"
     },
     {
-      "name": "edx_jsme",
-      "label": "edx_jsme",
-      "config": "django.apps.config.AppConfig"
-    },
-    {
       "name": "django_countries",
       "label": "django_countries",
       "config": "django.apps.config.AppConfig"
@@ -935,11 +930,6 @@
     {
       "name": "course_action_state",
       "label": "course_action_state",
-      "config": "django.apps.config.AppConfig"
-    },
-    {
-      "name": "edx_jsme",
-      "label": "edx_jsme",
       "config": "django.apps.config.AppConfig"
     },
     {
@@ -1557,11 +1547,6 @@
     {
       "name": "course_action_state",
       "label": "course_action_state",
-      "config": "django.apps.config.AppConfig"
-    },
-    {
-      "name": "edx_jsme",
-      "label": "edx_jsme",
       "config": "django.apps.config.AppConfig"
     },
     {

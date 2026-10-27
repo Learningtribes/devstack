@@ -422,7 +422,7 @@
           "sha256": "106a1b4b8b71324a789efb4a59f6cfac781ac34f8d974fe06794186162f47917"
         },
         "LT-PROVENANCE.md": {
-          "sha256": "cb73e902533305963509d6b007932e4db8bb73b3b3b3dbe07cdacd8b95a3f7ac"
+          "sha256": "e7fcace354fd34d35963b3ebd291676a82612c91f79ea5dd64b40a0dfe5c5615"
         },
         "MANIFEST.in": {
           "sha256": "62bfb935b71795bf14a5fdd92e99cc93540024e32e33c278a0de78a031826990"
@@ -548,7 +548,7 @@
           "sha256": "21be87f299dab229e19bc31648f90abb05d217da1b4090ce623dd0054195299c"
         },
         "search/views.py": {
-          "sha256": "837cd74f2a5595d0093f3e48ba42993bb59887175011d03ed8e1d5758f615edd"
+          "sha256": "2b0f7955789f575ed3bbb548a1776b4de3de7429509ab67d604e880e96946711"
         },
         "setup.cfg": {
           "sha256": "1c473cbaee8da5fc46e7f0158794af5cea4414c34a3cf3f180c2001f5e38bd3e"
