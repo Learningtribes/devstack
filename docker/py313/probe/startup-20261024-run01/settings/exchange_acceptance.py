@@ -13,5 +13,4 @@ CACHES = {'default': {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
                       'LOCATION': 'py313-lt02-exchange-acceptance'}}
 # ThirdPartyAuthConfig.ready appends the production exception middleware to
 # MIDDLEWARE_CLASSES; Django 5.2 consumes MIDDLEWARE. Start both as one list.
-MIDDLEWARE = list(MIDDLEWARE_CLASSES)
-MIDDLEWARE_CLASSES = MIDDLEWARE
+MIDDLEWARE = list(MIDDLEWARE)
