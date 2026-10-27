@@ -144,6 +144,7 @@ def configure(namespace, system):
     namespace['MIGRATION_MODULES'] = {entry['label']: None for entry in inventory['lms'] + inventory['cms']}
     namespace['WEBPACK_LOADER'] = {'DEFAULT': {'BUNDLE_DIR_NAME': 'bundles/', 'STATS_FILE': '/runtime/static/' + system + '/webpack-stats.json'}}
     namespace['MIDDLEWARE'] = list(namespace['MIDDLEWARE'])
+    namespace['PIPELINE'] = dict(namespace['PIPELINE'], PIPELINE_ENABLED=False)
     mongo=dict(namespace['DOC_STORE_CONFIG'],host='mongo',port=27017,db=os.environ.get('PY313_MONGO_DB', 'py313_startup_20261024'),
                user=os.environ.get('PY313_MONGO_USER','edxapp'),password=os.environ['PY313_MONGO_PASSWORD'],authSource='admin')
     namespace['DOC_STORE_CONFIG']=mongo
