@@ -87,3 +87,8 @@ now fixes lxml 5.3.2, and UV_CONCURRENT_BUILDS=1 bounds native compiler memory.
 Only task-created delivery47/48 experiments stopped; all volumes/logs retained.
 Older runs remain protected. Portable acceptance helper removes fixed historical
 course/block IDs from SCORM/component/ILT scenarios; runtime checks pending.
+
+Delivery50 install FAIL (dependency conflict, not OOM): upstream xmlsec 1.3.17
+explicitly pins build-only lxml==6.0.2. Corrected the overly restrictive 5.3.2
+build constraint after reading the immutable sdist pyproject.toml; runtime remains
+locked at 5.3.2 and both compile against system libxml2. Serial builds retained.
