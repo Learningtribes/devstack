@@ -455,7 +455,7 @@
           "sha256": "295fab78b6d60636bbb59629d9cd91c630ee86e3833251e6c766e3d3c906bf80"
         },
         "search/api.py": {
-          "sha256": "f02232ee360770ac64a1ff2335ff8aebe75c7b27588907a31ed49ba64f0a7996"
+          "sha256": "3a84cb629a90ccf8ddc2ada5b7183422b67e7c38df094c5d3493f065370ebc25"
         },
         "search/dataclasses.py": {
           "sha256": "e72e69d8293cc47b7d4458b03cfb68336cbefd3dd6082f92be800a5ee9027ad9"
@@ -512,7 +512,7 @@
           "sha256": "41c2c13de48ecdcbfc711026d5507af6e60f7d3bb857918c5e7657a710267075"
         },
         "search/tests/test_engines.py": {
-          "sha256": "df914109a28e34f69974f27c01a330b0fc33c93cde66f3fdf9d3dcb3787e4d24"
+          "sha256": "9464f38cd11d3660c2ee3348f9149823c8369462fa645eccbcac18a91fc94850"
         },
         "search/tests/test_meilisearch.py": {
           "sha256": "bdf636da409f523208b7049205f6f7a1e42c4f926989503e086cd51614342af7"

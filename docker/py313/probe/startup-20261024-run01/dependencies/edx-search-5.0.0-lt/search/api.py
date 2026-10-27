@@ -153,6 +153,11 @@ def perform_search(
         course_id=course_id
     )
 
+    # ``exclude`` is a course-discovery marker interpreted below by
+    # course_discovery_search. It is not a field in courseware-content
+    # documents, so forwarding it here filters every content result out.
+    field_dictionary.pop("exclude", None)
+
     searcher = SearchEngine.get_search_engine(getattr(settings, "COURSEWARE_INDEX_NAME", "courseware_index"))
     if not searcher:
         raise NoSearchEngineError("No search engine specified in settings.SEARCH_ENGINE")

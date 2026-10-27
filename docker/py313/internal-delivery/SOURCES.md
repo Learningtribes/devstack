@@ -26,7 +26,7 @@ repositories is required; no credentials belong in the manifest.
 | `django-splash-1.3.0` | `dependencies/django-splash-1.3.0` | Registered compatibility snapshot; inspect committed source and history for exact patch set. |
 | `djangosaml2idp-lt` | `dependencies/djangosaml2idp-lt` | LT 0.3.3 processor, profile mapping and configuration retained; see SAML decision. |
 | `dogapi-1.11.1` | `patched/dogapi-1.11.1` | Registered compatibility snapshot; inspect committed source and history for exact patch set. |
-| `edx-search-5.0.0-lt` | `dependencies/edx-search-5.0.0-lt` | Official 5.0 base plus LT API/filter/HTTP views at 86ca377c34492ffac4633f342bd0c95c099b8398; modern ES adapter. |
+| `edx-search-5.0.0-lt` | `dependencies/edx-search-5.0.0-lt` | Official 5.0 base plus LT API/filter/HTTP views at 86ca377c34492ffac4633f342bd0c95c099b8398; modern ES adapter; `perform_search` drops the course-discovery-only `exclude` marker before querying courseware-content documents. |
 | `edx-sga-0.28.0` | `dependencies/edx-sga-0.28.0` | Registered compatibility snapshot; inspect committed source and history for exact patch set. |
 | `edx_completion-5.0.0` | `dependencies/edx_completion-5.0.0` | 5.0.0 learning-context API; immutable archive source JSON alongside directory. |
 | `edx_drf_extensions-10.6.0` | `dependencies/edx_drf_extensions-10.6.0` | 10.6.0 plus fail-closed empty JWT verification keys and package collision fix. |
