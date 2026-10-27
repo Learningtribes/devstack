@@ -146,7 +146,6 @@ def main():
         if len(args.arguments) != 1:
             parser.error('exchange requires a unique label')
         ownership(config)
-        from core import docker_exec
         capture(config, args.arguments[0], docker_exec(config, '/runtime/venv/bin/python', '-u', '-c',
             "import runpy;runpy.run_path('/startup/test_auth_exchange_runtime.py',run_name='__main__')", settings='exchange_acceptance'))
 

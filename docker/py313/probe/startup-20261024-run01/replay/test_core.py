@@ -158,6 +158,26 @@ class ContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'repository@sha256 digest: mysql'):
             load_config(self.path)
 
+    def test_test_action_dispatches_a_replay_scoped_django_test(self):
+        with patch('sys.argv', [
+            'run.py', '--config', str(self.path), 'test', 'cms', 'targeted-cms-test',
+            'contentstore.views.tests.test_course_index.TestCourseReIndex.test_example',
+        ]), patch('run.ownership') as ownership, patch('run.docker_exec', return_value=['docker', 'exec']) as docker_exec, \
+                patch('run.capture') as capture:
+            replay_run.main()
+
+        ownership.assert_called_once_with(self.config)
+        docker_exec.assert_called_once_with(
+            self.config,
+            '/runtime/venv/bin/python',
+            '/startup/run_py313_legacy_tests.py',
+            'cms',
+            'test',
+            'contentstore.views.tests.test_course_index.TestCourseReIndex.test_example',
+            settings='startup_cms',
+        )
+        capture.assert_called_once_with(self.config, 'targeted-cms-test', ['docker', 'exec'])
+
     def test_service_image_must_match_reviewed_digest_lock(self):
         self.config['images']['mysql'] = 'mysql@sha256:' + '0' * 64
         self.write()
