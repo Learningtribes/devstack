@@ -62,3 +62,11 @@ FROM runtime AS dev
 ARG BUILD_DEPS
 RUN apt-get update && apt-get install -y --no-install-recommends ${BUILD_DEPS} \
     && rm -rf /var/lib/apt/lists/*
+
+# Explicit internal-delivery toolchain; application venv is created separately.
+FROM dev AS internal-delivery
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gettext libglib2.0-0 libx11-6 libxext6 libxrender1 graphviz libgraphviz-dev \
+    xmlsec1 libxmlsec1-openssl \
+    && rm -rf /var/lib/apt/lists/*
+RUN pip install uv==0.11.23
