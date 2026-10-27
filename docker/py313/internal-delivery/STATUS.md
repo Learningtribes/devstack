@@ -2,6 +2,62 @@
 
 Updated: 2026-10-27 (Asia/Shanghai). Goal active. Local candidate is not complete.
 
+## Active replay: delivery53
+
+Rechecked at the start of this implementation turn. Platform is clean at
+`990cdc0d7df7f0a817d026a7ab4e1e23db721e54`; devstack is clean at
+`ac9b6af1e924e910b45bc98aca16cf03ada78403`; theme input is
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`. Platform remote delivery remains
+`421a93f08fda9f849384ff96525b9ce6e952f962`, while the devstack remote delivery
+remains `42b6b945b4bcb6dadbdb06acfe61ddf5fb298202`. Frozen platform refs were
+rechecked at master `5c2015893ef357436a36e7590646efb9ab1bb804`,
+py313-master `fbb305460bcc9d8ebcb440824de3d976d65063c3`, and py313-wip
+`4759a01524b497522910b9035b16c852e70d053f`; none was changed. Devstack has no
+local py313-wip ref. No source checkout was modified during D0.
+
+Delivery53 uses a new runtime volume, service volumes/network, SQL and Mongo
+databases, loopback ports 18780/18790, and run-scoped cache/search/queue/course
+namespaces. Config SHA256 is
+`968ef3e589f368ee650604ccbb4dd0a32e07f121de3952fda9a1bf9d4c2cf96b`; its
+private secrets/credentials are mode 600. Evidence is retained at
+`/Users/noahwang/workspace/hawthorn/py313-delivery53-evidence/`, and the frozen
+export at `/Users/noahwang/workspace/hawthorn/py313-delivery53-export/`.
+
+| Gate | Delivery53 result | Evidence / command |
+| --- | --- | --- |
+| D0 source/resource isolation | PASS | `preflight.json`, `export.txt`, `create-infra.txt`, `create-runtime.txt`; exact commits and config hash above |
+| D1 clean dependency install | PASS | `install.txt`: Python 3.13.14, 315 distributions, full `uv pip check`; `installed-source-identity.txt`: all 20 registered sources match installed bytes |
+| D2 source reconciliation | IN PROGRESS | wip-only semantic review and current platform commits; all behavior requiring live service evidence remains open |
+| D3 fresh schema and LMS/CMS checks | PASS | `initialize-schema.txt`: local-model-sync, 149 apps, 316 models including M2M, 316 tables, historical migration count 0; `lms-check.txt`, `cms-check.txt` exit 0 |
+| D3 fresh assets | RUNNING | `npm-ci.txt` and `xmodule-assets.txt` exit 0; Webpack/Sass and locale/static still running |
+| D3 browser/business/worker/restart | NOT RUN | Must use this exact paired export; see acceptance matrix below |
+| D4 portable independent checkout | NOT RUN | Requires final paired SHAs and delivery instructions |
+| D5 local candidate | NOT RUN | No push/PR performed or authorized |
+
+The install command was
+`python3.13 replay/run.py --config <private config> install`. It completed exit 0
+without `--no-deps`, source skips, exception suppression, or post-install
+site-packages edits. `uv pip sync` checked all 315 distributions; the installed
+identity verifier checked all 20 committed build trees and their installed
+source bytes. The currently running schema command uses the new delivery53 SQL
+database and `local-model-sync`; this is development bootstrap, not historical
+database migration.
+
+Schema initialized on the new SQL database and checked the actual database
+catalog: 149 apps, 316 models including M2M, 316 tables and zero historical
+migration records. Site seeding, run-scoped staff/learner creation,
+completion-tracking seed and site-theme setup exited successfully. LMS/CMS
+`check` both exited 0; LMS reports four Django warnings (`staticfiles.W004` and
+three duplicate URL namespaces). Startup also reports one
+`openassessment.assessment.HistoricalSharedFileUpload` auto-import miss,
+deprecation/SyntaxWarnings and a ResourceWarning. They are retained in the raw
+logs and are not represented as a warning-free check. The full-platform
+historical-migration path remains explicitly out of scope.
+
+The assets phase is still running. `npm ci --legacy-peer-deps --ignore-scripts
+--no-audit --no-fund` and the fresh XModule asset staging have exited 0. npm
+legacy-package warnings and Sass deprecations are retained in their output.
+
 ## Contract and resources
 
 Native linux/arm64, Python 3.13, Django 5.2; new development databases only.
