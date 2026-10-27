@@ -2,5 +2,5 @@
   "url": "https://files.pythonhosted.org/packages/07/b4/24ae933674841abb97332b134ff4d2b6ea099716d5f61935fd2128cb0d38/edx_drf_extensions-10.6.0.tar.gz",
   "sha256": "c633be6aeb615836a5cbb118b52311d87905942273fdb470bfcc1c95fd5f84b7",
   "version": "10.6.0",
-  "patch": "Reject empty verification keysets rather than returning success; enables symmetric fallback and fails closed without keys."
+  "patch": "Reject empty verification keysets rather than returning success; enables symmetric fallback and fails closed without keys. Exclude docs/docs.* and tests/tests.* from find_packages to avoid installing docs/conf.py over django-pipeline."
 }

@@ -1,5 +1,6 @@
 """Resolve and install all public and registered sources together, without bypasses."""
 import argparse
+import os
 import json
 from pathlib import Path
 import hashlib
@@ -10,6 +11,8 @@ from local_input_contract import REGISTRY, stage
 parser = argparse.ArgumentParser(__doc__)
 parser.add_argument('action', choices=['resolve', 'install'])
 args = parser.parse_args()
+# Bound native builds so a clean replay does not exhaust the Docker VM.
+os.environ["UV_CONCURRENT_BUILDS"] = "1"
 platform = Path('/runtime/platform-source')
 source = Path('/input/platform')
 marker = Path('/runtime/internal-delivery-platform.sha256')

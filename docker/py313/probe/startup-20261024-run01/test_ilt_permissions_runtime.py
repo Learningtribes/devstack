@@ -7,8 +7,9 @@ from django.test import Client
 from courseware.models import XModuleUserStateSummaryField
 from opaque_keys.edx.keys import UsageKey
 
-usage = UsageKey.from_string('block-v1:PY313+CleanRebuild28+2026+type@ilt+block@067328f31ae149c28d706a280981dc77')
-base = '/courses/course-v1:PY313+CleanRebuild28+2026/xblock/' + str(usage) + '/handler/'
+from acceptance_context import block_key
+usage = block_key('ilt')
+base = f'/courses/{usage.course_key}/xblock/{usage}/handler/'
 learner = get_user_model().objects.get(username='py313_learner')
 assert not learner.is_staff and not learner.is_superuser
 stored = json.loads(XModuleUserStateSummaryField.objects.get(usage_id=usage, field_name='enrolled_users').value)

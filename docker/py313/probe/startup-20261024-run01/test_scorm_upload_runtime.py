@@ -9,14 +9,15 @@ from opaque_keys.edx.keys import CourseKey
 from contentstore.views.component import component_handler
 from xmodule.modulestore.django import modulestore
 
-course = CourseKey.from_string('course-v1:PY313+RuntimeChrome26+2026')
+from acceptance_context import course_key
+course = course_key()
 store = modulestore()
 block = next(item for item in store.get_items(course) if item.category == 'scormxblock')
 fixture = Path('/startup/fixtures/py313-scorm12.zip').read_bytes()
 request = RequestFactory(HTTP_HOST='localhost:18010').post('/xblock/scorm/upload', {
     'scorm_pkg': SimpleUploadedFile('py313-scorm12.zip', fixture, content_type='application/zip'),
 })
-request.user = get_user_model().objects.get(username='edx')
+request.user = get_user_model().objects.get(username='py313_staff')
 response = component_handler(request, str(block.location), 'studio_upload_files')
 assert response.status_code == 200, (response.status_code, response.content.decode())
 assert json.loads(response.content)['status'] == 'success'

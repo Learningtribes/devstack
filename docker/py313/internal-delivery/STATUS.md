@@ -79,3 +79,11 @@ Schema FAIL before initialization: inventory retained edx_jsme, retired in platf
 919e976409d1a04b542fc2ee04b3b3b0a6a7cad5. Strict inventory updated; no
 historical migrations touched. LT program/mixed HTTP contracts restored from
 registered upstream commit instead of conditional URL omission. New replay pending.
+
+Delivery49 installation FAIL: native compilation OOM killed the runtime; xmlsec
+build isolation selected unconstrained lxml 6.0.2 while the runtime locks 5.3.2.
+Evidence: delivery49 install.txt and d3-resource-bounding01.txt. Build constraint
+now fixes lxml 5.3.2, and UV_CONCURRENT_BUILDS=1 bounds native compiler memory.
+Only task-created delivery47/48 experiments stopped; all volumes/logs retained.
+Older runs remain protected. Portable acceptance helper removes fixed historical
+course/block IDs from SCORM/component/ILT scenarios; runtime checks pending.

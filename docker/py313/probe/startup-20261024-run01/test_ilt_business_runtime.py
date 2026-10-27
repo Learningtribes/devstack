@@ -6,11 +6,12 @@ from django.contrib.auth import get_user_model
 from courseware.models import StudentModule, XModuleUserStateSummaryField
 from opaque_keys.edx.keys import UsageKey
 
-usage = UsageKey.from_string('block-v1:PY313+CleanRebuild28+2026+type@ilt+block@067328f31ae149c28d706a280981dc77')
+from acceptance_context import block_key
+usage = block_key('ilt')
 base = 'http://localhost:18000'
 route = f'/courses/{usage.course_key}/xblock/{usage}/handler/'
 values = json.loads(Path('/startup/.acceptance-credentials.json').read_text())
-second = json.loads(Path('/startup/.scorm-isolation-credentials.json').read_text())
+second = values['learner']
 user = get_user_model().objects.get(username=second['username'])
 
 def login(credentials):

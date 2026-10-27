@@ -15,7 +15,8 @@ from student.models import UserProfile
 from student.roles import CourseStaffRole, STUDIO_ADMIN_ACCESS_GROUP
 from xmodule.modulestore.django import modulestore
 
-course = CourseKey.from_string('course-v1:PY313+RuntimeChrome26+2026')
+from acceptance_context import course_key
+course = course_key()
 block = next(item for item in modulestore().get_items(course) if item.category == 'scormxblock')
 factory = RequestFactory(HTTP_HOST='localhost:18010')
 with transaction.atomic():
