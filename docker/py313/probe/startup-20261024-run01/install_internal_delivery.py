@@ -50,8 +50,16 @@ else:
     lock = Path('/startup/internal-delivery.lock.txt')
     if not lock.is_file():
         raise SystemExit('Missing committed complete dependency lock')
+    # lxml's generated C source can exceed Docker Desktop's memory budget at
+    # Python's default -O3 setting. Keep source builds (lxml and xmlsec must
+    # match the runtime image's system libxml2), but lower optimization for
+    # this installation process only. The final flags override Python's -O3.
+    build_env = os.environ.copy()
+    build_env['CFLAGS'] = ' '.join(
+        value for value in (build_env.get('CFLAGS', ''), '-O1', '-g0') if value
+    )
     subprocess.run(['uv', 'pip', 'sync', '--python', python, '--build-constraint',
                     '/startup/build-constraints.txt', '--no-binary', 'lxml',
-                    '--no-binary', 'xmlsec', str(lock)], check=True)
+                    '--no-binary', 'xmlsec', str(lock)], check=True, env=build_env)
     subprocess.run(['uv', 'pip', 'check', '--python', python], check=True)
     subprocess.run(['uv', 'pip', 'list', '--python', python, '--format', 'json'], check=True)
