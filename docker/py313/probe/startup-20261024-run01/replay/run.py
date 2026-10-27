@@ -71,7 +71,8 @@ def create(config):
         capture(config, 'create-volume-' + name, ['docker', 'volume', 'create', '--label', 'py313.replay.config=' + config_hash(config), volume])
         labels = json.loads(subprocess.check_output(['docker', 'volume', 'inspect', '--format', '{{json .Labels}}', volume], text=True))
         assert labels.get('py313.replay.config') == config_hash(config), 'Volume ownership mismatch'
-    capture(config, 'create-network', ['docker', 'network', 'create', '--label', 'py313.replay.config=' + config_hash(config), config['network']])
+    capture(config, 'create-network', ['docker', 'network', 'create', '--label',
+        'py313.replay.config=' + config_hash(config), '--subnet', config['network_subnet'], config['network']])
     capture(config, 'create-infra', ['docker', 'compose', '--env-file', config['secret_env'], '-f', str(root / 'compose.json'), 'up', '-d'])
     startup = Path(config['export_dir']) / 'devstack' / STARTUP_REL
     mounts = ['--mount', f'type=volume,src={config["runtime_volume"]},dst=/runtime',

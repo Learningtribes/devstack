@@ -14,12 +14,16 @@ run scripts are evidence/examples, not entry points for a new replay.
 | Identity | `run_id`, `platform_repo`, `platform_commit`, `devstack_repo`, `devstack_commit`, `theme_commit` |
 | New absolute paths | `evidence_dir`, `export_dir`, `secret_env` |
 | Protected read-only mounts | `credentials_file`, `jwt_file` (regular files, mode 600) |
-| Runtime resources | `runtime_container`, `runtime_volume`, `network`, `lms_port`, `cms_port` |
+| Runtime resources | `runtime_container`, `runtime_volume`, `network`, `network_subnet`, `lms_port`, `cms_port` |
 | Namespace | `database`, `test_database`, `mongo_database`, `cache_prefix`, `es_prefix`, `queue_prefix`, `course_key` |
 | Infrastructure | `services`: explicit `container` for mysql/mongo/rabbitmq/elasticsearch/memcached/valkey, plus `volume` for the first four |
 | Images | `images`: six services must exactly match `infrastructure-images.lock.json`; runtime requires its local `sha256:<64 hex>` image ID |
 
-All resource and namespace names must contain `run_id`. SQL database names start
+All resource and namespace names must contain `run_id`. `network_subnet` is a
+dedicated RFC1918 IPv4 `/24`; preflight rejects overlap with any current Docker
+network and creation binds the exact range instead of relying on Docker Desktop's
+default pool. Select a range that also does not overlap the host's routed LAN/VPN
+networks. SQL database names start
 with `py313_rebuild_` because this is the existing local model-sync initializer.
 The course key is a complete opaque `course-v1:` key containing the run id. Ports
 are host loopback mappings to the fixed internal LMS/CMS ports 18000/18010.

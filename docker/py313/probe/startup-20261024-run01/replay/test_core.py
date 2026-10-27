@@ -15,7 +15,7 @@ from provision_acceptance import provision
 from core import (SECRET_KEYS, SERVICES, capture, check_conflicts, environment, load_config,
                   physical_names, secret_values, source_repository_roots,
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
-                  IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock)
+                  IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet)
 
 
 def example(root, run_id='run44'):
@@ -23,7 +23,7 @@ def example(root, run_id='run44'):
     return dict(run_id=run_id, evidence_dir=str(root / ('evidence-' + run_id)), export_dir=str(root / ('export-' + run_id)),
         platform_repo=str(root / 'platform'), platform_commit='a' * 40, devstack_repo=str(root / 'devstack'),
         devstack_commit='b' * 40, theme_commit='c' * 40, runtime_container=prefix + '-runtime',
-        runtime_volume=prefix + '-runtime-data', network=prefix + '-network',
+        runtime_volume=prefix + '-runtime-data', network=prefix + '-network', network_subnet='10.254.44.0/24',
         services={name: {'container': prefix + '-' + name, **({'volume': prefix + '-' + name + '-data'}
             if name in ('mysql', 'mongo', 'rabbitmq', 'elasticsearch') else {})} for name in SERVICES},
         images={**{name: record['reference'] for name, record in
@@ -70,6 +70,15 @@ class ContractTests(unittest.TestCase):
             document['services']['elasticsearch']['environment']['ES_JAVA_OPTS'],
             '-Xms256m -Xmx256m',
         )
+
+    def test_network_subnet_requires_private_ipv4_slash_24_and_rejects_overlap(self):
+        self.assertEqual(validate_network_subnet('10.254.44.0/24'), '10.254.44.0/24')
+        with self.assertRaisesRegex(ValueError, 'private IPv4 /24'):
+            validate_network_subnet('192.168.0.0/23')
+        with self.assertRaisesRegex(ValueError, 'private IPv4 /24'):
+            validate_network_subnet('203.0.113.0/24')
+        with self.assertRaisesRegex(ValueError, 'overlaps an existing Docker network'):
+            validate_network_subnet('10.254.44.0/24', ['10.254.44.0/23'])
 
     def test_output_paths_cannot_overlap_source_repos(self):
         for key in ('evidence_dir', 'export_dir', 'secret_env'):

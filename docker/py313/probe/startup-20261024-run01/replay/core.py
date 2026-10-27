@@ -1,5 +1,6 @@
 """Explicit, local-only replay contract and evidence capture. No run defaults."""
 import hashlib
+import ipaddress
 import json
 import os
 from pathlib import Path
@@ -20,7 +21,7 @@ SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO
                'PY313_RABBITMQ_PASSWORD', 'PY313_STARTUP_SECRET_KEY', 'PY313_STARTUP_XQUEUE_PASSWORD'}
 REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_commit',
             'devstack_repo', 'devstack_commit', 'theme_commit', 'runtime_container', 'runtime_volume',
-            'network', 'services', 'images', 'lms_port', 'cms_port', 'database', 'test_database', 'mongo_database',
+            'network', 'network_subnet', 'services', 'images', 'lms_port', 'cms_port', 'database', 'test_database', 'mongo_database',
             'cache_prefix', 'es_prefix', 'queue_prefix', 'course_key', 'secret_env', 'credentials_file', 'jwt_file'}
 
 
@@ -233,6 +234,43 @@ def physical_names(config):
             *[value for record in config['services'].values() for value in record.values()]]
 
 
+def validate_network_subnet(value, existing_subnets=()):
+    """Require a dedicated RFC1918 /24 that does not overlap Docker networks."""
+    try:
+        candidate = ipaddress.ip_network(value, strict=True)
+    except (TypeError, ValueError) as exc:
+        fail('network_subnet must be a canonical IPv4 /24: ' + str(exc))
+    rfc1918 = (
+        ipaddress.ip_network('10.0.0.0/8'),
+        ipaddress.ip_network('172.16.0.0/12'),
+        ipaddress.ip_network('192.168.0.0/16'),
+    )
+    if (not isinstance(candidate, ipaddress.IPv4Network) or candidate.prefixlen != 24
+            or not any(candidate.subnet_of(network) for network in rfc1918)):
+        fail('network_subnet must be a private IPv4 /24')
+    for existing in existing_subnets:
+        try:
+            network = ipaddress.ip_network(existing, strict=False)
+        except ValueError:
+            continue
+        if candidate.version == network.version and candidate.overlaps(network):
+            fail('network_subnet overlaps an existing Docker network: ' + str(network))
+    return str(candidate)
+
+
+def docker_network_subnets():
+    """Read configured Docker IPAM ranges without changing networks."""
+    identities = subprocess.check_output(['docker', 'network', 'ls', '-q'], text=True).splitlines()
+    subnets = []
+    for identity in identities:
+        inspected = json.loads(subprocess.check_output(['docker', 'network', 'inspect', identity], text=True))
+        for network in inspected:
+            for record in (network.get('IPAM') or {}).get('Config') or []:
+                if record.get('Subnet'):
+                    subnets.append(record['Subnet'])
+    return subnets
+
+
 def config_hash(config):
     return hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()
 
@@ -366,6 +404,7 @@ def fresh_preflight(config, *, before_prepare):
     repositories = source_repository_roots(config)
     validate_path_isolation(config, repositories)
     check_conflicts(config, inventory())
+    network_subnet = validate_network_subnet(config['network_subnet'], docker_network_subnets())
     if before_prepare:
         if os.path.lexists(config['export_dir']):
             fail('Refusing existing export directory')
@@ -384,7 +423,8 @@ def fresh_preflight(config, *, before_prepare):
             fail(key + ' HEAD changed')
         subprocess.run(['git', '-C', repo, 'diff', '--quiet', 'HEAD'], check=True)
     return {'configuration_sha256': config_hash(config), 'run_id': config['run_id'],
-            'ports_available': True, 'resources_absent': True, 'commits': commits(config)}
+            'ports_available': True, 'resources_absent': True, 'network_subnet': network_subnet,
+            'commits': commits(config)}
 
 
 def commits(config):
