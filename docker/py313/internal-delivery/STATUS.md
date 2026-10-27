@@ -15,25 +15,33 @@ Theme: `7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`; export Git content only.
 Remote platform delivery: `421a93f08fda9f849384ff96525b9ce6e952f962`;
 remote devstack matches initial local commit (fresh ls-remote).
 
-Reserved run: `delivery47`; project/network prefix `py313-delivery47`.
-LMS/CMS loopback ports: 18500/18510. All service containers/volumes will use
-that prefix, SQL `py313_rebuild_delivery47`, test SQL
-`test_py313_rebuild_delivery47`, Mongo `py313_delivery47`, cache/ES/queue
-`py313_delivery47`. Resource preflight must reject any existing target.
-Existing resources, including run39/run42 and replay runs43-46, are protected.
-Host has 435 GiB free at baseline. Evidence captured in private local
-`py313-internal-delivery-evidence-20261027/d0-baseline.json`; a portable
-sanitized evidence summary will accompany the final candidate.
+Current diagnostic run: `delivery50`, prefix `py313-delivery50`, host ports
+18560/18570; SQL `py313_rebuild_delivery50`, Mongo/cache/ES/queue
+`py313_delivery50`. Every environment has its own labeled resources.
+Delivery47/48 experiments are stopped with data and logs preserved after OOM;
+only environments created by this task were stopped. Older run39/run42 and
+replay43-46 remain protected. No resource cleanup was executed.
+
+Runtime export50: platform `8c9f3113a8b` and devstack `4d23167` (full SHAs in
+run config and commands.jsonl). Installation failed on an incorrect build-only
+lxml constraint; a diagnostic complete install now uses the corrected committed
+constraint from `df5fbbc`. This run is not final-candidate acceptance.
+Current platform adds fail-closed admin/cookie diagnostics, missing-tab denial,
+Python 3 account audit text, scoped visitor and program-export filters through
+`306809221d0`; affected runtime checks remain pending.
+
+Private evidence root: `py313-internal-delivery-evidence-20261027` plus each run's
+own evidence directory. Final portable sanitized evidence has not been assembled.
 
 ## Acceptance matrix
 
 | Gate | Command / expected behavior | Status | Evidence |
 | --- | --- | --- | --- |
 | D0 source/resources | Git status/HEAD/remotes, refs, Docker and listening ports | PASS | d0-baseline.json; fresh ls-remote tool capture |
-| D1 full dependency closure | New venv; complete graph resolve/install and pip check | PASS (experiment); final replay NOT RUN | d1-resolve02.txt, d1-install02.txt: 315 distributions; registered identity replay pending |
-| D1 SAML contract | LT installed processor/identity contract | PASS (LT only); comparison pending | d1-saml-lt-contract01.txt; no IdP |
-| D2 reconciliation | Semantic disposition of every wip-only change, especially access/security | NOT RUN | Prior heuristic TSV is a clue only |
-| D3 schema/startup | Fresh local-model-sync; complete LMS/CMS app registry and checks | NOT RUN | No historical migration claim |
+| D1 full dependency closure | New venv; complete graph resolve/install and pip check | PASS delivery48; final candidate pending | delivery48 install.txt, installed-source-identity.txt: 315 distributions, all 20 registered sources verified |
+| D1 SAML contract | LT installed processor/identity contract | PASS offline LT; comparison documented | d1-saml-lt-contract01.txt; SOURCES.md; no IdP |
+| D2 reconciliation | Semantic disposition of every wip-only change, especially access/security | IN PROGRESS | Semantic review found and ported missing guards/filters; real runtime checks pending |
+| D3 schema/startup | Fresh local-model-sync; complete LMS/CMS app registry and checks | FAIL / retry pending | delivery48 schema inventory assertion; updated inventory; no historical migration claim |
 | D3 browser author/learner | Login; Studio create/edit/publish; learner reads publication | NOT RUN | Current delivery required |
 | D3 permissions | Anonymous, unenrolled, learner, staff, cross-org allow/deny | NOT RUN | Current delivery required |
 | D3 delayed publish/draft | First publish after >60s; draft remains private | NOT RUN | Current delivery required |
