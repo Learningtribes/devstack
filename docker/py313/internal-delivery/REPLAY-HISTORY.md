@@ -2,6 +2,26 @@
 
 Archived status text from before the delivery54/55 runs. This is retained for audit history only; current state is in `STATUS.md` and `ACCEPTANCE-MATRIX.md`.
 
+## Delivery60 — 2026-10-28
+
+Inputs were platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
+`8f5f6e97d27126c26eb6e56e0a9b684d785609a4`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, Docker Desktop runtime image
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`,
+Python 3.13.14, Django 5.2.13, native linux/arm64. It used new network
+`py313-delivery60-network` (`10.254.60.0/24`), ports 19480/19490, new DBs,
+service namespaces and volumes. Canonical config hash:
+`f979f31e08459fdb2a23ac79918a1c0f11667740147b180eb0e02131d1c75ce9`; evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery60-evidence/`.
+
+D0, full D1 install/source identity, schema/checks and assets passed. The new
+CMS test dispatch action failed on the host with `UnboundLocalError` before
+`capture()` and before `docker exec`, so no CMS test or test DB ran. This is a
+harness failure only; no product conclusion is claimed. The failure is retained
+in `delivery60-test-action-failure.txt` and `commands.jsonl`. A dispatcher fix
+and 28 local runner contract tests are in devstack `47efd68399fceaf8e99d2cf577b7e5b47a6e80a9`.
+Delivery61 must be a clean replay using that exact current devstack input.
+
 ## Delivery59 — 2026-10-28
 
 Inputs were platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack

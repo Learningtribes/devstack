@@ -2,6 +2,29 @@
 
 Updated: 2026-10-28 (Asia/Shanghai). Goal remains active. State: **local delivery candidate incomplete**.
 
+## Latest replay: delivery60 (host test-dispatch failure; replay not candidate)
+
+Delivery60 used platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
+`8f5f6e97d27126c26eb6e56e0a9b684d785609a4`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image ID
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`.
+It used new network `10.254.60.0/24`, loopback ports 19480/19490, a new SQL
+DB/Mongo DB, dedicated volumes and `delivery60` cache/search/queue namespaces.
+Canonical configuration hash is `f979f31e08459fdb2a23ac79918a1c0f11667740147b180eb0e02131d1c75ce9`;
+evidence is `/Users/noahwang/workspace/hawthorn/py313-delivery60-evidence/`.
+
+D0, D1, fresh schema/LMS/CMS checks and D3 assets passed exactly as recorded in
+`preflight.json`, `install.txt`, `installed-source-identity.txt`,
+`initialize-schema.txt`, `frontend-assets.txt` and the locale/static logs.
+The targeted CMS regression test was then requested with the new recorded test
+entry, but the host replay runner raised `UnboundLocalError` before `capture()`
+and before any `docker exec` or test database operation. The failure is recorded
+in `delivery60-test-action-failure.txt` and `commands.jsonl`. This is a harness
+FAIL, not a product test result. The dispatcher fix is in devstack commit
+`47efd68399fceaf8e99d2cf577b7e5b47a6e80a9` and its 28 local runner tests pass.
+Delivery60 is retained as incomplete and its containers/resources are not reused
+or modified for acceptance.
+
 ## Latest replay: delivery59 (business authorization failed; repair replay pending)
 
 Inputs: platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack
@@ -40,8 +63,7 @@ Platform commit `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02` removes the redundant
 platform-role gate and adds a regression test for own-course instructor access
 and denial on an unrelated course. Devstack commit `17ab66a5e15db0571dc0f8d0221bf5ea9f050c34`
 adds an explicit, recorded targeted Django test action using the replay's
-platform root. The next full replay is delivery60; it must use exact clean
-paired commits and new containers, volumes, DB, ports, network and namespaces.
+platform root. The delivery60 replay exposed a host test-dispatch defect before any runtime test. The next full replay is delivery61; it must use exact clean paired commits and new containers, volumes, DB, ports, network and namespaces.
 Do not patch or restart delivery59.
 
 Learner-visible publication and draft isolation, complete role/organization

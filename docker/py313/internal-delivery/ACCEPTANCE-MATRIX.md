@@ -80,6 +80,33 @@ target course's author permissions. Platform commit
 own-course instructor / unrelated-course denial coverage. Delivery59 remains
 immutable failure history; do not patch or restart its runtime.
 
+### Delivery60 — schema/assets pass; host test-dispatch failure
+
+Inputs: platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
+`8f5f6e97d27126c26eb6e56e0a9b684d785609a4`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image ID
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`;
+Python 3.13.14, native linux/arm64, canonical config hash
+`f979f31e08459fdb2a23ac79918a1c0f11667740147b180eb0e02131d1c75ce9`.
+Fresh resource identity: network `py313-delivery60-network`
+(`10.254.60.0/24`), loopback ports 19480/19490, SQL
+`py313_rebuild_delivery60`, Mongo/service namespaces `py313_delivery60`, and
+new labeled volumes. Evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery60-evidence/`.
+
+| Scenario | Delivery60 result | Evidence |
+| --- | --- | --- |
+| D0 source/resource isolation | PASS | `preflight.json`, `export.txt`, `commands.jsonl`, labeled resources |
+| D1 complete locked install/source identity | PASS: 315 distributions, `uv pip check`, 20 registered source trees | `install.txt`, `installed-source-identity.txt` |
+| D3 fresh schema and checks | PASS: local-model-sync, 149 apps, 316 models/tables, zero historical migration rows; LMS/CMS checks exit 0 with warnings | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 resources/assets | PASS: npm/XModule, 120 Webpack chunks per system, locale/static | `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, locale/static logs |
+| D3 targeted CMS course-author regression | **FAIL harness dispatch**: host runner raised `UnboundLocalError` before `capture()`; no Docker test process or test DB ran | `delivery60-test-action-failure.txt`, appended `commands.jsonl` |
+| D3 browser/business/search/storage/SCORM/ILT/restart | NOT RUN | D60 is incomplete; use delivery61 final pair |
+| D4 independent checkout | NOT RUN | Requires final paired source |
+| D5 local candidate | NOT RUN | No push/PR |
+
+The dispatch defect is corrected in devstack `47efd68399fceaf8e99d2cf577b7e5b47a6e80a9`, with 28 runner contract tests passing. Delivery60 remains immutable harness-failure history; no D60 container or volume is reused.
+
 ## Failure and repair history
 
 - Delivery54 D1 failed when lxml's `cc1` process was OOM-killed; its install log remains unchanged.
