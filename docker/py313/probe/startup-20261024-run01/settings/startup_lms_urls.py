@@ -5,6 +5,7 @@ from django.conf import settings
 from django.urls import re_path
 from django.views.static import serve
 
+from lms.urls import handler403, handler404, handler500
 from lms.urls import urlpatterns as platform_urlpatterns
 
 urlpatterns = list(platform_urlpatterns)

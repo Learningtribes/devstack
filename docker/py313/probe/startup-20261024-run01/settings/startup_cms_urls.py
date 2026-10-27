@@ -5,6 +5,7 @@ from django.conf import settings
 from django.urls import re_path
 from django.views.static import serve
 
+from cms.urls import handler404, handler500
 from cms.urls import urlpatterns as platform_urlpatterns
 
 urlpatterns = list(platform_urlpatterns)
