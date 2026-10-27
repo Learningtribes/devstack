@@ -7,14 +7,30 @@ from pathlib import Path
 import re
 import subprocess
 
-from core import (STARTUP_REL, capture, config_hash, docker_exec, load_config, ownership,
-                  read_json, redact_values, save_new)
+from core import (SERVICES, STARTUP_REL, capture, config_hash, docker_exec, load_config, ownership,
+                  read_json, redact_values, save_new, validate_selected_image)
 
 
 def entries(base):
     return {str(path.relative_to(base)): ({'link': os.readlink(path)} if path.is_symlink()
             else {'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
             for path in base.rglob('*') if path.is_file() or path.is_symlink()}
+
+
+def selected_image(config, name):
+    container_name = (config['runtime_container'] if name == 'runtime'
+                      else config['services'][name]['container'])
+    container_format = ('{"name":{{json .Name}},"configured_image":{{json .Config.Image}},'
+                        '"image_id":{{json .Image}},"labels":{{json .Config.Labels}}}')
+    container = json.loads(subprocess.check_output(
+        ['docker', 'inspect', '--type', 'container', '--format', container_format, container_name],
+        text=True,
+    ))
+    image = json.loads(subprocess.check_output(
+        ['docker', 'image', 'inspect', '--format', '{{json .}}', container['image_id']],
+        text=True,
+    ))
+    return validate_selected_image(config, name, container, image)
 
 
 def main():
@@ -48,9 +64,14 @@ print(json.dumps(out))'''
     expected = identity['trees']['platform']
     changed = [path for path, value in expected.items() if runtime.get(path) != value]
     assert not changed, changed
-    selected = json.loads(subprocess.check_output(['docker', 'inspect', '--format',
-        '{"id":{{json .Id}},"image":{{json .Image}},"mounts":{{json .Mounts}},"ports":{{json .NetworkSettings.Ports}}}', config['runtime_container']], text=True))
-    save_new(root / (args.label + '-selected-inspect.json'), selected)
+    selected = {name: selected_image(config, name) for name in (*SERVICES, 'runtime')}
+    runtime_inspect = json.loads(subprocess.check_output(['docker', 'inspect', '--format',
+        '{"id":{{json .Id}},"image":{{json .Image}},"mounts":{{json .Mounts}},"ports":{{json .NetworkSettings.Ports}}}',
+        config['runtime_container']], text=True))
+    if runtime_inspect['image'] != selected['runtime']['image_id']:
+        raise ValueError('Runtime inspect image ID differs from selected image report')
+    save_new(root / (args.label + '-selected-inspect.json'), runtime_inspect)
+    save_new(root / (args.label + '-selected-images.json'), selected)
     for system in ('lms', 'cms'):
         capture(config, args.label + '-' + system + '-worker', docker_exec(config, 'cat', '/runtime/logs/' + system + '-worker.log'))
     # Never collect HTTP logs, which may include authentication request bodies.
@@ -65,6 +86,7 @@ print(json.dumps(out))'''
         if any(value.encode() in raw for value in values) or any(re.search(pattern, raw) for pattern in patterns):
             findings.append(str(path.relative_to(root)))
     report = {'run_id': config['run_id'], 'configuration_sha256': config_hash(config),
+              'selected_images': len(selected),
               'platform_original_files_equal': len(expected), 'generated_extras': len(set(runtime) - set(expected)),
               'http_logs_exported': False, 'secret_findings': findings}
     save_new(root / (args.label + '-audit.json'), report)
@@ -72,7 +94,7 @@ print(json.dumps(out))'''
     manifest = {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
                 for path in root.rglob('*') if path.is_file()}
     save_new(root / (args.label + '-sha256.json'), manifest)
-    print('PASS export and runtime sources, selected identity, worker logs, protected-value/pattern scan')
+    print('PASS export and runtime sources, selected image identities, worker logs, protected-value/pattern scan')
 
 
 if __name__ == '__main__':

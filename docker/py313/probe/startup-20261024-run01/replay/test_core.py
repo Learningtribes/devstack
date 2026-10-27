@@ -10,9 +10,11 @@ import unittest
 from unittest.mock import patch
 
 import run as replay_run
+import audit_and_collect
 from core import (SECRET_KEYS, SERVICES, capture, check_conflicts, environment, load_config,
                   physical_names, secret_values, source_repository_roots,
-                  validate_path_isolation)
+                  validate_path_isolation, validate_selected_image, config_hash, read_json,
+                  IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock)
 
 
 def example(root, run_id='run44'):
@@ -23,7 +25,9 @@ def example(root, run_id='run44'):
         runtime_volume=prefix + '-runtime-data', network=prefix + '-network',
         services={name: {'container': prefix + '-' + name, **({'volume': prefix + '-' + name + '-data'}
             if name in ('mysql', 'mongo', 'rabbitmq', 'elasticsearch') else {})} for name in SERVICES},
-        images={name: ('sha256:' + 'a' * 64 if name == 'runtime' else name + ':test') for name in (*SERVICES, 'runtime')},
+        images={**{name: record['reference'] for name, record in
+                   read_json(IMAGE_LOCK_PATH)['services'].items()},
+                'runtime': 'sha256:' + 'a' * 64},
         lms_port=18240, cms_port=18250, database='py313_rebuild_' + run_id, test_database='py313_rebuild_' + run_id + '_test',
         mongo_database='py313_mongo_' + run_id, cache_prefix='py313_cache_' + run_id, es_prefix='py313_es_' + run_id + '_',
         queue_prefix='py313_queue_' + run_id, course_key='course-v1:PY313+Replay_' + run_id + '+2026',
@@ -130,6 +134,141 @@ class ContractTests(unittest.TestCase):
         self.write()
         with self.assertRaisesRegex(ValueError, 'contain run_id'):
             load_config(self.path)
+
+    def test_mutable_service_tag_is_rejected(self):
+        self.config['images']['mysql'] = 'mysql:8.4'
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'repository@sha256 digest: mysql'):
+            load_config(self.path)
+
+    def test_service_image_must_match_reviewed_digest_lock(self):
+        self.config['images']['mysql'] = 'mysql@sha256:' + '0' * 64
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'differs from reviewed digest lock: mysql'):
+            load_config(self.path)
+
+    def test_image_lock_requires_all_services_and_valid_manifest_digests(self):
+        lock = read_json(IMAGE_LOCK_PATH)
+        self.assertEqual(set(validate_image_lock(lock)['services']), set(SERVICES))
+        lock['services'].pop('mysql')
+        with self.assertRaisesRegex(ValueError, 'does not cover every service'):
+            validate_image_lock(lock)
+        lock = read_json(IMAGE_LOCK_PATH)
+        lock['services']['mysql']['platform_manifests']['linux/amd64'] = 'sha256:bad'
+        with self.assertRaisesRegex(ValueError, 'invalid platform digest: mysql'):
+            validate_image_lock(lock)
+        lock = read_json(IMAGE_LOCK_PATH)
+        lock['schema_version'] = True
+        with self.assertRaisesRegex(ValueError, 'schema version'):
+            validate_image_lock(lock)
+        lock = read_json(IMAGE_LOCK_PATH)
+        lock['services']['mysql']['platform_manifests'][1] = 'sha256:' + 'a' * 64
+        with self.assertRaisesRegex(ValueError, 'invalid platform: mysql'):
+            validate_image_lock(lock)
+
+    def test_repository_digest_normalizes_docker_hub_library_alias(self):
+        digest = 'sha256:' + 'b' * 64
+        self.assertEqual(image_reference_parts('mysql@' + digest),
+                         image_reference_parts('docker.io/library/mysql@' + digest))
+        self.assertNotEqual(image_reference_parts('mysql@' + digest),
+                            image_reference_parts('registry.example/mysql@' + digest))
+
+    def test_selected_service_image_records_locked_digest_and_platform(self):
+        expected = self.config['images']['mysql']
+        config_hash_value = config_hash(self.config)
+        selected = validate_selected_image(
+            self.config,
+            'mysql',
+            {'name': '/' + self.config['services']['mysql']['container'],
+             'configured_image': 'docker.io/library/' + expected, 'image_id': 'sha256:' + 'b' * 64,
+             'labels': {'py313.replay.config': config_hash_value}},
+            {'Id': 'sha256:' + 'b' * 64,
+             'RepoDigests': ['docker.io/library/' + expected], 'Os': 'linux',
+             'Architecture': 'arm64', 'Variant': 'v8'},
+        )
+        self.assertEqual(selected['configured_image'], expected)
+        self.assertEqual(selected['container_configured_image'], 'docker.io/library/' + expected)
+        self.assertEqual(selected['image_id'], 'sha256:' + 'b' * 64)
+        self.assertEqual(selected['platform'], {'os': 'linux', 'architecture': 'arm64', 'variant': 'v8'})
+        self.assertEqual(selected['source_tag'], 'mysql:8.4')
+        self.assertEqual(selected['locked_platform_manifest_digest'],
+                         'sha256:b265fd63b9c8168801c1628b0b21e915846e81192f5a493682a1184cbd70d896')
+
+    def test_selected_service_image_rejects_wrong_repository_digest(self):
+        expected = self.config['images']['mysql']
+        with self.assertRaisesRegex(ValueError, 'does not carry its locked repository digest: mysql'):
+            validate_selected_image(
+                self.config,
+                'mysql',
+                {'name': '/' + self.config['services']['mysql']['container'],
+                 'configured_image': expected, 'image_id': 'sha256:' + 'b' * 64,
+                 'labels': {'py313.replay.config': config_hash(self.config)}},
+                {'Id': 'sha256:' + 'b' * 64, 'RepoDigests': ['mysql@sha256:' + 'c' * 64],
+                 'Os': 'linux', 'Architecture': 'amd64'},
+            )
+
+    def test_selected_service_rejects_unlisted_platform_and_wrong_container(self):
+        expected = self.config['images']['mysql']
+        image_id = 'sha256:' + 'b' * 64
+        container = {
+            'name': '/' + self.config['services']['mysql']['container'],
+            'configured_image': expected, 'image_id': image_id,
+            'labels': {'py313.replay.config': config_hash(self.config)},
+        }
+        image = {'Id': image_id, 'RepoDigests': [expected], 'Os': 'linux',
+                 'Architecture': 'riscv64', 'Variant': ''}
+        with self.assertRaisesRegex(ValueError, 'platform is not present'):
+            validate_selected_image(self.config, 'mysql', container, image)
+        container['name'] = '/unexpected-container'
+        with self.assertRaisesRegex(ValueError, 'container name differs'):
+            validate_selected_image(self.config, 'mysql', container, image)
+
+    def test_valkey_arm64_platform_without_variant_matches_index_descriptor(self):
+        expected = self.config['images']['valkey']
+        image_id = 'sha256:' + 'b' * 64
+        selected = validate_selected_image(
+            self.config,
+            'valkey',
+            {'name': '/' + self.config['services']['valkey']['container'],
+             'configured_image': expected, 'image_id': image_id,
+             'labels': {'py313.replay.config': config_hash(self.config)}},
+            {'Id': image_id, 'RepoDigests': [expected], 'Os': 'linux',
+             'Architecture': 'arm64', 'Variant': None},
+        )
+        self.assertEqual(selected['locked_platform_manifest_digest'],
+                         'sha256:d2a1f2cbd6f69b933b82a930a44b7330b046bbd4c0d24bfc262967624c696dde')
+
+    def test_runtime_selected_image_uses_exact_local_image_id(self):
+        image_id = self.config['images']['runtime']
+        selected = validate_selected_image(
+            self.config, 'runtime',
+            {'name': '/' + self.config['runtime_container'], 'configured_image': image_id,
+             'image_id': image_id, 'labels': {'py313.replay.config': config_hash(self.config)}},
+            {'Id': image_id, 'RepoDigests': [], 'Os': 'linux', 'Architecture': 'arm64', 'Variant': 'v8'},
+        )
+        self.assertEqual(selected['image_id'], image_id)
+        self.assertIsNone(selected['index_digest'])
+
+    def test_audit_inspects_configured_container_and_selected_image_id(self):
+        expected = self.config['images']['mysql']
+        image_id = 'sha256:' + 'b' * 64
+        inspected_container = {
+            'name': '/' + self.config['services']['mysql']['container'],
+            'configured_image': expected, 'image_id': image_id,
+            'labels': {'py313.replay.config': config_hash(self.config)},
+        }
+        inspected_image = {
+            'Id': image_id, 'RepoDigests': [expected], 'Os': 'linux',
+            'Architecture': 'amd64', 'Variant': '',
+        }
+        with patch.object(audit_and_collect.subprocess, 'check_output',
+                          side_effect=[json.dumps(inspected_container), json.dumps(inspected_image)]) as inspect:
+            selected = audit_and_collect.selected_image(self.config, 'mysql')
+
+        self.assertEqual(selected['image_id'], image_id)
+        calls = [mock_call.args[0] for mock_call in inspect.call_args_list]
+        self.assertEqual(calls[0][-1], self.config['services']['mysql']['container'])
+        self.assertEqual(calls[1][-1], image_id)
 
     def test_protected_env_cannot_override_namespace(self):
         path = Path(self.config['secret_env'])

@@ -17,7 +17,7 @@ run scripts are evidence/examples, not entry points for a new replay.
 | Runtime resources | `runtime_container`, `runtime_volume`, `network`, `lms_port`, `cms_port` |
 | Namespace | `database`, `test_database`, `mongo_database`, `cache_prefix`, `es_prefix`, `queue_prefix`, `course_key` |
 | Infrastructure | `services`: explicit `container` for mysql/mongo/rabbitmq/elasticsearch/memcached/valkey, plus `volume` for the first four |
-| Images | `images`: all six infrastructure services plus runtime; runtime requires `sha256:<64 hex>` |
+| Images | `images`: six services must exactly match `infrastructure-images.lock.json`; runtime requires its local `sha256:<64 hex>` image ID |
 
 All resource and namespace names must contain `run_id`. SQL database names start
 with `py313_rebuild_` because this is the existing local model-sync initializer.
@@ -58,6 +58,37 @@ business steps; these commands do not seed a passing published course.
 It also supports CMS and explicit registered settings such as `startup_schema`.
 `run.py --config ... exchange <unique-label>` runs the existing nine-case process
 contract with explicit isolated settings; it does not contact a real IdP.
+
+## Image identity
+
+The six infrastructure services are locked to the OCI index digests in
+`infrastructure-images.lock.json`. Each record keeps the source tag used for
+inspection, the manifest's published version when available, the immutable
+index reference, and the amd64/arm64 child-manifest digests. The source tag is
+traceability metadata; replay configuration uses the index digest. Valkey's
+inspected OCI index exposes no version annotation, so its recorded `8.1` source
+tag is not presented as an exact image release.
+
+Registry metadata was checked with `docker buildx imagetools inspect` on
+2026-10-27; every index includes `linux/amd64` and `linux/arm64`. `load_config()`
+validates the lock schema and rejects mutable service tags or references that
+differ from the lock. The audit compares the configured image, container image
+reference, and Docker image `RepoDigests`. It normalizes Docker Hub's optional
+`docker.io/library/` prefix while requiring the repository and index digest to
+match. It also checks that Docker's selected OS/architecture/variant appears in
+the locked platform manifest map and records that map's digest for the reported
+platform. Docker image inspection does not expose the selected platform
+manifest's registry digest directly; the report distinguishes the locked index
+and platform-manifest digests from Docker's local image ID. A cached local arm64
+image ID is not a substitute for the multi-platform index digest. The runtime
+image remains a local, architecture-specific image ID.
+
+The audit inspects each of the six service containers and the runtime container,
+checks the replay ownership label and configured image reference, then records
+the expected and actual configured image references, selected image ID, repository digests, source tag/version, index digest,
+matching platform-manifest digest, OS, architecture and variant in
+`<label>-selected-images.json`. This records what Docker actually selected; it
+does not claim that an integrated replay has run.
 
 `install` records the identity probe's pass output and stores the detailed package
 identity report in the evidence directory with mode 600. It does not echo the

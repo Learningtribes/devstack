@@ -12,7 +12,7 @@
 | Old test SQL name | Explicit `test_database`, forwarded as `PY313_TEST_DATABASE_NAME` |
 | Course seed/persistence fallback | Explicit `course_key` forwarded as `PY313_ACCEPTANCE_COURSE_ID` |
 | Runtime/volume/service/network names and ports | Configured, required run-id association, preflight existence rejection |
-| Runtime image / infrastructure image tags | Configured; runtime image pinned by sha256; selected actual image recorded |
+| Runtime image / infrastructure image tags | Runtime is a local sha256 image ID; six services use the reviewed multi-platform OCI index digests in `infrastructure-images.lock.json`; audit validates normalized registry digest identity and records selected IDs, source metadata and platforms |
 | JWT and acceptance fixture paths | Explicit private file paths, read-only mounts; values excluded/redacted |
 | run42 `audit_final_inputs.py` export/repo paths | Audit reads configured export identity and checks runtime sources |
 | run42 `collect_and_scan.py` trace path/run42 worker names | Current config worker logs only; failed commands already captured locally |

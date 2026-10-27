@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-10-27",
+  "registry_manifest_type": "application/vnd.oci.image.index.v1+json",
+  "verification_command": "docker buildx imagetools inspect <source_tag>",
+  "services": {
+    "mysql": {
+      "source_tag": "mysql:8.4",
+      "manifest_version": "8.4.13",
+      "version_source": "org.opencontainers.image.version",
+      "reference": "mysql@sha256:76f0358884cb92d9a086d24e5671c38048d3fef40f2588703d73eb55392d6b69",
+      "platform_manifests": {
+        "linux/amd64": "sha256:2068651a18ac6048578647ea57b940ca2daed3f504ebe7fba6a93beeb39aaa1f",
+        "linux/arm64/v8": "sha256:b265fd63b9c8168801c1628b0b21e915846e81192f5a493682a1184cbd70d896"
+      }
+    },
+    "mongo": {
+      "source_tag": "mongo:8.0",
+      "manifest_version": "8.0.34-noble",
+      "version_source": "org.opencontainers.image.version",
+      "reference": "mongo@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907",
+      "platform_manifests": {
+        "linux/amd64": "sha256:4c7d0fb8fde0681e2ae443b0b09371ec9c31a81caab05af9579458bfcb30d656",
+        "linux/arm64/v8": "sha256:8d7ff5cd8f6034e8cdcf52f57f2cd0296de428cd258f19bcfc87ca3c1ab0bf76"
+      }
+    },
+    "rabbitmq": {
+      "source_tag": "rabbitmq:4.3-management",
+      "manifest_version": "4.3.7-management",
+      "version_source": "org.opencontainers.image.version",
+      "reference": "rabbitmq@sha256:84352fa7b36f80b3669f5c40963cb2f0f4cf0ecc67d4cf77a5282c2b5934cffc",
+      "platform_manifests": {
+        "linux/amd64": "sha256:7c5c144218ed359466288d8e84ffb6528e35a787ad20c26b4d5005c836b0678b",
+        "linux/arm64/v8": "sha256:06388d629cbdeff9699b204eed88a06d1169730905e2ca121bfeb44db8c266d0"
+      }
+    },
+    "elasticsearch": {
+      "source_tag": "elasticsearch:8.19.0",
+      "manifest_version": "8.19.0",
+      "version_source": "org.opencontainers.image.version",
+      "reference": "elasticsearch@sha256:8eb0ee819c020d1275e7f7b82aefdea5d50014c8986bb5be64d80232b58119a5",
+      "platform_manifests": {
+        "linux/amd64": "sha256:2c0d73b770cbffaf95169e12ad8e78d464319d5e2959df7224ce732b42c38f1a",
+        "linux/arm64/v8": "sha256:8fa9594a4ba4e15ad1072d50c163072b7bdc0e74cdb2c76fafe69f8471477dc9"
+      }
+    },
+    "memcached": {
+      "source_tag": "memcached:1.6",
+      "manifest_version": "1.6.45",
+      "version_source": "org.opencontainers.image.version",
+      "reference": "memcached@sha256:ab65f39bfa5b1e31bff3bdccfd48af85fee6fdcbf0eb877175fcb170a4e1bd2f",
+      "platform_manifests": {
+        "linux/amd64": "sha256:944116c797245b0fc4c7f40b21fbb09279bdaa61bdbc90096ab54e553f5b4c77",
+        "linux/arm64/v8": "sha256:d931ae954035796f5280028f7a69466acf84e64a7f49e8212c9d389ca18f3a4d"
+      }
+    },
+    "valkey": {
+      "source_tag": "valkey/valkey:8.1",
+      "manifest_version": null,
+      "version_source": "not exposed by inspected OCI index",
+      "reference": "valkey/valkey@sha256:640c5e62cea04b6d6f2084232651d0cc70362d31f4f805e7be94dbed6855e8f2",
+      "platform_manifests": {
+        "linux/amd64": "sha256:0f62bfecc0b713dc2111af3ee307d5cd53c6877b7a112c6143c4de20f1325e4c",
+        "linux/arm64": "sha256:d2a1f2cbd6f69b933b82a930a44b7330b046bbd4c0d24bfc262967624c696dde"
+      }
+    }
+  }
+}

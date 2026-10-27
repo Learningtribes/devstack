@@ -11,6 +11,11 @@ import datetime
 
 STARTUP_REL = Path('docker/py313/probe/startup-20261024-run01')
 SERVICES = ('mysql', 'mongo', 'rabbitmq', 'elasticsearch', 'memcached', 'valkey')
+IMAGE_LOCK_PATH = Path(__file__).with_name('infrastructure-images.lock.json')
+IMAGE_INDEX_MEDIA_TYPE = 'application/vnd.oci.image.index.v1+json'
+IMAGE_DIGEST_RE = re.compile(r'sha256:[0-9a-f]{64}')
+IMAGE_REFERENCE_RE = re.compile(r'(?P<repository>[a-z0-9][a-z0-9._:/-]*)@(?P<digest>sha256:[0-9a-f]{64})')
+IMAGE_TAG_RE = re.compile(r'[a-z0-9][a-z0-9._/-]*:[A-Za-z0-9_][A-Za-z0-9_.-]*')
 SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO_PASSWORD',
                'PY313_RABBITMQ_PASSWORD', 'PY313_STARTUP_SECRET_KEY', 'PY313_STARTUP_XQUEUE_PASSWORD'}
 REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_commit',
@@ -25,6 +30,90 @@ def fail(message):
 
 def read_json(path):
     return json.loads(Path(path).read_text())
+
+
+def normalize_image_repository(repository):
+    """Normalize Docker Hub's optional registry/library prefixes for digest comparison."""
+    repository = repository.lower()
+    if repository.startswith('library/'):
+        return repository[len('library/'):]
+    for prefix in ('docker.io/library/', 'index.docker.io/library/', 'registry-1.docker.io/library/'):
+        if repository.startswith(prefix):
+            return repository[len(prefix):]
+    for prefix in ('docker.io/', 'index.docker.io/', 'registry-1.docker.io/'):
+        if repository.startswith(prefix):
+            return repository[len(prefix):]
+    return repository
+
+
+def image_reference_parts(reference):
+    match = IMAGE_REFERENCE_RE.fullmatch(reference) if isinstance(reference, str) else None
+    if not match:
+        return None
+    repository = match.group('repository')
+    if ':' in repository.rsplit('/', 1)[-1]:
+        return None
+    return normalize_image_repository(repository), match.group('digest')
+
+
+def validate_image_lock(image_lock):
+    required = {'schema_version', 'verified_on', 'registry_manifest_type',
+                'verification_command', 'services'}
+    if not isinstance(image_lock, dict) or set(image_lock) != required:
+        fail('Infrastructure image lock has an invalid schema')
+    if type(image_lock['schema_version']) is not int or image_lock['schema_version'] != 1:
+        fail('Unsupported infrastructure image lock schema version')
+    try:
+        datetime.date.fromisoformat(image_lock['verified_on'])
+    except (TypeError, ValueError):
+        fail('Infrastructure image lock has an invalid verification date')
+    if image_lock['registry_manifest_type'] != IMAGE_INDEX_MEDIA_TYPE:
+        fail('Infrastructure image lock is not an OCI image index lock')
+    if image_lock['verification_command'] != 'docker buildx imagetools inspect <source_tag>':
+        fail('Infrastructure image lock has an unexpected verification command')
+    services = image_lock['services']
+    if not isinstance(services, dict) or set(services) != set(SERVICES):
+        fail('Infrastructure image lock does not cover every service')
+    record_keys = {'source_tag', 'manifest_version', 'version_source', 'reference', 'platform_manifests'}
+    for name, record in services.items():
+        if not isinstance(record, dict) or set(record) != record_keys:
+            fail('Infrastructure image lock has an invalid service record: ' + name)
+        if not isinstance(record['source_tag'], str) or not IMAGE_TAG_RE.fullmatch(record['source_tag']):
+            fail('Infrastructure image lock has an invalid source tag: ' + name)
+        parts = image_reference_parts(record['reference'])
+        if not parts:
+            fail('Infrastructure image lock has an invalid digest reference: ' + name)
+        source_repository = record['source_tag'].rsplit(':', 1)[0]
+        if normalize_image_repository(source_repository) != parts[0]:
+            fail('Infrastructure image lock source tag and digest repository differ: ' + name)
+        if record['manifest_version'] is not None and (
+                not isinstance(record['manifest_version'], str) or not record['manifest_version']):
+            fail('Infrastructure image lock has an invalid manifest version: ' + name)
+        if not isinstance(record['version_source'], str) or not record['version_source']:
+            fail('Infrastructure image lock has no version evidence description: ' + name)
+        manifests = record['platform_manifests']
+        if not isinstance(manifests, dict):
+            fail('Infrastructure image lock has invalid platform manifests: ' + name)
+        if any(not isinstance(platform, str) for platform in manifests):
+            fail('Infrastructure image lock has an invalid platform: ' + name)
+        if 'linux/amd64' not in manifests or not any(
+                platform == 'linux/arm64' or platform.startswith('linux/arm64/')
+                for platform in manifests):
+            fail('Infrastructure image lock lacks amd64/arm64 manifests: ' + name)
+        for platform, digest in manifests.items():
+            if not isinstance(platform, str) or not re.fullmatch(r'linux/[a-z0-9_]+(?:/[a-z0-9_.-]+)?', platform):
+                fail('Infrastructure image lock has an invalid platform: ' + name)
+            if not isinstance(digest, str) or not IMAGE_DIGEST_RE.fullmatch(digest):
+                fail('Infrastructure image lock has an invalid platform digest: ' + name)
+    return image_lock
+
+
+def load_image_lock():
+    try:
+        image_lock = read_json(IMAGE_LOCK_PATH)
+    except (OSError, json.JSONDecodeError) as exc:
+        fail('Unable to read infrastructure image lock: ' + str(exc))
+    return validate_image_lock(image_lock)
 
 
 def save_new(path, value):
@@ -125,6 +214,13 @@ def load_config(path):
     for name, image in config['images'].items():
         if not isinstance(image, str) or not image or any(x.isspace() for x in image):
             fail('Invalid image: ' + name)
+    locked_services = load_image_lock()['services']
+    for service in SERVICES:
+        reference = config['images'][service]
+        if not image_reference_parts(reference):
+            fail('Service image must use repository@sha256 digest: ' + service)
+        if reference != locked_services[service]['reference']:
+            fail('Service image differs from reviewed digest lock: ' + service)
     if not re.fullmatch(r'sha256:[0-9a-f]{64}', config['images']['runtime']):
         fail('Runtime image must be an explicit sha256 image identity')
     if not re.fullmatch(r'course-v1:[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+', config['course_key']) or token not in config['course_key']:
@@ -139,6 +235,75 @@ def physical_names(config):
 
 def config_hash(config):
     return hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()
+
+
+def validate_selected_image(config, name, container, image):
+    """Verify that a selected container uses its locked image and record its platform."""
+    if name not in {*SERVICES, 'runtime'}:
+        fail('Unknown selected image: ' + str(name))
+    expected = config['images'][name]
+    expected_container = (config['runtime_container'] if name == 'runtime'
+                          else config['services'][name]['container'])
+    actual_container = container.get('name')
+    if not isinstance(actual_container, str) or actual_container.lstrip('/') != expected_container:
+        fail('Selected container name differs from configuration: ' + name)
+    if name == 'runtime':
+        configured_matches = container.get('configured_image') == expected
+    else:
+        configured_matches = image_reference_parts(container.get('configured_image')) == image_reference_parts(expected)
+    if not configured_matches:
+        fail('Selected container image reference differs from configuration: ' + name)
+    labels = container.get('labels') or {}
+    if labels.get('py313.replay.config') != config_hash(config):
+        fail('Selected container ownership differs from configuration: ' + name)
+    image_id = image.get('Id')
+    if not isinstance(image_id, str) or not re.fullmatch(r'sha256:[0-9a-f]{64}', image_id):
+        fail('Selected image has no valid image ID: ' + name)
+    if container.get('image_id') != image_id:
+        fail('Selected container image ID differs from inspected image: ' + name)
+    repo_digests = image.get('RepoDigests') or []
+    if not isinstance(repo_digests, list) or any(not isinstance(value, str) for value in repo_digests):
+        fail('Selected image has invalid repository digest metadata: ' + name)
+    lock_record = None
+    locked_manifest_digest = None
+    if name == 'runtime':
+        if expected != image_id:
+            fail('Selected runtime image ID differs from configured identity')
+    else:
+        lock_record = load_image_lock()['services'][name]
+        expected_parts = image_reference_parts(expected)
+        actual_parts = [image_reference_parts(value) for value in repo_digests]
+        if not any(parts == expected_parts for parts in actual_parts):
+            fail('Selected service image does not carry its locked repository digest: ' + name)
+    os_name = image.get('Os')
+    architecture = image.get('Architecture')
+    if os_name != 'linux' or not architecture:
+        fail('Selected image has no supported platform identity: ' + name)
+    variant = image.get('Variant')
+    platform = os_name + '/' + architecture + ('/' + variant if variant else '')
+    if name != 'runtime':
+        platform_manifests = lock_record['platform_manifests']
+        platform_candidates = [platform]
+        if platform == 'linux/arm64':
+            platform_candidates.append('linux/arm64/v8')
+        elif platform == 'linux/arm64/v8':
+            platform_candidates.append('linux/arm64')
+        matching_platform = next((key for key in platform_candidates if key in platform_manifests), None)
+        if matching_platform is None:
+            fail('Selected service image platform is not present in the reviewed index: ' + name)
+        locked_manifest_digest = platform_manifests[matching_platform]
+    return {
+        'container': expected_container,
+        'configured_image': expected,
+        'container_configured_image': container.get('configured_image'),
+        'image_id': image_id,
+        'repo_digests': sorted(repo_digests),
+        'source_tag': None if name == 'runtime' else lock_record['source_tag'],
+        'manifest_version': None if name == 'runtime' else lock_record['manifest_version'],
+        'index_digest': None if name == 'runtime' else image_reference_parts(expected)[1],
+        'locked_platform_manifest_digest': locked_manifest_digest,
+        'platform': {'os': os_name, 'architecture': architecture, 'variant': variant},
+    }
 
 
 def check_conflicts(config, inventory):
