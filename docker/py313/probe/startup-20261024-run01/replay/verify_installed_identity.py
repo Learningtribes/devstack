@@ -18,7 +18,7 @@ for d in metadata.distributions():
     if name not in REGISTRY['packages']:continue
     record=REGISTRY['packages'][name]
     expected=record['files']
-    build=Path('/runtime/rebuild-sources-20261025-run25' if name in REGISTRY['prepared'] else '/runtime/verified-runtime-additions-v1')/name
+    build=Path('/runtime/delivery-sources')/name
     verify(name,build)
     matched={}; unmatched=[]
     for installed in d.files:
@@ -32,14 +32,5 @@ for d in metadata.distributions():
     assert matched and not unmatched,(name,unmatched)
     report['packages'][name]={'source':record['source'],'build':str(build),'distribution':d.metadata['Name'],'version':d.version,'matched_installed_files':matched,'source_only_files':sorted(p for p in expected if p not in matched and p.removeprefix('src/') not in matched),'generated':json.loads((build.parent/(name+'.generated.json')).read_text())}
 assert set(report['packages'])==set(REGISTRY['packages']),set(REGISTRY['packages'])-set(report['packages'])
-wheel=next(Path('/runtime/input-wheels').glob('djangosaml2idp-*.whl'))
-dist=metadata.distribution('djangosaml2idp')
-with zipfile.ZipFile(wheel) as z:
-    files={p:hashlib.sha256(z.read(p)).hexdigest() for p in z.namelist() if p.startswith('djangosaml2idp/') and not p.endswith('/')}
-    for p,h in files.items():
-        assert digest(dist.locate_file(p))==h
-        assert REGISTRY['packages']['djangosaml2idp-lt']['files'][p]['sha256']==h
-report['saml_wheel']={'path':str(wheel),'sha256':digest(wheel),'source_wheel_installed_equal':files}
 Path('/runtime/installed-input-identity.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
-print('PASS all 20 frozen local package build trees and installed source files; SAML source/wheel/site-packages equality')
-print('SAML wheel SHA256',digest(wheel),'matched local files',sum(len(v['matched_installed_files']) for v in report['packages'].values()))
+print('PASS all 20 registered build trees and installed source bytes; complete distribution metadata recorded')

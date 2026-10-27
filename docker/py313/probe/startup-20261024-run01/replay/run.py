@@ -90,7 +90,7 @@ def install(config):
     ownership(config)
     capture(config, 'input-preflight', ['docker', 'exec', config['runtime_container'], 'python3', '-B', '/startup/test_local_input_contract.py'])
     capture(config, 'install', ['docker', 'exec', '-e', 'PY313_PLATFORM_SOURCE_ROOT=/input/platform', config['runtime_container'],
-                              'bash', '-c', 'test ! -e /runtime/venv && bash /startup/install.sh'])
+                              'bash', '-c', 'test ! -e /runtime/venv && /usr/local/bin/python3.13 -B /startup/install_internal_delivery.py install'])
     capture(config, 'installed-source-identity', docker_exec(
         config, '/runtime/venv/bin/python', '/startup/replay/verify_installed_identity.py'))
     capture(config, 'installed-source-report', docker_exec(

@@ -2,7 +2,7 @@
 import argparse
 import json
 from pathlib import Path
-import shutil
+import hashlib
 import subprocess
 
 from local_input_contract import REGISTRY, stage
@@ -12,8 +12,14 @@ parser.add_argument('action', choices=['resolve', 'install'])
 args = parser.parse_args()
 platform = Path('/runtime/platform-source')
 source = Path('/input/platform')
+marker = Path('/runtime/internal-delivery-platform.sha256')
+identity = hashlib.sha256((source / 'requirements/py313-internal/runtime-public.in').read_bytes()).hexdigest()
+if platform.exists() and (not marker.is_file() or marker.read_text() != identity):
+    raise SystemExit('Existing platform source has no matching staging marker; preserve and use a new runtime')
 if not platform.exists():
-    shutil.copytree(source, platform, symlinks=True)
+    # cp -a preserves dangling Git links across Docker Desktop bind mounts.
+    subprocess.run(["cp", "-a", str(source), str(platform)], check=True)
+    marker.write_text(identity)
 root = Path('/runtime/delivery-sources')
 for name in REGISTRY['packages']:
     stage(name, root / name)
@@ -37,10 +43,12 @@ if args.action == 'resolve':
                     '/startup/build-constraints.txt', '--no-emit-index-url',
                     str(requirements), '-o', str(lock)], check=True)
 else:
+    # Supported replay installs the reviewed lock, never resolves newer inputs.
+    lock = Path('/startup/internal-delivery.lock.txt')
     if not lock.is_file():
-        raise SystemExit('Resolve the complete graph before installing')
+        raise SystemExit('Missing committed complete dependency lock')
     subprocess.run(['uv', 'pip', 'sync', '--python', python, '--build-constraint',
-                    '/startup/build-constraints.txt', '--no-binary-package', 'lxml',
-                    '--no-binary-package', 'xmlsec', str(lock)], check=True)
+                    '/startup/build-constraints.txt', '--no-binary', 'lxml',
+                    '--no-binary', 'xmlsec', str(lock)], check=True)
     subprocess.run(['uv', 'pip', 'check', '--python', python], check=True)
     subprocess.run(['uv', 'pip', 'list', '--python', python, '--format', 'json'], check=True)
