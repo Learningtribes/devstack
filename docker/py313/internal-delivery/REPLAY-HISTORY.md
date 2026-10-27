@@ -228,6 +228,48 @@ is preserved. This operation was limited to the new Delivery52 namespace and
 is not a passing publication result. No further Delivery52 service/database/
 search writes are authorized by the run contract.
 
+## Delivery58 infrastructure OOM replay
+
+Delivery58 used platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack
+`77d6e8774017cbd70f8bbc8e8cd226d5fd5e2f59`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image
+`sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63`,
+Python 3.13.14, native linux/arm64, and canonical config SHA256
+`f454e0251a88d9e031b7dbf5352dc9ef3f0b747d368eecdd901e2fa0504bbdf9`.
+
+D0 preflight/export/resource creation and D1 complete install passed. All 315
+locked distributions installed without dependency bypass; `uv pip check` and
+all 20 installed-source byte comparisons passed. D3 local-model-sync built a
+fresh development schema (149 apps, 316 models/tables, zero historical
+migration rows), both settings checks passed with warnings, and npm/XModule/
+LMS/CMS Webpack/locale/static phases exited 0. Each Webpack stats file reported
+120 chunks. Evidence remains in
+`/Users/noahwang/workspace/hawthorn/py313-delivery58-evidence/`.
+
+The initial Elasticsearch service start exited 137/OOMKilled after its JVM
+reported a 256 MiB heap and reached `starting ...`. A direct start of the same
+delivery58-owned container also exited 137/OOMKilled. MySQL was found
+OOMKilled; starting only that delivery58-owned database container succeeded
+and it remained up during a short observation. LMS/CMS HTTP and worker
+processes had been dispatched, and the login page returned HTTP 200, but a
+browser login submission returned 500 because the down MySQL service name
+`mysql` could not resolve. This is infrastructure failure evidence only; no
+product authentication conclusion, course flow, search/worker business result,
+storage, SCORM, ILT, or persistence pass is claimed for delivery58. Details are
+in `delivery58-service-oom.txt`; no old run container/volume/network was
+changed.
+
+The 16 GiB OrbStack VM reported about 590 MiB available and only 184 KiB free
+swap before the database diagnostic restart. Older runs remain untouched. A
+separate Docker Desktop daemon uses an 8 GiB VM. The runtime image archive
+copied from OrbStack has SHA256
+`20dbfe1562c1c49d5f1492e8094fd7040df09833942c94922de44d02129d3cbe`; all 15
+rootfs diff IDs and the parsed image config match, though Docker Desktop assigns
+local image ID `sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`
+instead of OrbStack's `sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63`.
+Delivery59 will use that exact local ID and separate resources. No delivery59
+preflight or service operation is represented as passed here.
+
 ## Verification command corrections
 
 The first host `compileall` swept committed dependency source, including

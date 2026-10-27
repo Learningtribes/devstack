@@ -1,6 +1,6 @@
 # Internal delivery acceptance matrix
 
-Current replay: delivery56, config SHA256 `3b0ccb3301ea3456a62eedbcb56303e3ff770928d7c4603c16454c6cde06f4d4`. Exact inputs: platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack `bb22dee9eb4108291f341acfd576b72152f241eb`, theme `7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image `sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63`, Python 3.13.14, native linux/arm64. Evidence root: `/Users/noahwang/workspace/hawthorn/py313-delivery56-evidence/`. Results apply only to the named replay.
+Historical matrix: delivery53–56. The current run-scoped results for delivery57/58 follow the table and are distinct from this baseline. Each result applies only to its named replay.
 
 | Scenario | Command / expected behavior | Delivery53 | Delivery54 | Delivery55 | Delivery56 | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -25,6 +25,29 @@ Current replay: delivery56, config SHA256 `3b0ccb3301ea3456a62eedbcb56303e3ff770
 | Restart persistence | Snapshot course/assets/learner state; restart owned services and verify | NOT RUN | NOT RUN | NOT RUN | NOT RUN | Run after passing business data is durable |
 | D4 independent checkout rebuild | New checkout follows committed instructions without old volumes, venv or author paths | NOT RUN | NOT RUN | NOT RUN | NOT RUN | Must state same-host limitation, if applicable |
 | D5 local candidate/publication boundary | Exact paired commits, portable inputs, clean worktrees; no push before authorization | NOT RUN | NOT RUN | NOT RUN | NOT RUN | No push/PR performed or authorized |
+
+## Current replay updates
+
+### Delivery58 — OrbStack resource failure
+
+Inputs: platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack `77d6e8774017cbd70f8bbc8e8cd226d5fd5e2f59`, theme `7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image `sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63`, Python 3.13.14, native linux/arm64. Canonical config SHA256 `f454e0251a88d9e031b7dbf5352dc9ef3f0b747d368eecdd901e2fa0504bbdf9`; evidence root `/Users/noahwang/workspace/hawthorn/py313-delivery58-evidence/`.
+
+| Scenario | Delivery58 result | Evidence |
+| --- | --- | --- |
+| D0 preflight/export/new resource isolation | PASS | `preflight.json`, `export.txt`, `create-network.txt`, `create-infra.txt`, `create-runtime.txt` |
+| D1 locked install and source identity | PASS: 315 distributions, `uv pip check`, all 20 registered source trees | `install.txt`, `installed-source-identity.txt` |
+| D3 new development schema and checks | PASS: local-model-sync; 149 apps, 316 models/tables, 0 historical migration rows; LMS/CMS checks exit 0 with warnings | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 assets and static resources | PASS: npm, XModule, LMS/CMS Webpack 120 chunks each, both locale/static phases | `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, `lms-locale-static.txt`, `cms-locale-static.txt` |
+| D3 HTTP/login | FAIL infrastructure: login page rendered and HTTP 200, submit returned 500 because OOM-down MySQL made `mysql` unresolvable | `delivery58-service-oom.txt`, `/runtime/logs/lms-http.log` in owned container |
+| D3 course, learner, permission and publication flows | NOT RUN | No valid authenticated browser path after MySQL OOM; delivery56 evidence does not carry over |
+| D3 search, worker business result, storage, SCORM and ILT | BLOCKED by delivery58 Elasticsearch/MySQL OOM | `delivery58-service-oom.txt` |
+| D3 restart persistence; D4 independent checkout; D5 local candidate | NOT RUN | Requires successful final paired replay |
+
+Elasticsearch OOM-killed during initial service startup and again during one diagnosis start. MySQL was found OOM-killed, then started once and remained up during a short observation. OrbStack reported 16 GiB VM memory, about 590 MiB available, and nearly exhausted swap. Existing older-run resources were not changed. Retain all delivery58 resources and logs.
+
+### Delivery59 — isolated engine replay preparation
+
+The independent Docker Desktop daemon has an 8 GiB VM; it also contains unrelated project resources that remain untouched. An archive copied read-only from OrbStack retained all 15 runtime rootfs layer digests and image config. Desktop exposes imported runtime image ID `sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`, distinct from OrbStack's local image ID. Archive SHA256: `20dbfe1562c1c49d5f1492e8094fd7040df09833942c94922de44d02129d3cbe`. The exact Desktop ID must be recorded in its config and selected-image audit. New ports, subnet, namespace, credentials, volumes and evidence path are being allocated; preflight/create/install have not run yet.
 
 ## Failure and repair history
 
