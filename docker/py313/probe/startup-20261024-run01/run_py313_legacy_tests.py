@@ -117,5 +117,6 @@ if len(sys.argv) < 2 or sys.argv[1] not in {"lms", "cms"}:
     raise SystemExit("usage: run_py313_legacy_tests.py lms|cms <manage.py arguments>")
 manage_args = sys.argv[1:]
 sys.argv = ["manage.py"] + manage_args
-os.chdir("/edx/app/edxapp/edx-platform")
+platform_root = os.environ.get("PY313_PLATFORM_ROOT", "/edx/app/edxapp/edx-platform")
+os.chdir(platform_root)
 runpy.run_path("manage.py", run_name="__main__")

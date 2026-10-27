@@ -101,7 +101,7 @@ def install(config):
 def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument('--config', required=True, type=Path)
-    parser.add_argument('action', choices=['provision-secrets', 'provision-acceptance', 'preflight', 'prepare', 'create', 'install', 'check', 'exchange'])
+    parser.add_argument('action', choices=['provision-secrets', 'provision-acceptance', 'preflight', 'prepare', 'create', 'install', 'check', 'test', 'exchange'])
     parser.add_argument('arguments', nargs='*')
     args = parser.parse_args()
     config = load_config(args.config)
@@ -126,6 +126,22 @@ def main():
         from core import manage
         system, label, *command = args.arguments
         manage(config, system, label, command or ['check'])
+    elif args.action == 'test':
+        if len(args.arguments) < 3:
+            parser.error('test requires a system, unique label, and test selector')
+        system, label, *selectors = args.arguments
+        if system not in ('lms', 'cms'):
+            parser.error('test system must be lms or cms')
+        ownership(config)
+        capture(config, label, docker_exec(
+            config,
+            '/runtime/venv/bin/python',
+            '/startup/run_py313_legacy_tests.py',
+            system,
+            'test',
+            *selectors,
+            settings='startup_' + system,
+        ))
     elif args.action == 'exchange':
         if len(args.arguments) != 1:
             parser.error('exchange requires a unique label')

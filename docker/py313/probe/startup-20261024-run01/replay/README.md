@@ -80,6 +80,12 @@ then verify the persisted course/assets/learning state with
 
 `run_check.py --config ... lms <unique-label> check` runs a bounded manage command.
 It also supports CMS and explicit registered settings such as `startup_schema`.
+`run.py --config ... test cms <unique-label> <Django-test-selector>` runs a
+targeted CMS test with the Python 3.13 legacy nose adapter, the replay's isolated
+runtime, database and authenticated local Mongo test namespace. LMS tests use
+the same form with `lms`. The command and output are captured under the supplied
+unique label. The test adapter honors the replay's `PY313_PLATFORM_ROOT` instead
+of depending on a platform source path from another container.
 `run.py --config ... exchange <unique-label>` runs the existing nine-case process
 contract with explicit isolated settings; it does not contact a real IdP.
 
