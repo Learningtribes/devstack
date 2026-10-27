@@ -2,6 +2,36 @@
 
 Archived status text from before the delivery54/55 runs. This is retained for audit history only; current state is in `STATUS.md` and `ACCEPTANCE-MATRIX.md`.
 
+## Delivery59 — 2026-10-28
+
+Inputs were platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack
+`88cdf21e1423d0ae91f9776dd456722d1710de1b`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, Docker Desktop runtime image
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`,
+Python 3.13.14, Django 5.2.13, native linux/arm64. It used network
+`py313-delivery59-network` (`10.254.59.0/24`), ports 19380/19390, a new SQL DB,
+Mongo DB, cache/search/queue namespaces, and dedicated volumes. The private
+config canonical hash is `27e3812bd2e48c1c2ab5c4a3e3d466972ffa08c6a4cd8e6c64b4f79e4c48b3e2`;
+commands and full config are in the private evidence root
+`/Users/noahwang/workspace/hawthorn/py313-delivery59-replay-evidence/`.
+
+D0, full D1 install/source identity, new schema, LMS/CMS checks and the complete
+asset build passed. Browser sign-in, course create/edit and learner enrollment
+passed. Studio's publishing modal called the course search-reindex endpoint on
+release, but it returned 403 twice for the named instructor, who had target
+course instructor access without Django staff/superuser access. The course was
+marked released in modulestore but the UI release flow did not complete. This
+is a business FAIL, not an infrastructure or authentication failure. Learner
+publication/draft, search and worker behavior, GridFS/File, SCORM/ILT, restart
+persistence and D4 were not run to completion on this input. The exact failed
+state and logs remain in the delivery59 evidence/private runtime.
+
+Platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02` removes the redundant global
+role gate and tests own-course instructor permission plus unrelated-course
+denial. Delivery60 is the required clean replay; no delivery59 resource is to be
+modified or reused for acceptance.
+
+
 # Python 3.13 internal delivery status
 
 Updated: 2026-10-27 (Asia/Shanghai). Goal active. Local candidate is not complete.

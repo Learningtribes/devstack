@@ -1,6 +1,6 @@
 # Internal delivery acceptance matrix
 
-Historical matrix: delivery53–56. The current run-scoped results for delivery57/58 follow the table and are distinct from this baseline. Each result applies only to its named replay.
+Historical matrix: delivery53–56. Current run-scoped results for delivery57–59 follow the table and are distinct from this baseline. Each result applies only to its named replay.
 
 | Scenario | Command / expected behavior | Delivery53 | Delivery54 | Delivery55 | Delivery56 | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -45,9 +45,40 @@ Inputs: platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack `77d6e8774
 
 Elasticsearch OOM-killed during initial service startup and again during one diagnosis start. MySQL was found OOM-killed, then started once and remained up during a short observation. OrbStack reported 16 GiB VM memory, about 590 MiB available, and nearly exhausted swap. Existing older-run resources were not changed. Retain all delivery58 resources and logs.
 
-### Delivery59 — isolated engine replay preparation
+### Delivery59 — install/assets pass; Studio publish authorization failure
 
-The independent Docker Desktop daemon has an 8 GiB VM; it also contains unrelated project resources that remain untouched. An archive copied read-only from OrbStack retained all 15 runtime rootfs layer digests and image config. Desktop exposes imported runtime image ID `sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`, distinct from OrbStack's local image ID. Archive SHA256: `20dbfe1562c1c49d5f1492e8094fd7040df09833942c94922de44d02129d3cbe`. The exact Desktop ID must be recorded in its config and selected-image audit. New ports, subnet, namespace, credentials, volumes and evidence path are being allocated; preflight/create/install have not run yet.
+Inputs: platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack
+`88cdf21e1423d0ae91f9776dd456722d1710de1b`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image ID
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`;
+Python 3.13.14, native linux/arm64, canonical config hash
+`27e3812bd2e48c1c2ab5c4a3e3d466972ffa08c6a4cd8e6c64b4f79e4c48b3e2`.
+Fresh resource identity: Docker Desktop network `py313-delivery59-network`
+(`10.254.59.0/24`), loopback ports 19380/19390, SQL database
+`py313_rebuild_delivery59`, Mongo and service namespaces `py313_delivery59`,
+and dedicated labeled volumes. Evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery59-replay-evidence/`.
+
+| Scenario | Delivery59 result | Evidence |
+| --- | --- | --- |
+| D0 source/resource isolation | PASS | `preflight.json`, `export.txt`, `commands.jsonl`, `input-preflight.txt`, labeled resource commands |
+| D1 complete locked install | PASS: 315 distributions, `uv pip check`, all 20 registered source trees byte-identical | `install.txt`, `installed-source-identity.txt` |
+| D3 fresh development schema and LMS/CMS checks | PASS: 149 apps, 316 models/tables, zero historical migration rows; checks exited 0 with warnings | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 theme/plugin/static assets | PASS: npm/XModule, 120 Webpack chunks per system, locale/static | `stage-theme.txt`, `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, `lms-locale-static.txt`, `cms-locale-static.txt` |
+| D3 browser sign-in and authoring | PARTIAL: login, course creation/edit and ordinary learner enrollment passed; release modal did not complete | `delivery59-course-state.txt`, `delivery59-author-plugins-enrollment02.txt`, protected CMS HTTP log |
+| D3 Studio publish search-reindex request | **FAIL 403** for a non-platform-admin course instructor; retry also 403 | `commands.jsonl`, protected CMS HTTP log; state retained in run evidence |
+| D3 learner publication, draft privacy, permission/org matrix | NOT RUN on successfully completed publication | Repeat on delivery60 |
+| D3 real search/worker business result | NOT RUN | Repeat on delivery60; delivery56's indexed docs but zero search results remain separate historical FAIL |
+| D3 GridFS/File CRUD, SCORM, ILT, restart persistence | NOT RUN on this replay | Execute against delivery60's final data |
+| D4 independent checkout rebuild | NOT RUN | Requires final paired source and instructions |
+| D5 local candidate | NOT RUN | No push/PR |
+
+Diagnosis: `course_search_index_handler` rejected the user by platform role
+before calling `reindex_course_and_check_access`, which already checks the
+target course's author permissions. Platform commit
+`8f31fa2d9eaa4e1deeb2762b143b536a338d9f02` removes this redundant gate and adds
+own-course instructor / unrelated-course denial coverage. Delivery59 remains
+immutable failure history; do not patch or restart its runtime.
 
 ## Failure and repair history
 
