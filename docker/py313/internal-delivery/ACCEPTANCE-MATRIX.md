@@ -28,6 +28,34 @@ Historical matrix: delivery53–56. Run-scoped results for later deliveries foll
 
 ## Current replay updates
 
+### Delivery64 — D0 preflight pass; runtime image ready
+
+Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
+`38d74dbe75911d96ded6017339617f7bad845a48`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, native linux/arm64, Python
+3.13.14. Dedicated engine/context: `py313-delivery64`; runtime image ID
+`sha256:6d6227966492c5c5af9c02c10b71b3c6bc37810f1e4c0ff22affe2fb7e5ccfb4`.
+Image build log is host-private at
+`/Users/noahwang/workspace/hawthorn/py313-delivery64/private/runtime-image-build.txt`.
+Raw config SHA256 `89d237ee3f34f29b59374ec7fb686329b629bf5dfa12f9584d6f5db59679f992`;
+canonical config hash `76efdd0c146bd2087be2cfa61cb1200a44517aefe5ee00e6d2e79f472dffbd93`.
+Resources are reserved under the `delivery64` identity, network
+`172.29.64.0/24`, ports 19880/19890, database `py313_rebuild_delivery64`, and
+Mongo/cache/search/queue namespace `delivery64`. Evidence root will be
+`/Users/noahwang/workspace/hawthorn/py313-delivery64-evidence/`.
+
+| Scenario | Delivery64 result | Evidence |
+| --- | --- | --- |
+| D0 paired source and resource preflight | PASS initially; first `prepare` retry FAIL closed before creating outputs because the checkpoint documentation was uncommitted; retry after local commit | private `preflight.json`, `prepare-attempt01-uncommitted-checkout.txt`; runner canonical config hash |
+| Runtime image build | PASS: committed `docker/py313/Dockerfile`, `internal-delivery` target; native arm64, Python 3.13.14, uv 0.11.23, Node 16.20.2 | host-private build log and image inspect |
+| D1 full locked install and registered source identity | NOT RUN | pending D64 resource creation and install |
+| D3 schema/settings/assets/browser/core business | NOT RUN | no service containers, volume or database created yet |
+| D4 independent checkout rebuild | NOT RUN | requires final paired candidate |
+| D5 local candidate | NOT RUN | no push or PR |
+
+No D64 service resource exists at this point. Delivery63 remains an independent
+failed attempt; its ES container, volumes, config and evidence are not reused.
+
 ### Delivery58 — OrbStack resource failure
 
 Inputs: platform `7962745ac4d0966442498326b1dad25696ea4c6f`, devstack `77d6e8774017cbd70f8bbc8e8cd226d5fd5e2f59`, theme `7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, runtime image `sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63`, Python 3.13.14, native linux/arm64. Canonical config SHA256 `f454e0251a88d9e031b7dbf5352dc9ef3f0b747d368eecdd901e2fa0504bbdf9`; evidence root `/Users/noahwang/workspace/hawthorn/py313-delivery58-evidence/`.

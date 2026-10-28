@@ -2,6 +2,48 @@
 
 Updated: 2026-10-28 (Asia/Shanghai). Goal remains active. State: **local delivery candidate incomplete**.
 
+## Latest replay: delivery64 (D0 PASS; runtime image ready; D1 install pending)
+
+Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
+`38d74dbe75911d96ded6017339617f7bad845a48`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`; target native linux/arm64,
+Ubuntu 24.04 guest, Python 3.13.14. The dedicated Docker context is
+`py313-delivery64`; runtime image was built from the paired devstack checkout's
+committed `docker/py313/Dockerfile` target `internal-delivery`, image ID
+`sha256:6d6227966492c5c5af9c02c10b71b3c6bc37810f1e4c0ff22affe2fb7e5ccfb4`.
+The build command and complete output are in the host-private file
+`/Users/noahwang/workspace/hawthorn/py313-delivery64/private/runtime-image-build.txt`
+(SHA256 `f377b92a2e72f937bdeed49f7448b6bce5084c9848df26c0efa594bdb3ce699e`).
+Dockerfile SHA256 is `aaaa420d494b2199b890c24df6966fe3a41c0077ef650effd2308afc87544c00`;
+the config raw SHA256 is
+`89d237ee3f34f29b59374ec7fb686329b629bf5dfa12f9584d6f5db59679f992`, with
+canonical runner ownership hash
+`76efdd0c146bd2087be2cfa61cb1200a44517aefe5ee00e6d2e79f472dffbd93`.
+Protected config and credentials are under the mode-700 host-private directory
+`/Users/noahwang/workspace/hawthorn/py313-delivery64/private/` and are not copied
+to the evidence export.
+
+The read-only D0 preflight passed with all paired worktrees clean, new paths and
+names absent, ports 19880/19890 free, and `172.29.64.0/24` absent from every
+inspected Docker IPAM range. The host has no LAN-specific route covering this
+range; its existing full-tunnel VPN route applies. D64 uses its own daemon,
+config, image, network, volumes, namespaces and new SQL database. No D64 business
+resources have been created yet. Theme HEAD matches the registered SHA; its pre-existing
+untracked `lms/static/bootstrap/` and `lms/static/discussion/` paths were left
+untouched and are not replay inputs.
+
+| Gate | Delivery64 result | Evidence / next action |
+| --- | --- | --- |
+| D0 paired source/resource preflight | PASS; first `prepare` retry failed before creating outputs because this status batch was uncommitted, then failed closed | private `preflight.json` and `prepare-attempt01-uncommitted-checkout.txt`; canonical hash above |
+| Runtime image construction | PASS: native arm64; Python 3.13.14, uv 0.11.23, Node 16.20.2 | private build log and Docker image inspect; D4 must build from independent checkout |
+| D1 dependency install/source identity | NOT RUN | next: committed lock install, `uv pip check`, 20 registered source trees |
+| D3 schema/check/assets/browser/business | NOT RUN | no services or database created yet |
+| D4 independent checkout rebuild | NOT RUN | requires final paired candidate |
+| D5 local delivery candidate | NOT RUN | no push or PR |
+
+Delivery64 is a new attempt after delivery63's infrastructure OOM, not a recovery
+of that run. Never restart or reuse delivery63 resources for this acceptance.
+
 ## Latest replay: delivery63 (dependency/runtime gates pass; Elasticsearch OOM)
 
 Delivery63 used platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
