@@ -37,8 +37,8 @@ The platform remote delivery ref previously observed was `421a93f`, behind the l
 
 Complete, auditable commit ledgers:
 
-- [platform master..HEAD ledger](py313-platform-master-commit-ledger-2026-10-28.tsv) — all 362 commits.
-- [devstack master..HEAD ledger](py313-devstack-master-commit-ledger-2026-10-28.tsv) — all 117 commits.
+- Complete platform ledger: `/Users/noahwang/docs/hawthorn/py313-platform-master-commit-ledger-2026-10-28.tsv` — all 362 commits.
+- Complete devstack ledger: `/Users/noahwang/docs/hawthorn/py313-devstack-master-commit-ledger-2026-10-28.tsv` — all 117 commits.
 
 The ledgers are generated from `git log --format='%H%x09%ad%x09%s' --date=short master..HEAD`; they are the complete list, while the sections below group the changes by responsibility.
 
