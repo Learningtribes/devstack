@@ -2,7 +2,37 @@
 
 Updated: 2026-10-28 (Asia/Shanghai). Goal remains active. State: **local delivery candidate incomplete**.
 
-## Latest replay: delivery64 (D0/D1/schema checks PASS; Elasticsearch FAIL)
+## Latest replay: delivery67 (D0/D1/schema/assets PASS; Elasticsearch FAIL)
+
+Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
+`5ba565fb7d5792b5636a15f254b73a8e8d2587f4`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`; target native linux/arm64,
+Python 3.13.14. D67 used fresh resources under the `delivery67` identity:
+ports 20180/20190, network `172.29.67.0/24`, SQL database
+`py313_rebuild_delivery67`, Mongo database `py313_delivery67`, and dedicated
+service/runtime volumes. The runtime image was the local build
+`sha256:6d6227966492c5c5af9c02c10b71b3c6bc37810f1e4c0ff22affe2fb7e5ccfb4`.
+Evidence: `/Users/noahwang/workspace/hawthorn/py313-delivery67-evidence/`.
+
+D67 passed the frozen input preflight, complete 315-distribution install,
+`uv pip check`, all 20 registered source identities, fresh local-model-sync
+schema, LMS/CMS checks, SAML contract, theme/npm/XModule/frontend and
+locale/static builds. Elasticsearch exited 137 with `OOMKilled=true` under its
+2 GiB memory and 3 GiB memory+swap limits; no search or business assertion is
+claimed. D67 resources must not be restarted or reused for acceptance.
+
+| Gate | Delivery67 result | Evidence / next action |
+| --- | --- | --- |
+| D0 paired source/resource preflight | PASS | `preflight.json`, `commands.jsonl`, `input-preflight.txt` |
+| D1 dependency install/source identity | PASS: 315 distributions, `uv pip check`, all 20 registered source trees | `install.txt`, `installed-source-identity.txt`, `installed-source-report.txt` |
+| D3 fresh schema and LMS/CMS checks | PASS: 149 apps, 316 models, 316 tables, 0 historical migration rows; checks exit 0 with warnings | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 theme, npm, XModule, frontend, locale/static assets | PASS: both Webpack builds emitted 120 chunks; locale/static commands exited 0 | `stage-theme.txt`, `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, `lms-locale-static.txt`, `cms-locale-static.txt` |
+| D3 Elasticsearch/search | FAIL infrastructure: exit 137/OOMKilled during startup | `delivery67-elasticsearch-oom.txt`; fresh run required |
+| D3 browser/core business | NOT RUN | Search service did not start; no browser, worker, storage, SCORM, ILT or restart evidence |
+| D4 independent checkout rebuild | NOT RUN | Requires final paired candidate |
+| D5 local delivery candidate | NOT RUN | No push or PR |
+
+### Delivery64 (historical)
 
 Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
 `0bf5de98e2cd311d39a99af11a34b2a3fc2e9706`, theme

@@ -28,6 +28,28 @@ Historical matrix: delivery53–56. Run-scoped results for later deliveries foll
 
 ## Current replay updates
 
+### Delivery67 — current paired candidate; dependency/schema/assets pass; Elasticsearch OOM
+
+Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
+`5ba565fb7d5792b5636a15f254b73a8e8d2587f4`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, native linux/arm64, Python
+3.13.14. Evidence root:
+`/Users/noahwang/workspace/hawthorn/py313-delivery67-evidence/`.
+
+| Scenario | Delivery67 result | Evidence |
+| --- | --- | --- |
+| D0 paired source and resource isolation | PASS; exact commits, frozen inputs, dedicated ports/network/volumes/database | `preflight.json`, `commands.jsonl`, `input-preflight.txt`, `config.json` |
+| D1 complete locked install and source identity | PASS: 315 distributions, `uv pip check`, all 20 registered source trees | `install.txt`, `installed-source-identity.txt`, `installed-source-report.txt` |
+| D3 fresh schema/settings checks | PASS: 149 apps, 316 models, 316 tables, zero historical migration rows; LMS warnings retained, CMS no issues | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 theme, npm, XModule, frontend, locale/static assets | PASS: both Webpack builds emitted 120 chunks; locale/static exited 0 | `stage-theme.txt`, `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, `lms-locale-static.txt`, `cms-locale-static.txt` |
+| D3 Elasticsearch/product search | **FAIL infrastructure:** exit 137/OOMKilled under 2 GiB/3 GiB limits; no search assertion | `delivery67-elasticsearch-oom.txt` |
+| D3 browser/core business | NOT RUN: no browser, authoring/publish, learner, permission/org, worker, storage, SCORM, ILT or restart evidence | No D67 business output exists; repeat on a new run |
+| D4 independent checkout rebuild | NOT RUN | Requires final paired candidate |
+| D5 local candidate | NOT RUN | No push or PR |
+
+D67 is the current evidence identity. Delivery64 and earlier runs remain
+historical failure records and must not supply missing D67 coverage.
+
 ### Delivery64 — dependency/schema/assets pass; Elasticsearch OOM
 
 Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack

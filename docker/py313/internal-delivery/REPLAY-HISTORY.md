@@ -3,6 +3,30 @@
 Archived status text from earlier runs. This is retained for audit history
 only; current state is in `STATUS.md` and `ACCEPTANCE-MATRIX.md`.
 
+## Delivery67 — 2026-10-28
+
+Delivery67 is the current paired replay: platform
+`36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
+`5ba565fb7d5792b5636a15f254b73a8e8d2587f4`, and theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`. It used fresh ports 20180/20190,
+network `172.29.67.0/24`, SQL database `py313_rebuild_delivery67`, Mongo
+database `py313_delivery67`, dedicated volumes and the locked infrastructure
+image references. Evidence is retained at
+`/Users/noahwang/workspace/hawthorn/py313-delivery67-evidence/`.
+
+D0 passed exact source/resource preflight. D1 installed 315 distributions,
+passed `uv pip check`, and matched all 20 registered source trees. The fresh
+development schema contained 149 apps, 316 models, 316 tables and zero
+historical migration rows; LMS/CMS checks, SAML contract, theme/npm/XModule,
+both Webpack builds (120 chunks each), locale and static phases passed.
+
+Elasticsearch then exited 137 with `OOMKilled=true` under the configured 2 GiB
+memory and 3 GiB memory+swap limits. This is a container-level infrastructure
+failure; D67 does not establish a separate host-memory diagnosis. Search,
+browser business flows, worker results, storage CRUD, SCORM, ILT and restart
+persistence were not run. D4 and D5 remain open. Do not restart or reuse D67
+resources for acceptance.
+
 ## Delivery62 and delivery63 — 2026-10-28
 
 Delivery62 used platform `aed8961d6920954068949afbcf34440ee94bd4cd`, devstack
