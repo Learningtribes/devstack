@@ -28,17 +28,17 @@ Historical matrix: delivery53–56. Run-scoped results for later deliveries foll
 
 ## Current replay updates
 
-### Delivery64 — D0 preflight pass; runtime image ready
+### Delivery64 — dependency/schema/assets pass; Elasticsearch OOM
 
 Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
-`38d74dbe75911d96ded6017339617f7bad845a48`, theme
+`0bf5de98e2cd311d39a99af11a34b2a3fc2e9706`, theme
 `7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, native linux/arm64, Python
 3.13.14. Dedicated engine/context: `py313-delivery64`; runtime image ID
 `sha256:6d6227966492c5c5af9c02c10b71b3c6bc37810f1e4c0ff22affe2fb7e5ccfb4`.
 Image build log is host-private at
 `/Users/noahwang/workspace/hawthorn/py313-delivery64/private/runtime-image-build.txt`.
-Raw config SHA256 `89d237ee3f34f29b59374ec7fb686329b629bf5dfa12f9584d6f5db59679f992`;
-canonical config hash `76efdd0c146bd2087be2cfa61cb1200a44517aefe5ee00e6d2e79f472dffbd93`.
+Raw config SHA256 `a6a54f05818e0f2087b5d0b36a16e67f5b1a4793977d625c998371d326e38ba8`;
+canonical config hash `557a5c89e0777c71435e34428203651b114edbe23257b385208e502846c748e1`.
 Resources are reserved under the `delivery64` identity, network
 `172.29.64.0/24`, ports 19880/19890, database `py313_rebuild_delivery64`, and
 Mongo/cache/search/queue namespace `delivery64`. Evidence root will be
@@ -46,15 +46,20 @@ Mongo/cache/search/queue namespace `delivery64`. Evidence root will be
 
 | Scenario | Delivery64 result | Evidence |
 | --- | --- | --- |
-| D0 paired source and resource preflight | PASS initially; first `prepare` retry FAIL closed before creating outputs because the checkpoint documentation was uncommitted; retry after local commit | private `preflight.json`, `prepare-attempt01-uncommitted-checkout.txt`; runner canonical config hash |
+| D0 paired source and resource preflight | PASS initially; first `prepare` retry FAIL closed before creating outputs because the checkpoint documentation was uncommitted; retry after local commit | `preflight.json`, `prepare-attempt01-uncommitted-checkout.txt`; runner canonical config hash |
 | Runtime image build | PASS: committed `docker/py313/Dockerfile`, `internal-delivery` target; native arm64, Python 3.13.14, uv 0.11.23, Node 16.20.2 | host-private build log and image inspect |
-| D1 full locked install and registered source identity | NOT RUN | pending D64 resource creation and install |
-| D3 schema/settings/assets/browser/core business | NOT RUN | no service containers, volume or database created yet |
+| D1 full locked install and registered source identity | PASS: 315 distributions, `uv pip check`, all 20 registered source trees | `install.txt`, `installed-source-identity.txt` |
+| D3 fresh schema/settings checks | PASS: 149 apps, 316 models including M2M, 316 tables, zero historical migration rows; LMS/CMS checks exit 0 with warnings | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 Elasticsearch/product search | FAIL infrastructure: Elasticsearch exit 137/OOMKilled during startup | `delivery64-elasticsearch-oom.txt` |
+| D3 theme, npm, XModule, frontend, locale/static assets | PASS: both Webpack builds emitted 120 chunks; locale/static commands exited 0 | `stage-theme.txt`, `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, `lms-locale-static.txt`, `cms-locale-static.txt` |
+| D3 targeted Studio regression tests | PASS: Studio Logs template and course-author reindex tests, 1/1 each | `delivery64-studio-logs.txt`, `delivery64-reindex-author.txt` |
+| D3 browser/core business | NOT RUN; Elasticsearch failure blocked the required live search path | repeat on fresh D65 |
 | D4 independent checkout rebuild | NOT RUN | requires final paired candidate |
 | D5 local candidate | NOT RUN | no push or PR |
 
-No D64 service resource exists at this point. Delivery63 remains an independent
-failed attempt; its ES container, volumes, config and evidence are not reused.
+D64 resources were created on its dedicated engine and remain preserved. Its
+Elasticsearch container exited 137/OOMKilled; do not restart or reuse D64
+resources for acceptance. Delivery63 is a separate failed attempt.
 
 ### Delivery58 — OrbStack resource failure
 

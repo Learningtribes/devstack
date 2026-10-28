@@ -389,52 +389,64 @@ product test results. Correct targeted verification used Python 3.13.14 from
 the replay directory: 26 tests passed, and `py_compile` passed for every changed
 or added harness module. `git diff --check` passed.
 
-# Delivery64 — D0 preflight and runtime-image build
+# Delivery64 — D0/D1 and fresh schema pass; Elasticsearch OOM
 
-Date: 2026-10-28 (Asia/Shanghai). Inputs are platform
+Date: 2026-10-28 (Asia/Shanghai). Runtime inputs are platform
 `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
-`38d74dbe75911d96ded6017339617f7bad845a48`, and theme
-`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`. Target is native linux/arm64,
-Ubuntu 24.04 guest and Python 3.13.14. Docker context `py313-delivery64` points
-to the dedicated `py313-delivery64-engine` daemon, with a 10 GiB cgroup memory
-limit. Runtime image was built from committed devstack `docker/py313/Dockerfile`
-using `docker buildx build --builder py313-delivery64 --platform linux/arm64
---target internal-delivery --load --tag py313-internal-delivery:delivery64 -f
-docker/py313/Dockerfile docker/py313`. Result ID:
-`sha256:6d6227966492c5c5af9c02c10b71b3c6bc37810f1e4c0ff22affe2fb7e5ccfb4`;
-the image reports Python 3.13.14, uv 0.11.23, Node 16.20.2 and npm 8.19.4.
-Build log is preserved outside Git under
-`/Users/noahwang/workspace/hawthorn/py313-delivery64/private/runtime-image-build.txt`,
-SHA256 `f377b92a2e72f937bdeed49f7448b6bce5084c9848df26c0efa594bdb3ce699e`.
-Its local image ID is a host-local build result; the Dockerfile base reference
-is digest-pinned. Dockerfile SHA256 is
+`0bf5de98e2cd311d39a99af11a34b2a3fc2e9706`, and theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`. Target: native linux/arm64,
+Ubuntu 24.04, Python 3.13.14. Docker context `py313-delivery64` points to the
+dedicated `py313-delivery64-engine`; runtime image ID is
+`sha256:6d6227966492c5c5af9c02c10b71b3c6bc37810f1e4c0ff22affe2fb7e5ccfb4`.
+It was built from the committed Dockerfile `internal-delivery` target and
+reports uv 0.11.23, Node 16.20.2 and npm 8.19.4. Build log is retained in the
+run evidence as `runtime-image-build.txt` (SHA256
+`f377b92a2e72f937bdeed49f7448b6bce5084c9848df26c0efa594bdb3ce699e`);
+Dockerfile SHA256 is
 `aaaa420d494b2199b890c24df6966fe3a41c0077ef650effd2308afc87544c00`.
+Runtime config raw SHA256 is
+`a6a54f05818e0f2087b5d0b36a16e67f5b1a4793977d625c998371d326e38ba8`; canonical
+owner hash is `557a5c89e0777c71435e34428203651b114edbe23257b385208e502846c748e1`.
 
-Read-only preflight: PASS. Platform/devstack working trees were clean and at the
-SHAs above; frozen platform refs were not moved; current remote platform branch
-was `421a93f08fda9f849384ff96525b9ce6e952f962` while devstack remote matched
-`38d74dbe75911d96ded6017339617f7bad845a48`. Theme HEAD matched its registered
-commit; two existing untracked theme static directories were observed and left
-untouched. Network `172.29.64.0/24` had no overlap with any inspected Docker
-IPAM range; ports 19880/19890 were available. The host has no LAN-specific
-route covering the chosen subnet; its existing full-tunnel VPN route applies.
-Preflight configuration is mode 600 in the host-private delivery64 directory;
-raw SHA256 `89d237ee3f34f29b59374ec7fb686329b629bf5dfa12f9584d6f5db59679f992`,
-canonical owner hash `76efdd0c146bd2087be2cfa61cb1200a44517aefe5ee00e6d2e79f472dffbd93`.
+D0 passed exact clean source SHA, path/resource absence and port checks. The
+chosen Docker subnet was `172.29.64.0/24`, with no overlap in inspected Docker
+IPAM; the host's full-tunnel VPN default route remains present. Platform frozen
+refs did not move. Theme HEAD matched the registered SHA; existing untracked
+`lms/static/bootstrap/` and `lms/static/discussion/` directories were left
+untouched and are not inputs. A first `prepare` attempt failed closed before
+creating outputs because the checkpoint docs were uncommitted; it is retained
+as `prepare-attempt01-uncommitted-checkout.txt`. A later install invocation had
+a host script-path typo and exited before container execution; see
+`install-attempt00-host-path-typo.txt`. Corrected commands were used for the
+passing phases.
 
-Only protected service secrets, run-scoped acceptance-user credentials and a
-local RSA JWT key have been provisioned, all under the mode-700 private
-directory with mode-600 files. The `delivery64` Docker network, six service
-containers, runtime container/volume and fresh SQL/Mongo data have not yet been
-created. D1 install, schema, assets, browser and core business acceptance are
-NOT RUN. The build succeeded without memory exhaustion. Continue through the
-parameterized `run.py`/`replay_after_install.py` contract; never reuse D63.
+D0 export verified 8,557 platform files, 2,252 startup files and all 20
+registered source packages. D1 installed 315 distributions from the committed
+lock, passed `uv pip check` and matched all 20 registered source trees to
+installed source bytes. Evidence: `input-preflight.txt`, `install.txt`,
+`installed-source-identity.txt`, `installed-source-report.txt`.
 
-The first `prepare` retry used the initial config and was rejected before output
-reservation, source export or Docker mutation: the prior D0 status batch was
-uncommitted and the runner's clean-worktree guard refused it. Full output is
-preserved at
-`/Users/noahwang/workspace/hawthorn/py313-delivery64/private/prepare-attempt01-uncommitted-checkout.txt`.
-This harness guard failure is not a product test result. The checkpoint batch
-is committed locally before retry; the run config must name that resulting
-devstack metadata commit and a fresh preflight must pass before prepare.
+D3 new-development schema used `local-model-sync`, not historical migrations:
+149 apps, 316 models including M2M, 316 tables, zero historical migration rows.
+Natural-key sites, acceptance users, completion tracking, theme staging and LMS
+checks passed; LMS check reports four warnings. CMS check passed with no
+issues. SAML processor contract passed offline; no IdP was contacted. Theme
+staging, npm install, XModule assets, both 120-chunk Webpack builds, and LMS/CMS
+locale and static collection exited successfully. The Studio Logs template and
+course-author reindex regressions each passed 1/1. Evidence:
+`initialize-schema.txt`, `natural-sites.txt`, `acceptance-users.txt`,
+`completion-tracking.txt`, `site-themes.txt`, `lms-check.txt`, `cms-check.txt`,
+`saml-contract.txt`, `stage-theme.txt`, `npm-ci.txt`, `xmodule-assets.txt`,
+`frontend-assets.txt`, `lms-locale-static.txt`, `cms-locale-static.txt`,
+`delivery64-studio-logs.txt`, and `delivery64-reindex-author.txt`.
+
+**Infrastructure FAIL:** Elasticsearch started with a 256 MiB JVM heap but had
+no container memory cap. Docker reported `OOMKilled=true`, exit 137, during
+startup; CMS search and business search were not accepted. Full diagnostic
+`delivery64-elasticsearch-oom.txt` has SHA256
+`d8f6cb227a987f4b677ba226a0717abc962533fb629db42493c155a45b7da70d`. The failed
+service is retained and must not be restarted or reused. Browser/login,
+authoring/publish, worker/search, storage, SCORM, ILT and restart persistence
+remain NOT RUN or BLOCKED. Asset builds and focused tests passed, but do not
+replace the live service/business acceptance. D4/D5 remain NOT RUN. No push/PR
+occurred.
