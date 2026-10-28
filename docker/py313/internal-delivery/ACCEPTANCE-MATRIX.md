@@ -1,6 +1,6 @@
 # Internal delivery acceptance matrix
 
-Historical matrix: delivery53–56. Current run-scoped results for delivery57–59 follow the table and are distinct from this baseline. Each result applies only to its named replay.
+Historical matrix: delivery53–56. Run-scoped results for later deliveries follow the table and are distinct from this baseline. Each result applies only to its named replay.
 
 | Scenario | Command / expected behavior | Delivery53 | Delivery54 | Delivery55 | Delivery56 | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -132,6 +132,60 @@ new labeled volumes. Evidence:
 | D5 local candidate | NOT RUN | No push/PR |
 
 The dispatch defect is corrected in devstack `47efd68399fceaf8e99d2cf577b7e5b47a6e80a9`, with 28 runner contract tests passing. Delivery60 remains immutable harness-failure history; no D60 container or volume is reused.
+
+### Delivery62 — dependency/schema/assets pass; Studio Logs defect found
+
+Inputs: platform `aed8961d6920954068949afbcf34440ee94bd4cd`, devstack
+`66d1795f69677907baa441739ae4553b643ee511`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, Docker Desktop runtime image
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`,
+Python 3.13.14, native linux/arm64, canonical config hash
+`fdd39103edab50348f7358e91fe3aade9138ebafc2d0c2fab1aa10899b2443c0`.
+Network `py313-delivery62-network` (`10.254.62.0/24`), loopback ports
+19680/19690, SQL `py313_rebuild_delivery62`, Mongo/service namespaces
+`py313_delivery62`, dedicated volumes. Evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery62-evidence/`.
+
+| Scenario | Delivery62 result | Evidence |
+| --- | --- | --- |
+| D0 source/resource isolation | PASS | `preflight.json`, `export.txt`, `commands.jsonl`, labeled resources |
+| D1 full locked installation/source identity | PASS: 315 distributions, `uv pip check`, 20 registered source trees | `install.txt`, `installed-source-identity.txt` |
+| D3 fresh schema/checks/assets | PASS: local-model-sync, 149 apps, 316 models/tables, zero historical migration rows; theme/npm/XModule/Webpack/locale/static pass | `initialize-schema.txt`, check and asset logs |
+| D3 focused course-author reindex regression | PASS 1/1 | `cms-course-reindex-auth01.txt` |
+| D3 Studio Logs rendering regression | FAIL first attempt (`NameError: Undefined`); after platform fix PASS 1/1 | `d62-studio-logs-template-test01.txt`, `d62-studio-logs-template-test02.txt` |
+| D3 browser Studio Logs | FAIL 500 before the template fix | `d62-cms-http-log01.txt` |
+| D3 Studio authoring and learner business flow | NOT RUN to completion; Create remained disabled | `d62-course-create-fields01.txt`, `d62-course-state02.txt` |
+| D3 search/worker, real storage, SCORM/ILT, role/org matrix, restart | NOT RUN | Re-run on a fresh exact pair |
+| D4 independent checkout; D5 local candidate | NOT RUN | Requires final exact pair |
+
+### Delivery63 — OOM during search; candidate acceptance incomplete
+
+Inputs: platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
+`66d1795f69677907baa441739ae4553b643ee511`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, Docker Desktop runtime image
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`,
+Python 3.13.14, native linux/arm64, canonical config hash
+`79f361576a8844cb14411039bc9437e2cdd6758fcb4001e720a119d2a1da7679`.
+Network `py313-delivery63-network` (`10.254.63.0/24`), loopback ports
+19780/19790, SQL `py313_rebuild_delivery63`, Mongo/service namespaces
+`py313_delivery63`, dedicated volumes. Evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery63-evidence/`.
+
+| Scenario | Delivery63 result | Evidence |
+| --- | --- | --- |
+| D0 source/resource isolation | PASS | `preflight.json`, `export.txt`, `commands.jsonl` |
+| D1 complete locked install/source identity | PASS: 315 distributions, `uv pip check`, all 20 registered source trees | `install.txt`, `installed-source-identity.txt` |
+| D3 fresh schema, LMS/CMS checks and assets | PASS: 149 apps/316 models/tables, zero historical migration rows; both 120-chunk Webpack builds and locale/static pass | schema/check/asset logs |
+| D3 Studio Logs and course-author reindex regression tests | PASS 1/1 each | `d63-studio-logs.txt`, `d63-reindex-author.txt` |
+| D3 LMS/Studio browser sign-in | PASS | browser session evidence; `delivery63-cms-http-log.txt` |
+| D3 Elasticsearch and CMS search | FAIL infrastructure: ES exited 137, OOMKilled; CMS `/course_search/` returned 500 due failed `elasticsearch` name resolution | `delivery63-elasticsearch-oom.txt`, `delivery63-cms-http-log.txt` |
+| D3 create/edit/publish, learner/draft, role/org, worker/search result, storage, SCORM/ILT, restart | NOT RUN to completion; no course was created | run-scoped HTTP log and browser session |
+| D4 independent checkout; D5 local candidate | NOT RUN | A new replay and independent rebuild are required |
+
+Docker Desktop's VM had 8 GiB total and no free swap at the diagnostic snapshot;
+the ES container was unbounded and its JVM heap was 256 MiB. This is an
+infrastructure failure, not a product search assertion. No older run resource
+was changed. Do not restart, patch or reuse delivery63.
 
 ## Failure and repair history
 

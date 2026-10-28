@@ -2,7 +2,61 @@
 
 Updated: 2026-10-28 (Asia/Shanghai). Goal remains active. State: **local delivery candidate incomplete**.
 
-## Latest replay: delivery61 (runtime gates pass; test selection/import failed)
+## Latest replay: delivery63 (dependency/runtime gates pass; Elasticsearch OOM)
+
+Delivery63 used platform `36d1a28ec7dfe85c6036fd52bd82c926fc2492ec`, devstack
+`66d1795f69677907baa441739ae4553b643ee511`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, and Docker Desktop runtime image ID
+`sha256:a8c330432ff0e26cc73c7e1cc9b1d04c7c46cbd6b5fe825360ec54660b92256c`.
+Target: native linux/arm64, Python 3.13.14, Django 5.2.13. Canonical config
+SHA256 `79f361576a8844cb14411039bc9437e2cdd6758fcb4001e720a119d2a1da7679`;
+evidence `/Users/noahwang/workspace/hawthorn/py313-delivery63-evidence/`.
+The run used network `py313-delivery63-network` (`10.254.63.0/24`), loopback
+ports 19780/19790, SQL database `py313_rebuild_delivery63`, Mongo database and
+cache/search/queue namespaces `py313_delivery63`, and dedicated volumes.
+
+| Gate | Delivery63 result | Evidence |
+| --- | --- | --- |
+| D0 paired source/resource isolation | PASS | `preflight.json`, `export.txt`, `commands.jsonl`, labeled resources |
+| D1 full dependency installation/source identity | PASS: 315 distributions, `uv pip check`, all 20 registered source trees | `install.txt`, `installed-source-identity.txt` |
+| D3 new development schema and LMS/CMS checks | PASS: local-model-sync, 149 apps, 316 models/tables, zero historical migration rows; checks pass with recorded warnings | `initialize-schema.txt`, `lms-check.txt`, `cms-check.txt` |
+| D3 theme, npm, XModule, frontend, locale/static builds | PASS: both Webpack builds report 120 chunks | `stage-theme.txt`, `npm-ci.txt`, `xmodule-assets.txt`, `frontend-assets.txt`, locale/static logs |
+| D3 focused Studio Logs and reindex permissions tests | PASS: one test each | `d63-studio-logs.txt`, `d63-reindex-author.txt` |
+| D3 LMS/Studio sign-in | PASS | browser evidence and `d63-cms-http-log.txt` |
+| D3 Elasticsearch and product search | **FAIL infrastructure**: Elasticsearch exited 137 with `OOMKilled=true`; CMS `/course_search/` returned 500 because `elasticsearch` no longer resolved | `delivery63-elasticsearch-oom.txt`, `delivery63-cms-http-log.txt` |
+| D3 Studio create/edit/publish; learner, draft, permission/org, worker/search, storage, SCORM/ILT, restart | NOT RUN to completion | no course was created; Studio Create remained disabled while the course search UI failed; repeat on a fresh run |
+| D4 independent checkout rebuild | NOT RUN | requires a passing final pair |
+| D5 local delivery candidate | NOT RUN | no push or PR |
+
+The Elasticsearch container had no cgroup memory cap and used a 256 MiB JVM
+heap. At the post-failure diagnostic snapshot, Docker Desktop's 8 GiB VM showed
+about 838 MiB `MemAvailable` and less than 1 MiB free swap. No older delivery
+container, volume, network or database was stopped or changed. Delivery63 is
+failure history and must not be restarted, patched or reused for acceptance.
+
+## Previous replay: delivery62 (focused test fixes; browser authoring incomplete)
+
+Delivery62 used platform `aed8961d6920954068949afbcf34440ee94bd4cd`, devstack
+`66d1795f69677907baa441739ae4553b643ee511`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, and the same Docker Desktop runtime
+image ID. It used network `py313-delivery62-network` (`10.254.62.0/24`), ports
+19680/19690, SQL `py313_rebuild_delivery62`, run-scoped namespaces and dedicated
+volumes. Canonical config SHA256 `fdd39103edab50348f7358e91fe3aade9138ebafc2d0c2fab1aa10899b2443c0`;
+evidence `/Users/noahwang/workspace/hawthorn/py313-delivery62-evidence/`.
+
+D0/D1, fresh local-model-sync schema, LMS/CMS settings checks and resource
+build passed. The focused course-author reindex test passed 1/1. A new Studio
+Logs rendering regression test first failed with `NameError: Undefined`; the
+failure is retained in `d62-studio-logs-template-test01.txt`. Platform
+`36d1a28ec7dfe85c6036fd52bd82c926fc2492ec` replaces the Python 2 `unicode(...)`
+template call and adds a real Mako rendering test; rerun `d62` test
+`d62-studio-logs-template-test02.txt` passed 1/1, and the test passed again in
+delivery63. The D62 browser request to `/studiologs/<course>` still returned
+500 before that fix. Studio's course-create attempt did not enable Create, so
+no authoring or learner/business acceptance is claimed. Delivery62 resources
+remain separate and are not reused for candidate acceptance.
+
+## Previous replay: delivery61 (runtime gates pass; test selection/import failed)
 
 Delivery61 inputs: platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
 `4f085f413ff60d407680ed527f9f27f3d2011aa3`, theme
@@ -23,17 +77,14 @@ lock. Evidence: `cms-course-reindex-auth01.txt` and `commands.jsonl`. This is a
 test-selection/dependency limitation, not an installation or product failure.
 
 Platform commit `aed8961d6920954068949afbcf34440ee94bd4cd` adds a smaller focused
-endpoint test without factory fixtures; it asserts own-course reindex passes,
-unrelated-course reindex is denied, and the indexer is not invoked for the
-unrelated course. Delivery62 must replay this platform SHA with current devstack
-`4f085f413ff60d407680ed527f9f27f3d2011aa3` in new resources. Delivery61 remains
+endpoint test without factory fixtures; delivery62 passed it. Delivery61 remains
 incomplete and its containers/data are not reused for acceptance.
 
 Browser LMS/CMS sign-in, real Studio course create/edit/publish, learner content,
 permission/organization matrix, real search/worker result, storage, SCORM, ILT,
 restart persistence and D4 remain open on the final pair.
 
-## Latest replay: delivery60 (host test-dispatch failure; replay not candidate)
+## Previous replay: delivery60 (host test-dispatch failure; replay not candidate)
 
 Delivery60 used platform `8f31fa2d9eaa4e1deeb2762b143b536a338d9f02`, devstack
 `8f5f6e97d27126c26eb6e56e0a9b684d785609a4`, theme

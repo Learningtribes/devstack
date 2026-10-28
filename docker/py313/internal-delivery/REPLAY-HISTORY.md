@@ -1,6 +1,43 @@
 # Historical replay status snapshots
 
-Archived status text from before the delivery54/55 runs. This is retained for audit history only; current state is in `STATUS.md` and `ACCEPTANCE-MATRIX.md`.
+Archived status text from earlier runs. This is retained for audit history
+only; current state is in `STATUS.md` and `ACCEPTANCE-MATRIX.md`.
+
+## Delivery62 and delivery63 — 2026-10-28
+
+Delivery62 used platform `aed8961d6920954068949afbcf34440ee94bd4cd`, devstack
+`66d1795f69677907baa441739ae4553b643ee511`, theme
+`7c0dbec1b0a79d7639069f9990b831ba9f31d8bf`, and the Docker Desktop runtime
+image ID used by delivery63. It used network `py313-delivery62-network`
+(`10.254.62.0/24`), ports 19680/19690, new SQL/Mongo/service namespaces and
+dedicated volumes. Canonical config SHA256:
+`fdd39103edab50348f7358e91fe3aade9138ebafc2d0c2fab1aa10899b2443c0`;
+evidence: `/Users/noahwang/workspace/hawthorn/py313-delivery62-evidence/`.
+
+Delivery62 D0/D1, fresh development schema, LMS/CMS settings checks, assets and
+the focused course-author reindex test passed. The Studio Logs rendering test
+first failed with `NameError: Undefined`, then passed after platform
+`36d1a28ec7dfe85c6036fd52bd82c926fc2492ec` fixed its Python 2 `unicode(...)`
+call. The browser route had returned 500 before that fix. Studio authoring did
+not complete: Create remained disabled. No downstream business assertion is
+claimed for this replay.
+
+Delivery63 replayed the fixed platform SHA with the same devstack/theme. It used
+network `py313-delivery63-network` (`10.254.63.0/24`), ports 19780/19790,
+dedicated databases, namespaces and volumes. Canonical config SHA256:
+`79f361576a8844cb14411039bc9437e2cdd6758fcb4001e720a119d2a1da7679`; evidence:
+`/Users/noahwang/workspace/hawthorn/py313-delivery63-evidence/`.
+
+D0/D1, schema/check/assets, both targeted Django regressions and LMS/Studio
+sign-in passed. Elasticsearch then exited 137 with `OOMKilled=true`; it had no
+container memory cap and its JVM heap was 256 MiB. Docker Desktop's 8 GiB VM had
+about 838 MiB available and less than 1 MiB swap free at the diagnostic
+snapshot. The CMS `/course_search/` handler consequently returned 500 because
+`elasticsearch` no longer resolved. Studio Create remained disabled and no
+course or business flow was accepted. Raw ES and CMS logs are retained as
+`delivery63-elasticsearch-oom.txt` and `delivery63-cms-http-log.txt` with mode
+600. No existing delivery resource was stopped or altered. Delivery63 remains
+immutable failure history; do not restart or reuse it.
 
 ## Delivery61 — 2026-10-28
 
