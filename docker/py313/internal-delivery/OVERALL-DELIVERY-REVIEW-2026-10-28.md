@@ -158,4 +158,3 @@ Concrete validation standards:
 - Acceptance matrix: `/Users/noahwang/workspace/hawthorn/devstack-py313-delivery-20261027/docker/py313/internal-delivery/ACCEPTANCE-MATRIX.md`
 - Replay history: `/Users/noahwang/workspace/hawthorn/devstack-py313-delivery-20261027/docker/py313/internal-delivery/REPLAY-HISTORY.md`
 - D67 evidence: `/Users/noahwang/workspace/hawthorn/py313-delivery67-evidence/`
-
