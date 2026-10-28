@@ -31,6 +31,9 @@ def compose(config):
             volumes[name] = {'name': identity['volume'], 'external': True}
             services[name]['volumes'] = [name + ':' + target]
     services['mysql']['command'] = '--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
+    # Bound JVM and native memory so a single-node search service cannot starve
+    # the paired LMS/CMS runtime or the isolated Docker engine.
+    services['elasticsearch'].update({'mem_limit': '2g', 'memswap_limit': '3g'})
     # Registered non-secret RabbitMQ policy, independent of mutable host files.
     policy = Path(config['export_dir']) / 'devstack' / STARTUP_REL / 'replay/rabbitmq.conf'
     services['rabbitmq']['volumes'].append(str(policy) + ':/etc/rabbitmq/conf.d/20-local-replay.conf:ro')

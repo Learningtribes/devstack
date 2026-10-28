@@ -66,10 +66,10 @@ class ContractTests(unittest.TestCase):
 
     def test_generated_search_service_uses_bounded_heap(self):
         document = replay_run.compose(self.config)
-        self.assertEqual(
-            document['services']['elasticsearch']['environment']['ES_JAVA_OPTS'],
-            '-Xms256m -Xmx256m',
-        )
+        search = document['services']['elasticsearch']
+        self.assertEqual(search['environment']['ES_JAVA_OPTS'], '-Xms256m -Xmx256m')
+        self.assertEqual(search['mem_limit'], '2g')
+        self.assertEqual(search['memswap_limit'], '3g')
 
     def test_network_subnet_requires_private_ipv4_slash_24_and_rejects_overlap(self):
         self.assertEqual(validate_network_subnet('10.254.44.0/24'), '10.254.44.0/24')
