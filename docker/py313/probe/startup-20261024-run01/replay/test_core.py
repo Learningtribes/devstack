@@ -375,6 +375,7 @@ class ContractTests(unittest.TestCase):
 
     def test_install_captures_installed_source_identity_after_install(self):
         with patch.object(replay_run, 'ownership') as ownership, \
+             patch.object(replay_run, 'verify_prepared_export') as verify_export, \
              patch.object(replay_run, 'capture') as capture, \
              patch.object(replay_run, 'docker_exec', return_value=['docker', 'exec', 'identity']) as docker_exec:
             replay_run.install(self.config)
@@ -385,6 +386,7 @@ class ContractTests(unittest.TestCase):
             unittest.mock.call(self.config, 'cat', '/runtime/installed-input-identity.json')])
         self.assertEqual(capture.call_args_list[-1].kwargs, {'show_output': False})
         ownership.assert_called_once_with(self.config)
+        verify_export.assert_called_once_with(self.config)
 
 
 if __name__ == '__main__':

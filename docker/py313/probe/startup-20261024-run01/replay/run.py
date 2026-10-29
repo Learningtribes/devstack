@@ -2,10 +2,13 @@
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 import secrets
 import subprocess
 import sys
+
+from export_identity import verify_export_identity
 
 from core import (SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
                   docker_exec, fresh_preflight, load_config, ownership, read_json,
@@ -54,18 +57,31 @@ def prepare(config):
     identity = read_json(Path(config['export_dir']) / 'export-identity.json')
     assert identity['repositories']['devstack']['commit'] == config['devstack_commit']
     assert identity['repositories']['platform']['commit'] == config['platform_commit']
+    export_digest = verify_export_identity(Path(config['export_dir']), STARTUP_REL)
     theme = read_json(startup / 'theme-inputs/7c0dbec1b0a7/source-sha256.json')
     assert theme['commit'] == config['theme_commit']
     for name in ('.acceptance-credentials.json', 'jwt-private.pem'):
         (startup / name).touch(mode=0o600, exist_ok=False)
     save_new(root / 'compose.json', compose(config))
-    save_new(root / 'prepared.json', {'configuration_sha256': config_hash(config)})
+    save_new(root / 'prepared.json', {'configuration_sha256': config_hash(config),
+                                      'export_identity_sha256': export_digest})
+
+
+def verify_prepared_export(config):
+    prepared = read_json(Path(config['evidence_dir']) / 'prepared.json')
+    if not isinstance(prepared, dict) or prepared.get('configuration_sha256') != config_hash(config):
+        raise ValueError('Prepared configuration identity differs')
+    digest = prepared.get('export_identity_sha256')
+    if not isinstance(digest, str) or not re.fullmatch('[0-9a-f]{64}', digest):
+        raise ValueError('Prepared export identity digest is missing or invalid')
+    verify_export_identity(Path(config['export_dir']), STARTUP_REL,
+                           expected_sha256=digest, allow_placeholders=True)
 
 
 def create(config):
     root = Path(config['evidence_dir'])
     assert read_json(root / 'config.json') == config
-    assert read_json(root / 'prepared.json')['configuration_sha256'] == config_hash(config)
+    verify_prepared_export(config)
     fresh_preflight(config, before_prepare=False)
     # Docker volume create is otherwise idempotent. Verify our unique ownership
     # label before Compose can mount any data volume, including a creation race.
@@ -92,6 +108,7 @@ def create(config):
 
 def install(config):
     ownership(config)
+    verify_prepared_export(config)
     capture(config, 'input-preflight', ['docker', 'exec', config['runtime_container'], 'python3', '-B', '/startup/test_local_input_contract.py'])
     capture(config, 'install', ['docker', 'exec', '-e', 'PY313_PLATFORM_SOURCE_ROOT=/input/platform', config['runtime_container'],
                               'bash', '-c', 'test ! -e /runtime/venv && /usr/local/bin/python3.13 -B /startup/install_internal_delivery.py install'])
