@@ -1,5 +1,9 @@
 # Explicit local replay
 
+Latest result: [2026-11-02 GoodHabitz repair / clean replay](current-replay-20261102.md).
+Index regression passed; deployment remains blocked at the next OAuth schema setting.
+The [2026-11-01 R1/R2 report](current-replay-20261101.md) remains historical evidence.
+
 For current py3-master, start with [the complete-profile guide](current-py3-master.md)
 and [configuration example](current-config.example.json).
 

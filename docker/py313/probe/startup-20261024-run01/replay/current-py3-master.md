@@ -1,5 +1,9 @@
 # Current py3-master isolated replay
 
+Latest bounded result: [2026-11-02 repair and replay](current-replay-20261102.md).
+Use its frozen candidate identities when interpreting that evidence; the example
+below retains the historical R2 configuration and must be replaced for any new run.
+
 Use [the exact configuration contract](README.md) and
 [current-config.example.json](current-config.example.json). Replace all absolute
 host paths, choose a new run ID and replace it in **every** resource/namespace,
