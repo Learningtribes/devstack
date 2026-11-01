@@ -1,0 +1,59 @@
+{
+  "run_id": "master313r2",
+  "evidence_dir": "/absolute/new-run/evidence",
+  "export_dir": "/absolute/new-run/export",
+  "platform_repo": "/absolute/clean-platform-worktree",
+  "devstack_repo": "/absolute/clean-devstack-worktree",
+  "theme_commit": "7c0dbec1b0a79d7639069f9990b831ba9f31d8bf",
+  "runtime_container": "master313r2-runtime",
+  "runtime_volume": "master313r2-runtime-data",
+  "network": "master313r2-network",
+  "network_subnet": "172.30.233.0/24",
+  "lms_port": 18281,
+  "cms_port": 18291,
+  "database": "py313_rebuild_master313r2",
+  "test_database": "py313_rebuild_master313r2_test",
+  "mongo_database": "master313r2_mongo",
+  "cache_prefix": "master313r2_cache",
+  "es_prefix": "master313r2_es",
+  "queue_prefix": "master313r2_queue",
+  "course_key": "course-v1:LOCAL+master313r2+2026",
+  "secret_env": "/absolute/new-run/private/services.env",
+  "credentials_file": "/absolute/new-run/private/acceptance.json",
+  "jwt_file": "/absolute/new-run/private/jwt.pem",
+  "platform_commit": "7dcbcca0651875f0b7748216847715e60f3af706",
+  "devstack_commit": "a72247f2289e2e3435e15c7de47062bcb42f5186",
+  "services": {
+    "mysql": {
+      "container": "master313r2-mysql",
+      "volume": "master313r2-mysql-data"
+    },
+    "mongo": {
+      "container": "master313r2-mongo",
+      "volume": "master313r2-mongo-data"
+    },
+    "rabbitmq": {
+      "container": "master313r2-rabbitmq",
+      "volume": "master313r2-rabbitmq-data"
+    },
+    "elasticsearch": {
+      "container": "master313r2-elasticsearch",
+      "volume": "master313r2-elasticsearch-data"
+    },
+    "memcached": {
+      "container": "master313r2-memcached"
+    },
+    "valkey": {
+      "container": "master313r2-valkey"
+    }
+  },
+  "images": {
+    "mysql": "mysql@sha256:76f0358884cb92d9a086d24e5671c38048d3fef40f2588703d73eb55392d6b69",
+    "mongo": "mongo@sha256:4a4ab5d4834207389e0d7270fac988e21ffedccecba77991a552f755df229907",
+    "rabbitmq": "rabbitmq@sha256:84352fa7b36f80b3669f5c40963cb2f0f4cf0ecc67d4cf77a5282c2b5934cffc",
+    "elasticsearch": "elasticsearch@sha256:8eb0ee819c020d1275e7f7b82aefdea5d50014c8986bb5be64d80232b58119a5",
+    "memcached": "memcached@sha256:ab65f39bfa5b1e31bff3bdccfd48af85fee6fdcbf0eb877175fcb170a4e1bd2f",
+    "valkey": "valkey/valkey@sha256:640c5e62cea04b6d6f2084232651d0cc70362d31f4f805e7be94dbed6855e8f2",
+    "runtime": "sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63"
+  }
+}

@@ -1,5 +1,8 @@
 # Explicit local replay
 
+For current py3-master, start with [the complete-profile guide](current-py3-master.md)
+and [configuration example](current-config.example.json).
+
 Run these host scripts with Python 3.13 (`uv run --no-project --python 3.13 python -B`).
 Every entry requires `--config /absolute/path/to/config.json`. There is no selected
 container, evidence directory, course, or namespace fallback. Retained historical
