@@ -171,7 +171,33 @@ class ReplayExportIdentityTests(unittest.TestCase):
         self.assertEqual([c[0] for c in self.events.mock_calls[:3]],
                          ['ownership', 'verify_export_identity', 'capture'])
         self.assertEqual([c.args[1] for c in self.capture.call_args_list],
-                         ['input-preflight', 'install', 'installed-source-identity', 'installed-source-report'])
+                         ['prepare-install-inputs', 'input-preflight', 'install', 'platform-identity',
+                          'installed-source-report', 'installed-companion-report', 'platform-identity-report',
+                          'install-receipt', 'resolved-lock', 'complete-lock'])
+
+    def test_install_failure_stops_before_identity_or_success_reports(self):
+        self.prepare()
+        def fail_install(config, label, command, **kwargs):
+            if label == 'install':
+                raise SystemExit(42)
+        self.capture.side_effect = fail_install
+        with self.assertRaises(SystemExit) as error:
+            replay_run.install(self.config)
+        self.assertEqual(error.exception.code, 42)
+        self.assertEqual([c.args[1] for c in self.capture.call_args_list],
+                         ['prepare-install-inputs', 'input-preflight', 'install'])
+
+    def test_runtime_keeps_original_inputs_read_only(self):
+        self.prepare()
+        self.external.side_effect = None
+        self.external.return_value = json.dumps({'py313.replay.config': config_hash(self.config)})
+        replay_run.create(self.config)
+        command = self.capture.call_args_list[-1].args[2]
+        mounts = [command[i + 1] for i, value in enumerate(command) if value == '--mount']
+        for target in ('/paired-startup', '/input/platform', '/canary',
+                       '/startup/.acceptance-credentials.json', '/startup/jwt-private.pem'):
+            self.assertTrue(any(('dst=' + target + ',readonly') in mount for mount in mounts), target)
+        self.assertFalse(any('dst=/startup,readonly' in mount for mount in mounts))
 
     def test_failed_ownership_does_not_read_export_or_dispatch_install(self):
         self.prepare()

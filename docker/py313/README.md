@@ -1,5 +1,12 @@
 # Py3.13 local environment
 
+For current py3-master complete installation and isolated deployment, use the
+[explicit replay](probe/startup-20261024-run01/replay/README.md). It consumes the
+Platform application/Paver/test locks, 20 frozen sources, two +hawthorn.1
+companions and ten editables. The older shell/probe commands below are historical
+infrastructure tools and do not install that contract.
+
+
 Reference infrastructure (ops versions) plus a `python:3.13-slim-bookworm` runtime image (pinned by digest). Native on the host architecture; no amd64 emulation. Not a production build contract: the pins in `requirements-infra.txt` are probe versions taken from the ops reference table, not frozen choices; `requirements-native-probe.txt` is unpinned. Do not push or open a PR from this branch before the Py3.6 C5 gate.
 
 ```bash
