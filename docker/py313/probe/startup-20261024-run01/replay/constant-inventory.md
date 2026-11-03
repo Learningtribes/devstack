@@ -17,7 +17,7 @@
 | run42 `audit_final_inputs.py` export/repo paths | Audit reads configured export identity and checks runtime sources |
 | run42 `collect_and_scan.py` trace path/run42 worker names | Current config worker logs only; failed commands already captured locally |
 | `/startup`, `/input/platform`, `/runtime/platform-source` | Retained internal mount contract; each runtime/volume is new |
-| Internal `/runtime/rebuild-sources-20261025-run25` build staging | Existing frozen installer contract inside each new runtime volume; never mounts an old run |
+| Former `/runtime/rebuild-sources-20261025-run25` build staging | Removed; package inputs are Platform pins and companions, installed by `ci/py313/install.py` |
 | Internal static/theme/xmodule/wheel paths | Existing build contract inside each fresh runtime; exported sources audited |
 | `start_http.py` / `start_worker.py` legacy defaults | New entry supplies explicit environment and checks ownership before invoking; no fallback is used |
 | Historical evidence scripts and restart PIDs | Preserved verbatim; not dispatched by this runner |

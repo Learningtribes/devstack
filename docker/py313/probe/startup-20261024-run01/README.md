@@ -1,29 +1,32 @@
 # Python 3.13 local runtime checkpoint
 
-## Input closure P0 (2026-10-25)
+## External dependency pins (2026-11-02)
 
-The independent review supersedes the earlier complete claim. Final new-database
-combined replay is required after closing inputs. `frozen-local-inputs.json`
-records every copied local package source file. `local_input_contract.py` rejects
-missing, changed and extra effective files before staging. Old opaque 0.4.4 and
-untracked da3798e/source remain preserved but are no longer execution inputs.
-SAML bootstrap and final install both use committed `djangosaml2idp-lt`.
+The 20 distributions that used to be vendored here (`patched/`, `dependencies/`, the PDF.js
+archive and `frozen-local-inputs.json`) are now pinned by Platform: git SHA pins, versioned
+companion archives and the Platform-owned application lock. See Platform
+`docs/specs/migration/py313-external-dependency-pins-20261102.md`. This directory no longer
+carries package sources, a source registry or per-package installers; the Platform installer
+(`ci/py313/image-inputs.py`, `install.py`) is the only install entry. The sections below
+are historical checkpoints and mention the removed inputs for traceability only.
+`internal-delivery.lock.txt` stays as the immutable paired base lock that Platform's
+manifest records (`paired_lock_sha256`).
 
-Vendor SGA JS files are committed source. PDF.js public/build is a registered
-prebuilt vendor archive (local preserved provenance, not an upstream rebuild);
-its archive/member hashes are frozen. Package .mo files are generated from
-committed .po with msgfmt, logged separately. Build caches, egg-info and prior
+## Input closure P0 (2026-10-25, historical)
+
+SAML bootstrap and final install used the committed `djangosaml2idp-lt` source, now the
+Platform `djangosaml2idp` git pin. Package .mo files were generated from committed .po
+with msgfmt; companions now keep upstream .mo files. Build caches, egg-info and prior
 platform webpack/XModule/locale/static outputs are not input. Git archive
 preserves all literal platform symlinks without following external targets.
 
 After committing inputs, run `export_closed_inputs.py --destination <new-dir>
---platform <platform-repo>` with Python 3. It exports only committed trees,
-verifies/extracts the registered vendor archive and emits export-identity.json.
+--platform <platform-repo>` with Python 3. It exports only committed trees
+and emits export-identity.json.
 Mount that exported startup at /startup read-only and exported platform at
 /input/platform read-only. Provide protected credentials and signing key as
 separate read-only file mounts. Never mount the original working checkout.
-Run test_local_input_contract.py before install and
- test_saml_processor_contract.py with the newly installed interpreter afterward.
+Run test_saml_processor_contract.py with the newly installed interpreter after install.
 The latter tests processor signatures locally and makes no IdP success claim.
 
 
@@ -39,10 +42,10 @@ initializers at an existing manual database. Protected env values remain
 outside Git. Exact image, ports, resources and execution evidence are in
 `/Users/noahwang/docs/hawthorn/py313-startup-artifacts-2026-10-24/run-39`.
 
-1. Mount this root read-only at /startup and the current platform source
-   read-only at /input/platform. Run install.sh with
-   PY313_PLATFORM_SOURCE_ROOT=/input/platform; it creates /runtime/venv and
-   a separate writable /runtime/platform-source. No old venv is copied.
+1. Mount the current platform source read-only at /input/platform and its `ci/py313`
+   at /canary, then run the Platform installer (`image-inputs.py`, `install.py`); it
+   creates /runtime/venv and a separate writable /runtime/platform-source. No old venv
+   is copied. (The former `install.sh` is removed.)
 2. Run prepare_theme_inputs.py. In the writable platform root run
    npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund.
 3. Use initialize_local_database.py with a new registered DB, explicit
@@ -124,8 +127,8 @@ These are partial runtime results; a final replay of the combined installer
 in another empty venv and real browser/business-task acceptance remain open.
 See the protected run-26 README for failed attempts and exact limitations.
 
-`install.sh` now invokes `install_verified_runtime_additions.py` for the
-registered fs/Poll/JWT/dogapi source repairs and includes python-memcached.
+The former `install.sh` ran `install_verified_runtime_additions.py` for the
+fs/Poll/JWT/dogapi source repairs; those are now Platform companions.
 `PY313_PLATFORM_ROOT` controls source-dependent settings/locale paths.
 `start_http.py` and `start_worker.py` accept `PY313_RUNTIME_CONTAINER`,
 `PY313_PLATFORM_ROOT`, and a mode-600 `PY313_SECRET_ENV_FILE`. The default

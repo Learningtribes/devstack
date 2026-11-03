@@ -112,14 +112,11 @@ def install(config):
     verify_prepared_export(config)
     capture(config, 'prepare-install-inputs', ['docker', 'exec', config['runtime_container'],
         '/usr/local/bin/python3.13', '-B', '/paired-startup/replay/prepare_current_install.py'])
-    capture(config, 'input-preflight', ['docker', 'exec', config['runtime_container'],
-        '/usr/local/bin/python3.13', '-B', '/startup/test_local_input_contract.py'])
     capture(config, 'install', ['docker', 'exec', config['runtime_container'],
         '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
     capture(config, 'platform-identity', docker_exec(config,
         '/runtime/venv/bin/python', '-B', '/canary/verify-platform-identity.py'))
-    for label, path in [('installed-source-report', '/runtime/installed-input-identity.json'),
-                        ('installed-companion-report', '/runtime/installed-companion-identity.json'),
+    for label, path in [('installed-companion-report', '/runtime/installed-companion-identity.json'),
                         ('platform-identity-report', '/runtime/platform-identity.json'),
                         ('install-receipt', '/runtime/install-receipt.json'),
                         ('resolved-lock', '/runtime/resolved-ci.lock'),

@@ -1,2 +1,0 @@
-[xblock.v1]
-edx_sga = edx_sga.sga:StaffGradedAssignmentXBlock
