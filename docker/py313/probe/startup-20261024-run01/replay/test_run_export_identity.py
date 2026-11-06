@@ -171,8 +171,8 @@ class ReplayExportIdentityTests(unittest.TestCase):
         self.assertEqual([c[0] for c in self.events.mock_calls[:3]],
                          ['ownership', 'verify_export_identity', 'capture'])
         self.assertEqual([c.args[1] for c in self.capture.call_args_list],
-                         ['prepare-install-inputs', 'input-preflight', 'install', 'platform-identity',
-                          'installed-source-report', 'installed-companion-report', 'platform-identity-report',
+                         ['prepare-install-inputs', 'install', 'platform-identity',
+                          'installed-companion-report', 'platform-identity-report',
                           'install-receipt', 'resolved-lock', 'complete-lock'])
 
     def test_install_failure_stops_before_identity_or_success_reports(self):
@@ -185,7 +185,7 @@ class ReplayExportIdentityTests(unittest.TestCase):
             replay_run.install(self.config)
         self.assertEqual(error.exception.code, 42)
         self.assertEqual([c.args[1] for c in self.capture.call_args_list],
-                         ['prepare-install-inputs', 'input-preflight', 'install'])
+                         ['prepare-install-inputs', 'install'])
 
     def test_runtime_keeps_original_inputs_read_only(self):
         self.prepare()

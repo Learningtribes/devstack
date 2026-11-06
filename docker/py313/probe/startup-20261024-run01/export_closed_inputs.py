@@ -1,7 +1,7 @@
 """Export committed inputs only to a new directory, retaining symlink identity.
 
 Use after committing executable input changes. No working-tree copy or old run
-is consulted. Explicit vendor archives are verified before extraction.
+is consulted.
 """
 import argparse
 import hashlib
@@ -34,15 +34,6 @@ for label, repo, prefix in [('devstack', devstack, startup_relative), ('platform
         archive.extractall(target, filter='fully_trusted')
     identities[label] = {'commit': commit, 'archive_sha256': hashlib.sha256(data).hexdigest()}
 startup = args.destination / 'devstack' / startup_relative
-registry = json.loads((startup / 'frozen-local-inputs.json').read_text())
-for record in registry['archives']:
-    source = startup / record['path']
-    assert hashlib.sha256(source.read_bytes()).hexdigest() == record['sha256']
-    with tarfile.open(source) as archive:
-        assert sorted(archive.getnames()) == record['members']
-        assert all(m.isfile() for m in archive.getmembers())
-        archive.extractall(startup / record['destination'], filter='data')
-subprocess.run(['python3', '-B', str(startup / 'local_input_contract.py')], check=True)
 entries = {}
 for label, base in [('startup', startup), ('platform', args.destination / 'platform')]:
     files = {}
@@ -54,5 +45,5 @@ for label, base in [('startup', startup), ('platform', args.destination / 'platf
             files[relative] = {'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
     entries[label] = files
 (args.destination / 'export-identity.json').write_text(json.dumps({'repositories': identities, 'trees': entries}, indent=2, sort_keys=True) + '\n')
-print('PASS committed export, frozen packages, literal symlinks; files:', {k: len(v) for k,v in entries.items()})
+print('PASS committed export, literal symlinks; files:', {k: len(v) for k,v in entries.items()})
 print('startup:', startup)

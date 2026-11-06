@@ -15,8 +15,8 @@ Use independent clean Git worktrees. This adapter is based on Devstack
 `e19e059cc7091d435dd5121b586da0d525a350c5`; Platform was fetched from py3-master
 and frozen at `7dcbcca0651875f0b7748216847715e60f3af706`. Do not copy dirty
 checkout changes or historical venvs/data/secrets/assets. Only the complete current
-Platform installer is supported here; `install_internal_delivery.py install`
-selects the historical upstream-only lock and must not be used for this profile.
+Platform installer is supported here; the former `install_internal_delivery.py`,
+`install.sh` and registered-source installers were removed.
 
 ## Prerequisites and images
 

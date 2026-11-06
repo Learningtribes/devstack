@@ -2,8 +2,8 @@
 
 For current py3-master complete installation and isolated deployment, use the
 [explicit replay](probe/startup-20261024-run01/replay/README.md). It consumes the
-Platform application/Paver/test locks, 20 frozen sources, two +hawthorn.1
-companions and ten editables. The older shell/probe commands below are historical
+Platform application/Paver/test locks, the Platform-pinned external sources
+(git SHA pins and +hawthorn.1 companions) and ten editables. The older shell/probe commands below are historical
 infrastructure tools and do not install that contract.
 
 

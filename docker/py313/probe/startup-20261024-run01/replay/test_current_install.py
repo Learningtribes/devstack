@@ -14,7 +14,7 @@ class CurrentInstallTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.base = Path(temporary.name)
-        self.paths = {name: self.base / name for name in ('paired', 'startup', 'runtime', 'canary')}
+        self.paths = {name: self.base / name for name in ('paired', 'startup', 'runtime', 'canary', 'platform')}
         for path in self.paths.values():
             path.mkdir()
         self.lock = self.base / 'ci.lock'
@@ -23,11 +23,16 @@ class CurrentInstallTests(unittest.TestCase):
         for name in ('image-inputs.py', 'install.py', 'verify-platform-identity.py',
                      'paver-tools.lock', 'test-tools.lock'):
             (self.paths['canary'] / name).touch()
-        (self.paths['paired'] / 'internal-delivery.lock.txt').write_text('fixed')
+        (self.paths['paired'] / 'replay-tool.py').write_text('tool')
+        (self.paths['platform'] / 'requirements/py313-internal').mkdir(parents=True)
+        self.requirements = self.paths['platform'] / 'requirements/py313-internal/runtime-public.in'
+        self.requirements.write_text('fixed')
         (self.paths['canary'] / 'companion_inputs.py').write_text(
-            "def application_lock(startup):\n"
-            "    if (startup / 'internal-delivery.lock.txt').read_text() != 'fixed':\n"
-            "        raise ValueError('Unsupported paired application lock')\n")
+            "def application_lock():\n"
+            "    pass\n"
+            "def verify_requirements(path):\n"
+            "    if path.read_text() != 'fixed':\n"
+            "        raise ValueError('Requirement input does not select the admitted pin')\n")
         patcher = patch('prepare_current_install.subprocess.run')
         self.run = patcher.start()
         self.addCleanup(patcher.stop)
@@ -46,11 +51,13 @@ class CurrentInstallTests(unittest.TestCase):
         self.assertEqual(self.run.call_args_list[-1].args[0][-1], str(self.paths['canary'] / 'image-inputs.py'))
         for name in PLACEHOLDERS:
             self.assertEqual((self.paths['startup'] / name).read_text(), 'protected-fixture')
-        self.assertEqual((self.paths['paired'] / 'internal-delivery.lock.txt').read_text(), 'fixed')
+        self.assertEqual(self.run.call_args_list[0].args[0],
+                         ['cp', '-a', str(self.paths['paired'] / 'replay-tool.py'),
+                          str(self.paths['startup'] / 'replay-tool.py')])
 
-    def test_wrong_paired_lock_rejected_before_staging(self):
-        (self.paths['paired'] / 'internal-delivery.lock.txt').write_text('wrong')
-        with self.assertRaisesRegex(ValueError, 'Unsupported paired'):
+    def test_unadmitted_requirements_rejected_before_staging(self):
+        self.requirements.write_text('wrong')
+        with self.assertRaisesRegex(ValueError, 'does not select the admitted pin'):
             self.prepare()
         self.run.assert_not_called()
 
