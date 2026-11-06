@@ -16,6 +16,13 @@ COMPOSE_PROJECT_NAME=devstack
 export DEVSTACK_WORKSPACE
 export COMPOSE_PROJECT_NAME
 
+# Python 3.13 replay entry; there is deliberately no default config.
+PY313_REPLAY := docker/py313/probe/startup-20261024-run01/replay
+define py313_shell
+	@test -n "$(PY313_CONFIG)" || { echo "PY313_CONFIG=/absolute/path/to/config.json is required" >&2; exit 1; }
+	uv run --no-project --python 3.13 python -B $(PY313_REPLAY)/shell.py --config "$(PY313_CONFIG)" $(1)
+endef
+
 include *.mk
 
 # Generates a help message. Borrowed from https://github.com/pydanny/cookiecutter-djangopackage.
@@ -163,8 +170,11 @@ lms-update-db: ## Run migrations LMS container
 
 update-db: | studio-update-db lms-update-db discovery-update-db ecommerce-update-db credentials-update-db ## Run the migrations for all services
 
-lms-shell: ## Run a shell on the LMS container
-	docker exec -it edx.devstack.lms env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
+lms-shell: ## Run a shell in the Python 3.13 replay runtime with LMS settings (requires PY313_CONFIG)
+	$(call py313_shell,lms)
+
+cms-shell: ## Run a shell in the Python 3.13 replay runtime with CMS settings (requires PY313_CONFIG)
+	$(call py313_shell,cms)
 
 lms-watcher-shell: ## Run a shell on the LMS watcher container
 	docker exec -it edx.devstack.lms_watcher env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
@@ -175,8 +185,8 @@ lms-watcher-shell: ## Run a shell on the LMS watcher container
 lms-restart: ## Kill the LMS Django development server. The watcher process will restart it.
 	docker exec -t edx.devstack.lms bash -c 'kill $$(ps aux | grep "manage.py lms" | egrep -v "while|grep" | awk "{print \$$2}")'
 
-studio-shell: ## Run a shell on the Studio container
-	docker exec -it edx.devstack.studio env TERM=$(TERM) /edx/app/edxapp/devstack.sh open
+studio-shell: ## Alias of cms-shell
+	$(call py313_shell,cms)
 
 studio-watcher-shell: ## Run a shell on the studio watcher container
 	docker exec -it edx.devstack.studio_watcher env TERM=$(TERM) /edx/app/edxapp/devstack.sh open

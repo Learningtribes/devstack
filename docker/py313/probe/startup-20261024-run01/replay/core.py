@@ -440,13 +440,19 @@ def ownership(config):
         fail('Runtime does not belong to this exact replay configuration')
 
 
-def docker_exec(config, *args, settings=None, detached=False):
+def docker_exec(config, *args, settings=None, detached=False, interactive=False):
+    if interactive and detached:
+        fail('Interactive and detached execution are mutually exclusive')
     ownership(config)
     env = environment(config)
     flags = [flag for key in sorted(env) if key.startswith('PY313_') or key == 'PYTHONPATH' for flag in ('-e', key)]
+    if interactive:
+        # Name only: the value comes from the caller's terminal at exec time.
+        flags += ['-e', 'TERM']
     if settings:
         flags += ['-e', 'DJANGO_SETTINGS_MODULE=' + settings]
-    return ['docker', 'exec', *(['-d'] if detached else []), '-w', '/runtime/platform-source',
+    return ['docker', 'exec', *(['-d'] if detached else []), *(['-it'] if interactive else []),
+            '-w', '/runtime/platform-source',
             *flags, config['runtime_container'], *args]
 
 
