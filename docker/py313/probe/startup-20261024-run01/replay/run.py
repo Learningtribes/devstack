@@ -95,8 +95,9 @@ def create(config):
     capture(config, 'create-infra', ['docker', 'compose', '--env-file', config['secret_env'], '-f', str(root / 'compose.json'), 'up', '-d'])
     startup = Path(config['export_dir']) / 'devstack' / STARTUP_REL
     mounts = ['--mount', f'type=volume,src={config["runtime_volume"]},dst=/runtime',
-              '--mount', f'type=bind,src={startup},dst=/startup,readonly',
+              '--mount', f'type=bind,src={startup},dst=/paired-startup,readonly',
               '--mount', f'type=bind,src={config["export_dir"]}/platform,dst=/input/platform,readonly']
+    mounts += ['--mount', f'type=bind,src={config["export_dir"]}/platform/ci/py313,dst=/canary,readonly']
     for source, target in [('credentials_file', '.acceptance-credentials.json'), ('jwt_file', 'jwt-private.pem')]:
         mounts += ['--mount', f'type=bind,src={config[source]},dst=/startup/{target},readonly']
     capture(config, 'create-runtime', ['docker', 'run', '-d', '--name', config['runtime_container'],
@@ -109,13 +110,22 @@ def create(config):
 def install(config):
     ownership(config)
     verify_prepared_export(config)
-    capture(config, 'input-preflight', ['docker', 'exec', config['runtime_container'], 'python3', '-B', '/startup/test_local_input_contract.py'])
-    capture(config, 'install', ['docker', 'exec', '-e', 'PY313_PLATFORM_SOURCE_ROOT=/input/platform', config['runtime_container'],
-                              'bash', '-c', 'test ! -e /runtime/venv && /usr/local/bin/python3.13 -B /startup/install_internal_delivery.py install'])
-    capture(config, 'installed-source-identity', docker_exec(
-        config, '/runtime/venv/bin/python', '/startup/replay/verify_installed_identity.py'))
-    capture(config, 'installed-source-report', docker_exec(
-        config, 'cat', '/runtime/installed-input-identity.json'), show_output=False)
+    capture(config, 'prepare-install-inputs', ['docker', 'exec', config['runtime_container'],
+        '/usr/local/bin/python3.13', '-B', '/paired-startup/replay/prepare_current_install.py'])
+    capture(config, 'input-preflight', ['docker', 'exec', config['runtime_container'],
+        '/usr/local/bin/python3.13', '-B', '/startup/test_local_input_contract.py'])
+    capture(config, 'install', ['docker', 'exec', config['runtime_container'],
+        '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
+    capture(config, 'platform-identity', docker_exec(config,
+        '/runtime/venv/bin/python', '-B', '/canary/verify-platform-identity.py'))
+    for label, path in [('installed-source-report', '/runtime/installed-input-identity.json'),
+                        ('installed-companion-report', '/runtime/installed-companion-identity.json'),
+                        ('platform-identity-report', '/runtime/platform-identity.json'),
+                        ('install-receipt', '/runtime/install-receipt.json'),
+                        ('resolved-lock', '/runtime/resolved-ci.lock'),
+                        ('complete-lock', '/input/ci.lock')]:
+        capture(config, label, docker_exec(config, 'cat', path), show_output=False)
+    verify_prepared_export(config)
 
 
 def main():

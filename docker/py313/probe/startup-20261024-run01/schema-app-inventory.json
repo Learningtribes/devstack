@@ -694,6 +694,31 @@
       "name": "djpyfs",
       "label": "djpyfs",
       "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.legacy_oauth2",
+      "label": "oauth2",
+      "config": "openedx.core.djangoapps.legacy_oauth2.apps.LegacyOAuth2Config"
+    },
+    {
+      "name": "openedx.core.djangoapps.legacy_edx_oauth2",
+      "label": "edx_oauth2_provider",
+      "config": "openedx.core.djangoapps.legacy_edx_oauth2.apps.LegacyEdxOAuth2Config"
+    },
+    {
+      "name": "openedx.core.djangoapps.legacy_oauth1",
+      "label": "oauth_provider",
+      "config": "openedx.core.djangoapps.legacy_oauth1.apps.LegacyOAuth1Config"
+    },
+    {
+      "name": "edx_jsme",
+      "label": "edx_jsme",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.audience_targeting",
+      "label": "audience_targeting",
+      "config": "openedx.core.djangoapps.audience_targeting.apps.AudienceTargetingConfig"
     }
   ],
   "cms": [
@@ -1013,11 +1038,6 @@
       "config": "oauth2_provider.apps.DOTConfig"
     },
     {
-      "name": "openedx.core.djangoapps.oauth_dispatch",
-      "label": "oauth_dispatch",
-      "config": "openedx.core.djangoapps.oauth_dispatch.apps.OAuthDispatchAppConfig"
-    },
-    {
       "name": "courseware",
       "label": "courseware",
       "config": "django.apps.config.AppConfig"
@@ -1185,6 +1205,36 @@
     {
       "name": "djpyfs",
       "label": "djpyfs",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.audience_targeting",
+      "label": "audience_targeting",
+      "config": "openedx.core.djangoapps.audience_targeting.apps.AudienceTargetingConfig"
+    },
+    {
+      "name": "edx_jsme",
+      "label": "edx_jsme",
+      "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.legacy_oauth2",
+      "label": "oauth2",
+      "config": "openedx.core.djangoapps.legacy_oauth2.apps.LegacyOAuth2Config"
+    },
+    {
+      "name": "openedx.core.djangoapps.legacy_edx_oauth2",
+      "label": "edx_oauth2_provider",
+      "config": "openedx.core.djangoapps.legacy_edx_oauth2.apps.LegacyEdxOAuth2Config"
+    },
+    {
+      "name": "openedx.core.djangoapps.legacy_oauth1",
+      "label": "oauth_provider",
+      "config": "openedx.core.djangoapps.legacy_oauth1.apps.LegacyOAuth1Config"
+    },
+    {
+      "name": "django_countries",
+      "label": "django_countries",
       "config": "django.apps.config.AppConfig"
     }
   ],

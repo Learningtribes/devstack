@@ -1,0 +1,605 @@
+{
+  "scope": "Local ARM64 index repair and bounded clean deployment; NOT deployment acceptance",
+  "offline_tests": {
+    "replay": 65,
+    "platform_companion": 4
+  },
+  "runs": [
+    {
+      "run_id": "master313r3",
+      "platform_commit": "8f913c29ff98b19db648cebeb4ead634d43948ef",
+      "devstack_commit": "393de2bc64ec64c62362a010393dcf412ccd85d1",
+      "theme_commit": "7c0dbec1b0a79d7639069f9990b831ba9f31d8bf",
+      "network": "master313r3-network",
+      "network_subnet": "172.30.234.0/24",
+      "lms_port": 18282,
+      "cms_port": 18292,
+      "database": "py313_rebuild_master313r3",
+      "configuration_sha256": "36e92f2d7e9c98f9502cd0ad86dbbcb485aee92f828bc1ec31b77bcedef3ee93",
+      "private_evidence_directory": "/Users/noahwang/workspace/hawthorn/py313-master-replay-r3-20261102/evidence",
+      "runtime_image_id": "sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "runtime_repository_reference": "ltdps/edxapp@sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "install_receipt": {
+        "lock_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8",
+        "status": "installed-and-checked",
+        "resolved_lock_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+      },
+      "commands": [
+        {
+          "output": "export.txt",
+          "exit_code": 0,
+          "duration_seconds": 2.702,
+          "log_sha256": "ef1379877c1f8bfd4df5d7f185d1d619101c8480535cdfeb710327fddb746312"
+        },
+        {
+          "output": "create-volume-runtime.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.072,
+          "log_sha256": "0760c9d32e271b33f6a252f9f39f8724f4da1ab465aba9c1e1e853f0aaa459c7"
+        },
+        {
+          "output": "create-volume-mysql.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.025,
+          "log_sha256": "838a6b4a816d90187ff2e68ef894091116322cdd6ba4712732edba129c1825ad"
+        },
+        {
+          "output": "create-volume-mongo.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.018,
+          "log_sha256": "df51cec09dd24e2b82ffeed59bf9f2906e2e2ce35075e19a3bd3f8fb93646ef5"
+        },
+        {
+          "output": "create-volume-rabbitmq.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.022,
+          "log_sha256": "d97308b9178c6a3724d48120c8c2c9c2f6b5f4b27b7a889b6eaf02bfb5d01cb5"
+        },
+        {
+          "output": "create-volume-elasticsearch.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.021,
+          "log_sha256": "a9b96ab8ed23c258001e92236d5943ff1a04dc3650c36bd461a4e35267029ee1"
+        },
+        {
+          "output": "create-network.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.047,
+          "log_sha256": "f50167d57ce466c9da9c585cc2a926ccf3e511999965034e0445d976d5a2ca97"
+        },
+        {
+          "output": "create-infra.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.937,
+          "log_sha256": "14f562c69b76bcba80ff11e4ce487fddd98bb04b00174f233dc304be98887795"
+        },
+        {
+          "output": "create-runtime.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.584,
+          "log_sha256": "676d28038111db7f84da897559604f6ae55b975be3fb5b41de08e198c5de0a44"
+        },
+        {
+          "output": "prepare-install-inputs.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.72,
+          "log_sha256": "295f2f326764522bccc174c8bd83d442ea49b71d731b68b48a4fadbffedb76e1"
+        },
+        {
+          "output": "input-preflight.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.178,
+          "log_sha256": "1bab5344e0a21320127f7426cbd8acee245287bdf9e2c7ed956556a29ccf8075"
+        },
+        {
+          "output": "install.txt",
+          "exit_code": 0,
+          "duration_seconds": 180.917,
+          "log_sha256": "b8cb25db5eb6984a1aa970d001204951e57a10ca9901281ddf294c1faacf425a"
+        },
+        {
+          "output": "platform-identity.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.766,
+          "log_sha256": "1ea7b8b8bd4ec762938dbc1d6432912a3f097cbb012fea26d69b7baea8a51433"
+        },
+        {
+          "output": "installed-source-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.037,
+          "log_sha256": "0adf807c94fc2fbc63c1581cc96c549970cbd2ddc5fa8a122b7da69b588b8577"
+        },
+        {
+          "output": "installed-companion-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.031,
+          "log_sha256": "114afccfcd0678b925af1fa2bcf86fe81f30ec994f658bd79848c65569333775"
+        },
+        {
+          "output": "platform-identity-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "98ca03d3a6ca8d2e3d3a0b814b5f19656c2f194dd8aa734f509c175a08b69370"
+        },
+        {
+          "output": "install-receipt.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.028,
+          "log_sha256": "680e12816ae949c5222a25c57bab8741233c5ff819553cdce672d6303f91fdfe"
+        },
+        {
+          "output": "resolved-lock.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.031,
+          "log_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+        },
+        {
+          "output": "complete-lock.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.031,
+          "log_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8"
+        },
+        {
+          "output": "create-goodhabitz-probe-db.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.33,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "goodhabitz-mysql-regression.txt",
+          "exit_code": 1,
+          "duration_seconds": 1.152,
+          "log_sha256": "9aafc17dc80a4741682b24df15dc5ed00b2f0a386d1d6545ed11d67ceee6588a"
+        },
+        {
+          "output": "local-runtime-log-dirs.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.059,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "saml-contract.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.191,
+          "log_sha256": "e1a82363849bb68e460980af5666ce7eb5fbb5ee60213aaabdb4dd560bcb6e2a"
+        },
+        {
+          "output": "stage-theme.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.105,
+          "log_sha256": "750d73ae2961852f8b528a6d4c91322be7a4e625425d75f1d70c4fe14b1ff9ed"
+        },
+        {
+          "output": "initialize-schema.txt",
+          "exit_code": 1,
+          "duration_seconds": 20.994,
+          "log_sha256": "0b8fd8be103a346ed5b00a409f840ade1bed660c40a0e840ac75880c90b8f5d7"
+        },
+        {
+          "output": "goodhabitz-mysql-after-theme.txt",
+          "exit_code": 1,
+          "duration_seconds": 5.605,
+          "log_sha256": "50c5b38800891e5b7a8cb7557f00dbcc39fe9618943a62bfe675a0cb5295a709"
+        },
+        {
+          "output": "goodhabitz-existing-selectors.txt",
+          "exit_code": 2,
+          "duration_seconds": 4.688,
+          "log_sha256": "2889a01a8a7fc7fb345c82684c66c2ae7f9d986d8668e3af032845a577a0c492"
+        }
+      ]
+    },
+    {
+      "run_id": "master313r4",
+      "platform_commit": "fe833283b0187f0825b559bb9f322e084295c174",
+      "devstack_commit": "393de2bc64ec64c62362a010393dcf412ccd85d1",
+      "theme_commit": "7c0dbec1b0a79d7639069f9990b831ba9f31d8bf",
+      "network": "master313r4-network",
+      "network_subnet": "172.30.235.0/24",
+      "lms_port": 18283,
+      "cms_port": 18293,
+      "database": "py313_rebuild_master313r4",
+      "configuration_sha256": "62f514ec7134980cdda696a6380844b2fd46703f0a95387dae6ccd040888451f",
+      "private_evidence_directory": "/Users/noahwang/workspace/hawthorn/py313-master-replay-r4-20261102/evidence",
+      "runtime_image_id": "sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "runtime_repository_reference": "ltdps/edxapp@sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "install_receipt": {
+        "lock_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8",
+        "status": "installed-and-checked",
+        "resolved_lock_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+      },
+      "commands": [
+        {
+          "output": "export.txt",
+          "exit_code": 0,
+          "duration_seconds": 2.739,
+          "log_sha256": "97f669ff52e75fdf43c93b749f35afe5b8a2af16fc097fb8b7ecb56bfa2dbd20"
+        },
+        {
+          "output": "create-volume-runtime.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.043,
+          "log_sha256": "3938f10067f4afe8b768c72ac402352908387e8615a40e2a6d5295ba250eda70"
+        },
+        {
+          "output": "create-volume-mysql.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.022,
+          "log_sha256": "9e175c29b510ace167cb62e224d0e875f65fac56b8880cf11c1ad385ed351dc3"
+        },
+        {
+          "output": "create-volume-mongo.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.02,
+          "log_sha256": "c49f512fd71fba94c5524d554b191bb7f42101a9be87abc93c582f3d925c0b8a"
+        },
+        {
+          "output": "create-volume-rabbitmq.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.024,
+          "log_sha256": "7c29dcbca010b0657f6c11be5d8debecd28822d1e548964bd7b90b775842f947"
+        },
+        {
+          "output": "create-volume-elasticsearch.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.02,
+          "log_sha256": "49c4ad302b80e5bf845e4a7188a5608c290df68be7f311b4203544077e8faf28"
+        },
+        {
+          "output": "create-network.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.049,
+          "log_sha256": "621c60601530320d6eb0f1a753ce557802b56fa5e483323afe5870a603a22e65"
+        },
+        {
+          "output": "create-infra.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.934,
+          "log_sha256": "b5e2bee5af769a729c0bcc042e55f209ac8ae9c457568bda8c66483989b3049a"
+        },
+        {
+          "output": "create-runtime.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.891,
+          "log_sha256": "1114747783341065452b3e3fd52cde5cf0ef055ac7cc5cd8e15d7a54b35c6716"
+        },
+        {
+          "output": "prepare-install-inputs.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.684,
+          "log_sha256": "295f2f326764522bccc174c8bd83d442ea49b71d731b68b48a4fadbffedb76e1"
+        },
+        {
+          "output": "input-preflight.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.195,
+          "log_sha256": "1bab5344e0a21320127f7426cbd8acee245287bdf9e2c7ed956556a29ccf8075"
+        },
+        {
+          "output": "test-database-grant.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.1,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "install.txt",
+          "exit_code": 0,
+          "duration_seconds": 179.907,
+          "log_sha256": "01b88a73e22a7b465e43f8d9be7365f0387042e5b24c32384ed041424c2afe2f"
+        },
+        {
+          "output": "platform-identity.txt",
+          "exit_code": 0,
+          "duration_seconds": 2.278,
+          "log_sha256": "e422ecb132ff204c1e63bdb2a28d7e297d984ef828532074d9f01c6eee99df26"
+        },
+        {
+          "output": "installed-source-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.037,
+          "log_sha256": "9e47a2d99b26bae4d9c1b447698a7074d48112dd7d54093bce8e79bea80e26b9"
+        },
+        {
+          "output": "installed-companion-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.042,
+          "log_sha256": "114afccfcd0678b925af1fa2bcf86fe81f30ec994f658bd79848c65569333775"
+        },
+        {
+          "output": "platform-identity-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.038,
+          "log_sha256": "f7aad5fe644132ec246a022b0e8d85b73a8189af768035a153e121332aeb8794"
+        },
+        {
+          "output": "install-receipt.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.033,
+          "log_sha256": "680e12816ae949c5222a25c57bab8741233c5ff819553cdce672d6303f91fdfe"
+        },
+        {
+          "output": "resolved-lock.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+        },
+        {
+          "output": "complete-lock.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8"
+        },
+        {
+          "output": "local-runtime-log-dirs.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.068,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "saml-contract.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.318,
+          "log_sha256": "e1a82363849bb68e460980af5666ce7eb5fbb5ee60213aaabdb4dd560bcb6e2a"
+        },
+        {
+          "output": "stage-theme.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.117,
+          "log_sha256": "750d73ae2961852f8b528a6d4c91322be7a4e625425d75f1d70c4fe14b1ff9ed"
+        },
+        {
+          "output": "create-goodhabitz-probe-db.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.196,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "initialize-schema.txt",
+          "exit_code": 1,
+          "duration_seconds": 20.942,
+          "log_sha256": "cc991eb03cce0800a9b7fd116cff711a4a1ac08d11a681435dbb31d35c88c8bd"
+        },
+        {
+          "output": "goodhabitz-mysql-regression.txt",
+          "exit_code": 1,
+          "duration_seconds": 6.581,
+          "log_sha256": "91f0e9bdf1b9228c17b9fcd3b92b10e50fa19684d1ec060e915c0cbb23cb5105"
+        },
+        {
+          "output": "goodhabitz-existing-selectors.txt",
+          "exit_code": 1,
+          "duration_seconds": 23.925,
+          "log_sha256": "26b89adba774c14f20168a3f3b7bf61933651a04fe4cc95550e641ee294db078"
+        },
+        {
+          "output": "inspect-long-prefix-order.txt",
+          "exit_code": 0,
+          "duration_seconds": 5.074,
+          "log_sha256": "80026e08a2b61b54c67e39fcbf046ae9aa14ce889ba705978c00b4b073b60b15"
+        },
+        {
+          "output": "final-platform-identity.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.125,
+          "log_sha256": "e422ecb132ff204c1e63bdb2a28d7e297d984ef828532074d9f01c6eee99df26"
+        }
+      ],
+      "integrity_only": {
+        "business_acceptance": "NOT RUN",
+        "configuration_sha256": "62f514ec7134980cdda696a6380844b2fd46703f0a95387dae6ccd040888451f",
+        "missing_preexisting_containers": [],
+        "preexisting_containers": 211,
+        "run_id": "master313r4",
+        "secret_findings": [],
+        "selected_image_count": 7,
+        "worker_log_audit": "NOT RUN"
+      }
+    },
+    {
+      "run_id": "master313r5",
+      "platform_commit": "1faef434d6fc4487ec2afebf22ec07b82c792d01",
+      "devstack_commit": "393de2bc64ec64c62362a010393dcf412ccd85d1",
+      "theme_commit": "7c0dbec1b0a79d7639069f9990b831ba9f31d8bf",
+      "network": "master313r5-network",
+      "network_subnet": "172.30.236.0/24",
+      "lms_port": 18284,
+      "cms_port": 18294,
+      "database": "py313_rebuild_master313r5",
+      "configuration_sha256": "bc39b6fb0f85988218573d156460bba75f63502b117ff025b2fbdf9c642c715f",
+      "private_evidence_directory": "/Users/noahwang/workspace/hawthorn/py313-master-replay-r5-20261102/evidence",
+      "runtime_image_id": "sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "runtime_repository_reference": "ltdps/edxapp@sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "install_receipt": {
+        "lock_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8",
+        "status": "installed-and-checked",
+        "resolved_lock_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+      },
+      "commands": [
+        {
+          "output": "export.txt",
+          "exit_code": 0,
+          "duration_seconds": 2.664,
+          "log_sha256": "468de227acf92f622e7105659eaa9fa6c60e5af93cf9e044fecbb120c1029dbd"
+        },
+        {
+          "output": "create-volume-runtime.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "db81e2bbc90163116c60d49ae97edd81cf8d0bc85373499aff0e2dfb341376ec"
+        },
+        {
+          "output": "create-volume-mysql.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.019,
+          "log_sha256": "192a0bf4565890bb69b6e99ca0b111c81c227e686f3403bf421d318d36e36f5e"
+        },
+        {
+          "output": "create-volume-mongo.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.019,
+          "log_sha256": "8a60a2f566fbe9dea295757170ff4732aa5e13f9cef9d8cb8e19dd314f43d7bc"
+        },
+        {
+          "output": "create-volume-rabbitmq.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.019,
+          "log_sha256": "57313c624dd641ace0ebbb4e147fe1f35470b46ff4c26cd84afd4cadfc558753"
+        },
+        {
+          "output": "create-volume-elasticsearch.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.024,
+          "log_sha256": "92cbaf36feb0ab52356ac20cdb4687580e2a0944421268e1ad37bbb10c2dcbbb"
+        },
+        {
+          "output": "create-network.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.044,
+          "log_sha256": "66fe7b781830f47c7c4f401886687c9f229200b437904d8eff57c0c531c0ced5"
+        },
+        {
+          "output": "create-infra.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.084,
+          "log_sha256": "11b410d730d7b128646e32eab44c2f3ea55935528f88ea005a4b525f992c0902"
+        },
+        {
+          "output": "create-runtime.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.372,
+          "log_sha256": "8bd2be81e2d184eb4fc74af298ab39c73f857e83492cb5bdb2bdbd806670b16f"
+        },
+        {
+          "output": "prepare-install-inputs.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.701,
+          "log_sha256": "295f2f326764522bccc174c8bd83d442ea49b71d731b68b48a4fadbffedb76e1"
+        },
+        {
+          "output": "input-preflight.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.183,
+          "log_sha256": "1bab5344e0a21320127f7426cbd8acee245287bdf9e2c7ed956556a29ccf8075"
+        },
+        {
+          "output": "test-database-grant.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.067,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "install.txt",
+          "exit_code": 0,
+          "duration_seconds": 194.509,
+          "log_sha256": "87e9e9c7908a5cc97bd732c7a09c1826a17c7ac55c87fcacae706746cc8be003"
+        },
+        {
+          "output": "platform-identity.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.744,
+          "log_sha256": "738e8f2252122cedaeb6ac9309e6365c1a37bfb2b45bdb69f28cbc1152eb4d95"
+        },
+        {
+          "output": "installed-source-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.031,
+          "log_sha256": "0ec0f96accb7bc81480f5c15f4660ff2eb1edd63c9f36cafa1e8506a202e306d"
+        },
+        {
+          "output": "installed-companion-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.034,
+          "log_sha256": "114afccfcd0678b925af1fa2bcf86fe81f30ec994f658bd79848c65569333775"
+        },
+        {
+          "output": "platform-identity-report.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.058,
+          "log_sha256": "c5a5af2921ffffbb0aa09fe22d8bcb1f85fd60d41d4da591410f51014419e326"
+        },
+        {
+          "output": "install-receipt.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.029,
+          "log_sha256": "680e12816ae949c5222a25c57bab8741233c5ff819553cdce672d6303f91fdfe"
+        },
+        {
+          "output": "resolved-lock.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.031,
+          "log_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+        },
+        {
+          "output": "complete-lock.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8"
+        },
+        {
+          "output": "local-runtime-log-dirs.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.055,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "saml-contract.txt",
+          "exit_code": 0,
+          "duration_seconds": 1.205,
+          "log_sha256": "e1a82363849bb68e460980af5666ce7eb5fbb5ee60213aaabdb4dd560bcb6e2a"
+        },
+        {
+          "output": "stage-theme.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.097,
+          "log_sha256": "750d73ae2961852f8b528a6d4c91322be7a4e625425d75f1d70c4fe14b1ff9ed"
+        },
+        {
+          "output": "initialize-schema.txt",
+          "exit_code": 1,
+          "duration_seconds": 20.84,
+          "log_sha256": "1618b9c1055161f9f439def1b5250633b3f0d06fbf4c50c87a5fbe30b634a9ea"
+        },
+        {
+          "output": "create-goodhabitz-probe-db.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.111,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "output": "goodhabitz-mysql-regression.txt",
+          "exit_code": 0,
+          "duration_seconds": 5.702,
+          "log_sha256": "870cba4304fb90d3302229779308645ea59e7e728754af6de7c14395cdd66639"
+        },
+        {
+          "output": "goodhabitz-existing-selectors.txt",
+          "exit_code": 1,
+          "duration_seconds": 25.91,
+          "log_sha256": "e55d4eea78aed79cef6fcbabb05834e909632023d99e5c8fa8c2a72851ffd51f"
+        },
+        {
+          "output": "final-platform-identity.txt",
+          "exit_code": 0,
+          "duration_seconds": 0.998,
+          "log_sha256": "738e8f2252122cedaeb6ac9309e6365c1a37bfb2b45bdb69f28cbc1152eb4d95"
+        },
+        {
+          "output": "schema-state-readonly.txt",
+          "exit_code": 0,
+          "duration_seconds": 4.867,
+          "log_sha256": "000a96fc2f744fe73530c91a75312b84700ab80da3eece75492813489df1fbc8"
+        }
+      ],
+      "integrity_only": {
+        "business_acceptance": "NOT RUN",
+        "configuration_sha256": "bc39b6fb0f85988218573d156460bba75f63502b117ff025b2fbdf9c642c715f",
+        "missing_preexisting_containers": [],
+        "preexisting_containers": 211,
+        "run_id": "master313r5",
+        "secret_findings": [],
+        "selected_image_count": 7,
+        "worker_log_audit": "NOT RUN"
+      }
+    }
+  ]
+}

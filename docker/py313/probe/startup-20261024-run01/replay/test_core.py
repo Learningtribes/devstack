@@ -380,13 +380,15 @@ class ContractTests(unittest.TestCase):
              patch.object(replay_run, 'docker_exec', return_value=['docker', 'exec', 'identity']) as docker_exec:
             replay_run.install(self.config)
         self.assertEqual([call.args[1] for call in capture.call_args_list], [
-            'input-preflight', 'install', 'installed-source-identity', 'installed-source-report'])
+            'prepare-install-inputs', 'input-preflight', 'install', 'platform-identity',
+            'installed-source-report', 'installed-companion-report', 'platform-identity-report',
+            'install-receipt', 'resolved-lock', 'complete-lock'])
         docker_exec.assert_has_calls([
-            unittest.mock.call(self.config, '/runtime/venv/bin/python', '/startup/replay/verify_installed_identity.py'),
+            unittest.mock.call(self.config, '/runtime/venv/bin/python', '-B', '/canary/verify-platform-identity.py'),
             unittest.mock.call(self.config, 'cat', '/runtime/installed-input-identity.json')])
         self.assertEqual(capture.call_args_list[-1].kwargs, {'show_output': False})
         ownership.assert_called_once_with(self.config)
-        verify_export.assert_called_once_with(self.config)
+        self.assertEqual(verify_export.call_args_list, [unittest.mock.call(self.config)] * 2)
 
 
 if __name__ == '__main__':

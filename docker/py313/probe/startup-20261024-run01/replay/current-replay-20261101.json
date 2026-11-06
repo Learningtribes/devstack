@@ -1,0 +1,409 @@
+{
+  "scope": "Local ARM64 bounded deployment attempt; NOT deployment acceptance",
+  "tests": {
+    "replay_offline": 65,
+    "platform_companion": 4
+  },
+  "runs": [
+    {
+      "run_id": "master313r1",
+      "platform_commit": "7dcbcca0651875f0b7748216847715e60f3af706",
+      "devstack_commit": "ee8e858a47529f32a34ca6a33f635c3e92283538",
+      "theme_commit": "7c0dbec1b0a79d7639069f9990b831ba9f31d8bf",
+      "configuration_sha256": "88eb4fb9a6b244e8df0305767e92285d2f836fa9ccea911d0f536619a21f514d",
+      "private_evidence_directory": "/Users/noahwang/workspace/hawthorn/py313-master-replay-20261101/evidence",
+      "runtime_image_id": "sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "install_receipt": {
+        "lock_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8",
+        "status": "installed-and-checked",
+        "resolved_lock_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+      },
+      "installed_distributions": 331,
+      "registered_source_packages": 20,
+      "companions": {
+        "edx-toggles": "6.0.0+hawthorn.1",
+        "lti-consumer-xblock": "11.3.1+hawthorn.1"
+      },
+      "matched_platform_files": 8974,
+      "editable_distributions": 10,
+      "runtime_container": "master313r1-runtime",
+      "network": "master313r1-network",
+      "network_subnet": "172.30.232.0/24",
+      "volumes": [
+        "master313r1-runtime-data",
+        "master313r1-mysql-data",
+        "master313r1-mongo-data",
+        "master313r1-rabbitmq-data",
+        "master313r1-elasticsearch-data"
+      ],
+      "loopback_mappings": {
+        "lms": 18280,
+        "cms": 18290
+      },
+      "commands": [
+        {
+          "label": "export",
+          "exit_code": 0,
+          "duration_seconds": 2.788,
+          "log_sha256": "0d4714f57de07f5f92be5c1f495d1e3c4c920311f3edffde847dba57a03471d8"
+        },
+        {
+          "label": "create-volume-runtime",
+          "exit_code": 0,
+          "duration_seconds": 0.076,
+          "log_sha256": "fd9e7b6cb1a7a12f03223d3a878aeca160390803986e3ed32bacc5222eba1732"
+        },
+        {
+          "label": "create-volume-mysql",
+          "exit_code": 0,
+          "duration_seconds": 0.022,
+          "log_sha256": "9ade5d9564b6d2ece8d7b9b2ae71b529dd18ed7ded2739cd1e086a51fe09f3da"
+        },
+        {
+          "label": "create-volume-mongo",
+          "exit_code": 0,
+          "duration_seconds": 0.018,
+          "log_sha256": "0b6bbee54b775726ec13de143bb9cc5a0dda0762504bbd34b67dca1164f846ca"
+        },
+        {
+          "label": "create-volume-rabbitmq",
+          "exit_code": 0,
+          "duration_seconds": 0.02,
+          "log_sha256": "ccb915577daf541189f99c4f916d77905e9c9a328edd3cf49f1f1f28f0f000fa"
+        },
+        {
+          "label": "create-volume-elasticsearch",
+          "exit_code": 0,
+          "duration_seconds": 0.02,
+          "log_sha256": "d0cea11bf4ba0effb59541461be44c41058a960060397d0a08584741b59b796b"
+        },
+        {
+          "label": "create-network",
+          "exit_code": 0,
+          "duration_seconds": 0.042,
+          "log_sha256": "9bc71958473c8cdb3433417676f21a1196f5eafc67560c1ec11e8e22806a4797"
+        },
+        {
+          "label": "create-infra",
+          "exit_code": 0,
+          "duration_seconds": 1.954,
+          "log_sha256": "ddd6cab802fc3a0c371b54a7cf03044224bd1de04dc9701f30d2c7f2acfa1060"
+        },
+        {
+          "label": "create-runtime",
+          "exit_code": 0,
+          "duration_seconds": 0.721,
+          "log_sha256": "8309865ff695b635971310494317d885385eeffb3877116a86765fb86dc92ea0"
+        },
+        {
+          "label": "prepare-install-inputs",
+          "exit_code": 0,
+          "duration_seconds": 0.745,
+          "log_sha256": "295f2f326764522bccc174c8bd83d442ea49b71d731b68b48a4fadbffedb76e1"
+        },
+        {
+          "label": "input-preflight",
+          "exit_code": 0,
+          "duration_seconds": 0.188,
+          "log_sha256": "1bab5344e0a21320127f7426cbd8acee245287bdf9e2c7ed956556a29ccf8075"
+        },
+        {
+          "label": "install",
+          "exit_code": 0,
+          "duration_seconds": 185.182,
+          "log_sha256": "2d918899c81fe82be11e93fc5f2becdca5eeab9d5f51c16e518df85d47f5cc21"
+        },
+        {
+          "label": "platform-identity",
+          "exit_code": 0,
+          "duration_seconds": 1.745,
+          "log_sha256": "8142440c3ac836497a79fa0cd0f56c35bdae7015a3f3bd7c476651d1560a471f"
+        },
+        {
+          "label": "installed-source-report",
+          "exit_code": 0,
+          "duration_seconds": 0.036,
+          "log_sha256": "35ac6c2cd9b3d8c48264c726006cba9c10b96166922b4ef5423332e536308195"
+        },
+        {
+          "label": "installed-companion-report",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "114afccfcd0678b925af1fa2bcf86fe81f30ec994f658bd79848c65569333775"
+        },
+        {
+          "label": "platform-identity-report",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "b88ffb943434c553edad741d07b2379b7f9fb7e8760a4b846bd95dea9ac9c3b5"
+        },
+        {
+          "label": "install-receipt",
+          "exit_code": 0,
+          "duration_seconds": 0.03,
+          "log_sha256": "680e12816ae949c5222a25c57bab8741233c5ff819553cdce672d6303f91fdfe"
+        },
+        {
+          "label": "resolved-lock",
+          "exit_code": 0,
+          "duration_seconds": 0.032,
+          "log_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+        },
+        {
+          "label": "complete-lock",
+          "exit_code": 0,
+          "duration_seconds": 0.03,
+          "log_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8"
+        },
+        {
+          "label": "local-runtime-log-dirs",
+          "exit_code": 0,
+          "duration_seconds": 0.057,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "label": "saml-contract",
+          "exit_code": 0,
+          "duration_seconds": 1.23,
+          "log_sha256": "e1a82363849bb68e460980af5666ce7eb5fbb5ee60213aaabdb4dd560bcb6e2a"
+        },
+        {
+          "label": "stage-theme",
+          "exit_code": 0,
+          "duration_seconds": 0.102,
+          "log_sha256": "750d73ae2961852f8b528a6d4c91322be7a4e625425d75f1d70c4fe14b1ff9ed"
+        },
+        {
+          "label": "initialize-schema",
+          "exit_code": 1,
+          "duration_seconds": 4.762,
+          "log_sha256": "5598a4779640ce79f33d5c270432d61369a75be55a632bc43e0248665a49e2c9"
+        },
+        {
+          "label": "schema-inventory-delta",
+          "exit_code": 0,
+          "duration_seconds": 4.682,
+          "log_sha256": "85353cc8d688853b54079ba72afff9e595f8a202c338ebd6bd8f5936f66f80a4"
+        },
+        {
+          "label": "lms-app-inventory",
+          "exit_code": 0,
+          "duration_seconds": 4.467,
+          "log_sha256": "5c77eb256589f6f2955934309b477b89166a35fe6b9ab913465e9a2e0cbe8c0e"
+        },
+        {
+          "label": "cms-app-inventory",
+          "exit_code": 0,
+          "duration_seconds": 4.854,
+          "log_sha256": "394bdce64edf4056a98dd2695cdca579c82c59901ac960e9112a15cf50bda620"
+        }
+      ]
+    },
+    {
+      "run_id": "master313r2",
+      "platform_commit": "7dcbcca0651875f0b7748216847715e60f3af706",
+      "devstack_commit": "a72247f2289e2e3435e15c7de47062bcb42f5186",
+      "theme_commit": "7c0dbec1b0a79d7639069f9990b831ba9f31d8bf",
+      "configuration_sha256": "f30f6b5687ddf86d1001723c4b01ff656f61e46c19fecc7d2066a8c3ff601bab",
+      "private_evidence_directory": "/Users/noahwang/workspace/hawthorn/py313-master-replay-r2-20261101/evidence",
+      "runtime_image_id": "sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63",
+      "install_receipt": {
+        "lock_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8",
+        "status": "installed-and-checked",
+        "resolved_lock_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+      },
+      "installed_distributions": 331,
+      "registered_source_packages": 20,
+      "companions": {
+        "edx-toggles": "6.0.0+hawthorn.1",
+        "lti-consumer-xblock": "11.3.1+hawthorn.1"
+      },
+      "matched_platform_files": 8974,
+      "editable_distributions": 10,
+      "runtime_container": "master313r2-runtime",
+      "network": "master313r2-network",
+      "network_subnet": "172.30.233.0/24",
+      "volumes": [
+        "master313r2-runtime-data",
+        "master313r2-mysql-data",
+        "master313r2-mongo-data",
+        "master313r2-rabbitmq-data",
+        "master313r2-elasticsearch-data"
+      ],
+      "loopback_mappings": {
+        "lms": 18281,
+        "cms": 18291
+      },
+      "commands": [
+        {
+          "label": "export",
+          "exit_code": 0,
+          "duration_seconds": 2.962,
+          "log_sha256": "c38786f8953709e28bb87187fc85e51a218f8a3ce32648e044e070eded2b46c6"
+        },
+        {
+          "label": "create-volume-runtime",
+          "exit_code": 0,
+          "duration_seconds": 0.059,
+          "log_sha256": "b611c36713aea87cafe200636383d647a42f1d73490573cd802cde6ae9a62730"
+        },
+        {
+          "label": "create-volume-mysql",
+          "exit_code": 0,
+          "duration_seconds": 0.023,
+          "log_sha256": "ee9f5429cb35da1ff5bd97cb7901602538328f8c79d6a4fd5a3b73981e9a0501"
+        },
+        {
+          "label": "create-volume-mongo",
+          "exit_code": 0,
+          "duration_seconds": 0.019,
+          "log_sha256": "e3f5fcdaefbb7a9917e65770c71feb6d0161882d7efdaeaf687acedbd4abcdcc"
+        },
+        {
+          "label": "create-volume-rabbitmq",
+          "exit_code": 0,
+          "duration_seconds": 0.021,
+          "log_sha256": "d078d37e6de09405bf45483df89a3939a55dcfa15f7933c6d9822ec63ad16e57"
+        },
+        {
+          "label": "create-volume-elasticsearch",
+          "exit_code": 0,
+          "duration_seconds": 0.021,
+          "log_sha256": "42a6fe67bfd1eee17c1d9652907c1a0da36c81cdc7c3407365d18428c228041c"
+        },
+        {
+          "label": "create-network",
+          "exit_code": 0,
+          "duration_seconds": 0.051,
+          "log_sha256": "fca245fa01ab88a232833f40cf87ccc55d1827c641bf359b1d81d0972e708789"
+        },
+        {
+          "label": "create-infra",
+          "exit_code": 0,
+          "duration_seconds": 1.211,
+          "log_sha256": "d5020e71abb5ec2c5b7082d2911747c37b6926e051d4c8d62027b7491155e513"
+        },
+        {
+          "label": "create-runtime",
+          "exit_code": 0,
+          "duration_seconds": 0.742,
+          "log_sha256": "29bd14b45a2c586177ca00eb50faa0a3282f68878df3fd6be68691796af23156"
+        },
+        {
+          "label": "prepare-install-inputs",
+          "exit_code": 0,
+          "duration_seconds": 0.847,
+          "log_sha256": "295f2f326764522bccc174c8bd83d442ea49b71d731b68b48a4fadbffedb76e1"
+        },
+        {
+          "label": "input-preflight",
+          "exit_code": 0,
+          "duration_seconds": 0.263,
+          "log_sha256": "1bab5344e0a21320127f7426cbd8acee245287bdf9e2c7ed956556a29ccf8075"
+        },
+        {
+          "label": "install",
+          "exit_code": 0,
+          "duration_seconds": 214.809,
+          "log_sha256": "f85415c34c893857f24c5e488ba5d87b5a90e5f9ec991d7adb7226800d600bad"
+        },
+        {
+          "label": "platform-identity",
+          "exit_code": 0,
+          "duration_seconds": 1.856,
+          "log_sha256": "cca1ee7d6c0fd79aba86651a89b16d25e64b2e86daee2f16b1304dfc5615a69e"
+        },
+        {
+          "label": "installed-source-report",
+          "exit_code": 0,
+          "duration_seconds": 0.035,
+          "log_sha256": "42ec18fa434a8d6f2d97a964f1ba9dac264fabcaa35951ebdf0aa9bcabcc402e"
+        },
+        {
+          "label": "installed-companion-report",
+          "exit_code": 0,
+          "duration_seconds": 0.029,
+          "log_sha256": "114afccfcd0678b925af1fa2bcf86fe81f30ec994f658bd79848c65569333775"
+        },
+        {
+          "label": "platform-identity-report",
+          "exit_code": 0,
+          "duration_seconds": 0.028,
+          "log_sha256": "a8d6153a48335c3e7c634070c37fd461a514b78b15ce5c284541166495c9e5cd"
+        },
+        {
+          "label": "install-receipt",
+          "exit_code": 0,
+          "duration_seconds": 0.029,
+          "log_sha256": "680e12816ae949c5222a25c57bab8741233c5ff819553cdce672d6303f91fdfe"
+        },
+        {
+          "label": "resolved-lock",
+          "exit_code": 0,
+          "duration_seconds": 0.027,
+          "log_sha256": "20fd2ac5d3c01f2d2330f6b24a89ff290e2a49898b730c647a7bdba7c5b5c779"
+        },
+        {
+          "label": "complete-lock",
+          "exit_code": 0,
+          "duration_seconds": 0.031,
+          "log_sha256": "ddbca950baf402bd7dd5435aeb457688119f8213c26ff53beeee67f5d9a955b8"
+        },
+        {
+          "label": "local-runtime-log-dirs",
+          "exit_code": 0,
+          "duration_seconds": 0.062,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "label": "saml-contract",
+          "exit_code": 0,
+          "duration_seconds": 1.185,
+          "log_sha256": "e1a82363849bb68e460980af5666ce7eb5fbb5ee60213aaabdb4dd560bcb6e2a"
+        },
+        {
+          "label": "stage-theme",
+          "exit_code": 0,
+          "duration_seconds": 0.104,
+          "log_sha256": "750d73ae2961852f8b528a6d4c91322be7a4e625425d75f1d70c4fe14b1ff9ed"
+        },
+        {
+          "label": "initialize-schema",
+          "exit_code": 1,
+          "duration_seconds": 17.516,
+          "log_sha256": "4d5d2c23a76f4c0e11141d0ee4705a81999a793d9111ba7c6340cb689c06b884"
+        },
+        {
+          "label": "schema-first-absent-ddl",
+          "exit_code": 0,
+          "duration_seconds": 6.309,
+          "log_sha256": "ddcb995af1f98f372772ec30fcf3b4dce8de100a9a196f96a3ef65e4740b0310"
+        },
+        {
+          "label": "final-platform-identity",
+          "exit_code": 0,
+          "duration_seconds": 0.993,
+          "log_sha256": "cca1ee7d6c0fd79aba86651a89b16d25e64b2e86daee2f16b1304dfc5615a69e"
+        }
+      ]
+    }
+  ],
+  "final_stages": {
+    "preflight": "PASS",
+    "export_create": "PASS",
+    "complete_install_identity": "PASS",
+    "fresh_schema": "FAIL",
+    "lms_cms_checks": "BLOCKED / NOT RUN",
+    "assets": "BLOCKED / NOT RUN",
+    "http_workers": "BLOCKED / NOT RUN",
+    "browser_task_persistence": "BLOCKED / NOT RUN"
+  },
+  "first_application_blocker": {
+    "error": "MySQL 1071: Specified key was too long; max key length is 3072 bytes",
+    "sql": "CREATE INDEX `goodhabitz_container_title_60521c27` ON `goodhabitz_container` (`title`)",
+    "field": "goodhabitz.Container.title: varchar(1024), db_index=True",
+    "encoding": "utf8mb4 / utf8mb4_unicode_ci",
+    "partial_tables": 329,
+    "historical_migrations_applied": 0
+  }
+}

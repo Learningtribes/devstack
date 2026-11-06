@@ -1,5 +1,12 @@
 # Explicit local replay
 
+Latest result: [2026-11-02 GoodHabitz repair / clean replay](current-replay-20261102.md).
+Index regression passed; deployment remains blocked at the next OAuth schema setting.
+The [2026-11-01 R1/R2 report](current-replay-20261101.md) remains historical evidence.
+
+For current py3-master, start with [the complete-profile guide](current-py3-master.md)
+and [configuration example](current-config.example.json).
+
 Run these host scripts with Python 3.13 (`uv run --no-project --python 3.13 python -B`).
 Every entry requires `--config /absolute/path/to/config.json`. There is no selected
 container, evidence directory, course, or namespace fallback. Retained historical
@@ -56,8 +63,25 @@ With an explicit operator-created JSON config, run `run.py --config ...` with:
 4. `prepare` (rechecks, creates evidence, exports committed sources only).
 5. `create` (rechecks physical resources, creates a new network and fresh service
    data, then a new runtime volume/container).
-6. `install` (frozen positive/negative preflight, then empty venv installation,
-   followed by installed-source identity verification and private report capture).
+6. `install` (stage the current Platform application/Paver/test profile, run frozen
+   positive/negative preflight, then full resolution/sync/check in an empty venv).
+   The old `install_internal_delivery.py install` is historical and must not be
+   invoked for current py3-master. Platform `ci/py313/image-inputs.py` verifies the
+   immutable base lock and both +hawthorn.1 archives; `install.py` checks all 20
+   registered sources and companions. The replay then independently checks all
+   Platform bytes/symlinks and ten editable locations. Reports, receipt and both
+   complete/resolved locks are captured privately; no package is injected later.
+
+Original exports are mounted read-only at `/paired-startup`, `/input/platform`
+and `/canary` (the latter is the exported Platform CI directory). `/startup` is
+an initially empty task-owned container staging directory except for the two
+protected read-only credential/JWT mounts. Staging copies committed paired tools
+without overwriting these mounts; registered archives expand there and the
+Platform preparer writes `/input/ci.lock` in the container layer. `/runtime` is a
+new empty named volume for staged application/source builds, venv and generated
+outputs. Neither exports nor a historical runtime is writable or reused.
+Missing current tooling, corrupt inputs, occupied staging/runtime/lock, failed
+subprocesses and source/export drift abort; there is no old-lock fallback.
 
 Then `replay_after_install.py --config ... schema`, `assets`, and `services`.
 The schema phase uses fresh local model synchronization, not historical migration.
