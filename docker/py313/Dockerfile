@@ -63,7 +63,11 @@ ARG BUILD_DEPS
 RUN apt-get update && apt-get install -y --no-install-recommends ${BUILD_DEPS} \
     && rm -rf /var/lib/apt/lists/*
 
-# Explicit internal-delivery toolchain; application venv is created separately.
+# LMS/CMS runtime base consumed by the py313 replay (`images.runtime`); the pushed multi-platform
+# image is built from this stage by build-runtime-image.py. The application venv is created
+# separately inside the container (Platform ci/py313/install.py), so Python, uv, Node and the
+# system libraries here are the only versions the replay relies on. Keep the stage name: the
+# builder script and the replay documentation reference it.
 FROM dev AS internal-delivery
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gettext libglib2.0-0 libx11-6 libxext6 libxrender1 graphviz libgraphviz-dev \
