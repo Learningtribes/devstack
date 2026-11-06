@@ -66,6 +66,22 @@ responses and owned queue routing. Follow the browser/task/persistence checks in
 the main replay README and capture the audit only after those prerequisites pass.
 Never expose private authentication HTTP logs as evidence.
 
+## Interactive shell
+
+```sh
+export PY313_CONFIG=/absolute/new-run/config.json
+make lms-shell    # DJANGO_SETTINGS_MODULE=startup_lms
+make cms-shell    # DJANGO_SETTINGS_MODULE=startup_cms (make studio-shell is an alias)
+```
+
+Run from the Devstack worktree on a host terminal. `PY313_CONFIG` is required; there
+is no default. The shell starts in `/runtime/platform-source` inside the run-owned
+runtime with `/runtime/venv/bin` first on `PATH` and the run's namespace and secrets
+in the environment, so `python manage.py lms shell` works directly. It is not an
+evidence-capturing command (no label, nothing recorded); use `run_check.py` for
+reproducible output. `lms-watcher-shell` and `studio-watcher-shell` still target the
+classic Python 2.7 containers.
+
 No resume/reset/cleanup/restart fallback is provided. Output labels are exclusive,
 so a failure preserves evidence and cannot silently repeat a mutation. After an
 executable adapter change, commit it and use a new run config/export/resources.
