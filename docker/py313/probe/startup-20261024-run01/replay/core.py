@@ -18,6 +18,8 @@ RUNTIME_LOCK_PATH = Path(__file__).with_name('runtime-image.lock.json')
 IMAGE_INDEX_MEDIA_TYPE = 'application/vnd.oci.image.index.v1+json'
 IMAGE_DIGEST_RE = re.compile(r'sha256:[0-9a-f]{64}')
 RUNTIME_REPOSITORY = 'ltdps/edxapp'
+# Local-devstack superuser overrides; the only host PY313_* values that reach the runtime.
+DEV_SUPERUSER_KEYS = ('PY313_DEV_SUPERUSER_USERNAME', 'PY313_DEV_SUPERUSER_EMAIL', 'PY313_DEV_SUPERUSER_PASSWORD')
 RUNTIME_PULL_BACKOFF = (5, 15, 30, 60)
 IMAGE_REFERENCE_RE = re.compile(r'(?P<repository>[a-z0-9][a-z0-9._:/-]*)@(?P<digest>sha256:[0-9a-f]{64})')
 IMAGE_TAG_RE = re.compile(r'[a-z0-9][a-z0-9._/-]*:[A-Za-z0-9_][A-Za-z0-9_.-]*')
@@ -452,7 +454,8 @@ def redact_values(config):
 
 def environment(config):
     # Do not inherit any PY313_* from a previously selected run.
-    env = {key: value for key, value in os.environ.items() if not key.startswith('PY313_')}
+    env = {key: value for key, value in os.environ.items()
+           if not key.startswith('PY313_') or key in DEV_SUPERUSER_KEYS}
     env.update(secret_values(config))
     env.update(PY313_MYSQL_USER='edxapp', PY313_MONGO_USER='edxapp', PY313_RABBITMQ_USER='edxapp',
                PY313_RUNTIME_CONTAINER=config['runtime_container'], PY313_SECRET_ENV_FILE=config['secret_env'],

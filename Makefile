@@ -18,17 +18,30 @@ export COMPOSE_PROJECT_NAME
 
 # Python 3.13 replay entry; there is deliberately no default config.
 PY313_REPLAY := docker/py313/probe/startup-20261024-run01/replay
+PY313_PYTHON := uv run --no-project --python 3.13 python -B
 define py313_shell
 	@test -n "$(PY313_CONFIG)" || { echo "PY313_CONFIG=/absolute/path/to/config.json is required" >&2; exit 1; }
-	uv run --no-project --python 3.13 python -B $(PY313_REPLAY)/shell.py --config "$(PY313_CONFIG)" $(1)
+	$(PY313_PYTHON) $(PY313_REPLAY)/shell.py --config "$(PY313_CONFIG)" $(1)
 endef
+define py313_require_new_run
+	@test -n "$(RUN_ID)" -a -n "$(LMS_PORT)" -a -n "$(CMS_PORT)" -a -n "$(PLATFORM_REPO)" || { \
+	  echo "RUN_ID, LMS_PORT, CMS_PORT and PLATFORM_REPO are required (optional: PLATFORM_COMMIT DEVSTACK_REPO DEVSTACK_COMMIT RUN_ROOT SUBNET RUNTIME_IMAGE)" >&2; exit 1; }
+endef
+define py313_require_config
+	@test -n "$(PY313_CONFIG)" || { echo "PY313_CONFIG=/absolute/path/to/config.json is required" >&2; exit 1; }
+endef
+PY313_NEW_RUN_ARGS = --run-id "$(RUN_ID)" --lms-port "$(LMS_PORT)" --cms-port "$(CMS_PORT)" \
+  --platform-repo "$(PLATFORM_REPO)" $(if $(PLATFORM_COMMIT),--platform-commit "$(PLATFORM_COMMIT)") \
+  $(if $(DEVSTACK_REPO),--devstack-repo "$(DEVSTACK_REPO)") $(if $(DEVSTACK_COMMIT),--devstack-commit "$(DEVSTACK_COMMIT)") \
+  $(if $(RUN_ROOT),--root "$(RUN_ROOT)") $(if $(SUBNET),--subnet "$(SUBNET)") \
+  $(if $(RUNTIME_IMAGE),--runtime-image "$(RUNTIME_IMAGE)")
 
 include *.mk
 
 # Generates a help message. Borrowed from https://github.com/pydanny/cookiecutter-djangopackage.
 help: ## Display this help message
 	@echo "Please use \`make <target>' where <target> is one of"
-	@perl -nle'print $& if m{^[\.a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
+	@perl -nle'print $& if m{^[\.a-zA-Z0-9_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
 
 requirements: ## Install requirements
 	pip install -r requirements/base.txt
@@ -175,6 +188,23 @@ lms-shell: ## Run a shell in the Python 3.13 replay runtime with LMS settings (r
 
 cms-shell: ## Run a shell in the Python 3.13 replay runtime with CMS settings (requires PY313_CONFIG)
 	$(call py313_shell,cms)
+
+py313-new-run: ## Create a new Python 3.13 run directory and config; prints the config path (RUN_ID LMS_PORT CMS_PORT PLATFORM_REPO)
+	$(py313_require_new_run)
+	@$(PY313_PYTHON) $(PY313_REPLAY)/new_run.py $(PY313_NEW_RUN_ARGS)
+
+py313-up: ## Create a run and bring up the complete local LMS/Studio environment (same variables as py313-new-run; SKIP_UNIT_TESTS=1)
+	$(py313_require_new_run)
+	@CONFIG=$$($(PY313_PYTHON) $(PY313_REPLAY)/new_run.py $(PY313_NEW_RUN_ARGS)) && \
+	  $(PY313_PYTHON) $(PY313_REPLAY)/bring_up.py --config "$$CONFIG" $(if $(SKIP_UNIT_TESTS),--skip-unit-tests)
+
+py313-status: ## Show container states, ports and heartbeats of a run (requires PY313_CONFIG)
+	$(py313_require_config)
+	@$(PY313_PYTHON) $(PY313_REPLAY)/status.py --config "$(PY313_CONFIG)"
+
+py313-destroy: ## Remove only the Docker resources owned by a run, keep its directory (requires PY313_CONFIG; DRY_RUN=1, PURGE_DIR=1)
+	$(py313_require_config)
+	@$(PY313_PYTHON) $(PY313_REPLAY)/destroy_run.py --config "$(PY313_CONFIG)" $(if $(DRY_RUN),--dry-run) $(if $(PURGE_DIR),--purge-dir)
 
 lms-watcher-shell: ## Run a shell on the LMS watcher container
 	docker exec -it edx.devstack.lms_watcher env TERM=$(TERM) /edx/app/edxapp/devstack.sh open

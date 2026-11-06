@@ -24,7 +24,7 @@ run scripts are evidence/examples, not entry points for a new replay.
 | Runtime resources | `runtime_container`, `runtime_volume`, `network`, `network_subnet`, `lms_port`, `cms_port` |
 | Namespace | `database`, `test_database`, `mongo_database`, `cache_prefix`, `es_prefix`, `queue_prefix`, `course_key` |
 | Infrastructure | `services`: explicit `container` for mysql/mongo/rabbitmq/elasticsearch/memcached/valkey, plus `volume` for the first four |
-| Images | `images`: six services must exactly match `infrastructure-images.lock.json`; runtime requires its local `sha256:<64 hex>` image ID |
+| Images | `images`: six services must exactly match `infrastructure-images.lock.json`; `runtime` is either a local `sha256:<64 hex>` image ID or exactly `ltdps/edxapp@sha256:<index digest>` from `runtime-image.lock.json` |
 
 All resource and namespace names must contain `run_id`. `network_subnet` is a
 dedicated RFC1918 IPv4 `/24`; preflight rejects overlap with any current Docker
@@ -82,6 +82,9 @@ outputs. Neither exports nor a historical runtime is writable or reused.
 Missing current tooling, corrupt inputs, occupied staging/runtime/lock, failed
 subprocesses and source/export drift abort; there is no old-lock fallback.
 
+MySQL initialization also grants `edxapp` the configured `test_database` (`replay/mysql-grant-test-database.sh`,
+mounted into `/docker-entrypoint-initdb.d`), so `run.py ... test` can create and drop the Django test database.
+
 Then `replay_after_install.py --config ... schema`, `assets`, and `services`.
 The schema phase uses fresh local model synchronization, not historical migration.
 The assets phase uses `build_frontend.sh` with a 2 GiB Node heap and no
@@ -100,6 +103,12 @@ sorting/pagination and MIME filtering. Capture persistence before restart with
 `snapshot_delivery_before_restart.py`; restart only the owned runtime services,
 then verify the persisted course/assets/learning state with
 `verify_delivery_after_restart.py`.
+
+The whole sequence, plus course authoring, a superuser and an HTTP smoke, is automated by
+`new_run.py` and `bring_up.py` (`make py313-up`), with `status.py` and the operator teardown
+`destroy_run.py` (`make py313-status` / `make py313-destroy`); see the quickstart in
+[current-py3-master.md](current-py3-master.md). Teardown is deliberately outside the stages above:
+it removes only resources named in the config that carry its ownership label.
 
 `run_check.py --config ... lms <unique-label> check` runs a bounded manage command.
 It also supports CMS and explicit registered settings such as `startup_schema`.
@@ -143,8 +152,13 @@ the locked platform manifest map and records that map's digest for the reported
 platform. Docker image inspection does not expose the selected platform
 manifest's registry digest directly; the report distinguishes the locked index
 and platform-manifest digests from Docker's local image ID. A cached local arm64
-image ID is not a substitute for the multi-platform index digest. The runtime
-image remains a local, architecture-specific image ID.
+image ID is not a substitute for the multi-platform index digest. The runtime image has the
+same two forms: a local, architecture-specific `sha256:` image ID, or the multi-platform
+reference locked in `runtime-image.lock.json` (OCI index digest plus the amd64/arm64 manifest
+digests, built from the `internal-delivery` stage by `docker/py313/build-runtime-image.py`).
+For the locked form `preflight`/`create` pull the digest when it is absent (retried with
+backoff), reject any other reference, and the audit records the index digest, RepoDigests and
+the matching locked platform manifest like the service images.
 
 The audit inspects each of the six service containers and the runtime container,
 checks the replay ownership label and configured image reference, then records
