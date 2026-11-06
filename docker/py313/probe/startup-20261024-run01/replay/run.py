@@ -18,7 +18,8 @@ from core import (SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, envi
 def compose(config):
     specs = {
         'mysql': ('/var/lib/mysql', {'MYSQL_ROOT_PASSWORD': '${PY313_MYSQL_ROOT_PASSWORD}',
-            'MYSQL_DATABASE': config['database'], 'MYSQL_USER': 'edxapp', 'MYSQL_PASSWORD': '${PY313_MYSQL_PASSWORD}'}),
+            'MYSQL_DATABASE': config['database'], 'MYSQL_USER': 'edxapp', 'MYSQL_PASSWORD': '${PY313_MYSQL_PASSWORD}',
+            'PY313_TEST_DATABASE': config['test_database']}),
         'mongo': ('/data/db', {'MONGO_INITDB_ROOT_USERNAME': 'edxapp', 'MONGO_INITDB_ROOT_PASSWORD': '${PY313_MONGO_PASSWORD}'}),
         'rabbitmq': ('/var/lib/rabbitmq', {'RABBITMQ_DEFAULT_USER': 'edxapp', 'RABBITMQ_DEFAULT_PASS': '${PY313_RABBITMQ_PASSWORD}'}),
         'elasticsearch': ('/usr/share/elasticsearch/data', {'discovery.type': 'single-node', 'xpack.security.enabled': 'false', 'ES_JAVA_OPTS': '-Xms256m -Xmx256m'}),
@@ -40,6 +41,8 @@ def compose(config):
     # Registered non-secret RabbitMQ policy, independent of mutable host files.
     policy = Path(config['export_dir']) / 'devstack' / STARTUP_REL / 'replay/rabbitmq.conf'
     services['rabbitmq']['volumes'].append(str(policy) + ':/etc/rabbitmq/conf.d/20-local-replay.conf:ro')
+    grant = Path(config['export_dir']) / 'devstack' / STARTUP_REL / 'replay/mysql-grant-test-database.sh'
+    services['mysql']['volumes'].append(str(grant) + ':/docker-entrypoint-initdb.d/20-grant-test-database.sh:ro')
     return {'name': config['network'], 'services': services, 'volumes': volumes,
             'networks': {'default': {'name': config['network'], 'external': True}}}
 

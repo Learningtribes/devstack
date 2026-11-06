@@ -1,0 +1,14 @@
+{
+  "built_on": "2026-11-06",
+  "devstack_commit": "d88307328e4cc2b46c12e4eeaa62eea92b821df1",
+  "index_digest": "sha256:1b70144590a78581487e9a9bbc195d8149116655e4df945d8dbda114d145c917",
+  "platforms": {
+    "linux/amd64": "sha256:37b4338da6fc7acb58edb232777a8f473c1c8dfa2a5267739a2d6a33d5c313d2",
+    "linux/arm64": "sha256:e8d1eed3d89dab65582bcf0e65da0fb06beb96f6d2153ca921dde73aeca2bef7"
+  },
+  "registry_manifest_type": "application/vnd.oci.image.index.v1+json",
+  "repository": "ltdps/edxapp",
+  "schema_version": 1,
+  "stage": "internal-delivery",
+  "tag": "py313-devstack-20261106"
+}

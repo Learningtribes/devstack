@@ -54,6 +54,6 @@
     "elasticsearch": "elasticsearch@sha256:8eb0ee819c020d1275e7f7b82aefdea5d50014c8986bb5be64d80232b58119a5",
     "memcached": "memcached@sha256:ab65f39bfa5b1e31bff3bdccfd48af85fee6fdcbf0eb877175fcb170a4e1bd2f",
     "valkey": "valkey/valkey@sha256:640c5e62cea04b6d6f2084232651d0cc70362d31f4f805e7be94dbed6855e8f2",
-    "runtime": "sha256:c73bb66928e12c9e5b1b4e3d1564226163409eb034c0bf123be17778f36dff63"
+    "runtime": "ltdps/edxapp@sha256:1b70144590a78581487e9a9bbc195d8149116655e4df945d8dbda114d145c917"
   }
 }

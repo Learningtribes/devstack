@@ -8,13 +8,19 @@ import re
 import socket
 import stat
 import subprocess
+import time
 import datetime
 
 STARTUP_REL = Path('docker/py313/probe/startup-20261024-run01')
 SERVICES = ('mysql', 'mongo', 'rabbitmq', 'elasticsearch', 'memcached', 'valkey')
 IMAGE_LOCK_PATH = Path(__file__).with_name('infrastructure-images.lock.json')
+RUNTIME_LOCK_PATH = Path(__file__).with_name('runtime-image.lock.json')
 IMAGE_INDEX_MEDIA_TYPE = 'application/vnd.oci.image.index.v1+json'
 IMAGE_DIGEST_RE = re.compile(r'sha256:[0-9a-f]{64}')
+RUNTIME_REPOSITORY = 'ltdps/edxapp'
+# Local-devstack superuser overrides; the only host PY313_* values that reach the runtime.
+DEV_SUPERUSER_KEYS = ('PY313_DEV_SUPERUSER_USERNAME', 'PY313_DEV_SUPERUSER_EMAIL', 'PY313_DEV_SUPERUSER_PASSWORD')
+RUNTIME_PULL_BACKOFF = (5, 15, 30, 60)
 IMAGE_REFERENCE_RE = re.compile(r'(?P<repository>[a-z0-9][a-z0-9._:/-]*)@(?P<digest>sha256:[0-9a-f]{64})')
 IMAGE_TAG_RE = re.compile(r'[a-z0-9][a-z0-9._/-]*:[A-Za-z0-9_][A-Za-z0-9_.-]*')
 SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO_PASSWORD',
@@ -115,6 +121,77 @@ def load_image_lock():
     except (OSError, json.JSONDecodeError) as exc:
         fail('Unable to read infrastructure image lock: ' + str(exc))
     return validate_image_lock(image_lock)
+
+
+def validate_runtime_lock(runtime_lock):
+    required = {'schema_version', 'repository', 'tag', 'stage', 'registry_manifest_type',
+                'index_digest', 'platforms', 'devstack_commit', 'built_on'}
+    if not isinstance(runtime_lock, dict) or set(runtime_lock) != required:
+        fail('Runtime image lock has an invalid schema')
+    if type(runtime_lock['schema_version']) is not int or runtime_lock['schema_version'] != 1:
+        fail('Unsupported runtime image lock schema version')
+    if runtime_lock['repository'] != RUNTIME_REPOSITORY:
+        fail('Runtime image lock repository must be ' + RUNTIME_REPOSITORY)
+    tag = runtime_lock['tag']
+    if not isinstance(tag, str) or not IMAGE_TAG_RE.fullmatch('x:' + tag) or not re.search(r'\d{8}', tag):
+        fail('Runtime image lock tag must be an explicit dated tag')
+    if not isinstance(runtime_lock['stage'], str) or not runtime_lock['stage']:
+        fail('Runtime image lock has no build stage')
+    if runtime_lock['registry_manifest_type'] != IMAGE_INDEX_MEDIA_TYPE:
+        fail('Runtime image lock is not an OCI image index lock')
+    if not isinstance(runtime_lock['index_digest'], str) or not IMAGE_DIGEST_RE.fullmatch(runtime_lock['index_digest']):
+        fail('Runtime image lock has an invalid index digest')
+    if (not isinstance(runtime_lock['devstack_commit'], str)
+            or not re.fullmatch(r'[0-9a-f]{40}', runtime_lock['devstack_commit'])):
+        fail('Runtime image lock has an invalid source commit')
+    try:
+        datetime.date.fromisoformat(runtime_lock['built_on'])
+    except (TypeError, ValueError):
+        fail('Runtime image lock has an invalid build date')
+    platforms = runtime_lock['platforms']
+    if not isinstance(platforms, dict) or set(platforms) != {'linux/amd64', 'linux/arm64'}:
+        fail('Runtime image lock must carry exactly linux/amd64 and linux/arm64 manifests')
+    for digest in platforms.values():
+        if not isinstance(digest, str) or not IMAGE_DIGEST_RE.fullmatch(digest):
+            fail('Runtime image lock has an invalid platform digest')
+    return runtime_lock
+
+
+def load_runtime_lock():
+    try:
+        runtime_lock = read_json(RUNTIME_LOCK_PATH)
+    except (OSError, json.JSONDecodeError) as exc:
+        fail('Unable to read runtime image lock: ' + str(exc))
+    return validate_runtime_lock(runtime_lock)
+
+
+def runtime_lock_reference(runtime_lock):
+    return runtime_lock['repository'] + '@' + runtime_lock['index_digest']
+
+
+def runtime_is_local_id(reference):
+    return isinstance(reference, str) and bool(IMAGE_DIGEST_RE.fullmatch(reference))
+
+
+def locked_record(name):
+    """Lock record for a selected image: a service entry or the runtime index lock."""
+    if name != 'runtime':
+        return load_image_lock()['services'][name]
+    runtime_lock = load_runtime_lock()
+    return {'source_tag': runtime_lock['repository'] + ':' + runtime_lock['tag'], 'manifest_version': None,
+            'reference': runtime_lock_reference(runtime_lock), 'platform_manifests': runtime_lock['platforms']}
+
+
+def locked_platform(platform, manifests, name):
+    candidates = [platform]
+    if platform == 'linux/arm64':
+        candidates.append('linux/arm64/v8')
+    elif platform == 'linux/arm64/v8':
+        candidates.append('linux/arm64')
+    matching = next((key for key in candidates if key in manifests), None)
+    if matching is None:
+        fail('Selected service image platform is not present in the reviewed index: ' + name)
+    return manifests[matching]
 
 
 def save_new(path, value):
@@ -222,8 +299,9 @@ def load_config(path):
             fail('Service image must use repository@sha256 digest: ' + service)
         if reference != locked_services[service]['reference']:
             fail('Service image differs from reviewed digest lock: ' + service)
-    if not re.fullmatch(r'sha256:[0-9a-f]{64}', config['images']['runtime']):
-        fail('Runtime image must be an explicit sha256 image identity')
+    runtime = config['images']['runtime']
+    if not runtime_is_local_id(runtime) and runtime != runtime_lock_reference(load_runtime_lock()):
+        fail('Runtime image must be a local sha256 image ID or the reference in runtime-image.lock.json')
     if not re.fullmatch(r'course-v1:[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+', config['course_key']) or token not in config['course_key']:
         fail('Course key must be explicit and contain run_id')
     return config
@@ -285,7 +363,8 @@ def validate_selected_image(config, name, container, image):
     actual_container = container.get('name')
     if not isinstance(actual_container, str) or actual_container.lstrip('/') != expected_container:
         fail('Selected container name differs from configuration: ' + name)
-    if name == 'runtime':
+    local_runtime = name == 'runtime' and runtime_is_local_id(expected)
+    if local_runtime:
         configured_matches = container.get('configured_image') == expected
     else:
         configured_matches = image_reference_parts(container.get('configured_image')) == image_reference_parts(expected)
@@ -304,11 +383,11 @@ def validate_selected_image(config, name, container, image):
         fail('Selected image has invalid repository digest metadata: ' + name)
     lock_record = None
     locked_manifest_digest = None
-    if name == 'runtime':
+    if local_runtime:
         if expected != image_id:
             fail('Selected runtime image ID differs from configured identity')
     else:
-        lock_record = load_image_lock()['services'][name]
+        lock_record = locked_record(name)
         expected_parts = image_reference_parts(expected)
         actual_parts = [image_reference_parts(value) for value in repo_digests]
         if not any(parts == expected_parts for parts in actual_parts):
@@ -319,26 +398,17 @@ def validate_selected_image(config, name, container, image):
         fail('Selected image has no supported platform identity: ' + name)
     variant = image.get('Variant')
     platform = os_name + '/' + architecture + ('/' + variant if variant else '')
-    if name != 'runtime':
-        platform_manifests = lock_record['platform_manifests']
-        platform_candidates = [platform]
-        if platform == 'linux/arm64':
-            platform_candidates.append('linux/arm64/v8')
-        elif platform == 'linux/arm64/v8':
-            platform_candidates.append('linux/arm64')
-        matching_platform = next((key for key in platform_candidates if key in platform_manifests), None)
-        if matching_platform is None:
-            fail('Selected service image platform is not present in the reviewed index: ' + name)
-        locked_manifest_digest = platform_manifests[matching_platform]
+    if lock_record:
+        locked_manifest_digest = locked_platform(platform, lock_record['platform_manifests'], name)
     return {
         'container': expected_container,
         'configured_image': expected,
         'container_configured_image': container.get('configured_image'),
         'image_id': image_id,
         'repo_digests': sorted(repo_digests),
-        'source_tag': None if name == 'runtime' else lock_record['source_tag'],
-        'manifest_version': None if name == 'runtime' else lock_record['manifest_version'],
-        'index_digest': None if name == 'runtime' else image_reference_parts(expected)[1],
+        'source_tag': lock_record['source_tag'] if lock_record else None,
+        'manifest_version': lock_record['manifest_version'] if lock_record else None,
+        'index_digest': image_reference_parts(expected)[1] if lock_record else None,
         'locked_platform_manifest_digest': locked_manifest_digest,
         'platform': {'os': os_name, 'architecture': architecture, 'variant': variant},
     }
@@ -384,7 +454,8 @@ def redact_values(config):
 
 def environment(config):
     # Do not inherit any PY313_* from a previously selected run.
-    env = {key: value for key, value in os.environ.items() if not key.startswith('PY313_')}
+    env = {key: value for key, value in os.environ.items()
+           if not key.startswith('PY313_') or key in DEV_SUPERUSER_KEYS}
     env.update(secret_values(config))
     env.update(PY313_MYSQL_USER='edxapp', PY313_MONGO_USER='edxapp', PY313_RABBITMQ_USER='edxapp',
                PY313_RUNTIME_CONTAINER=config['runtime_container'], PY313_SECRET_ENV_FILE=config['secret_env'],
@@ -398,6 +469,40 @@ def environment(config):
                PY313_LMS_ROOT_URL='http://localhost:' + str(config['lms_port']),
                PY313_CMS_ROOT_URL='http://localhost:' + str(config['cms_port']))
     return env
+
+
+def docker_image_inspect(reference):
+    result = subprocess.run(['docker', 'image', 'inspect', '--format', '{{json .}}', reference],
+                            capture_output=True, text=True)
+    return json.loads(result.stdout) if result.returncode == 0 else None
+
+
+def ensure_runtime_image(config, *, sleep=time.sleep):
+    """Make the locked runtime reference present locally; None for a local image ID.
+
+    A VPN can reset registry connections, so the pull is retried with backoff.
+    """
+    reference = config['images']['runtime']
+    if runtime_is_local_id(reference):
+        return None
+    image = docker_image_inspect(reference)
+    for delay in (*RUNTIME_PULL_BACKOFF, None):
+        if image is not None:
+            break
+        pulled = subprocess.run(['docker', 'pull', '--quiet', reference], capture_output=True, text=True)
+        image = docker_image_inspect(reference) if pulled.returncode == 0 else None
+        if image is None and delay is not None:
+            sleep(delay)
+    if image is None:
+        fail('Locked runtime image is not present and could not be pulled: ' + reference)
+    parts = image_reference_parts(reference)
+    if not any(image_reference_parts(value) == parts for value in image.get('RepoDigests') or []):
+        fail('Local runtime image does not carry the locked repository digest')
+    platform = image.get('Os', '') + '/' + image.get('Architecture', '') + (
+        '/' + image['Variant'] if image.get('Variant') else '')
+    locked_platform(platform, locked_record('runtime')['platform_manifests'], 'runtime')
+    return {'reference': reference, 'image_id': image.get('Id'), 'repo_digests': sorted(image['RepoDigests']),
+            'platform': platform}
 
 
 def fresh_preflight(config, *, before_prepare):
@@ -422,9 +527,13 @@ def fresh_preflight(config, *, before_prepare):
         if actual != config[key + '_commit']:
             fail(key + ' HEAD changed')
         subprocess.run(['git', '-C', repo, 'diff', '--quiet', 'HEAD'], check=True)
-    return {'configuration_sha256': config_hash(config), 'run_id': config['run_id'],
-            'ports_available': True, 'resources_absent': True, 'network_subnet': network_subnet,
-            'commits': commits(config)}
+    report = {'configuration_sha256': config_hash(config), 'run_id': config['run_id'],
+              'ports_available': True, 'resources_absent': True, 'network_subnet': network_subnet,
+              'commits': commits(config)}
+    runtime_image = ensure_runtime_image(config)
+    if runtime_image:
+        report['runtime_image'] = runtime_image
+    return report
 
 
 def commits(config):
