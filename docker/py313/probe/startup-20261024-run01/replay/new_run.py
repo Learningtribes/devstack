@@ -115,6 +115,7 @@ def build_config(args, root, platform_commit, devstack_commit, subnet):
         'secret_env': str(private / 'services.env'), 'credentials_file': str(private / 'acceptance.json'),
         'jwt_file': str(private / 'jwt.pem'), 'services': services, 'images': images,
         **({'platform_mount': 'live'} if getattr(args, 'live_platform', False) else {}),
+        **({'theme_repo': args.theme_repo} if getattr(args, 'theme_repo', None) else {}),
     }
 
 
@@ -138,6 +139,10 @@ def create_run(args):
         fail('Refusing existing run directory: ' + str(root))
     args.platform_repo = str(Path(args.platform_repo).resolve())
     args.devstack_repo = str(Path(args.devstack_repo).resolve())
+    if getattr(args, 'theme_repo', None):
+        args.theme_repo = str(Path(args.theme_repo).resolve())
+        if not any((Path(args.theme_repo) / system).is_dir() for system in ('lms', 'cms')):
+            fail('theme_repo must be the root of a theme checkout (it contains lms/ and/or cms/): ' + args.theme_repo)
     platform_commit = clean_head(args.platform_repo, args.platform_commit, 'Platform')
     devstack_commit = clean_head(args.devstack_repo, args.devstack_commit, 'Devstack')
     subnet = validate_network_subnet(args.subnet, docker_network_subnets()) if args.subnet \
@@ -171,6 +176,8 @@ def main(argv=None):
     parser.add_argument('--subnet', help='dedicated private /24 (default: first free 172.30.X.0/24)')
     parser.add_argument('--live-platform', action='store_true',
                         help='development run: bind-mount the Platform checkout read-write instead of running a copy')
+    parser.add_argument('--theme-repo', help='development run: bind-mount this theme checkout read-write as theme '
+                                             '`hawthorn` instead of the verified frozen snapshot')
     parser.add_argument('--runtime-image', help='override images.runtime (local sha256 ID or the locked reference)')
     args = parser.parse_args(argv)
     try:

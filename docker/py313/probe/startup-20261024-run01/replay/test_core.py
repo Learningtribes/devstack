@@ -71,6 +71,26 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(load_config(self.path)['platform_mount'], 'live')
         self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/runtime/platform-source')
 
+    def test_theme_repo_is_optional_and_must_be_absolute_and_separate(self):
+        self.assertNotIn('theme_repo', self.config)
+        theme = self.root / 'theme'
+        self.config['theme_repo'] = str(theme)
+        self.write()
+        self.assertEqual(load_config(self.path)['theme_repo'], str(theme))
+        for value, message in (('theme', 'absolute'), (self.config['platform_repo'] + '/themes', 'separate'),
+                               (str(Path(self.config['devstack_repo']).parent), 'separate')):
+            with self.subTest(value=value):
+                self.config['theme_repo'] = value
+                self.write()
+                with self.assertRaisesRegex(ValueError, message):
+                    load_config(self.path)
+
+    def test_replay_outputs_must_stay_outside_the_theme_repo(self):
+        self.config['theme_repo'] = str(Path(self.config['export_dir']).parent)
+        self.write()
+        with self.assertRaises(ValueError):
+            load_config(self.path)
+
     def test_unknown_platform_mount_is_rejected(self):
         self.config['platform_mount'] = 'volume'
         self.write()

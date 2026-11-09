@@ -10,7 +10,7 @@ import sys
 
 from export_identity import verify_export_identity
 
-from core import (LIVE_PLATFORM_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
+from core import (LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
                   docker_exec, fresh_preflight, load_config, ownership, read_json,
                   save_new, shell, source_repository_roots, validate_path_isolation)
 
@@ -107,6 +107,9 @@ def create(config):
     if config.get('platform_mount') == 'live':
         # Writable on purpose: the running LMS/Studio executes the host checkout, not a copy.
         mounts += ['--mount', f'type=bind,src={config["platform_repo"]},dst={LIVE_PLATFORM_MOUNT}']
+    if config.get('theme_repo'):
+        # Writable on purpose: theme edits and the Sass output (git-ignored static/css) live in the host checkout.
+        mounts += ['--mount', f'type=bind,src={config["theme_repo"]},dst={LIVE_THEME_MOUNT}']
     for source, target in [('credentials_file', '.acceptance-credentials.json'), ('jwt_file', 'jwt-private.pem')]:
         mounts += ['--mount', f'type=bind,src={config[source]},dst=/startup/{target},readonly']
     capture(config, 'create-runtime', ['docker', 'run', '-d', '--name', config['runtime_container'],

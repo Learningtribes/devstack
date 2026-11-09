@@ -6,6 +6,8 @@ from pathlib import Path
 
 def configure(namespace, system):
     platform_root = Path(os.environ.get('PY313_PLATFORM_ROOT', '/edx/app/edxapp/edx-platform'))
+    # A development run may bind-mount a host theme checkout as theme `hawthorn`; otherwise the verified snapshot.
+    theme_root = '/workspace/themes' if Path('/workspace/themes/hawthorn').is_dir() else '/runtime/themes-7c0dbec1b0a7'
     # File XBlock expiration models must participate in the real app registry.
     if "djpyfs" not in namespace["INSTALLED_APPS"]:
         namespace["INSTALLED_APPS"] = [*namespace["INSTALLED_APPS"], "djpyfs"]
@@ -50,7 +52,7 @@ def configure(namespace, system):
         DATA_DIR='/runtime/data',
         STUDIO_LOGS_COURSES_CSV_PATH='/runtime/logs/cms.csv',
         STUDIO_LOGS_COURSES_HISTORY_CSV_PATH='/runtime/logs/cms-history.csv',
-        COMPREHENSIVE_THEME_DIRS=['/runtime/themes-7c0dbec1b0a7', str(platform_root / 'themes')],
+        COMPREHENSIVE_THEME_DIRS=[theme_root, str(platform_root / 'themes')],
         COMPREHENSIVE_THEME_LOCALE_PATHS=['/runtime/locale'],
         # Templates request the exact configured LANGUAGE_CODE, including LT
         # variants absent from Django's built-in language registry.

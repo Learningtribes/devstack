@@ -89,6 +89,23 @@ class NewRunTests(unittest.TestCase):
         self.assertEqual(config['platform_mount'], 'live')
         self.assertEqual(load_config(target)['platform_mount'], 'live')
 
+    def test_theme_repo_flag_records_the_resolved_checkout_in_a_valid_config(self):
+        theme = self.root / 'theme'
+        (theme / 'lms/static').mkdir(parents=True)
+        target, config = new_run.create_run(self.args(theme_repo=str(theme)))
+        self.assertEqual(config['theme_repo'], str(theme.resolve()))
+        self.assertEqual(load_config(target)['theme_repo'], str(theme.resolve()))
+
+    def test_theme_repo_must_look_like_a_theme_checkout(self):
+        theme = self.root / 'not-a-theme'
+        theme.mkdir()
+        with self.assertRaisesRegex(ValueError, 'theme checkout'):
+            new_run.create_run(self.args(theme_repo=str(theme)))
+
+    def test_default_run_has_no_theme_repo_key(self):
+        _, config = new_run.create_run(self.args())
+        self.assertNotIn('theme_repo', config)
+
     def test_default_run_has_no_platform_mount_key(self):
         _, config = new_run.create_run(self.args())
         self.assertNotIn('platform_mount', config)
