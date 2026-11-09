@@ -7,12 +7,34 @@ below retains the historical R2 configuration and must be replaced for any new r
 ## Quickstart: local LMS and Studio
 
 Prerequisites: Docker with Compose v2 (about 16 GiB and 10 CPUs for the VM), `uv`, `git`, `openssl`,
-registry access (the locked runtime image is pulled by digest on first use, with retries), a clean
-Platform `py3-master` worktree and this Devstack checkout with a clean tracked tree.
+registry access (the locked runtime image is pulled by digest on first use, with retries), the Platform
+checkout at `../platform` (branch `py3-master`, clean tracked tree) and this Devstack checkout with a clean
+tracked tree. Python 3.13 is the only supported runtime.
+
+### Development environment (fixed, no arguments)
+
+```sh
+make py313-dev-up    # run dev313: LMS :18000, Studio :18010, Platform = ../platform
+make lms-shell       # also cms-shell / studio-shell
+make py313-restart   # after changing Platform code
+make py313-status
+make py313-destroy   # removes containers, volumes and network; the run directory stays
+```
+
+The Platform checkout is bind-mounted read-write at `/workspace/platform`, so the running LMS/Studio
+execute your working tree, not a copy; install inputs still come from the committed export, and the
+install-time copy in `/runtime/platform-source` is evidence only. Consequences: uncommitted edits take
+effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
+(`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
+tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
+Override `RUN_ID`, `LMS_PORT`, `CMS_PORT` or `PLATFORM_REPO` for another environment, and
+`PY313_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` leaves no evidence.
+
+### Frozen-snapshot run (acceptance)
 
 ```sh
 git -C /path/to/platform worktree add --detach /path/to/platform-worktree origin/py3-master
-make py313-up RUN_ID=master313r16 LMS_PORT=18000 CMS_PORT=18010 PLATFORM_REPO=/path/to/platform-worktree
+make py313-up RUN_ID=master313r16 LMS_PORT=18100 CMS_PORT=18110 PLATFORM_REPO=/path/to/platform-worktree
 ```
 
 `py313-up` runs `new_run.py` (run directory under `$PY313_RUNS_ROOT`, default
@@ -29,9 +51,8 @@ first failing stage; per-stage logs and durations are in `<run>/stage-logs/`, th
   `PY313_DEV_SUPERUSER_USERNAME`, `PY313_DEV_SUPERUSER_EMAIL`, `PY313_DEV_SUPERUSER_PASSWORD`
   in the host environment.
 - Run-scoped acceptance identities (staff, learner, ...): `<run>/private/acceptance.json`, mode 600.
-- `make lms-shell PY313_CONFIG=<run>/config.json` (also `cms-shell`, `studio-shell`).
-- `make py313-status PY313_CONFIG=...` shows container states, ports and heartbeats.
-- `make py313-destroy PY313_CONFIG=...` is an explicit operator teardown, separate from the replay
+- `make lms-shell` (also `cms-shell`, `studio-shell`) and `make py313-status` target the development environment unless `PY313_CONFIG` names another run; status shows container states, ports and heartbeats.
+- `make py313-destroy` is an explicit operator teardown, separate from the replay
   stages (which never clean up): it removes only the containers, volumes and network named in that
   config that carry its `py313.replay.config` ownership label, and keeps the run directory
   (`PURGE_DIR=1` deletes the run's known outputs, `DRY_RUN=1` only reports).
@@ -124,15 +145,15 @@ Never expose private authentication HTTP logs as evidence.
 ## Interactive shell
 
 ```sh
-export PY313_CONFIG=/absolute/new-run/config.json
 make lms-shell    # DJANGO_SETTINGS_MODULE=startup_lms
 make cms-shell    # DJANGO_SETTINGS_MODULE=startup_cms (make studio-shell is an alias)
 ```
 
-Run from the Devstack worktree on a host terminal. `PY313_CONFIG` is required; there
-is no default. The shell starts in `/runtime/platform-source` inside the run-owned
-runtime with `/runtime/venv/bin` first on `PATH` and the run's namespace and secrets
-in the environment, so `python manage.py lms shell` works directly. It is not an
+Run from the Devstack worktree on a host terminal. With no arguments the target is the development
+environment (`$PY313_RUNS_ROOT/dev313/config.json`); set `PY313_CONFIG` for another run. The shell starts
+in the run's Platform root (`/workspace/platform` for a live-mounted run, `/runtime/platform-source` for a
+snapshot run) inside the run-owned runtime with `/runtime/venv/bin` first on `PATH` and the run's namespace
+and secrets in the environment, so `python manage.py lms shell` works directly. It is not an
 evidence-capturing command (no label, nothing recorded); use `run_check.py` for
 reproducible output. `lms-watcher-shell` and `studio-watcher-shell` still target the
 classic Python 2.7 containers.
