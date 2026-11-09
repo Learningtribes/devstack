@@ -202,6 +202,23 @@ class ReplayExportIdentityTests(unittest.TestCase):
                           'installed-companion-report', 'platform-identity-report',
                           'install-receipt', 'resolved-lock', 'complete-lock'])
 
+    def test_live_install_links_the_host_checkout_after_all_identity_reports(self):
+        self.config['platform_mount'] = 'live'
+        self.prepare()
+        replay_run.install(self.config)
+        labels = [c.args[1] for c in self.capture.call_args_list]
+        self.assertEqual(labels[-1], 'link-live-platform')
+        self.assertEqual(labels[:-1], ['prepare-install-inputs', 'install', 'platform-identity',
+                                       'installed-companion-report', 'platform-identity-report',
+                                       'install-receipt', 'resolved-lock', 'complete-lock'])
+        script = self.capture.call_args_list[-1].args[2][-1]
+        self.assertEqual(script, 'rm -rf /runtime/platform-source && ln -s /workspace/platform /runtime/platform-source')
+
+    def test_snapshot_install_keeps_the_copy(self):
+        self.prepare()
+        replay_run.install(self.config)
+        self.assertNotIn('link-live-platform', [c.args[1] for c in self.capture.call_args_list])
+
     def test_install_failure_stops_before_identity_or_success_reports(self):
         self.prepare()
         def fail_install(config, label, command, **kwargs):

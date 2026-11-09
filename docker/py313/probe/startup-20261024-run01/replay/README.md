@@ -123,7 +123,7 @@ of depending on a platform source path from another container.
 for another run) opens an interactive bash in the run-owned runtime container. It has no label: a terminal session is not evidence, so nothing is captured or
 written to the evidence directory. The entry only verifies the evidence config and
 the runtime ownership label, so it works from any Devstack checkout. You get
-workdir `/workspace/platform` (live-mounted run) or `/runtime/platform-source` (snapshot run), `/runtime/venv/bin` first on `PATH`, the run's
+workdir `/runtime/platform-source` (a copy for a snapshot run, a symlink to the live checkout for a development run), `/runtime/venv/bin` first on `PATH`, the run's
 `PY313_*` namespace and secrets (passed to the container by name, never on argv),
 `PYTHONPATH=/startup/settings` and `DJANGO_SETTINGS_MODULE=startup_lms|startup_cms`.
 Use `python manage.py lms shell` (or `cms`) inside; it needs a TTY on the host.

@@ -21,9 +21,11 @@ make py313-status
 make py313-destroy   # removes containers, volumes and network; the run directory stays
 ```
 
-The Platform checkout is bind-mounted read-write at `/workspace/platform`, so the running LMS/Studio
-execute your working tree, not a copy; install inputs still come from the committed export, and the
-install-time copy in `/runtime/platform-source` is evidence only. Consequences: uncommitted edits take
+The Platform checkout is bind-mounted read-write at `/workspace/platform`, and after the install stage
+`/runtime/platform-source` becomes a symlink to it, so the editable installs (Open_edX, xmodule, capa, ...), the
+cwd and the settings all see your working tree, not a copy. Install inputs and the installed entry-point
+metadata still come from the committed export, so changed `setup.py` entry points or dependencies need a
+new environment. Consequences: uncommitted edits take
 effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
@@ -151,8 +153,7 @@ make cms-shell    # DJANGO_SETTINGS_MODULE=startup_cms (make studio-shell is an 
 
 Run from the Devstack worktree on a host terminal. With no arguments the target is the development
 environment (`$PY313_RUNS_ROOT/dev313/config.json`); set `PY313_CONFIG` for another run. The shell starts
-in the run's Platform root (`/workspace/platform` for a live-mounted run, `/runtime/platform-source` for a
-snapshot run) inside the run-owned runtime with `/runtime/venv/bin` first on `PATH` and the run's namespace
+in `/runtime/platform-source` (a copy for a snapshot run, the live checkout for a development run) inside the run-owned runtime with `/runtime/venv/bin` first on `PATH` and the run's namespace
 and secrets in the environment, so `python manage.py lms shell` works directly. It is not an
 evidence-capturing command (no label, nothing recorded); use `run_check.py` for
 reproducible output. `lms-watcher-shell` and `studio-watcher-shell` still target the

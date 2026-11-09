@@ -64,15 +64,12 @@ class ContractTests(unittest.TestCase):
         second = example(self.root, 'run45')
         self.assertFalse(set(physical_names(self.config)) & set(physical_names(second)))
 
-    def test_platform_mount_is_optional_and_selects_the_process_root(self):
-        from core import platform_root
-        self.assertEqual(platform_root(self.config), '/runtime/platform-source')
+    def test_platform_mount_is_optional_and_never_changes_the_process_root(self):
         self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/runtime/platform-source')
         self.config['platform_mount'] = 'live'
         self.write()
         self.assertEqual(load_config(self.path)['platform_mount'], 'live')
-        self.assertEqual(platform_root(self.config), '/workspace/platform')
-        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/workspace/platform')
+        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/runtime/platform-source')
 
     def test_unknown_platform_mount_is_rejected(self):
         self.config['platform_mount'] = 'volume'

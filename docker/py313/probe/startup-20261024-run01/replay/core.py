@@ -25,10 +25,10 @@ IMAGE_REFERENCE_RE = re.compile(r'(?P<repository>[a-z0-9][a-z0-9._:/-]*)@(?P<dig
 IMAGE_TAG_RE = re.compile(r'[a-z0-9][a-z0-9._/-]*:[A-Za-z0-9_][A-Za-z0-9_.-]*')
 SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO_PASSWORD',
                'PY313_RABBITMQ_PASSWORD', 'PY313_STARTUP_SECRET_KEY', 'PY313_STARTUP_XQUEUE_PASSWORD'}
-SNAPSHOT_PLATFORM_ROOT = '/runtime/platform-source'
-# Outside /runtime: install.py refuses an existing /runtime/platform-source, and a live mount must not
-# hide or overlay the frozen snapshot that the install identity checks read.
-LIVE_PLATFORM_ROOT = '/workspace/platform'
+# Where a live run mounts the host Platform checkout. Processes never use this path: the install-time
+# copy at /runtime/platform-source is replaced by a symlink to it, because the Platform-owned lock registers
+# every editable install (Open_edX, xmodule, capa, ...) under /runtime/platform-source.
+LIVE_PLATFORM_MOUNT = '/workspace/platform'
 PLATFORM_MOUNTS = ('snapshot', 'live')
 OPTIONAL = {'platform_mount'}
 REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_commit',
@@ -39,11 +39,6 @@ REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_c
 
 def fail(message):
     raise ValueError(message)
-
-
-def platform_root(config):
-    """Where the running processes find Platform: the frozen snapshot copy, or the live host checkout."""
-    return LIVE_PLATFORM_ROOT if config.get('platform_mount', 'snapshot') == 'live' else SNAPSHOT_PLATFORM_ROOT
 
 
 def read_json(path):
@@ -472,7 +467,7 @@ def environment(config):
     env.update(secret_values(config))
     env.update(PY313_MYSQL_USER='edxapp', PY313_MONGO_USER='edxapp', PY313_RABBITMQ_USER='edxapp',
                PY313_RUNTIME_CONTAINER=config['runtime_container'], PY313_SECRET_ENV_FILE=config['secret_env'],
-               PY313_PLATFORM_ROOT=platform_root(config), PYTHONPATH='/startup/settings',
+               PY313_PLATFORM_ROOT='/runtime/platform-source', PYTHONPATH='/startup/settings',
                PY313_REPLAY_ID=config['run_id'],
                PY313_DATABASE_NAME=config['database'], PY313_TEST_DATABASE_NAME=config['test_database'], PY313_MONGO_DB=config['mongo_database'],
                PY313_CACHE_PREFIX=config['cache_prefix'], PY313_ES_INDEX_PREFIX=config['es_prefix'],
@@ -574,7 +569,7 @@ def docker_exec(config, *args, settings=None, detached=False, interactive=False)
     if settings:
         flags += ['-e', 'DJANGO_SETTINGS_MODULE=' + settings]
     return ['docker', 'exec', *(['-d'] if detached else []), *(['-it'] if interactive else []),
-            '-w', platform_root(config),
+            '-w', '/runtime/platform-source',
             *flags, config['runtime_container'], *args]
 
 
