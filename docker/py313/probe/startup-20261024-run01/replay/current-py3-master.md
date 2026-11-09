@@ -30,8 +30,8 @@ effect on `make py313-restart` (the servers run with `--noreload`); the asset bu
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
 Theme: the runtime normally uses the frozen, per-file verified snapshot (`theme-inputs/7c0dbec1b0a7/hawthorn`, staged to
-`/runtime/themes-7c0dbec1b0a7`). With `THEME_REPO=<theme checkout>` (default `../triboo-theme` if that directory exists;
-e.g. `make py313-dev-up THEME_REPO=~/workspace/all-triboo-theme`) the checkout is bind-mounted read-write at
+`/runtime/themes-7c0dbec1b0a7`). With `THEME_REPO=<theme checkout>` (default `../src/themes/hawthorn` if that directory exists;
+e.g. `make py313-dev-up THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`) the checkout is bind-mounted read-write at
 `/workspace/themes/hawthorn` and replaces the snapshot in `COMPREHENSIVE_THEME_DIRS`; its content is not verified against the
 registered commit, and the sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
 (`lms/`, `cms/`, `common/` at its root). Sass output goes to the checkout's git-ignored `lms/static/css` and
