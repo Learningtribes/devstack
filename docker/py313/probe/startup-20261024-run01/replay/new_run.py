@@ -78,7 +78,10 @@ def host_routes():
 
 def pick_subnet(docker_subnets, routes):
     """First 172.30.X.0/24 that overlaps neither a Docker network nor a host route."""
-    taken = [ipaddress.ip_network(value, strict=False) for value in docker_subnets] + list(routes)
+    # A route shorter than /8 is a default-route fragment (a TUN VPN/proxy splits 0/0 into 1, 2/7, 4/6, ... 128/1),
+    # not a network that owns addresses; counting it would make every candidate "taken".
+    taken = [ipaddress.ip_network(value, strict=False) for value in docker_subnets] + [
+        network for network in routes if network.prefixlen >= 8]
     for third in range(1, 255):
         candidate = ipaddress.ip_network('172.30.%d.0/24' % third)
         if not any(candidate.overlaps(network) for network in taken if network.version == 4):
@@ -111,6 +114,7 @@ def build_config(args, root, platform_commit, devstack_commit, subnet):
         'queue_prefix': run_id + '_queue', 'course_key': 'course-v1:PY313+%s+2026' % run_id,
         'secret_env': str(private / 'services.env'), 'credentials_file': str(private / 'acceptance.json'),
         'jwt_file': str(private / 'jwt.pem'), 'services': services, 'images': images,
+        **({'platform_mount': 'live'} if getattr(args, 'live_platform', False) else {}),
     }
 
 
@@ -165,6 +169,8 @@ def main(argv=None):
     parser.add_argument('--devstack-commit', help='default: Devstack HEAD (must equal it)')
     parser.add_argument('--root', help='new run directory (default: $PY313_RUNS_ROOT/<run-id>)')
     parser.add_argument('--subnet', help='dedicated private /24 (default: first free 172.30.X.0/24)')
+    parser.add_argument('--live-platform', action='store_true',
+                        help='development run: bind-mount the Platform checkout read-write instead of running a copy')
     parser.add_argument('--runtime-image', help='override images.runtime (local sha256 ID or the locked reference)')
     args = parser.parse_args(argv)
     try:

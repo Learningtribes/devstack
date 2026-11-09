@@ -25,6 +25,12 @@ IMAGE_REFERENCE_RE = re.compile(r'(?P<repository>[a-z0-9][a-z0-9._:/-]*)@(?P<dig
 IMAGE_TAG_RE = re.compile(r'[a-z0-9][a-z0-9._/-]*:[A-Za-z0-9_][A-Za-z0-9_.-]*')
 SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO_PASSWORD',
                'PY313_RABBITMQ_PASSWORD', 'PY313_STARTUP_SECRET_KEY', 'PY313_STARTUP_XQUEUE_PASSWORD'}
+# Where a live run mounts the host Platform checkout. Processes never use this path: the install-time
+# copy at /runtime/platform-source is replaced by a symlink to it, because the Platform-owned lock registers
+# every editable install (Open_edX, xmodule, capa, ...) under /runtime/platform-source.
+LIVE_PLATFORM_MOUNT = '/workspace/platform'
+PLATFORM_MOUNTS = ('snapshot', 'live')
+OPTIONAL = {'platform_mount'}
 REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_commit',
             'devstack_repo', 'devstack_commit', 'theme_commit', 'runtime_container', 'runtime_volume',
             'network', 'network_subnet', 'services', 'images', 'lms_port', 'cms_port', 'database', 'test_database', 'mongo_database',
@@ -251,9 +257,11 @@ def source_repository_roots(config):
 
 def load_config(path):
     config = read_json(path)
-    if set(config) != REQUIRED:
+    if set(config) - OPTIONAL != REQUIRED:
         fail('Configuration keys differ: missing=' + str(sorted(REQUIRED - set(config))) +
-             ' extra=' + str(sorted(set(config) - REQUIRED)))
+             ' extra=' + str(sorted(set(config) - REQUIRED - OPTIONAL)))
+    if config.get('platform_mount', 'snapshot') not in PLATFORM_MOUNTS:
+        fail('platform_mount must be one of ' + ', '.join(PLATFORM_MOUNTS))
     token = config['run_id']
     if not re.fullmatch(r'[a-z][a-z0-9_-]{2,48}', token):
         fail('Invalid run_id')

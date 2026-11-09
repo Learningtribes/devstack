@@ -44,6 +44,36 @@ class ShellTests(unittest.TestCase):
         self.assertNotIn('xterm-fixture', argv)
         self.ownership_mock.assert_called_once_with(self.config)
 
+    def test_shell_env_lets_paver_run_without_prereqs_and_reach_the_unauthenticated_test_mongo(self):
+        argv = replay_shell.command(self.config, 'lms')
+        env_args = argv[argv.index('env') + 1:argv.index('bash')]
+        for assignment in ('TESTING=True', 'NO_PREREQ_INSTALL=True', 'SKIP_NPM_INSTALL=True',
+                           'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=27018'):
+            self.assertIn(assignment, env_args)
+        self.assertIn('PYTHONPATH=/startup/settings:/runtime/platform-source/ci/py313/test-stubs', env_args)
+
+    def test_test_mongo_is_started_once_and_waited_for(self):
+        listening = iter([False, False, True])
+        with patch.object(replay_shell, 'test_mongo_listening', side_effect=lambda c: next(listening)), \
+                patch.object(replay_shell.subprocess, 'run') as run, patch.object(replay_shell.time, 'sleep'):
+            replay_shell.ensure_test_mongo(self.config)
+        commands = [call.args[0] for call in run.call_args_list]
+        mongo = self.config['services']['mongo']['container']
+        self.assertEqual(commands[0], ['docker', 'exec', mongo, 'mkdir', '-p', '/tmp/py313-test-mongo'])
+        self.assertEqual(commands[1][:4], ['docker', 'exec', '-d', mongo])
+        self.assertIn('27018', commands[1])
+
+    def test_running_test_mongo_is_left_alone(self):
+        with patch.object(replay_shell, 'test_mongo_listening', return_value=True), \
+                patch.object(replay_shell.subprocess, 'run') as run:
+            replay_shell.ensure_test_mongo(self.config)
+        run.assert_not_called()
+
+    def test_live_platform_run_uses_the_same_process_root(self):
+        self.config['platform_mount'] = 'live'
+        argv = docker_exec(self.config, 'true')
+        self.assertEqual(argv[:4], ['docker', 'exec', '-w', '/runtime/platform-source'])
+
     def test_non_interactive_argv_is_unchanged(self):
         argv = docker_exec(self.config, 'true', settings='startup_cms')
         self.assertNotIn('-it', argv)
@@ -59,8 +89,10 @@ class ShellTests(unittest.TestCase):
 
     def run_main(self, *arguments):
         with patch.object(sys, 'argv', ['shell.py', *arguments]), \
+                patch.object(replay_shell, 'ensure_test_mongo') as ensure, \
                 patch.object(replay_shell.os, 'execvpe') as execvpe:
             replay_shell.main()
+        self.ensure_mock = ensure
         return execvpe
 
     def test_main_execs_bash_in_runtime_with_system_settings(self):
@@ -71,8 +103,10 @@ class ShellTests(unittest.TestCase):
                 self.assertEqual(program, 'docker')
                 self.assertIn('-it', argv)
                 self.assertIn('DJANGO_SETTINGS_MODULE=startup_' + system, argv)
-                self.assertEqual(argv[-4:], [self.config['runtime_container'], 'env',
-                                             'PATH=' + replay_shell.RUNTIME_PATH, 'bash'])
+                self.assertEqual(argv[argv.index(self.config['runtime_container']) + 1:][:2],
+                                 ['env', 'PATH=' + replay_shell.RUNTIME_PATH])
+                self.assertEqual(argv[-1], 'bash')
+                self.ensure_mock.assert_called_once_with(self.config)
                 self.assertTrue(replay_shell.RUNTIME_PATH.startswith('/runtime/venv/bin:'))
                 self.assertEqual(env['TERM'], 'xterm-fixture')
 
@@ -87,6 +121,13 @@ class ShellTests(unittest.TestCase):
         self.ownership_mock.side_effect = ValueError('Runtime does not belong to this exact replay configuration')
         with self.assertRaises(ValueError):
             self.run_main('--config', str(self.path), 'lms')
+
+    def test_test_mongo_failure_prevents_exec(self):
+        with patch.object(sys, 'argv', ['shell.py', '--config', str(self.path), 'lms']), \
+                patch.object(replay_shell, 'ensure_test_mongo', side_effect=SystemExit('no mongo')), \
+                patch.object(replay_shell.os, 'execvpe') as execvpe, self.assertRaises(SystemExit):
+            replay_shell.main()
+        execvpe.assert_not_called()
 
     def test_system_and_config_are_required_and_validated(self):
         for arguments in (['--config', str(self.path), 'studio'], ['--config', str(self.path)], ['lms']):

@@ -84,6 +84,15 @@ class NewRunTests(unittest.TestCase):
             self.assertFalse(os.path.lexists(config[key]))
         self.assertFalse((run / 'private/services.env').exists())
 
+    def test_live_platform_flag_records_the_mount_mode_in_a_valid_config(self):
+        target, config = new_run.create_run(self.args(live_platform=True))
+        self.assertEqual(config['platform_mount'], 'live')
+        self.assertEqual(load_config(target)['platform_mount'], 'live')
+
+    def test_default_run_has_no_platform_mount_key(self):
+        _, config = new_run.create_run(self.args())
+        self.assertNotIn('platform_mount', config)
+
     def test_existing_run_directory_is_refused(self):
         new_run.create_run(self.args())
         with self.assertRaisesRegex(ValueError, 'Refusing existing run directory'):
@@ -136,6 +145,16 @@ class NewRunTests(unittest.TestCase):
         self.assertEqual(new_run.pick_subnet(['172.30.3.0/24'], routes), '172.30.4.0/24')
         self.assertEqual(new_run.parse_routes('10.0.0.0/8 dev eth0\ndefault via 1.1.1.1\n'),
                          [new_run.ipaddress.ip_network('10.0.0.0/8')])
+
+
+    def test_split_default_routes_of_a_tun_proxy_do_not_exhaust_the_subnet_pool(self):
+        routes = new_run.parse_routes(
+            'Destination        Gateway            Flags\n1                  198.18.0.1         UGSc\n'
+            '2/7                198.18.0.1         UGSc\n4/6                198.18.0.1         UGSc\n'
+            '8/5                198.18.0.1         UGSc\n16/4               198.18.0.1         UGSc\n'
+            '32/3               198.18.0.1         UGSc\n64/2               198.18.0.1         UGSc\n'
+            '128.0/1            198.18.0.1         UGSc\n172.30.1/24        link#14            UC\n')
+        self.assertEqual(new_run.pick_subnet([], routes), '172.30.2.0/24')
 
 
 class LocalRunFixture(unittest.TestCase):

@@ -12,10 +12,18 @@ from django.conf import settings
 from django.core.management import call_command
 from django.utils import translation
 
-source = Path(settings.PROJECT_ROOT) / 'conf/locale'
+root = Path(settings.PROJECT_ROOT)
+source = root / 'conf/locale'
 destination = Path('/runtime/locale')
 manifest = {}
-for po in sorted(source.glob('*/LC_MESSAGES/*.po')):
+catalogs_on_disk = sorted(source.glob('*/LC_MESSAGES/*.po'))
+if (root / '.git').exists():
+    # A live-mounted checkout carries ignored leftovers (*.po is gitignored, e.g. django-saved.po) that
+    # the committed export never contains; compile only what Platform tracks.
+    tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z', '--', 'conf/locale'],
+                                          text=True).split('\0'))
+    catalogs_on_disk = [po for po in catalogs_on_disk if str(po.relative_to(root)) in tracked]
+for po in catalogs_on_disk:
     relative = po.relative_to(source)
     mo = (destination / relative).with_suffix('.mo')
     mo.parent.mkdir(parents=True, exist_ok=True)
