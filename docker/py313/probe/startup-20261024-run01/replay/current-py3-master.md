@@ -29,6 +29,15 @@ new environment. Consequences: uncommitted edits take
 effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
+Theme: the runtime normally uses the frozen, per-file verified snapshot (`theme-inputs/7c0dbec1b0a7/hawthorn`, staged to
+`/runtime/themes-7c0dbec1b0a7`). With `THEME_REPO=<theme checkout>` (default `../triboo-theme` if that directory exists;
+e.g. `make py313-dev-up THEME_REPO=~/workspace/all-triboo-theme`) the checkout is bind-mounted read-write at
+`/workspace/themes/hawthorn` and replaces the snapshot in `COMPREHENSIVE_THEME_DIRS`; its content is not verified against the
+registered commit, and the sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
+(`lms/`, `cms/`, `common/` at its root). Sass output goes to the checkout's git-ignored `lms/static/css` and
+`cms/static/css`. After editing theme files, rebuild with `paver update_assets` (compiles themes found in the theme dirs)
+or `bash /startup/build_frontend.sh`, then `make py313-restart` if templates are cached. The mount is fixed when the
+container is created, so adding or changing `THEME_REPO` needs `make py313-destroy PURGE_DIR=1 && make py313-dev-up`.
 Override `RUN_ID`, `LMS_PORT`, `CMS_PORT` or `PLATFORM_REPO` for another environment, and
 `PY313_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` leaves no evidence.
 
