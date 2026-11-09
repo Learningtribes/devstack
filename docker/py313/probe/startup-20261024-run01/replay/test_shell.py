@@ -44,6 +44,11 @@ class ShellTests(unittest.TestCase):
         self.assertNotIn('xterm-fixture', argv)
         self.ownership_mock.assert_called_once_with(self.config)
 
+    def test_live_platform_run_executes_in_the_mounted_checkout(self):
+        self.config['platform_mount'] = 'live'
+        argv = docker_exec(self.config, 'true')
+        self.assertEqual(argv[:4], ['docker', 'exec', '-w', '/workspace/platform'])
+
     def test_non_interactive_argv_is_unchanged(self):
         argv = docker_exec(self.config, 'true', settings='startup_cms')
         self.assertNotIn('-it', argv)

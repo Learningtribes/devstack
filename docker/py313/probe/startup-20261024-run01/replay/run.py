@@ -10,7 +10,7 @@ import sys
 
 from export_identity import verify_export_identity
 
-from core import (SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
+from core import (LIVE_PLATFORM_ROOT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
                   docker_exec, fresh_preflight, load_config, ownership, read_json,
                   save_new, shell, source_repository_roots, validate_path_isolation)
 
@@ -95,12 +95,18 @@ def create(config):
         assert labels.get('py313.replay.config') == config_hash(config), 'Volume ownership mismatch'
     capture(config, 'create-network', ['docker', 'network', 'create', '--label',
         'py313.replay.config=' + config_hash(config), '--subnet', config['network_subnet'], config['network']])
-    capture(config, 'create-infra', ['docker', 'compose', '--env-file', config['secret_env'], '-f', str(root / 'compose.json'), 'up', '-d'])
+    # Explicit project name: `make` exports COMPOSE_PROJECT_NAME=devstack, which beats the file's own `name`
+    # and would make every run share one project, so a second run recreated the first run's services.
+    capture(config, 'create-infra', ['docker', 'compose', '-p', config['network'], '--env-file', config['secret_env'],
+                                     '-f', str(root / 'compose.json'), 'up', '-d'])
     startup = Path(config['export_dir']) / 'devstack' / STARTUP_REL
     mounts = ['--mount', f'type=volume,src={config["runtime_volume"]},dst=/runtime',
               '--mount', f'type=bind,src={startup},dst=/paired-startup,readonly',
               '--mount', f'type=bind,src={config["export_dir"]}/platform,dst=/input/platform,readonly']
     mounts += ['--mount', f'type=bind,src={config["export_dir"]}/platform/ci/py313,dst=/canary,readonly']
+    if config.get('platform_mount') == 'live':
+        # Writable on purpose: the running LMS/Studio executes the host checkout, not a copy.
+        mounts += ['--mount', f'type=bind,src={config["platform_repo"]},dst={LIVE_PLATFORM_ROOT}']
     for source, target in [('credentials_file', '.acceptance-credentials.json'), ('jwt_file', 'jwt-private.pem')]:
         mounts += ['--mount', f'type=bind,src={config[source]},dst=/startup/{target},readonly']
     capture(config, 'create-runtime', ['docker', 'run', '-d', '--name', config['runtime_container'],

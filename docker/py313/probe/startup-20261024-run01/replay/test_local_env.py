@@ -84,6 +84,15 @@ class NewRunTests(unittest.TestCase):
             self.assertFalse(os.path.lexists(config[key]))
         self.assertFalse((run / 'private/services.env').exists())
 
+    def test_live_platform_flag_records_the_mount_mode_in_a_valid_config(self):
+        target, config = new_run.create_run(self.args(live_platform=True))
+        self.assertEqual(config['platform_mount'], 'live')
+        self.assertEqual(load_config(target)['platform_mount'], 'live')
+
+    def test_default_run_has_no_platform_mount_key(self):
+        _, config = new_run.create_run(self.args())
+        self.assertNotIn('platform_mount', config)
+
     def test_existing_run_directory_is_refused(self):
         new_run.create_run(self.args())
         with self.assertRaisesRegex(ValueError, 'Refusing existing run directory'):

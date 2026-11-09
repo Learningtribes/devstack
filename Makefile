@@ -34,7 +34,7 @@ PY313_NEW_RUN_ARGS = --run-id "$(RUN_ID)" --lms-port "$(LMS_PORT)" --cms-port "$
   --platform-repo "$(PLATFORM_REPO)" $(if $(PLATFORM_COMMIT),--platform-commit "$(PLATFORM_COMMIT)") \
   $(if $(DEVSTACK_REPO),--devstack-repo "$(DEVSTACK_REPO)") $(if $(DEVSTACK_COMMIT),--devstack-commit "$(DEVSTACK_COMMIT)") \
   $(if $(RUN_ROOT),--root "$(RUN_ROOT)") $(if $(SUBNET),--subnet "$(SUBNET)") \
-  $(if $(RUNTIME_IMAGE),--runtime-image "$(RUNTIME_IMAGE)")
+  $(if $(RUNTIME_IMAGE),--runtime-image "$(RUNTIME_IMAGE)") $(if $(LIVE_PLATFORM),--live-platform)
 
 include *.mk
 
@@ -197,6 +197,15 @@ py313-up: ## Create a run and bring up the complete local LMS/Studio environment
 	$(py313_require_new_run)
 	@CONFIG=$$($(PY313_PYTHON) $(PY313_REPLAY)/new_run.py $(PY313_NEW_RUN_ARGS)) && \
 	  $(PY313_PYTHON) $(PY313_REPLAY)/bring_up.py --config "$$CONFIG" $(if $(SKIP_UNIT_TESTS),--skip-unit-tests)
+
+py313-dev-up: ## Like py313-up, but LMS/Studio run the host PLATFORM_REPO checkout through a read-write bind mount instead of a copy
+	$(MAKE) py313-up LIVE_PLATFORM=1
+
+py313-restart: ## Restart LMS and Studio of a live-platform run so they pick up code changes (requires PY313_CONFIG)
+	$(py313_require_config)
+	@RUNTIME=$$($(PY313_PYTHON) -c "import json,sys;print(json.load(open(sys.argv[1]))['runtime_container'])" "$(PY313_CONFIG)") && \
+	  docker restart "$$RUNTIME" >/dev/null && \
+	  $(PY313_PYTHON) $(PY313_REPLAY)/replay_after_install.py --config "$(PY313_CONFIG)" services
 
 py313-status: ## Show container states, ports and heartbeats of a run (requires PY313_CONFIG)
 	$(py313_require_config)

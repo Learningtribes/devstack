@@ -111,6 +111,7 @@ def build_config(args, root, platform_commit, devstack_commit, subnet):
         'queue_prefix': run_id + '_queue', 'course_key': 'course-v1:PY313+%s+2026' % run_id,
         'secret_env': str(private / 'services.env'), 'credentials_file': str(private / 'acceptance.json'),
         'jwt_file': str(private / 'jwt.pem'), 'services': services, 'images': images,
+        **({'platform_mount': 'live'} if getattr(args, 'live_platform', False) else {}),
     }
 
 
@@ -165,6 +166,8 @@ def main(argv=None):
     parser.add_argument('--devstack-commit', help='default: Devstack HEAD (must equal it)')
     parser.add_argument('--root', help='new run directory (default: $PY313_RUNS_ROOT/<run-id>)')
     parser.add_argument('--subnet', help='dedicated private /24 (default: first free 172.30.X.0/24)')
+    parser.add_argument('--live-platform', action='store_true',
+                        help='development run: bind-mount the Platform checkout read-write instead of running a copy')
     parser.add_argument('--runtime-image', help='override images.runtime (local sha256 ID or the locked reference)')
     args = parser.parse_args(argv)
     try:

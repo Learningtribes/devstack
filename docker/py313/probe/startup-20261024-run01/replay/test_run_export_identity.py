@@ -165,6 +165,33 @@ class ReplayExportIdentityTests(unittest.TestCase):
         self.assertEqual([c.args[1] for c in self.capture.call_args_list],
                          ['create-volume-runtime', 'create-network', 'create-infra', 'create-runtime'])
 
+    def create_runtime_mounts(self):
+        self.prepare()
+        self.external.side_effect = None
+        self.external.return_value = json.dumps({'py313.replay.config': config_hash(self.config)})
+        replay_run.create(self.config)
+        command = self.capture.call_args_list[-1].args[2]
+        return [command[i + 1] for i, value in enumerate(command) if value == '--mount']
+
+    def test_snapshot_run_never_mounts_the_platform_checkout(self):
+        mounts = self.create_runtime_mounts()
+        self.assertFalse(any('dst=/workspace/platform' in mount for mount in mounts))
+
+    def test_live_run_mounts_the_platform_checkout_read_write_outside_runtime(self):
+        self.config['platform_mount'] = 'live'
+        mounts = self.create_runtime_mounts()
+        live = [mount for mount in mounts if 'dst=/workspace/platform' in mount]
+        self.assertEqual(live, ['type=bind,src=%s,dst=/workspace/platform' % self.config['platform_repo']])
+        self.assertTrue(any('dst=/input/platform,readonly' in mount for mount in mounts))
+
+    def test_infra_project_is_named_per_run_so_runs_never_share_services(self):
+        self.prepare()
+        self.external.side_effect = None
+        self.external.return_value = json.dumps({'py313.replay.config': config_hash(self.config)})
+        replay_run.create(self.config)
+        command = next(c.args[2] for c in self.capture.call_args_list if c.args[1] == 'create-infra')
+        self.assertEqual(command[command.index('-p') + 1], self.config['network'])
+
     def test_install_ownership_precedes_export_check_and_install_captures(self):
         self.prepare()
         replay_run.install(self.config)
