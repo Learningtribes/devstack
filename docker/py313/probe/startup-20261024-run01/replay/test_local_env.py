@@ -147,6 +147,16 @@ class NewRunTests(unittest.TestCase):
                          [new_run.ipaddress.ip_network('10.0.0.0/8')])
 
 
+    def test_split_default_routes_of_a_tun_proxy_do_not_exhaust_the_subnet_pool(self):
+        routes = new_run.parse_routes(
+            'Destination        Gateway            Flags\n1                  198.18.0.1         UGSc\n'
+            '2/7                198.18.0.1         UGSc\n4/6                198.18.0.1         UGSc\n'
+            '8/5                198.18.0.1         UGSc\n16/4               198.18.0.1         UGSc\n'
+            '32/3               198.18.0.1         UGSc\n64/2               198.18.0.1         UGSc\n'
+            '128.0/1            198.18.0.1         UGSc\n172.30.1/24        link#14            UC\n')
+        self.assertEqual(new_run.pick_subnet([], routes), '172.30.2.0/24')
+
+
 class LocalRunFixture(unittest.TestCase):
     def setUp(self):
         super().setUp()

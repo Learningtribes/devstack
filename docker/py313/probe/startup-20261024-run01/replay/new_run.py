@@ -78,7 +78,10 @@ def host_routes():
 
 def pick_subnet(docker_subnets, routes):
     """First 172.30.X.0/24 that overlaps neither a Docker network nor a host route."""
-    taken = [ipaddress.ip_network(value, strict=False) for value in docker_subnets] + list(routes)
+    # A route shorter than /8 is a default-route fragment (a TUN VPN/proxy splits 0/0 into 1, 2/7, 4/6, ... 128/1),
+    # not a network that owns addresses; counting it would make every candidate "taken".
+    taken = [ipaddress.ip_network(value, strict=False) for value in docker_subnets] + [
+        network for network in routes if network.prefixlen >= 8]
     for third in range(1, 255):
         candidate = ipaddress.ip_network('172.30.%d.0/24' % third)
         if not any(candidate.overlaps(network) for network in taken if network.version == 4):
