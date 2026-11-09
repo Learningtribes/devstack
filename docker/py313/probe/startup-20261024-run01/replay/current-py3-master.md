@@ -158,11 +158,12 @@ and secrets in the environment, so `python manage.py lms shell` works directly. 
 evidence-capturing command (no label, nothing recorded); use `run_check.py` for
 reproducible output.
 
-From the shell, `paver test_system -s lms|cms -C --fasttest` works as is. Build assets with
-`paver update_assets --settings=test`: Paver's default `devstack` settings import `lms.envs.aws`, which needs
-production config (`CELERY_RESULT_BACKEND`, `lms.env.json`, `lms.auth.json`) that this runtime does not have, and the
-`startup_*` settings are not `lms.envs.*` modules Paver can select. The assets land in `test_root/staticfiles`, not in
-`/runtime/static` that the running servers use (the bring-up builds those). `lms-watcher-shell` and `studio-watcher-shell` still target the
+From the shell, `paver test_system -s lms|cms -C --fasttest` and `paver update_assets` work as is. The shell exports
+`PAVER_DEVSTACK_SETTINGS=devstack_local`, Paver's default settings for this runtime: Platform's `lms.envs.devstack_local` /
+`cms.envs.devstack_local` import the runtime's `startup_lms` / `startup_cms`. Paver's classic default (`devstack`) imports
+`lms.envs.aws`, which needs production config (`CELERY_RESULT_BACKEND`, `lms.env.json`, `lms.auth.json`) this runtime
+does not have. `paver update_assets` therefore builds into `/runtime/static`, which the running servers use. It needs
+Platform with `devstack_local` (Platform PR "devstack_local settings and PAVER_DEVSTACK_SETTINGS"). `lms-watcher-shell` and `studio-watcher-shell` still target the
 classic Python 2.7 containers.
 
 No resume/reset/cleanup/restart fallback is provided. Output labels are exclusive,

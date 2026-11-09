@@ -49,7 +49,7 @@ class ShellTests(unittest.TestCase):
         env_args = argv[argv.index('env') + 1:argv.index('bash')]
         for assignment in ('TESTING=True', 'NO_PREREQ_INSTALL=True', 'SKIP_NPM_INSTALL=True',
                            'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=27018',
-                           'NODE_OPTIONS=--max-old-space-size=2048'):
+                           'NODE_OPTIONS=--max-old-space-size=2048', 'PAVER_DEVSTACK_SETTINGS=devstack_local'):
             self.assertIn(assignment, env_args)
         self.assertIn('PYTHONPATH=/startup/settings:/runtime/platform-source/ci/py313/test-stubs', env_args)
 

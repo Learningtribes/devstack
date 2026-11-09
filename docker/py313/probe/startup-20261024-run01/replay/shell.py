@@ -22,7 +22,7 @@ TEST_MONGO_PORT = 27018
 # that shadows nose 1.3.7 (it imports the stdlib `imp`, removed in 3.13), and the webpack heap size the bring-up uses.
 PAVER_ENVIRONMENT = ('TESTING=True', 'NO_PREREQ_INSTALL=True', 'SKIP_NPM_INSTALL=True', 'VIRTUAL_ENV=/runtime/venv',
                      'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=%d' % TEST_MONGO_PORT,
-                     'NODE_OPTIONS=--max-old-space-size=2048',
+                     'NODE_OPTIONS=--max-old-space-size=2048', 'PAVER_DEVSTACK_SETTINGS=devstack_local',
                      'PYTHONPATH=/startup/settings:/runtime/platform-source/ci/py313/test-stubs')
 
 
