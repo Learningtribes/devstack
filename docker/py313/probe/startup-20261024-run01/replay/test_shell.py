@@ -48,7 +48,8 @@ class ShellTests(unittest.TestCase):
         argv = replay_shell.command(self.config, 'lms')
         env_args = argv[argv.index('env') + 1:argv.index('bash')]
         for assignment in ('TESTING=True', 'NO_PREREQ_INSTALL=True', 'SKIP_NPM_INSTALL=True',
-                           'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=27018'):
+                           'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=27018',
+                           'NODE_OPTIONS=--max-old-space-size=2048'):
             self.assertIn(assignment, env_args)
         self.assertIn('PYTHONPATH=/startup/settings:/runtime/platform-source/ci/py313/test-stubs', env_args)
 
@@ -62,6 +63,17 @@ class ShellTests(unittest.TestCase):
         self.assertEqual(commands[0], ['docker', 'exec', mongo, 'mkdir', '-p', '/tmp/py313-test-mongo'])
         self.assertEqual(commands[1][:4], ['docker', 'exec', '-d', mongo])
         self.assertIn('27018', commands[1])
+
+    def test_asset_tools_are_on_the_path_and_npx_is_linked_idempotently(self):
+        self.assertIn('/runtime/platform-source/node_modules/.bin', replay_shell.RUNTIME_PATH.split(':'))
+        with patch.object(replay_shell.subprocess, 'run') as run:
+            replay_shell.ensure_npx(self.config)
+        (argv,), kwargs = run.call_args
+        self.assertEqual(argv[:3], ['docker', 'exec', self.config['runtime_container']])
+        self.assertIn('test -e /usr/local/bin/npx ||', argv[-1])
+        self.assertIn('npx-cli.js', argv[-1])
+        self.assertTrue(kwargs['check'])
+        self.ownership_mock.assert_called_once_with(self.config)
 
     def test_running_test_mongo_is_left_alone(self):
         with patch.object(replay_shell, 'test_mongo_listening', return_value=True), \
@@ -90,9 +102,11 @@ class ShellTests(unittest.TestCase):
     def run_main(self, *arguments):
         with patch.object(sys, 'argv', ['shell.py', *arguments]), \
                 patch.object(replay_shell, 'ensure_test_mongo') as ensure, \
+                patch.object(replay_shell, 'ensure_npx') as npx, \
                 patch.object(replay_shell.os, 'execvpe') as execvpe:
             replay_shell.main()
         self.ensure_mock = ensure
+        self.npx_mock = npx
         return execvpe
 
     def test_main_execs_bash_in_runtime_with_system_settings(self):
@@ -107,6 +121,7 @@ class ShellTests(unittest.TestCase):
                                  ['env', 'PATH=' + replay_shell.RUNTIME_PATH])
                 self.assertEqual(argv[-1], 'bash')
                 self.ensure_mock.assert_called_once_with(self.config)
+                self.npx_mock.assert_called_once_with(self.config)
                 self.assertTrue(replay_shell.RUNTIME_PATH.startswith('/runtime/venv/bin:'))
                 self.assertEqual(env['TERM'], 'xterm-fixture')
 
