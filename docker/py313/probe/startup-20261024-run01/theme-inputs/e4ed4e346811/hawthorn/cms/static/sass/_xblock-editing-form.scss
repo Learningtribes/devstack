@@ -83,9 +83,6 @@ $field: (label-width:0px, component-width: 460px);
             }
           }
         }
-        .html-editor .CodeMirror {
-          //height: 100% !important;
-        }
       }
 
       .xblock-studio_view-pdf {
@@ -750,7 +747,6 @@ $field: (label-width:0px, component-width: 460px);
               @include modal-footer();
             }
           }
-
         }
       }
       //xmodule_edit xmodule_VideoDescriptor xblock-initialized
@@ -946,7 +942,154 @@ $field: (label-width:0px, component-width: 460px);
         }
       }
     }
+  }
 
+  .html-editor.editor {
+    > .row {
+      display: flex;
+      flex-wrap: nowrap;
+
+      > .CodeMirror {
+        flex-basis: 70%;
+      }
+    }
+
+    .snippet-selector-container {
+      flex-basis: 30%;
+      padding: var(--fds-global-space-sm);
+      position: relative;
+
+      .ds-search {
+        width: 100%;
+      }
+
+      .snippet-selector-tree {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        gap: var(--fds-global-space-md);
+        max-height: calc(100% - var(--fds-global-space-sm) - 36px - 1px); // padding + search box height + border
+        margin-block-start: var(--fds-global-space-sm);
+        padding-block-start: var(--fds-global-space-sm);
+        border-top: var(--fds-global-border-width);
+      }
+    }
+
+    .ds-tree.snippet-group {
+      .children {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--fds-global-space-xs);
+        margin-inline-start: 0;
+        margin-block-start: var(--fds-global-space-md);
+
+        figure {
+          position: relative;
+          width: 100%;
+
+          &:hover {
+            .preview-wrapper {
+              background: var(--fds-global-color-neutral-10);
+              box-shadow: var(--fds-global-shadow-xs);
+            }
+          }
+
+          .info-marker {
+            position: absolute;
+            right: var(--fds-global-space-xs);
+            top: var(--fds-global-space-xs);
+            color: var(--fds-global-color-neutral-100);
+            font-size: 14px;
+            cursor: pointer;
+
+            &:hover {
+              color: var(--fds-global-color-neutral-80);
+            }
+            &:active {
+              color: var(--fds-global-color-neutral-70);
+            }
+          }
+
+          figcaption {
+            @include typography-body-xs-regular;
+            text-align: center;
+            color: var(--fds-global-color-neutral-140);
+            margin-block-start: var(--fds-global-space-xxs);
+          }
+        }
+      }
+
+      &.collapsed .children {
+        display: none;
+      }
+    }
+
+    dialog.snippet-selector-dialog {
+      width: 300px;
+      margin: 0;
+      position: absolute;
+      top: var(--fds-global-space-sm);
+      right: 0;
+      transform: translateX(calc(100% + var(--fds-global-space-sm)));
+      z-index: 11;
+      background: var(--fds-global-color-neutral-0, white);
+
+      .header {
+        border: none;
+      }
+
+      .content {
+        overflow-x: hidden;
+        padding-block-start: 0;
+
+        .preview-wrapper {
+          aspect-ratio: auto;
+          padding: var(--fds-global-space-sm);
+        }
+
+        .preview {
+          width: 100%;
+          height: auto;
+        }
+
+        .description {
+          @include typography-body-sm-regular();
+          border-radius: $fds-global-border-radius-md;
+          color: var(--fds-global-color-neutral-140);
+
+          &:empty {
+            display: none;
+          }
+        }
+      }
+
+      &::backdrop {
+        background: transparent;
+      }
+    }
+
+    .preview-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1 / 1;
+      background: var(--fds-global-color-neutral-5);
+      border-radius: var(--fds-global-border-radius-lg);
+      position: relative;
+
+      // Recorded GIFs keep each snippet's natural aspect ratio; letterbox them inside the square tile.
+      .preview {
+        display: block;
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        border-radius: var(--fds-global-border-radius-md);
+      }
+    }
+
+    .snippet-highlight {
+      background: var(--fds-global-color-primary-0);
+    }
   }
 }
 

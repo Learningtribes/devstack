@@ -36,37 +36,13 @@
 
       .action-item {
         line-height: 20px;
-        color: $triboo-color-brand-primary;
 
         display: inline-block;
-        margin-right: ($baseline*0.75);
+        margin-inline-end: var(--fds-global-space-sm);
 
         &:last-child {
-          margin-right: 0;
+          margin-inline-end: 0;
         }
-      }
-
-      .action-cancel {
-        @include grey-small-button();
-      }
-
-      .action-primary {
-        &,&:focus {
-          @extend %btn-primary-primary;
-        }
-
-        background-image: none;
-        @include if-disable {
-          color: $triboo-color-fg-neutral !important;
-          background-color: $fds-global-color-neutral-100 !important;;
-          border: 0px solid transparent !important;
-          border-radius: 8px !important;
-        }
-      }
-
-      a {
-        @include hyper-link;
-        border-radius: 5px !important;
       }
     }
 
@@ -114,7 +90,5 @@
     .modal-header, .modal-actions {
       padding: ($baseline/2) $baseline;
     }
-
-
   }
 }

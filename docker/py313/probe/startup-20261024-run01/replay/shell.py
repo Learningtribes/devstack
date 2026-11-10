@@ -12,14 +12,17 @@ import time
 import core
 from core import docker_exec, environment, load_config
 
-RUNTIME_PATH = '/runtime/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+# node_modules/.bin carries rtlcss, which `paver update_assets` calls by name.
+RUNTIME_PATH = ('/runtime/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:'
+                '/runtime/platform-source/node_modules/.bin')
 # lms.envs.test / cms.envs.test connect to an unauthenticated Mongo, while the run's Mongo requires
 # credentials. A second mongod on this port, inside the run's own Mongo container, serves the tests.
 TEST_MONGO_PORT = 27018
-# What `paver test_system` / `test_lib` need from a shell: no prerequisite install, and the nose stub that
-# shadows nose 1.3.7 (it imports the stdlib `imp`, removed in 3.13).
+# What `paver test_system` / `test_lib` / `update_assets` need from a shell: no prerequisite install, the nose stub
+# that shadows nose 1.3.7 (it imports the stdlib `imp`, removed in 3.13), and the webpack heap size the bring-up uses.
 PAVER_ENVIRONMENT = ('TESTING=True', 'NO_PREREQ_INSTALL=True', 'SKIP_NPM_INSTALL=True', 'VIRTUAL_ENV=/runtime/venv',
                      'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=%d' % TEST_MONGO_PORT,
+                     'NODE_OPTIONS=--max-old-space-size=2048', 'PAVER_DEVSTACK_SETTINGS=devstack_local',
                      'PYTHONPATH=/startup/settings:/runtime/platform-source/ci/py313/test-stubs')
 
 
@@ -44,6 +47,14 @@ def ensure_test_mongo(config, timeout=30):
         time.sleep(0.5)
 
 
+def ensure_npx(config):
+    # The runtime image links npm into /usr/local/bin but not npx, which Paver's webpack task calls.
+    core.ownership(config)
+    subprocess.run(['docker', 'exec', config['runtime_container'], 'sh', '-c',
+                    'test -e /usr/local/bin/npx || ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx'],
+                   check=True)
+
+
 def command(config, system):
     return docker_exec(config, 'env', 'PATH=' + RUNTIME_PATH, *PAVER_ENVIRONMENT, 'bash',
                        settings='startup_' + system, interactive=True)
@@ -56,6 +67,7 @@ def main():
     args = parser.parse_args()
     config = load_config(args.config)
     ensure_test_mongo(config)
+    ensure_npx(config)
     argv = command(config, args.system)
     os.execvpe(argv[0], argv, environment(config))
 

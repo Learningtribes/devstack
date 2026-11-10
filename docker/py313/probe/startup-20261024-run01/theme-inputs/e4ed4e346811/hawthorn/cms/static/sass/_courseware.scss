@@ -1,4 +1,6 @@
 // courseware page
+@import "upload-widget";
+
 .view-container {
   $component-gap: 16px;
 
@@ -857,9 +859,6 @@
       }
     }
 
-    .modal-content {
-
-    }
     .modal-actions {
       @include modal-footer();
     }
@@ -979,6 +978,10 @@
     .xmodule_display.xmodule_VideoModule {
       .video {
         background: $fds-global-color-neutral-0;
+
+        .video-wrapper .btn-play {
+          color: $triboo-color-brand-primary;
+        }
       }
     }
   }
@@ -996,61 +999,33 @@
             margin-bottom: 0 !important;
           }
           div[role=region] {
-              background-color: white;
-              padding: 30px;
-              border-radius: $default-border-radius;
-              max-width: 800px;
-              margin: auto;
+            padding: 0;
+            max-width: none;
+            margin: 0;
+            background-color: transparent;
 
-              .drop-zone-compact {
-                border: 3px dashed rgba(131, 150, 170, 0.5);
-                border-radius: 10px;
+            @include upload-widget-area(".drop-zone-compact");
+            @include upload-widget-area(".drop-zone");
 
-                div[data-identifier=asset-drop-zone-icon] {
-                  height: 100px;
-                  >span {
-                    font-size: 76px !important;
-                  }
-                }
+            .drop-zone-compact,
+            .drop-zone {
+              width: 100%;
+              box-sizing: border-box;
+              text-align: center;
 
-                >div:nth-of-type(1) {
-                  .fad {
-                    font-size: 146px;
-                    color: $triboo-color-fg-neutral;
-                  }
-                }
-                >span:nth-of-type(1) {
-                  display: inline-block;
-                  h2 {
-                    font-weight: 600;
-                    font-size: 16px;
-                    color: $triboo-color-brand-primary;
-                  }
-
-                }
-                .label-or {
-                  margin-left: 5px;
-                  color: $black;
-                  font-weight: 600;
-                }
-                >div:nth-of-type(2) {
-                  display: inline-block;
-                  margin-left: 5px;
-
-                  .btn {
-                    @include primary-medium-button();
-                    margin-left: 5px;
-                  }
-                }
-                >span:nth-of-type(3) {
-                  p {
-                    font-size: 12px;
-                    color: $triboo-color-fg-neutral;
-                    -webkit-font-smoothing: antialiased;
-                  }
-                }
-
+              .upload-icon,
+              .upload-prompt,
+              .upload-prompt-primary,
+              .upload-prompt-secondary,
+              .upload-info {
+                text-align: center;
               }
+
+              [data-identifier="asset-drop-zone-icon"],
+              [data-identifier="asset-drop-zone-icon"] i {
+                font-style: normal;
+              }
+            }
           }
           >div.row:nth-of-type(3).no-gutters {
             display: none;

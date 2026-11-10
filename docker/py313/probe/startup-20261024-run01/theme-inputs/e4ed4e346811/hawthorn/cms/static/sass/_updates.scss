@@ -72,11 +72,9 @@
               @include modal-footer();
               border-top: 1px solid $editor-border-color;
               button:not(:last-child) {
-                margin-right: 15px;
+                margin-inline-end: 15px;
               }
             }
-
-
 
             .row:nth-of-type(2) {
               margin: 20px 0;

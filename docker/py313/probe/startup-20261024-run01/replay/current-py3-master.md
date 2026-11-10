@@ -29,6 +29,15 @@ new environment. Consequences: uncommitted edits take
 effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
+Theme: the runtime normally uses the frozen, per-file verified snapshot (`theme-inputs/e4ed4e346811/hawthorn`, staged to
+`/runtime/themes-e4ed4e346811`; regenerate for a new theme commit with `python3 refresh_theme_inputs.py --theme-repo <checkout> --commit <sha>`, then replace the 12-hex directory name and theme commit in `prepare_theme_inputs.py`, `replay/run.py`, `replay/current-config.example.json`, `settings/local_runtime.py` and `replay/test_run_export_identity.py`). With `THEME_REPO=<theme checkout>` (default `../src/themes/hawthorn` if that directory exists;
+e.g. `make py313-dev-up THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`) the checkout is bind-mounted read-write at
+`/workspace/themes/hawthorn` and replaces the snapshot in `COMPREHENSIVE_THEME_DIRS`; its content is not verified against the
+registered commit (keep the checkout on the theme repo's `py3-master`, which the snapshot is taken from), and the sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
+(`lms/`, `cms/`, `common/` at its root). Sass output goes to the checkout's git-ignored `lms/static/css` and
+`cms/static/css`. After editing theme files, rebuild with `paver update_assets` (compiles themes found in the theme dirs)
+or `bash /startup/build_frontend.sh`, then `make py313-restart` if templates are cached. The mount is fixed when the
+container is created, so adding or changing `THEME_REPO` needs `make py313-destroy PURGE_DIR=1 && make py313-dev-up`.
 Override `RUN_ID`, `LMS_PORT`, `CMS_PORT` or `PLATFORM_REPO` for another environment, and
 `PY313_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` leaves no evidence.
 
@@ -156,7 +165,14 @@ environment (`$PY313_RUNS_ROOT/dev313/config.json`); set `PY313_CONFIG` for anot
 in `/runtime/platform-source` (a copy for a snapshot run, the live checkout for a development run) inside the run-owned runtime with `/runtime/venv/bin` first on `PATH` and the run's namespace
 and secrets in the environment, so `python manage.py lms shell` works directly. It is not an
 evidence-capturing command (no label, nothing recorded); use `run_check.py` for
-reproducible output. `lms-watcher-shell` and `studio-watcher-shell` still target the
+reproducible output.
+
+From the shell, `paver test_system -s lms|cms -C --fasttest` and `paver update_assets` work as is. The shell exports
+`PAVER_DEVSTACK_SETTINGS=devstack_local`, Paver's default settings for this runtime: Platform's `lms.envs.devstack_local` /
+`cms.envs.devstack_local` import the runtime's `startup_lms` / `startup_cms`. Paver's classic default (`devstack`) imports
+`lms.envs.aws`, which needs production config (`CELERY_RESULT_BACKEND`, `lms.env.json`, `lms.auth.json`) this runtime
+does not have. `paver update_assets` therefore builds into `/runtime/static`, which the running servers use. It needs
+Platform with `devstack_local` (Platform PR "devstack_local settings and PAVER_DEVSTACK_SETTINGS"). `lms-watcher-shell` and `studio-watcher-shell` still target the
 classic Python 2.7 containers.
 
 No resume/reset/cleanup/restart fallback is provided. Output labels are exclusive,

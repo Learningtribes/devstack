@@ -4,7 +4,7 @@
   "export_dir": "/absolute/new-run/export",
   "platform_repo": "/absolute/clean-platform-worktree",
   "devstack_repo": "/absolute/clean-devstack-worktree",
-  "theme_commit": "7c0dbec1b0a79d7639069f9990b831ba9f31d8bf",
+  "theme_commit": "e4ed4e346811e63013d1c5b03b477385373c77ee",
   "runtime_container": "master313r2-runtime",
   "runtime_volume": "master313r2-runtime-data",
   "network": "master313r2-network",

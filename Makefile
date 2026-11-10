@@ -40,7 +40,8 @@ PY313_NEW_RUN_ARGS = --run-id "$(RUN_ID)" --lms-port "$(LMS_PORT)" --cms-port "$
   --platform-repo "$(PLATFORM_REPO)" $(if $(PLATFORM_COMMIT),--platform-commit "$(PLATFORM_COMMIT)") \
   $(if $(DEVSTACK_REPO),--devstack-repo "$(DEVSTACK_REPO)") $(if $(DEVSTACK_COMMIT),--devstack-commit "$(DEVSTACK_COMMIT)") \
   $(if $(RUN_ROOT),--root "$(RUN_ROOT)") $(if $(SUBNET),--subnet "$(SUBNET)") \
-  $(if $(RUNTIME_IMAGE),--runtime-image "$(RUNTIME_IMAGE)") $(if $(LIVE_PLATFORM),--live-platform)
+  $(if $(RUNTIME_IMAGE),--runtime-image "$(RUNTIME_IMAGE)") $(if $(LIVE_PLATFORM),--live-platform) \
+  $(if $(THEME_REPO),--theme-repo "$(THEME_REPO)")
 
 include *.mk
 
@@ -208,8 +209,9 @@ py313-dev-up: RUN_ID ?= $(PY313_DEV_RUN_ID)
 py313-dev-up: LMS_PORT ?= 18000
 py313-dev-up: CMS_PORT ?= 18010
 py313-dev-up: PLATFORM_REPO ?= $(DEVSTACK_WORKSPACE)/platform
-py313-dev-up: ## Create the fixed development environment (dev313, LMS 18000, Studio 18010): the sibling platform checkout is bind-mounted read-write, not copied
-	$(MAKE) py313-up LIVE_PLATFORM=1 RUN_ID="$(RUN_ID)" LMS_PORT="$(LMS_PORT)" CMS_PORT="$(CMS_PORT)" PLATFORM_REPO="$(PLATFORM_REPO)"
+py313-dev-up: THEME_REPO ?= $(wildcard $(DEVSTACK_WORKSPACE)/src/themes/hawthorn)
+py313-dev-up: ## Create the fixed development environment (dev313, LMS 18000, Studio 18010): the sibling platform checkout is bind-mounted read-write, not copied; THEME_REPO=<theme checkout> (default ../src/themes/hawthorn if present) is mounted as theme hawthorn
+	$(MAKE) py313-up LIVE_PLATFORM=1 RUN_ID="$(RUN_ID)" LMS_PORT="$(LMS_PORT)" CMS_PORT="$(CMS_PORT)" PLATFORM_REPO="$(PLATFORM_REPO)" THEME_REPO="$(THEME_REPO)"
 
 py313-restart: ## Restart LMS and Studio of the development environment so they pick up code changes
 	$(py313_require_config)

@@ -502,50 +502,8 @@
           text-align: $bi-app-right;
           li {
             &:not(:last-child) {
-              @include margin-right(10px);
+              margin-inline-end: 10px;
             }
-            .action-cancel {
-              @include grey-small-button();
-              background-color: $fds-global-color-neutral-10 !important;
-              color: $fds-global-color-neutral-140 !important;
-            }
-            .action-save {
-              @include primary-small-button();
-              &.delete {
-                background-color: $fds-global-color-error-40;
-              }
-              &.disabled {
-                opacity: 0.5;
-                background-color: $fds-global-color-neutral-10 !important;
-                color: $fds-global-color-neutral-50 !important;
-                border-radius: $fds-global-border-radius-md !important;
-              }
-            }
-            .action-cancel,
-            .action-save {
-              &.disabled {
-                pointer-events: none;
-                cursor: not-allowed;
-              }
-            }
-          }
-
-          .action-item .button {
-            padding: 8px 16px;
-            gap: 8px;
-            border-radius: $fds-global-border-radius-md;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            text-align: center;
-          }
-
-          .button-disabled {
-            pointer-events: none;
-            cursor: not-allowed;
-            opacity: 0.5;
-            background-color: $fds-global-color-neutral-5 !important;
-            color: $fds-global-color-neutral-50 !important;
           }
         }
       }
@@ -553,11 +511,10 @@
   }
 
   .view-program-team {
-      .wrapper-create-element {
-        display: block;
-      }
+    .wrapper-create-element {
+      display: block;
+    }
   }
-
 }
 
 
@@ -584,7 +541,7 @@
       label {
         color: $fds-global-color-neutral-90;
         margin-bottom: 5px;
-        
+
         span {
           margin-left: 1ch;
         }

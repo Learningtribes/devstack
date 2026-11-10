@@ -30,7 +30,11 @@ SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO
 # every editable install (Open_edX, xmodule, capa, ...) under /runtime/platform-source.
 LIVE_PLATFORM_MOUNT = '/workspace/platform'
 PLATFORM_MOUNTS = ('snapshot', 'live')
-OPTIONAL = {'platform_mount'}
+# A development run may bind-mount a host theme checkout; the theme directory name is fixed by the site themes
+# (`seed_themes.py` assigns `hawthorn`). Without `theme_repo` the runtime uses the verified frozen snapshot.
+LIVE_THEME_ROOT = '/workspace/themes'
+LIVE_THEME_MOUNT = LIVE_THEME_ROOT + '/hawthorn'
+OPTIONAL = {'platform_mount', 'theme_repo'}
 REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_commit',
             'devstack_repo', 'devstack_commit', 'theme_commit', 'runtime_container', 'runtime_volume',
             'network', 'network_subnet', 'services', 'images', 'lms_port', 'cms_port', 'database', 'test_database', 'mongo_database',
@@ -227,7 +231,8 @@ def validate_path_isolation(config, source_repositories=None):
                 fail('Replay output and protected input paths must be disjoint after resolution: ' +
                      left_name + '=' + str(left) + ' ' + right_name + '=' + str(right))
     sources = source_repositories if source_repositories is not None else {
-        key.removesuffix('_repo'): config[key] for key in ('platform_repo', 'devstack_repo')
+        key.removesuffix('_repo'): config[key] for key in ('platform_repo', 'devstack_repo', 'theme_repo')
+        if key in config
     }
     sources = {name: resolved_path(path) for name, path in sources.items()}
     for output_name in ('evidence_dir', 'export_dir', 'secret_env'):
@@ -265,10 +270,16 @@ def load_config(path):
     token = config['run_id']
     if not re.fullmatch(r'[a-z][a-z0-9_-]{2,48}', token):
         fail('Invalid run_id')
-    for key in ('evidence_dir', 'export_dir', 'platform_repo', 'devstack_repo', 'secret_env', 'credentials_file', 'jwt_file'):
+    for key in ('evidence_dir', 'export_dir', 'platform_repo', 'devstack_repo', 'secret_env', 'credentials_file', 'jwt_file',
+                *(['theme_repo'] if 'theme_repo' in config else [])):
         value = Path(config[key])
         if not value.is_absolute() or '..' in value.parts:
             fail('Expected absolute normalized path: ' + key)
+    if 'theme_repo' in config:
+        theme = resolved_path(config['theme_repo'])
+        for key in ('platform_repo', 'devstack_repo'):
+            if related_paths(theme, resolved_path(config[key])):
+                fail('theme_repo must be separate from ' + key)
     validate_path_isolation(config)
     for key in ('platform_commit', 'devstack_commit', 'theme_commit'):
         if not re.fullmatch(r'[0-9a-f]{40}', config[key]):

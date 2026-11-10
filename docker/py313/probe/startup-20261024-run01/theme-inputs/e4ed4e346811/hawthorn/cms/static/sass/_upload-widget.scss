@@ -14,7 +14,8 @@
     transition: all 0.3s ease;
 
     &:hover,
-    &.drag-over {
+    &.drag-over,
+    &.is-dragover {
       border-color: $triboo-color-brand-primary;
       background-color: $white;
     }

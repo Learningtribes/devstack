@@ -572,28 +572,7 @@
         text-align: $bi-app-right;
         li {
           &:not(:last-child) {
-            @include margin-right(15px);
-          }
-          .action-cancel {
-            @include grey-small-button();
-          }
-          .action-save {
-            @include primary-small-button();
-            &.disabled {
-              @include grey-small-button();
-            }
-          }
-          .action-cancel,
-          .action-save {
-            &.disabled {
-              pointer-events: none;
-              cursor: not-allowed;
-              color: $triboo-color-fg-neutral !important;
-              background-color: $fds-global-color-neutral-5 !important;
-              border-radius: 4px !important;
-
-
-            }
+            margin-inline-end: 15px;
           }
         }
       }

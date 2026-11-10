@@ -65,8 +65,11 @@
     .modal-chin,
     .xblock-actions,
     .modal-actions {
-      text-align: $bi-app-right;
+      text-align: end;
+    }
 
+    .modal-chin,
+    .xblock-actions {
       .action-primary {
         &,&:focus {
           @extend %btn-primary-primary;

@@ -401,29 +401,6 @@
 [class*="view-"] {
   .modal-window {
     border-radius: $fds-global-border-radius-lg;
-
-    .modal-actions {
-
-      .action-item {
-        .action-cancel {
-          color: $fds-global-color-neutral-170 !important;
-          background-color: $fds-global-color-neutral-5 !important;
-          border-radius: 4px !important;
-          box-shadow: none !important;
-
-        }
-
-        .action-primary{
-          &.disabled {
-            color: $fds-global-color-neutral-170 !important;
-            background-color: $fds-global-color-neutral-5  !important;
-            border-radius: 4px !important;
-            box-shadow: none !important;
-          }
-
-        }
-      }
-    }
   }
 }
 
@@ -736,7 +713,7 @@
                       display: block;
                     }
                   }
-                  
+
                   .review-selected-course-privilege-labels {
                     display: flex;
                     gap: 10px;
@@ -1299,42 +1276,9 @@
         background-color: $fds-global-color-neutral-0;
         border-radius: 0px 0px $fds-global-border-radius-lg $fds-global-border-radius-lg;
 
-        .action-primary{
-          &.disabled{
-            color: $fds-global-color-neutral-170 !important;
-            background-color: $fds-global-color-neutral-5 !important;
-            border-radius: 4px !important;
-          }
-        }
-
         ul {
           li:not(:last-child) {
             margin-right: $fds-global-space-xs;
-          }
-        }
-
-        .action-item {
-          .button {
-            border-radius: $fds-global-border-radius-md;
-            padding: $fds-global-space-xs $fds-global-space-md;
-            opacity: 0px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            text-align: center;
-            box-shadow: none;
-
-            &.action-cancel  {
-              background-color: $fds-global-color-neutral-10;
-              color: $fds-global-color-neutral-140;
-
-              &.disabled {
-                background-color: $fds-global-color-neutral-10;
-                color: $fds-global-color-neutral-170 !important;
-                background-color: $fds-global-color-neutral-5 !important;
-                border-radius: 4px !important;
-              }
-            }
           }
         }
       }

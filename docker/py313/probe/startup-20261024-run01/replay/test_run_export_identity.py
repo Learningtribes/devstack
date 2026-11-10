@@ -25,7 +25,7 @@ class ReplayExportIdentityTests(unittest.TestCase):
         self.platform.mkdir()
         (self.startup / 'lock.txt').write_bytes(b'fixed-lock')
         (self.platform / 'source.py').write_bytes(b'fixed-source')
-        theme = self.startup / 'theme-inputs/7c0dbec1b0a7/source-sha256.json'
+        theme = self.startup / 'theme-inputs/e4ed4e346811/source-sha256.json'
         theme.parent.mkdir(parents=True)
         theme.write_text(json.dumps({'commit': 'c' * 40}))
         self.config = {
@@ -183,6 +183,15 @@ class ReplayExportIdentityTests(unittest.TestCase):
         live = [mount for mount in mounts if 'dst=/workspace/platform' in mount]
         self.assertEqual(live, ['type=bind,src=%s,dst=/workspace/platform' % self.config['platform_repo']])
         self.assertTrue(any('dst=/input/platform,readonly' in mount for mount in mounts))
+
+    def test_snapshot_theme_is_never_mounted_from_the_host(self):
+        self.assertFalse(any('/workspace/themes' in mount for mount in self.create_runtime_mounts()))
+
+    def test_theme_repo_is_mounted_read_write_as_theme_hawthorn(self):
+        self.config['theme_repo'] = '/Users/example/triboo-theme'
+        mounts = self.create_runtime_mounts()
+        theme = [mount for mount in mounts if '/workspace/themes' in mount]
+        self.assertEqual(theme, ['type=bind,src=/Users/example/triboo-theme,dst=/workspace/themes/hawthorn'])
 
     def test_infra_project_is_named_per_run_so_runs_never_share_services(self):
         self.prepare()

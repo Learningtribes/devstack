@@ -969,6 +969,7 @@ body.view-courseware.courseware {
     border-radius: 8px;
     background-color: $white;
     position: relative;
+    container-type: inline-size;
 
     .html-header-wrapper {
       margin-left: 40px;
@@ -1004,12 +1005,6 @@ body.view-courseware.courseware {
       border-top: 1px solid $grey5;
       margin-top: 0;
       margin-bottom: 25px;
-    }
-
-    &:after {
-      content: '';
-      display: block;
-      height: 30px;
     }
   }
 
@@ -2028,7 +2023,7 @@ body.view-courseware.courseware {
       @include margin-left(10px);
       @include margin-right(0 !important);
       color: $white;
-    }    
+    }
   }
 
   .export-results-button-wrapper {
@@ -2138,17 +2133,17 @@ body.view-courseware.courseware {
     }
 
     .your_answers {
-      display: flex; 
-      flex-wrap: wrap; 
-      align-items: baseline; 
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
       gap: 0.25em 0.5em;
     }
-    
+
     .your_words {
-      display: flex; 
-      flex-wrap: wrap; 
-      margin: 0; 
-      list-style: none; 
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+      list-style: none;
       gap: 0.25em 0em;
 
       strong {
@@ -2541,6 +2536,10 @@ body.view-courseware.courseware {
             }
           }
         }
+
+        .btn-play {
+          color: $triboo-color-brand-primary;
+        }
       }
 
       .wrapper-downloads {
@@ -2586,10 +2585,10 @@ body.view-courseware.courseware {
 
   .xblock-student_view-html {
     > *:not(.block-header-wrapper):not(.block-label):not(.sep-line) {
-      padding: 0 40px;
+      margin: var(--fds-global-space-xs) var(--fds-global-space-3xl);
+
       @include media-down($sm) {
-        padding-left: 5px;
-        padding-right: 5px;
+        margin-inline: 5px;
       }
     }
 
