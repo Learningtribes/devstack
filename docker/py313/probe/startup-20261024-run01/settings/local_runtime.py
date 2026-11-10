@@ -7,7 +7,7 @@ from pathlib import Path
 def configure(namespace, system):
     platform_root = Path(os.environ.get('PY313_PLATFORM_ROOT', '/edx/app/edxapp/edx-platform'))
     # A development run may bind-mount a host theme checkout as theme `hawthorn`; otherwise the verified snapshot.
-    theme_root = '/workspace/themes' if Path('/workspace/themes/hawthorn').is_dir() else '/runtime/themes-7c0dbec1b0a7'
+    theme_root = '/workspace/themes' if Path('/workspace/themes/hawthorn').is_dir() else '/runtime/themes-e4ed4e346811'
     # File XBlock expiration models must participate in the real app registry.
     if "djpyfs" not in namespace["INSTALLED_APPS"]:
         namespace["INSTALLED_APPS"] = [*namespace["INSTALLED_APPS"], "djpyfs"]

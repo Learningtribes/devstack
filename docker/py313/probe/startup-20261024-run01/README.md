@@ -70,8 +70,8 @@ outside Git. Exact image, ports, resources and execution evidence are in
    workers consume four isolated service-specific queues. Check health and
    browser/business results after dispatch; dispatch alone is not readiness.
 
-Theme source is theme-inputs/7c0dbec1b0a7/hawthorn with per-file verified
-manifest. PDF public/build is required runtime code and is retained when
+Theme source is theme-inputs/e4ed4e346811/hawthorn (triboo-theme `py3-master`) with per-file verified
+manifest; `refresh_theme_inputs.py` regenerates it for another theme commit. PDF public/build is required runtime code and is retained when
 copying patched inputs. PDF authoring rejects non-course-staff before writes.
 Seven old calc/chem/opaque constraints are closed by actual compatible source
 and metadata, target tests and315-package pip check; see runtime-inputs doc.

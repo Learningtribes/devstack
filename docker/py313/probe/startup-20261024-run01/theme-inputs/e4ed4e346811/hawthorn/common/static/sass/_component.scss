@@ -687,6 +687,102 @@ dialog.dialog-modal {
   }
 }
 
+.ds-tree {
+  --item-height: var(--fds-global-space-xl, 24px);
+  --item-box-height: calc(var(--fds-global-space-xxxs, 2px) * 2 + var(--item-height));
+  --backgroud-color: var(--fds-global-color-neutral-0, white);
+  background: var(--backgroud-color);
+  transform: scale(1);
+
+  background: transparent;
+  position: relative;
+
+  &.collapsed {
+    .anchor {
+      transform: rotate(-90deg);
+    }
+
+    .children {
+      display: none;
+    }
+  }
+
+  slot {
+    display: none;
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    gap: var(--fds-global-space-xs, 8px);;
+    height: var(--item-height);
+    padding: var(--fds-global-space-xxxs, 2px) 0;
+    user-select: none;
+    background: var(--backgroud-color);
+    color: var(--fds-global-color-neutral-140);
+
+    .anchor {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 200ms ease;
+        width: var(--item-height);
+        height: var(--item-height);
+        cursor: pointer;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: var(--fds-global-space-xs, 8px);
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .ds-checkbox {
+      --thumb-size: 16px;
+      --mark-size: 8px;
+    }
+
+    &:has(~ .children:empty) {
+      margin-inline-start: var(--item-height);
+
+      & .anchor {
+        width: 0;
+
+        & svg {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .children {
+    margin-inline-start: calc(var(--item-height) + var(--fds-global-space-xs, 8px));
+    display: flex;
+    flex-direction: column;
+
+    .ds-tree:first-of-type::before,
+    .ds-tree:not(:last-of-type)::after {
+      z-index: -1;
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--fds-global-color-neutral-40);
+      border-top: 0;
+      border-right: 0;
+      top: calc(var(--item-box-height) / 2);
+      left: calc(calc(var(--item-height) / -2) - var(--fds-global-space-xs, 8px));
+    }
+
+    .ds-tree:first-of-type::before {
+      height: calc(var(--item-box-height) / 2);
+      transform: translateY(-100%);
+    }
+  }
+}
+
 @import "tag";
 @import 'tooltip';
 @import 'switch';

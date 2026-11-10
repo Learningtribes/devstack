@@ -61,7 +61,7 @@ def prepare(config):
     assert identity['repositories']['devstack']['commit'] == config['devstack_commit']
     assert identity['repositories']['platform']['commit'] == config['platform_commit']
     export_digest = verify_export_identity(Path(config['export_dir']), STARTUP_REL)
-    theme = read_json(startup / 'theme-inputs/7c0dbec1b0a7/source-sha256.json')
+    theme = read_json(startup / 'theme-inputs/e4ed4e346811/source-sha256.json')
     assert theme['commit'] == config['theme_commit']
     for name in ('.acceptance-credentials.json', 'jwt-private.pem'):
         (startup / name).touch(mode=0o600, exist_ok=False)

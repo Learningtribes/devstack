@@ -25,7 +25,7 @@ class ReplayExportIdentityTests(unittest.TestCase):
         self.platform.mkdir()
         (self.startup / 'lock.txt').write_bytes(b'fixed-lock')
         (self.platform / 'source.py').write_bytes(b'fixed-source')
-        theme = self.startup / 'theme-inputs/7c0dbec1b0a7/source-sha256.json'
+        theme = self.startup / 'theme-inputs/e4ed4e346811/source-sha256.json'
         theme.parent.mkdir(parents=True)
         theme.write_text(json.dumps({'commit': 'c' * 40}))
         self.config = {

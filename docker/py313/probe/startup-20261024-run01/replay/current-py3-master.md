@@ -29,11 +29,11 @@ new environment. Consequences: uncommitted edits take
 effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
-Theme: the runtime normally uses the frozen, per-file verified snapshot (`theme-inputs/7c0dbec1b0a7/hawthorn`, staged to
-`/runtime/themes-7c0dbec1b0a7`). With `THEME_REPO=<theme checkout>` (default `../src/themes/hawthorn` if that directory exists;
+Theme: the runtime normally uses the frozen, per-file verified snapshot (`theme-inputs/e4ed4e346811/hawthorn`, staged to
+`/runtime/themes-e4ed4e346811`; regenerate for a new theme commit with `python3 refresh_theme_inputs.py --theme-repo <checkout> --commit <sha>`, then replace the 12-hex directory name and theme commit in `prepare_theme_inputs.py`, `replay/run.py`, `replay/current-config.example.json`, `settings/local_runtime.py` and `replay/test_run_export_identity.py`). With `THEME_REPO=<theme checkout>` (default `../src/themes/hawthorn` if that directory exists;
 e.g. `make py313-dev-up THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`) the checkout is bind-mounted read-write at
 `/workspace/themes/hawthorn` and replaces the snapshot in `COMPREHENSIVE_THEME_DIRS`; its content is not verified against the
-registered commit (the theme repo's `py3-master` branch is based on it; keep the checkout on `py3-master`), and the sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
+registered commit (keep the checkout on the theme repo's `py3-master`, which the snapshot is taken from), and the sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
 (`lms/`, `cms/`, `common/` at its root). Sass output goes to the checkout's git-ignored `lms/static/css` and
 `cms/static/css`. After editing theme files, rebuild with `paver update_assets` (compiles themes found in the theme dirs)
 or `bash /startup/build_frontend.sh`, then `make py313-restart` if templates are cached. The mount is fixed when the

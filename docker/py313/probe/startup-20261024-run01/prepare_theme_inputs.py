@@ -4,9 +4,9 @@ import json
 from pathlib import Path
 import shutil
 
-source = Path('/startup/theme-inputs/7c0dbec1b0a7/hawthorn')
+source = Path('/startup/theme-inputs/e4ed4e346811/hawthorn')
 live = Path('/workspace/themes/hawthorn')
-theme = live if live.is_dir() else Path('/runtime/themes-7c0dbec1b0a7/hawthorn')
+theme = live if live.is_dir() else Path('/runtime/themes-e4ed4e346811/hawthorn')
 
 if theme == live:
     # Development run with a bind-mounted theme checkout: its content is the developer's, not the registered commit.
