@@ -33,8 +33,8 @@ define py313_shell
 	@$(PY313_PYTHON) $(PY313_REPLAY)/shell.py --config "$(PY313_CONFIG)" $(1)
 endef
 define py313_require_new_run
-	@test -n "$(RUN_ID)" -a -n "$(LMS_PORT)" -a -n "$(CMS_PORT)" -a -n "$(PLATFORM_REPO)" || { \
-	  echo "RUN_ID, LMS_PORT, CMS_PORT and PLATFORM_REPO are required (optional: PLATFORM_COMMIT DEVSTACK_REPO DEVSTACK_COMMIT RUN_ROOT SUBNET RUNTIME_IMAGE)" >&2; exit 1; }
+	@test -n "$(RUN_ID)" -a -n "$(LMS_PORT)" -a -n "$(CMS_PORT)" -a -n "$(PLATFORM_REPO)" -a -n "$(THEME_REPO)" || { \
+	  echo "RUN_ID, LMS_PORT, CMS_PORT, PLATFORM_REPO and THEME_REPO (a triboo-theme checkout) are required (optional: PLATFORM_COMMIT DEVSTACK_REPO DEVSTACK_COMMIT RUN_ROOT SUBNET RUNTIME_IMAGE)" >&2; exit 1; }
 endef
 PY313_NEW_RUN_ARGS = --run-id "$(RUN_ID)" --lms-port "$(LMS_PORT)" --cms-port "$(CMS_PORT)" \
   --platform-repo "$(PLATFORM_REPO)" $(if $(PLATFORM_COMMIT),--platform-commit "$(PLATFORM_COMMIT)") \

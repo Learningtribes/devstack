@@ -1,5 +1,14 @@
 # Python 3.13 local runtime checkpoint
 
+## Bring-up scripts moved to Platform (2026-11-11)
+
+The environment-independent bring-up (schema initialization and audit, host/theme/completion seeds, XModule/Sass/webpack/locale
+asset build, `startup_lms|cms|schema` settings, `prepare_current_install.py`, SAML contract test) now lives in Platform
+`ci/py313/bringup/`, so the local replay and staging use the same scripts. The replay mounts the exported Platform
+`ci/py313` at `/canary`; `prepare_current_install.py` stages `/canary/bringup` into `/startup` and then adds this directory
+(`/paired-startup`: replay tooling, acceptance scripts and settings) without overwriting any Platform file. The historical
+sections below name those scripts as they were in this directory.
+
 ## External dependency pins (2026-11-02)
 
 The 20 distributions that used to be vendored here (`patched/`, `dependencies/`, the PDF.js
@@ -70,8 +79,7 @@ outside Git. Exact image, ports, resources and execution evidence are in
    workers consume four isolated service-specific queues. Check health and
    browser/business results after dispatch; dispatch alone is not readiness.
 
-Theme source is theme-inputs/e4ed4e346811/hawthorn (triboo-theme `py3-master`) with per-file verified
-manifest; `refresh_theme_inputs.py` regenerates it for another theme commit. PDF public/build is required runtime code and is retained when
+Theme source is a triboo-theme checkout (`py3-master`) mounted by the run (Platform `ci/py313/bringup/prepare_theme_inputs.py`); it is no longer packaged here. PDF public/build is required runtime code and is retained when
 copying patched inputs. PDF authoring rejects non-course-staff before writes.
 Seven old calc/chem/opaque constraints are closed by actual compatible source
 and metadata, target tests and315-package pip check; see runtime-inputs doc.

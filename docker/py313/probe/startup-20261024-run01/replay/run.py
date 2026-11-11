@@ -48,6 +48,8 @@ def compose(config):
 
 
 def prepare(config):
+    if not config.get('theme_repo'):
+        raise ValueError('The theme is not packaged any more: create the run with --theme-repo <triboo-theme checkout>')
     baseline = fresh_preflight(config, before_prepare=True)
     root = Path(config['evidence_dir'])
     root.mkdir(mode=0o700, parents=False, exist_ok=False)
@@ -61,8 +63,6 @@ def prepare(config):
     assert identity['repositories']['devstack']['commit'] == config['devstack_commit']
     assert identity['repositories']['platform']['commit'] == config['platform_commit']
     export_digest = verify_export_identity(Path(config['export_dir']), STARTUP_REL)
-    theme = read_json(startup / 'theme-inputs/e4ed4e346811/source-sha256.json')
-    assert theme['commit'] == config['theme_commit']
     for name in ('.acceptance-credentials.json', 'jwt-private.pem'):
         (startup / name).touch(mode=0o600, exist_ok=False)
     save_new(root / 'compose.json', compose(config))
@@ -123,7 +123,7 @@ def install(config):
     ownership(config)
     verify_prepared_export(config)
     capture(config, 'prepare-install-inputs', ['docker', 'exec', config['runtime_container'],
-        '/usr/local/bin/python3.13', '-B', '/paired-startup/replay/prepare_current_install.py'])
+        '/usr/local/bin/python3.13', '-B', '/canary/bringup/prepare_current_install.py'])
     capture(config, 'install', ['docker', 'exec', config['runtime_container'],
         '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
     capture(config, 'platform-identity', docker_exec(config,
