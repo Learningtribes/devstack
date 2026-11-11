@@ -148,7 +148,7 @@ def configure(namespace, system):
     namespace['MIDDLEWARE'] = list(namespace['MIDDLEWARE'])
     namespace['PIPELINE'] = dict(namespace['PIPELINE'], PIPELINE_ENABLED=False)
     mongo=dict(namespace['DOC_STORE_CONFIG'],host='mongo',port=27017,db=os.environ.get('PY313_MONGO_DB', 'py313_startup_20261024'),
-               user=os.environ.get('PY313_MONGO_USER','edxapp'),password=os.environ['PY313_MONGO_PASSWORD'],authSource='admin')
+               user=os.environ.get('PY313_MONGO_USER','edxapp'),password=os.environ['PY313_MONGO_PASSWORD'],authSource=os.environ.get('PY313_MONGO_AUTH_SOURCE', 'admin'))
     namespace['DOC_STORE_CONFIG']=mongo
     # LT program objects use their own collections but must share this isolated
     # environment's authenticated database, never the common.py devstack host.

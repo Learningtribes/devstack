@@ -7,8 +7,9 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db import transaction
 from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
+from database_guard import is_replay_database
 
-assert settings.DATABASES['default']['NAME'].startswith('py313_')
+assert is_replay_database(settings.DATABASES['default']['NAME'], ('py313_',))
 site_ids = {}
 with transaction.atomic():
     domains = (

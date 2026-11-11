@@ -9,13 +9,14 @@ from django.apps import apps
 from django.conf import settings
 from django.db import connection
 from django.db.migrations.recorder import MigrationRecorder
+from database_guard import is_replay_database
 
 inventory = json.loads(Path('/startup/schema-app-inventory.json').read_text())
 expected = {entry['label'] for entry in inventory['lms'] + inventory['cms']}
 assert set(apps.app_configs) == expected
 assert set(settings.MIGRATION_MODULES) == expected
 assert all(value is None for value in settings.MIGRATION_MODULES.values())
-assert connection.settings_dict['NAME'].startswith(('py313_startup_', 'py313_rebuild_'))
+assert is_replay_database(connection.settings_dict['NAME'])
 assert not MigrationRecorder(connection).applied_migrations()
 models = [model for model in apps.get_models(include_auto_created=True)
           if model._meta.managed and not model._meta.proxy and model._meta.can_migrate(connection)]
