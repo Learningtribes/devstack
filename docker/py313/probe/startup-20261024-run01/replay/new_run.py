@@ -176,8 +176,8 @@ def main(argv=None):
     parser.add_argument('--subnet', help='dedicated private /24 (default: first free 172.30.X.0/24)')
     parser.add_argument('--live-platform', action='store_true',
                         help='development run: bind-mount the Platform checkout read-write instead of running a copy')
-    parser.add_argument('--theme-repo', help='development run: bind-mount this theme checkout read-write as theme '
-                                             '`hawthorn` instead of the verified frozen snapshot')
+    parser.add_argument('--theme-repo', required=True, help='triboo-theme checkout, bind-mounted read-write as theme '
+                                                           '`hawthorn` (the theme is not packaged with Platform or Devstack)')
     parser.add_argument('--runtime-image', help='override images.runtime (local sha256 ID or the locked reference)')
     args = parser.parse_args(argv)
     try:

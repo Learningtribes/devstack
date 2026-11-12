@@ -143,11 +143,14 @@ class NewRunTests(unittest.TestCase):
 
     def test_main_prints_only_the_config_path_on_stdout_and_no_secret_material(self):
         out, err = io.StringIO(), io.StringIO()
+        theme = self.root / 'theme-main'
+        (theme / 'lms/static').mkdir(parents=True)
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
             new_run.main(['--run-id', 'master313y', '--lms-port', '18100', '--cms-port', '18110',
                           '--platform-repo', str(self.platform), '--devstack-repo', str(self.devstack),
-                          '--root', str(self.root / 'runs/y')])
+                          '--theme-repo', str(theme), '--root', str(self.root / 'runs/y')])
         self.assertEqual(out.getvalue().strip(), str(self.root / 'runs/y/config.json'))
+        self.assertEqual(json.loads((self.root / 'runs/y/config.json').read_text())['theme_repo'], str(theme.resolve()))
         self.assertNotIn('PRIVATE KEY', out.getvalue() + err.getvalue())
 
     def test_route_parsing_and_subnet_choice_avoid_docker_and_host_networks(self):

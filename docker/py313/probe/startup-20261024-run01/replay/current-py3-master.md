@@ -29,19 +29,19 @@ new environment. Consequences: uncommitted edits take
 effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
-Theme: the runtime normally uses the frozen, per-file verified snapshot (`theme-inputs/e4ed4e346811/hawthorn`, staged to
-`/runtime/themes-e4ed4e346811`; regenerate for a new theme commit with `python3 refresh_theme_inputs.py --theme-repo <checkout> --commit <sha>`, then replace the 12-hex directory name and theme commit in `prepare_theme_inputs.py`, `replay/run.py`, `replay/current-config.example.json`, `settings/local_runtime.py` and `replay/test_run_export_identity.py`). With `THEME_REPO=<theme checkout>` (default `../src/themes/hawthorn` if that directory exists;
-e.g. `make py313-dev-up THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`) the checkout is bind-mounted read-write at
-`/workspace/themes/hawthorn` and replaces the snapshot in `COMPREHENSIVE_THEME_DIRS`; its content is not verified against the
-registered commit (keep the checkout on the theme repo's `py3-master`, which the snapshot is taken from), and the sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
+Theme: the theme is not packaged with Platform or Devstack any more. Every run bind-mounts the `THEME_REPO` checkout
+(e.g. `make py313-up ... THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`, `py313-dev-up` defaults to the sibling
+`src/themes/hawthorn`) read-write at `/workspace/themes/hawthorn`; it replaces the former snapshot in `COMPREHENSIVE_THEME_DIRS`. Its content is not
+verified against `theme_commit` (recorded only; keep the checkout on the theme repo's `py3-master`). The sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
 (`lms/`, `cms/`, `common/` at its root). Sass output goes to the checkout's git-ignored `lms/static/css` and
 `cms/static/css`. After editing theme files, rebuild with `paver update_assets` (compiles themes found in the theme dirs)
 or `bash /startup/build_frontend.sh`, then `make py313-restart` if templates are cached. The mount is fixed when the
 container is created, so adding or changing `THEME_REPO` needs `make py313-destroy PURGE_DIR=1 && make py313-dev-up`.
+Staging servers use the same Platform-owned scripts with `PY313_THEME_SOURCE` / `PY313_THEME_COMMIT` instead of a mount (Platform `ci/py313/bringup/prepare_theme_inputs.py`).
 Override `RUN_ID`, `LMS_PORT`, `CMS_PORT` or `PLATFORM_REPO` for another environment, and
 `PY313_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` leaves no evidence.
 
-### Frozen-snapshot run (acceptance)
+### Snapshot-platform run (acceptance)
 
 ```sh
 git -C /path/to/platform worktree add --detach /path/to/platform-worktree origin/py3-master

@@ -31,7 +31,8 @@ SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO
 LIVE_PLATFORM_MOUNT = '/workspace/platform'
 PLATFORM_MOUNTS = ('snapshot', 'live')
 # A development run may bind-mount a host theme checkout; the theme directory name is fixed by the site themes
-# (`seed_themes.py` assigns `hawthorn`). Without `theme_repo` the runtime uses the verified frozen snapshot.
+# (`seed_themes.py` assigns `hawthorn`). The theme is no longer packaged: every run needs `theme_repo`, whose checkout is
+# used as is (not verified against `theme_commit`, which is only recorded).
 LIVE_THEME_ROOT = '/workspace/themes'
 LIVE_THEME_MOUNT = LIVE_THEME_ROOT + '/hawthorn'
 OPTIONAL = {'platform_mount', 'theme_repo'}

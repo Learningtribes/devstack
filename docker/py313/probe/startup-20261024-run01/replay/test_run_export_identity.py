@@ -25,14 +25,11 @@ class ReplayExportIdentityTests(unittest.TestCase):
         self.platform.mkdir()
         (self.startup / 'lock.txt').write_bytes(b'fixed-lock')
         (self.platform / 'source.py').write_bytes(b'fixed-source')
-        theme = self.startup / 'theme-inputs/e4ed4e346811/source-sha256.json'
-        theme.parent.mkdir(parents=True)
-        theme.write_text(json.dumps({'commit': 'c' * 40}))
         self.config = {
             'evidence_dir': str(self.evidence), 'export_dir': str(self.export),
             'devstack_repo': str(self.root / 'devstack-repo'), 'devstack_commit': 'a' * 40,
             'platform_repo': str(self.root / 'platform-repo'), 'platform_commit': 'b' * 40,
-            'theme_commit': 'c' * 40, 'runtime_volume': 'fixture-runtime-data',
+            'theme_repo': str(self.root / 'theme-repo'), 'theme_commit': 'c' * 40, 'runtime_volume': 'fixture-runtime-data',
             'runtime_container': 'fixture-runtime', 'network': 'fixture-network',
             'network_subnet': '10.254.44.0/24', 'services': {},
             'images': {'runtime': 'sha256:' + 'd' * 64}, 'lms_port': 18240, 'cms_port': 18250,
@@ -87,6 +84,12 @@ class ReplayExportIdentityTests(unittest.TestCase):
             if action is replay_run.install:
                 self.ownership.assert_called_once_with(self.config)
                 self.assertEqual(self.events.mock_calls[0][0], 'ownership')
+
+    def test_prepare_requires_a_theme_checkout_before_creating_any_evidence(self):
+        del self.config['theme_repo']
+        with self.assertRaisesRegex(ValueError, '--theme-repo'):
+            replay_run.prepare(self.config)
+        self.assertFalse(self.evidence.exists())
 
     def test_prepare_pins_raw_manifest_before_creating_empty_placeholders(self):
         digest = hashlib.sha256(self.manifest.read_bytes()).hexdigest()
@@ -183,9 +186,6 @@ class ReplayExportIdentityTests(unittest.TestCase):
         live = [mount for mount in mounts if 'dst=/workspace/platform' in mount]
         self.assertEqual(live, ['type=bind,src=%s,dst=/workspace/platform' % self.config['platform_repo']])
         self.assertTrue(any('dst=/input/platform,readonly' in mount for mount in mounts))
-
-    def test_snapshot_theme_is_never_mounted_from_the_host(self):
-        self.assertFalse(any('/workspace/themes' in mount for mount in self.create_runtime_mounts()))
 
     def test_theme_repo_is_mounted_read_write_as_theme_hawthorn(self):
         self.config['theme_repo'] = '/Users/example/triboo-theme'

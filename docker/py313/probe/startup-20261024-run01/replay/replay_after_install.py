@@ -20,7 +20,7 @@ def main():
         shell(config, 'lms', 'natural-sites', '/startup/seed_local_host_sites.py')
         shell(config, 'lms', 'acceptance-users', '/startup/seed_acceptance_users.py')
         shell(config, 'lms', 'completion-tracking', '/startup/seed_completion_tracking.py')
-        shell(config, 'lms', 'site-themes', '/startup/replay/seed_themes.py')
+        shell(config, 'lms', 'site-themes', '/startup/seed_themes.py')
         for system in ('lms', 'cms'):
             manage(config, system, system + '-check', ['check'])
     elif args.phase == 'assets':
@@ -28,7 +28,7 @@ def main():
         shell(config, 'lms', 'xmodule-assets', '/startup/build_xmodule_assets.py')
         capture(config, 'frontend-assets', docker_exec(config, 'bash', '/startup/build_frontend.sh'))
         for system in ('lms', 'cms'):
-            shell(config, system, system + '-locale-static', '/startup/replay/locale_static.py')
+            shell(config, system, system + '-locale-static', '/startup/locale_static.py')
     elif args.phase == 'services':
         startup = Path(config['export_dir']) / 'devstack' / STARTUP_REL
         for script in ('start_http.py', 'start_worker.py'):

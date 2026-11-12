@@ -75,8 +75,9 @@ With an explicit operator-created JSON config, run `run.py --config ...` with:
 Original exports are mounted read-only at `/paired-startup`, `/input/platform`
 and `/canary` (the latter is the exported Platform CI directory). `/startup` is
 an initially empty task-owned container staging directory except for the two
-protected read-only credential/JWT mounts. Staging copies committed paired tools
-without overwriting these mounts; the Platform preparer writes `/input/ci.lock` in the container layer. `/runtime` is a
+protected read-only credential/JWT mounts. Staging runs `/canary/bringup/prepare_current_install.py`: it copies the
+Platform-owned bring-up scripts (`/canary/bringup`), then the committed paired replay tools,
+without overwriting these mounts or any Platform file; the Platform preparer writes `/input/ci.lock` in the container layer. `/runtime` is a
 new empty named volume for staged application/source builds, venv and generated
 outputs. Neither exports nor a historical runtime is writable or reused.
 Missing current tooling, corrupt inputs, occupied staging/runtime/lock, failed
