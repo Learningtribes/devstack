@@ -182,10 +182,12 @@ class LockedRuntimeTests(unittest.TestCase):
               patch('core.check_conflicts'), patch('core.inventory'), patch('core.docker_network_subnets',
               return_value=[]), patch('core.validate_network_subnet', return_value='10.254.44.0/24'),
               patch('core.socket.socket'), patch('core.subprocess.check_output', return_value='a' * 40),
-              patch('core.subprocess.run'), patch('core.ensure_runtime_image', return_value=record)):
+              patch('core.subprocess.run'), patch('core.ensure_runtime_image', return_value=record),
+              patch('core.check_platform_layout') as layout):
             self.config['platform_commit'] = self.config['devstack_commit'] = 'a' * 40
             report = core.fresh_preflight(self.config, before_prepare=False)
         self.assertEqual(report['runtime_image'], record)
+        layout.assert_called_once_with(self.config['platform_repo'])
 
 
 class BuilderTests(unittest.TestCase):

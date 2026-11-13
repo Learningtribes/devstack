@@ -2,7 +2,7 @@
 import argparse
 from pathlib import Path
 import sys
-from core import (STARTUP_REL, capture, docker_exec, load_config, manage, ownership, shell)
+from core import (APP_PYTHON, STARTUP_REL, capture, docker_exec, load_config, manage, ownership, shell)
 
 
 def main():
@@ -14,8 +14,8 @@ def main():
     ownership(config)
     if args.phase == 'schema':
         capture(config, 'local-runtime-log-dirs', docker_exec(config, 'mkdir', '-p', '/edx/var/log/lms', '/edx/var/log/cms'))
-        capture(config, 'saml-contract', docker_exec(config, '/runtime/venv/bin/python', '/startup/test_saml_processor_contract.py'))
-        capture(config, 'stage-theme', docker_exec(config, '/runtime/venv/bin/python', '/startup/prepare_theme_inputs.py'))
+        capture(config, 'saml-contract', docker_exec(config, APP_PYTHON, '/startup/test_saml_processor_contract.py'))
+        capture(config, 'stage-theme', docker_exec(config, APP_PYTHON, '/startup/prepare_theme_inputs.py'))
         shell(config, 'lms', 'initialize-schema', '/startup/initialize_schema.py', settings='startup_schema')
         shell(config, 'lms', 'natural-sites', '/startup/seed_local_host_sites.py')
         shell(config, 'lms', 'acceptance-users', '/startup/seed_acceptance_users.py')
