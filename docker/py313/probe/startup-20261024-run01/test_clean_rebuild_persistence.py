@@ -28,7 +28,7 @@ rows = {
 }
 assert rows['bookmarks'] and rows['completion']
 rows = json.loads(json.dumps(rows, default=str))
-path = Path('/runtime/clean-rebuild-persistence-baseline.json')
+path = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'clean-rebuild-persistence-baseline.json'
 if phase == 'before':
     assert not path.exists()
     path.write_text(json.dumps(rows, indent=2, sort_keys=True)); path.chmod(0o600)

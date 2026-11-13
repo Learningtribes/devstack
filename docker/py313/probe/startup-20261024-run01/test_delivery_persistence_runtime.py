@@ -16,7 +16,7 @@ from acceptance_context import course_key
 
 PHASE = globals().get('PHASE')
 assert PHASE in {'before', 'after'}, 'Use the before/after wrapper for an explicit persistence phase'
-root = Path('/runtime')
+root = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313'
 baseline_path = root / 'delivery-persistence-baseline.json'
 credentials = json.loads(Path('/startup/.acceptance-credentials.json').read_text())
 scorm = json.loads((root / 'scorm-acceptance-latest.json').read_text())

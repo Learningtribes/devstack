@@ -154,12 +154,12 @@ for _module in (pymongo.pool_shared, pymongo.synchronous.helpers, pymongo.synchr
     _module.socket = _pinned_socket
 
 # --- Test-only package overlay ------------------------------------------------
-# Why: the runtime lock does not ship test-only packages. /runtime/test-stubs
+# Why: the runtime lock does not ship test-only packages. $PY313_APP_ROOT/py313/test-stubs
 # holds the nose stub (nose.plugins.attrib.attr) that legacy tests import.
 # factory_boy 3 moved DjangoModelFactory to factory.django; the legacy test
 # factories still use factory.DjangoModelFactory, so alias the old name instead
 # of editing hundreds of factory classes. Factory behaviour is unchanged.
-sys.path.insert(0, "/runtime/test-stubs")
+sys.path.insert(0, os.environ.get("PY313_APP_ROOT", "/edx/app/edxapp") + "/py313/test-stubs")
 try:
     import factory
     import factory.django

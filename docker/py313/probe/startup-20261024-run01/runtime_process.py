@@ -15,11 +15,12 @@ def options():
                 key, value = line.split('=', 1)
                 environment[key] = value
     container = environment.get('PY313_RUNTIME_CONTAINER', 'py313-startup-runtime-20261024')
-    platform = environment.get('PY313_PLATFORM_ROOT', '/edx/app/edxapp/edx-platform')
+    app_root = environment.get('PY313_APP_ROOT', '/edx/app/edxapp')
+    platform = environment.get('PY313_PLATFORM_ROOT', app_root + '/edx-platform')
     environment['PY313_PLATFORM_ROOT'] = platform
     environment['PYTHONPATH'] = '/startup/settings'
     if subprocess.run(['docker', 'exec', container, 'test', '-s',
-                       '/runtime/config/site-ids.json'], check=False).returncode:
+                       app_root + '/py313/config/site-ids.json'], check=False).returncode:
         raise SystemExit('Refusing startup before natural-key Site seeding')
     forwarded = []
     for name in sorted(environment):
