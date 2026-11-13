@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 
-from core import (SERVICES, STARTUP_REL, capture, config_hash, docker_exec, load_config, ownership,
+from core import (APP_PYTHON, APP_SOURCE, APP_STATE, SERVICES, STARTUP_REL, capture, config_hash, docker_exec, load_config, ownership,
                   read_json, redact_values, save_new, validate_selected_image)
 
 
@@ -56,10 +56,11 @@ def main():
         assert extra == ({'.acceptance-credentials.json', 'jwt-private.pem'} if key == 'startup' else set()), (key, extra)
     code = '''import hashlib,json,os
 from pathlib import Path
-base=Path('/runtime/platform-source')
+base=Path('@APP_SOURCE@')
 out={str(p.relative_to(base)):({'link':os.readlink(p)} if p.is_symlink() else {'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}) for p in base.rglob('*') if p.is_file() or p.is_symlink()}
 print(json.dumps(out))'''
-    capture(config, args.label + '-runtime-identity', docker_exec(config, '/runtime/venv/bin/python', '-c', code))
+    capture(config, args.label + '-runtime-identity',
+            docker_exec(config, APP_PYTHON, '-c', code.replace('@APP_SOURCE@', APP_SOURCE)))
     runtime = read_json(root / (args.label + '-runtime-identity.txt'))
     expected = identity['trees']['platform']
     changed = [path for path, value in expected.items() if runtime.get(path) != value]
@@ -73,7 +74,7 @@ print(json.dumps(out))'''
     save_new(root / (args.label + '-selected-inspect.json'), runtime_inspect)
     save_new(root / (args.label + '-selected-images.json'), selected)
     for system in ('lms', 'cms'):
-        capture(config, args.label + '-' + system + '-worker', docker_exec(config, 'cat', '/runtime/logs/' + system + '-worker.log'))
+        capture(config, args.label + '-' + system + '-worker', docker_exec(config, 'cat', APP_STATE + '/logs/' + system + '-worker.log'))
     # Never collect HTTP logs, which may include authentication request bodies.
     values = redact_values(config)
     patterns = [rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',

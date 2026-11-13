@@ -1,4 +1,5 @@
 """Start a genuine LMS or CMS worker on its isolated service queues."""
+import os
 import re
 import shlex
 import subprocess
@@ -18,10 +19,11 @@ if prefix:
     queues = ','.join(prefix + '.' + system + '.' + priority
                       for priority in ('high', 'default', 'low', 'high_mem'))
     queue_option = ' --queues=' + shlex.quote(queues)
-command = ('umask 077; mkdir -p /runtime/logs; '
-           f'exec /runtime/venv/bin/celery -A {system}.celery:APP worker '
+app_root = os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')
+command = (f'umask 077; mkdir -p {app_root}/py313/logs; '
+           f'exec {app_root}/venvs/edxapp/bin/celery -A {system}.celery:APP worker '
            f'--loglevel=INFO --pool=solo --hostname=py313-{system}@%h'
-           + queue_option + f' >> /runtime/logs/{system}-worker.log 2>&1')
+           + queue_option + f' >> {app_root}/py313/logs/{system}-worker.log 2>&1')
 subprocess.run(['docker', 'exec', '-d', '-w', platform, *forwarded,
                 '-e', 'DJANGO_SETTINGS_MODULE=startup_' + system, container,
                 'sh', '-c', command], env=environment, check=True)

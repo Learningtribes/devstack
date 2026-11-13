@@ -25,9 +25,16 @@ IMAGE_REFERENCE_RE = re.compile(r'(?P<repository>[a-z0-9][a-z0-9._:/-]*)@(?P<dig
 IMAGE_TAG_RE = re.compile(r'[a-z0-9][a-z0-9._/-]*:[A-Za-z0-9_][A-Za-z0-9_.-]*')
 SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO_PASSWORD',
                'PY313_RABBITMQ_PASSWORD', 'PY313_STARTUP_SECRET_KEY', 'PY313_STARTUP_XQUEUE_PASSWORD'}
+# The application layout (Platform ci/py313/layout.py, path contract v2): code, venv and bring-up state of a run live
+# below one root. Every run uses the default; fresh_preflight refuses a Platform that defines another default.
+APP_ROOT = '/edx/app/edxapp'
+APP_SOURCE = APP_ROOT + '/edx-platform'
+APP_PYTHON = APP_ROOT + '/venvs/edxapp/bin/python'
+APP_STATE = APP_ROOT + '/py313'
+LAYOUT_DEFAULT_RE = re.compile(r"^DEFAULT_APP_ROOT = '([^']+)'$", re.MULTILINE)
 # Where a live run mounts the host Platform checkout. Processes never use this path: the install-time
-# copy at /runtime/platform-source is replaced by a symlink to it, because the Platform-owned lock registers
-# every editable install (Open_edX, xmodule, capa, ...) under /runtime/platform-source.
+# copy at APP_SOURCE is replaced by a symlink to it, because the Platform-owned lock registers
+# every editable install (Open_edX, xmodule, capa, ...) under APP_SOURCE.
 LIVE_PLATFORM_MOUNT = '/workspace/platform'
 PLATFORM_MOUNTS = ('snapshot', 'live')
 # A development run may bind-mount a host theme checkout; the theme directory name is fixed by the site themes
@@ -44,6 +51,19 @@ REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_c
 
 def fail(message):
     raise ValueError(message)
+
+
+def check_platform_layout(platform_repo):
+    """Refuse a Platform that predates the layout contract or names another application root."""
+    path = Path(platform_repo) / 'ci/py313/layout.py'
+    try:
+        match = LAYOUT_DEFAULT_RE.search(path.read_text())
+    except OSError:
+        match = None
+    if not match:
+        fail('Platform has no ci/py313/layout.py: this replay installs at ' + APP_ROOT + ' and needs a Platform that does')
+    if match.group(1) != APP_ROOT:
+        fail('Platform layout default %s differs from the replay application root %s' % (match.group(1), APP_ROOT))
 
 
 def read_json(path):
@@ -479,12 +499,12 @@ def environment(config):
     env.update(secret_values(config))
     env.update(PY313_MYSQL_USER='edxapp', PY313_MONGO_USER='edxapp', PY313_RABBITMQ_USER='edxapp',
                PY313_RUNTIME_CONTAINER=config['runtime_container'], PY313_SECRET_ENV_FILE=config['secret_env'],
-               PY313_PLATFORM_ROOT='/runtime/platform-source', PYTHONPATH='/startup/settings',
+               PY313_APP_ROOT=APP_ROOT, PY313_PLATFORM_ROOT=APP_SOURCE, PYTHONPATH='/startup/settings',
                PY313_REPLAY_ID=config['run_id'],
                PY313_DATABASE_NAME=config['database'], PY313_TEST_DATABASE_NAME=config['test_database'], PY313_MONGO_DB=config['mongo_database'],
                PY313_CACHE_PREFIX=config['cache_prefix'], PY313_ES_INDEX_PREFIX=config['es_prefix'],
                PY313_TASK_QUEUE_PREFIX=config['queue_prefix'], PY313_ACCEPTANCE_COURSE_ID=config['course_key'],
-               PY313_XMODULE_BUILD_ROOT='/runtime/xmodule-source-build-v1',
+               PY313_XMODULE_BUILD_ROOT=APP_STATE + '/xmodule-source-build-v1',
                PY313_LMS_DOMAIN='localhost:' + str(config['lms_port']), PY313_CMS_DOMAIN='localhost:' + str(config['cms_port']),
                PY313_LMS_ROOT_URL='http://localhost:' + str(config['lms_port']),
                PY313_CMS_ROOT_URL='http://localhost:' + str(config['cms_port']))
@@ -547,6 +567,7 @@ def fresh_preflight(config, *, before_prepare):
         if actual != config[key + '_commit']:
             fail(key + ' HEAD changed')
         subprocess.run(['git', '-C', repo, 'diff', '--quiet', 'HEAD'], check=True)
+    check_platform_layout(config['platform_repo'])
     report = {'configuration_sha256': config_hash(config), 'run_id': config['run_id'],
               'ports_available': True, 'resources_absent': True, 'network_subnet': network_subnet,
               'commits': commits(config)}
@@ -581,7 +602,7 @@ def docker_exec(config, *args, settings=None, detached=False, interactive=False)
     if settings:
         flags += ['-e', 'DJANGO_SETTINGS_MODULE=' + settings]
     return ['docker', 'exec', *(['-d'] if detached else []), *(['-it'] if interactive else []),
-            '-w', '/runtime/platform-source',
+            '-w', APP_SOURCE,
             *flags, config['runtime_container'], *args]
 
 
@@ -625,7 +646,7 @@ def manage(config, system, label, command, settings=None):
     settings = settings or 'startup_' + system
     if settings not in ('startup_lms', 'startup_cms', 'startup_schema', 'exchange_acceptance'):
         fail('Only registered local settings are permitted')
-    capture(config, label, docker_exec(config, '/runtime/venv/bin/python', 'manage.py', system,
+    capture(config, label, docker_exec(config, APP_PYTHON, 'manage.py', system,
                                      *command, settings=settings))
 
 

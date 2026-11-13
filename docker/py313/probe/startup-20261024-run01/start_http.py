@@ -1,4 +1,5 @@
 """Start a real Django HTTP process in the registered local runtime."""
+import os
 import subprocess
 import sys
 
@@ -13,10 +14,11 @@ port = int(environment.get('PY313_LMS_CONTAINER_PORT' if system == 'lms'
                            18000 if system == 'lms' else 18010))
 if not 1024 <= port <= 65535:
     raise SystemExit('Invalid local runtime port')
-command = ('umask 077; mkdir -p /runtime/logs; '
-           f'exec /runtime/venv/bin/python manage.py {system} runserver '
+app_root = os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')
+command = (f'umask 077; mkdir -p {app_root}/py313/logs; '
+           f'exec {app_root}/venvs/edxapp/bin/python manage.py {system} runserver '
            f'0.0.0.0:{port} --noreload --insecure '
-           f'>> /runtime/logs/{system}-http.log 2>&1')
+           f'>> {app_root}/py313/logs/{system}-http.log 2>&1')
 subprocess.run(['docker', 'exec', '-d', '-w', platform, *forwarded,
                 '-e', 'DJANGO_SETTINGS_MODULE=startup_' + system,
                 container, 'sh', '-c', command], env=environment, check=True)

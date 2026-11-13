@@ -37,7 +37,7 @@ class ShellTests(unittest.TestCase):
 
     def test_interactive_argv_allocates_tty_and_forwards_terminal_by_name(self):
         argv = docker_exec(self.config, 'bash', settings='startup_lms', interactive=True)
-        self.assertEqual(argv[:5], ['docker', 'exec', '-it', '-w', '/runtime/platform-source'])
+        self.assertEqual(argv[:5], ['docker', 'exec', '-it', '-w', '/edx/app/edxapp/edx-platform'])
         self.assertIn('DJANGO_SETTINGS_MODULE=startup_lms', argv)
         self.assertEqual(argv[argv.index('TERM') - 1], '-e')
         self.assertEqual(argv[-2:], [self.config['runtime_container'], 'bash'])
@@ -51,7 +51,7 @@ class ShellTests(unittest.TestCase):
                            'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=27018',
                            'NODE_OPTIONS=--max-old-space-size=2048', 'PAVER_DEVSTACK_SETTINGS=devstack_local'):
             self.assertIn(assignment, env_args)
-        self.assertIn('PYTHONPATH=/startup/settings:/runtime/platform-source/ci/py313/test-stubs', env_args)
+        self.assertIn('PYTHONPATH=/startup/settings:/edx/app/edxapp/edx-platform/ci/py313/test-stubs', env_args)
 
     def test_test_mongo_is_started_once_and_waited_for(self):
         listening = iter([False, False, True])
@@ -65,7 +65,7 @@ class ShellTests(unittest.TestCase):
         self.assertIn('27018', commands[1])
 
     def test_asset_tools_are_on_the_path_and_npx_is_linked_idempotently(self):
-        self.assertIn('/runtime/platform-source/node_modules/.bin', replay_shell.RUNTIME_PATH.split(':'))
+        self.assertIn('/edx/app/edxapp/edx-platform/node_modules/.bin', replay_shell.RUNTIME_PATH.split(':'))
         with patch.object(replay_shell.subprocess, 'run') as run:
             replay_shell.ensure_npx(self.config)
         (argv,), kwargs = run.call_args
@@ -84,13 +84,13 @@ class ShellTests(unittest.TestCase):
     def test_live_platform_run_uses_the_same_process_root(self):
         self.config['platform_mount'] = 'live'
         argv = docker_exec(self.config, 'true')
-        self.assertEqual(argv[:4], ['docker', 'exec', '-w', '/runtime/platform-source'])
+        self.assertEqual(argv[:4], ['docker', 'exec', '-w', '/edx/app/edxapp/edx-platform'])
 
     def test_non_interactive_argv_is_unchanged(self):
         argv = docker_exec(self.config, 'true', settings='startup_cms')
         self.assertNotIn('-it', argv)
         self.assertNotIn('TERM', argv)
-        self.assertEqual(argv[:4], ['docker', 'exec', '-w', '/runtime/platform-source'])
+        self.assertEqual(argv[:4], ['docker', 'exec', '-w', '/edx/app/edxapp/edx-platform'])
         self.assertNotIn('-d', docker_exec(self.config, 'true'))
         self.assertEqual(docker_exec(self.config, 'true', detached=True)[:3], ['docker', 'exec', '-d'])
 
@@ -122,7 +122,7 @@ class ShellTests(unittest.TestCase):
                 self.assertEqual(argv[-1], 'bash')
                 self.ensure_mock.assert_called_once_with(self.config)
                 self.npx_mock.assert_called_once_with(self.config)
-                self.assertTrue(replay_shell.RUNTIME_PATH.startswith('/runtime/venv/bin:'))
+                self.assertTrue(replay_shell.RUNTIME_PATH.startswith('/edx/app/edxapp/venvs/edxapp/bin:'))
                 self.assertEqual(env['TERM'], 'xterm-fixture')
 
     def test_secret_values_reach_docker_only_through_the_environment(self):
