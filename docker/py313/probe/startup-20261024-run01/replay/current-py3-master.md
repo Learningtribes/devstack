@@ -22,7 +22,7 @@ make py313-destroy   # removes containers, volumes and network; the run director
 ```
 
 The Platform checkout is bind-mounted read-write at `/workspace/platform`, and after the install stage
-`/runtime/platform-source` becomes a symlink to it, so the editable installs (Open_edX, xmodule, capa, ...), the
+`/edx/app/edxapp/edx-platform` becomes a symlink to it, so the editable installs (Open_edX, xmodule, capa, ...), the
 cwd and the settings all see your working tree, not a copy. Install inputs and the installed entry-point
 metadata still come from the committed export, so changed `setup.py` entry points or dependencies need a
 new environment. Consequences: uncommitted edits take
@@ -162,7 +162,7 @@ make cms-shell    # DJANGO_SETTINGS_MODULE=startup_cms (make studio-shell is an 
 
 Run from the Devstack worktree on a host terminal. With no arguments the target is the development
 environment (`$PY313_RUNS_ROOT/dev313/config.json`); set `PY313_CONFIG` for another run. The shell starts
-in `/runtime/platform-source` (a copy for a snapshot run, the live checkout for a development run) inside the run-owned runtime with `/runtime/venv/bin` first on `PATH` and the run's namespace
+in `/edx/app/edxapp/edx-platform` (a copy for a snapshot run, the live checkout for a development run) inside the run-owned runtime with `/edx/app/edxapp/venvs/edxapp/bin` first on `PATH` and the run's namespace
 and secrets in the environment, so `python manage.py lms shell` works directly. It is not an
 evidence-capturing command (no label, nothing recorded); use `run_check.py` for
 reproducible output.
@@ -171,7 +171,7 @@ From the shell, `paver test_system -s lms|cms -C --fasttest` and `paver update_a
 `PAVER_DEVSTACK_SETTINGS=devstack_local`, Paver's default settings for this runtime: Platform's `lms.envs.devstack_local` /
 `cms.envs.devstack_local` import the runtime's `startup_lms` / `startup_cms`. Paver's classic default (`devstack`) imports
 `lms.envs.aws`, which needs production config (`CELERY_RESULT_BACKEND`, `lms.env.json`, `lms.auth.json`) this runtime
-does not have. `paver update_assets` therefore builds into `/runtime/static`, which the running servers use. It needs
+does not have. `paver update_assets` therefore builds into `/edx/app/edxapp/py313/static`, which the running servers use. It needs
 Platform with `devstack_local` (Platform PR "devstack_local settings and PAVER_DEVSTACK_SETTINGS"). `lms-watcher-shell` and `studio-watcher-shell` still target the
 classic Python 2.7 containers.
 
