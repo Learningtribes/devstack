@@ -45,7 +45,7 @@ Do not run initialization or seed scripts against existing/production databases.
 
 ## Verified local entry sequence (run39)
 
-Use Python3.13.14/Django5.2.13, an independent empty /runtime volume and new
+Use Python3.13.14/Django5.2.13, an independent empty /edx/app/edxapp volume and new
 py313_rebuild_* MySQL/Mongo/cache/search/queue namespaces. Never point these
 initializers at an existing manual database. Protected env values remain
 outside Git. Exact image, ports, resources and execution evidence are in
@@ -53,7 +53,7 @@ outside Git. Exact image, ports, resources and execution evidence are in
 
 1. Mount the current platform source read-only at /input/platform and its `ci/py313`
    at /canary, then run the Platform installer (`image-inputs.py`, `install.py`); it
-   creates /runtime/venv and a separate writable /runtime/platform-source. No old venv
+   creates /edx/app/edxapp/venvs/edxapp and a separate writable /edx/app/edxapp/edx-platform. No old venv
    is copied. (The former `install.sh` is removed.)
 2. Run prepare_theme_inputs.py. In the writable platform root run
    npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund.
@@ -99,7 +99,7 @@ Exact replay commands/times/exit codes and recovery scope are in run39.
 Running container: py313-rebuild-runtime-20261025-run39. LMS loopback18180,
 CMS18190. Set PY313_RUNTIME_CONTAINER to that name,
 PY313_SECRET_ENV_FILE=/Users/noahwang/.codex/py313-runtime-run39.env and
-PY313_PLATFORM_ROOT=/runtime/platform-source before invoking start_http.py or
+PY313_PLATFORM_ROOT=/edx/app/edxapp/edx-platform before invoking start_http.py or
 start_worker.py with lms/cms. Inspect exact processes before starting a second
 copy; these scripts dispatch rather than prove readiness. Keep protected
 credentials outside Git and evidence. A new reconstruction must use another
@@ -126,7 +126,7 @@ application setup because completion/events require newer key APIs. A fresh
 run-26 volume was installed, incrementally repaired from registered source,
 and initialized as `py313_rebuild_run26`: 149 apps, 301 managed models, 315
 tables, zero historical migrations applied. Natural-key Site seeding created
-new host records and `/runtime/config/site-ids.json`.
+new host records and `/edx/app/edxapp/py313/config/site-ids.json`.
 
 LMS/CMS strict checks, mandatory XBlock enumeration, dependency closure,
 Sass/theme/webpack builds, both locale/static collections, LMS internal

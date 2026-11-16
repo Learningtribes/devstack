@@ -4,6 +4,7 @@ import io
 import json
 import os
 from pathlib import Path
+import re
 import sys
 import tempfile
 import unittest
@@ -12,7 +13,7 @@ from unittest.mock import patch
 import run as replay_run
 import audit_and_collect
 from provision_acceptance import provision
-from core import (SECRET_KEYS, SERVICES, capture, check_conflicts, environment, load_config,
+from core import (APP_ROOT, SECRET_KEYS, SERVICES, capture, check_conflicts, check_platform_layout, environment, load_config,
                   physical_names, secret_values, source_repository_roots,
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
                   IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet)
@@ -65,11 +66,27 @@ class ContractTests(unittest.TestCase):
         self.assertFalse(set(physical_names(self.config)) & set(physical_names(second)))
 
     def test_platform_mount_is_optional_and_never_changes_the_process_root(self):
-        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/runtime/platform-source')
+        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/edx/app/edxapp/edx-platform')
         self.config['platform_mount'] = 'live'
         self.write()
         self.assertEqual(load_config(self.path)['platform_mount'], 'live')
-        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/runtime/platform-source')
+        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/edx/app/edxapp/edx-platform')
+
+    def test_runtime_receives_the_application_root(self):
+        env = environment(self.config)
+        self.assertEqual(env['PY313_APP_ROOT'], '/edx/app/edxapp')
+        self.assertEqual(env['PY313_XMODULE_BUILD_ROOT'], '/edx/app/edxapp/py313/xmodule-source-build-v1')
+
+    def test_platform_without_the_layout_contract_is_refused(self):
+        platform = Path(self.config['platform_repo'])
+        with self.assertRaisesRegex(ValueError, 'no ci/py313/layout.py'):
+            check_platform_layout(platform)
+        (platform / 'ci/py313').mkdir(parents=True)
+        (platform / 'ci/py313/layout.py').write_text("DEFAULT_APP_ROOT = '/opt/other'\n")
+        with self.assertRaisesRegex(ValueError, 'differs from the replay application root'):
+            check_platform_layout(platform)
+        (platform / 'ci/py313/layout.py').write_text("DEFAULT_APP_ROOT = '%s'\n" % APP_ROOT)
+        check_platform_layout(platform)
 
     def test_theme_repo_is_optional_and_must_be_absolute_and_separate(self):
         self.assertNotIn('theme_repo', self.config)
@@ -202,7 +219,7 @@ class ContractTests(unittest.TestCase):
         ownership.assert_called_once_with(self.config)
         docker_exec.assert_called_once_with(
             self.config,
-            '/runtime/venv/bin/python',
+            '/edx/app/edxapp/venvs/edxapp/bin/python',
             '/startup/run_py313_legacy_tests.py',
             'cms',
             'test',
@@ -417,11 +434,38 @@ class ContractTests(unittest.TestCase):
             'installed-companion-report', 'platform-identity-report',
             'install-receipt', 'resolved-lock', 'complete-lock'])
         docker_exec.assert_has_calls([
-            unittest.mock.call(self.config, '/runtime/venv/bin/python', '-B', '/canary/verify-platform-identity.py'),
-            unittest.mock.call(self.config, 'cat', '/runtime/installed-companion-identity.json')])
+            unittest.mock.call(self.config, '/edx/app/edxapp/venvs/edxapp/bin/python', '-B', '/canary/verify-platform-identity.py'),
+            unittest.mock.call(self.config, 'cat', '/edx/app/edxapp/py313/installed-companion-identity.json')])
         self.assertEqual(capture.call_args_list[-1].kwargs, {'show_output': False})
         ownership.assert_called_once_with(self.config)
         self.assertEqual(verify_export.call_args_list, [unittest.mock.call(self.config)] * 2)
+
+
+class LayoutContractTests(unittest.TestCase):
+    PROBE = Path(__file__).resolve().parents[1]
+    RETIRED = re.compile(r'(?<![\w.<@/-])/runtime(?![\w.-])')
+
+    def sources(self):
+        for path in sorted(self.PROBE.rglob('*')):
+            parts = path.relative_to(self.PROBE).parts
+            if (path.suffix in ('.py', '.sh') and path.is_file()
+                    and parts[0] not in ('dependencies', 'fixtures') and '__pycache__' not in parts):
+                yield path
+
+    def test_no_code_names_the_retired_runtime_root(self):
+        # The two unit tests below assert that the retired mount is absent, so they must name it.
+        allowed = {'replay/test_core.py', 'replay/test_run_export_identity.py'}
+        offenders = [str(path.relative_to(self.PROBE)) for path in self.sources()
+                     if str(path.relative_to(self.PROBE)) not in allowed and self.RETIRED.search(path.read_text())]
+        self.assertEqual(offenders, [])
+
+    def test_every_repeated_default_equals_the_replay_root(self):
+        found = 0
+        for path in self.sources():
+            for default in re.findall(r"PY313_APP_ROOT['\"],\s*['\"]([^'\"]+)['\"]", path.read_text()):
+                found += 1
+                self.assertEqual(default, APP_ROOT, str(path.relative_to(self.PROBE)))
+        self.assertGreater(found, 5)
 
 
 if __name__ == '__main__':

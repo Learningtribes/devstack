@@ -54,7 +54,7 @@ manifest = {
         for name, data in [('zulu.txt', b'zulu-updated'), ('Alpha.txt', 'alpha')]
     ],
 }
-target = Path('/runtime/gridfs-acceptance-latest.json')
+target = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'gridfs-acceptance-latest.json'
 fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
 with os.fdopen(fd, 'w') as output:
     output.write(json.dumps(manifest, sort_keys=True) + '\n')

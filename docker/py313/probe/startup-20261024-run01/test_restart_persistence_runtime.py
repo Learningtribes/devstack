@@ -2,6 +2,7 @@
 import datetime
 import hashlib
 import json
+import os
 from pathlib import Path
 import secrets
 import requests
@@ -22,8 +23,8 @@ values = json.loads(Path('/startup/.acceptance-credentials.json').read_text())
 credentials = json.loads(Path('/startup/.scorm-isolation-credentials.json').read_text())
 user = get_user_model().objects.get(username=credentials['username'])
 learner = get_user_model().objects.get(username=values['learner']['username'])
-secret_path = Path('/runtime/run36-persistence02-private.json')
-public_path = Path('/runtime/run36-persistence02-baseline.json')
+secret_path = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'run36-persistence02-private.json'
+public_path = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'run36-persistence02-baseline.json'
 
 def digest(blob):
     return hashlib.sha256(blob).hexdigest()
@@ -65,11 +66,11 @@ if phase == 'before':
 elif phase == 'refresh':
     private = json.loads(secret_path.read_text())
     session = requests.Session();session.cookies.update(private['cookies'])
-    public_path = Path('/runtime/run36-persistence03-baseline.json')
+    public_path = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'run36-persistence03-baseline.json'
     assert not public_path.exists()
     public_path.write_text(json.dumps(snapshot(),indent=2,sort_keys=True));public_path.chmod(0o600)
 else:
-    public_path = Path('/runtime/run36-persistence03-baseline.json')
+    public_path = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'run36-persistence03-baseline.json'
     private = json.loads(secret_path.read_text())
     session = requests.Session();session.cookies.update(private['cookies'])
     r = session.get(base+'/dashboard',allow_redirects=False)

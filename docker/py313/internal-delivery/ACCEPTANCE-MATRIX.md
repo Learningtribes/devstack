@@ -2,6 +2,8 @@
 
 Historical matrix: delivery53–56. Run-scoped results for later deliveries follow the table and are distinct from this baseline. Each result applies only to its named replay.
 
+Path note: evidence below names `/runtime/...` as it was at the time. Runs created from Devstack branch `feat/py313-app-root-contract` onward use the application root `/edx/app/edxapp` instead (`/runtime/platform-source` is `/edx/app/edxapp/edx-platform`, `/runtime/venv` is `/edx/app/edxapp/venvs/edxapp`, other `/runtime/<name>` is `/edx/app/edxapp/py313/<name>`); the historical text is not rewritten.
+
 | Scenario | Command / expected behavior | Delivery53 | Delivery54 | Delivery55 | Delivery56 | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | D0 paired source and fresh resource isolation | `run.py preflight`, `prepare`, `create`; exact commits, frozen-source contract, unique resources/ports | PASS | PASS | PASS | PASS | delivery56 `preflight.json`, `export.txt`, `commands.jsonl`, `input-preflight.txt` |

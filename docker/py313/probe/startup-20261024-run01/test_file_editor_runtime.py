@@ -1,12 +1,13 @@
 """Real Studio File editor output, accept metadata and readonly display."""
 import json
+import os
 from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 from opaque_keys.edx.keys import UsageKey
 from xmodule.modulestore.django import modulestore
 v=json.loads(Path('/startup/.acceptance-credentials.json').read_text())['staff']
-metadata=json.loads(Path('/runtime/scorm-acceptance-latest.json').read_text())
+metadata=json.loads((Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'scorm-acceptance-latest.json').read_text())
 usage=UsageKey.from_string(metadata['usage'])
 block=modulestore().get_item(usage)
 s=requests.Session();base='http://localhost:18010';s.get(base+'/signin')

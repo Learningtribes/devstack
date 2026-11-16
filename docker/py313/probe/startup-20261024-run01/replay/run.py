@@ -10,7 +10,7 @@ import sys
 
 from export_identity import verify_export_identity
 
-from core import (LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
+from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
                   docker_exec, fresh_preflight, load_config, ownership, read_json,
                   save_new, shell, source_repository_roots, validate_path_isolation)
 
@@ -100,7 +100,7 @@ def create(config):
     capture(config, 'create-infra', ['docker', 'compose', '-p', config['network'], '--env-file', config['secret_env'],
                                      '-f', str(root / 'compose.json'), 'up', '-d'])
     startup = Path(config['export_dir']) / 'devstack' / STARTUP_REL
-    mounts = ['--mount', f'type=volume,src={config["runtime_volume"]},dst=/runtime',
+    mounts = ['--mount', f'type=volume,src={config["runtime_volume"]},dst={APP_ROOT}',
               '--mount', f'type=bind,src={startup},dst=/paired-startup,readonly',
               '--mount', f'type=bind,src={config["export_dir"]}/platform,dst=/input/platform,readonly']
     mounts += ['--mount', f'type=bind,src={config["export_dir"]}/platform/ci/py313,dst=/canary,readonly']
@@ -127,18 +127,18 @@ def install(config):
     capture(config, 'install', ['docker', 'exec', config['runtime_container'],
         '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
     capture(config, 'platform-identity', docker_exec(config,
-        '/runtime/venv/bin/python', '-B', '/canary/verify-platform-identity.py'))
-    for label, path in [('installed-companion-report', '/runtime/installed-companion-identity.json'),
-                        ('platform-identity-report', '/runtime/platform-identity.json'),
-                        ('install-receipt', '/runtime/install-receipt.json'),
-                        ('resolved-lock', '/runtime/resolved-ci.lock'),
+        APP_PYTHON, '-B', '/canary/verify-platform-identity.py'))
+    for label, path in [('installed-companion-report', APP_STATE + '/installed-companion-identity.json'),
+                        ('platform-identity-report', APP_STATE + '/platform-identity.json'),
+                        ('install-receipt', APP_STATE + '/install-receipt.json'),
+                        ('resolved-lock', APP_STATE + '/resolved-ci.lock'),
                         ('complete-lock', '/input/ci.lock')]:
         capture(config, label, docker_exec(config, 'cat', path), show_output=False)
     verify_prepared_export(config)
     if config.get('platform_mount') == 'live':
         # After every identity report: from here the editable installs, cwd and settings all see the host tree.
         capture(config, 'link-live-platform', ['docker', 'exec', config['runtime_container'], 'sh', '-c',
-                'rm -rf /runtime/platform-source && ln -s %s /runtime/platform-source' % LIVE_PLATFORM_MOUNT])
+                'rm -rf %s && ln -s %s %s' % (APP_SOURCE, LIVE_PLATFORM_MOUNT, APP_SOURCE)])
 
 
 def main():
@@ -178,7 +178,7 @@ def main():
         ownership(config)
         capture(config, label, docker_exec(
             config,
-            '/runtime/venv/bin/python',
+            APP_PYTHON,
             '/startup/run_py313_legacy_tests.py',
             system,
             'test',
@@ -189,7 +189,7 @@ def main():
         if len(args.arguments) != 1:
             parser.error('exchange requires a unique label')
         ownership(config)
-        capture(config, args.arguments[0], docker_exec(config, '/runtime/venv/bin/python', '-u', '-c',
+        capture(config, args.arguments[0], docker_exec(config, APP_PYTHON, '-u', '-c',
             "import runpy;runpy.run_path('/startup/test_auth_exchange_runtime.py',run_name='__main__')", settings='exchange_acceptance'))
 
 

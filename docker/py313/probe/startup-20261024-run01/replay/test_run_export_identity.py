@@ -180,6 +180,11 @@ class ReplayExportIdentityTests(unittest.TestCase):
         mounts = self.create_runtime_mounts()
         self.assertFalse(any('dst=/workspace/platform' in mount for mount in mounts))
 
+    def test_runtime_volume_is_the_application_root_and_runtime_is_not_mounted(self):
+        mounts = self.create_runtime_mounts()
+        self.assertIn('type=volume,src=fixture-runtime-data,dst=/edx/app/edxapp', mounts)
+        self.assertFalse(any('dst=/runtime' in mount for mount in mounts))
+
     def test_live_run_mounts_the_platform_checkout_read_write_outside_runtime(self):
         self.config['platform_mount'] = 'live'
         mounts = self.create_runtime_mounts()
@@ -221,7 +226,7 @@ class ReplayExportIdentityTests(unittest.TestCase):
                                        'installed-companion-report', 'platform-identity-report',
                                        'install-receipt', 'resolved-lock', 'complete-lock'])
         script = self.capture.call_args_list[-1].args[2][-1]
-        self.assertEqual(script, 'rm -rf /runtime/platform-source && ln -s /workspace/platform /runtime/platform-source')
+        self.assertEqual(script, 'rm -rf /edx/app/edxapp/edx-platform && ln -s /workspace/platform /edx/app/edxapp/edx-platform')
 
     def test_snapshot_install_keeps_the_copy(self):
         self.prepare()

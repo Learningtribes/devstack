@@ -10,20 +10,20 @@ import subprocess
 import time
 
 import core
-from core import docker_exec, environment, load_config
+from core import APP_ROOT, APP_SOURCE, docker_exec, environment, load_config
 
 # node_modules/.bin carries rtlcss, which `paver update_assets` calls by name.
-RUNTIME_PATH = ('/runtime/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:'
-                '/runtime/platform-source/node_modules/.bin')
+RUNTIME_PATH = (APP_ROOT + '/venvs/edxapp/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:'
+                + APP_SOURCE + '/node_modules/.bin')
 # lms.envs.test / cms.envs.test connect to an unauthenticated Mongo, while the run's Mongo requires
 # credentials. A second mongod on this port, inside the run's own Mongo container, serves the tests.
 TEST_MONGO_PORT = 27018
 # What `paver test_system` / `test_lib` / `update_assets` need from a shell: no prerequisite install, the nose stub
 # that shadows nose 1.3.7 (it imports the stdlib `imp`, removed in 3.13), and the webpack heap size the bring-up uses.
-PAVER_ENVIRONMENT = ('TESTING=True', 'NO_PREREQ_INSTALL=True', 'SKIP_NPM_INSTALL=True', 'VIRTUAL_ENV=/runtime/venv',
+PAVER_ENVIRONMENT = ('TESTING=True', 'NO_PREREQ_INSTALL=True', 'SKIP_NPM_INSTALL=True', 'VIRTUAL_ENV=' + APP_ROOT + '/venvs/edxapp',
                      'EDXAPP_TEST_MONGO_HOST=mongo', 'EDXAPP_TEST_MONGO_PORT=%d' % TEST_MONGO_PORT,
                      'NODE_OPTIONS=--max-old-space-size=2048', 'PAVER_DEVSTACK_SETTINGS=devstack_local',
-                     'PYTHONPATH=/startup/settings:/runtime/platform-source/ci/py313/test-stubs')
+                     'PYTHONPATH=/startup/settings:' + APP_SOURCE + '/ci/py313/test-stubs')
 
 
 def test_mongo_listening(container):

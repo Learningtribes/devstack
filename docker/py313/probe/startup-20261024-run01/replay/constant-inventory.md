@@ -16,7 +16,8 @@
 | JWT and acceptance fixture paths | Explicit private file paths, read-only mounts; values excluded/redacted |
 | run42 `audit_final_inputs.py` export/repo paths | Audit reads configured export identity and checks runtime sources |
 | run42 `collect_and_scan.py` trace path/run42 worker names | Current config worker logs only; failed commands already captured locally |
-| `/startup`, `/input/platform`, `/runtime/platform-source` | Retained internal mount contract; each runtime/volume is new |
+| `/startup`, `/input/platform` | Retained internal mount contract; each runtime/volume is new |
+| Former `/runtime/platform-source`, `/runtime/venv`, `/runtime/<name>` | `/edx/app/edxapp/edx-platform`, `/edx/app/edxapp/venvs/edxapp`, `/edx/app/edxapp/py313/<name>` (`APP_ROOT` in `core.py`, Platform `ci/py313/layout.py`); `fresh_preflight` refuses a Platform without that module |
 | Former `/runtime/rebuild-sources-20261025-run25` build staging | Removed; package inputs are Platform pins and companions, installed by `ci/py313/install.py` |
 | Internal static/theme/xmodule/wheel paths | Existing build contract inside each fresh runtime; exported sources audited |
 | `start_http.py` / `start_worker.py` legacy defaults | New entry supplies explicit environment and checks ownership before invoking; no fallback is used |

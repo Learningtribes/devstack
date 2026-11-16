@@ -77,8 +77,9 @@ and `/canary` (the latter is the exported Platform CI directory). `/startup` is
 an initially empty task-owned container staging directory except for the two
 protected read-only credential/JWT mounts. Staging runs `/canary/bringup/prepare_current_install.py`: it copies the
 Platform-owned bring-up scripts (`/canary/bringup`), then the committed paired replay tools,
-without overwriting these mounts or any Platform file; the Platform preparer writes `/input/ci.lock` in the container layer. `/runtime` is a
-new empty named volume for staged application/source builds, venv and generated
+without overwriting these mounts or any Platform file; the Platform preparer writes `/input/ci.lock` in the container layer. `/edx/app/edxapp` (the application root of Platform `ci/py313/layout.py`: code `edx-platform`, venv `venvs/edxapp`,
+generated outputs `py313/`; `/runtime` is retired) is a
+new empty named volume for the application source copy, venv and generated
 outputs. Neither exports nor a historical runtime is writable or reused.
 Missing current tooling, corrupt inputs, occupied staging/runtime/lock, failed
 subprocesses and source/export drift abort; there is no old-lock fallback.
@@ -124,7 +125,7 @@ of depending on a platform source path from another container.
 for another run) opens an interactive bash in the run-owned runtime container. It has no label: a terminal session is not evidence, so nothing is captured or
 written to the evidence directory. The entry only verifies the evidence config and
 the runtime ownership label, so it works from any Devstack checkout. You get
-workdir `/runtime/platform-source` (a copy for a snapshot run, a symlink to the live checkout for a development run), `/runtime/venv/bin` first on `PATH`, the run's
+workdir `/edx/app/edxapp/edx-platform` (a copy for a snapshot run, a symlink to the live checkout for a development run), `/edx/app/edxapp/venvs/edxapp/bin` first on `PATH`, the run's
 `PY313_*` namespace and secrets (passed to the container by name, never on argv),
 `PYTHONPATH=/startup/settings` and `DJANGO_SETTINGS_MODULE=startup_lms|startup_cms`.
 Use `python manage.py lms shell` (or `cms`) inside; it needs a TTY on the host.
