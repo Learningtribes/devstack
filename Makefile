@@ -234,6 +234,22 @@ py313-restart: ## Restart LMS and Studio of the development environment so they 
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/restart.py --config "$(BRINGUP_CONFIG)"
 
+py313-stop: ## Stop every container of the environment without deleting data (reverse of py313-start)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" stop
+
+py313-start: ## Start every stopped container of the environment and re-dispatch LMS/CMS/discovery
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" start
+
+py313-shell-lms: ## Shell in the run's runtime with LMS settings (works for any run age)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" --system lms shell
+
+py313-shell-cms: ## Shell in the run's runtime with CMS settings (works for any run age)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" --system cms shell
+
 py313-status: ## Show container states, ports and heartbeats of the development environment
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/status.py --config "$(BRINGUP_CONFIG)"

@@ -195,6 +195,7 @@ def restart(config, timeout=HEALTH_TIMEOUT):
 
 def status(config):
     """Read-only row describing the discovery container, plus its health code."""
+    define(config)
     places = paths(config)
     result = subprocess.run(['docker', 'inspect', '--type', 'container', '--format',
                              '{"state":{{json .State.Status}},"ports":{{json .NetworkSettings.Ports}}}',
@@ -218,6 +219,7 @@ def destroy_plan(config):
 
 def shell_argv(config):
     """Interactive discovery shell with the venv first on PATH; leaves no evidence, like shell.py."""
+    define(config)
     ownership(config)
     return ['docker', 'exec', '-it', '-w', DISCOVERY_MOUNT, '-e', 'TERM',
             paths(config)['container'], 'sh', '-c',

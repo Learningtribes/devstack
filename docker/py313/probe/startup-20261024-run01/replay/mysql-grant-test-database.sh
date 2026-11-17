@@ -13,11 +13,15 @@ if [ -z "${BRINGUP_TEST_DATABASE:-}" ]; then
     exit 1
 fi
 pattern=$(printf '%s' "$BRINGUP_TEST_DATABASE" | sed 's/[_%]/\\&/g')
-grant=$(printf "GRANT ALL PRIVILEGES ON \`%s\`.* TO '%s'@'%%';\n" "$pattern" "$MYSQL_USER")
+# A function keeps the trailing newline: command substitution in "$(...)" would strip it, and the
+# entrypoint helper reads the statement from this stream.
+grant_sql() {
+    printf "GRANT ALL PRIVILEGES ON \`%s\`.* TO '%s'@'%%';\n" "$pattern" "$MYSQL_USER"
+}
 if type docker_process_sql >/dev/null 2>&1; then
-    printf '%s' "$grant" | docker_process_sql
+    grant_sql | docker_process_sql
 else
     # Executed, not sourced: talk to the temporary server over the same socket the entrypoint uses.
-    printf '%s' "$grant" | MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql --protocol=socket -uroot -hlocalhost \
+    grant_sql | MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql --protocol=socket -uroot -hlocalhost \
         --socket=/var/run/mysqld/mysqld.sock --comments
 fi

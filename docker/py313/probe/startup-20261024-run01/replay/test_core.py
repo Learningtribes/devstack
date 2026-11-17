@@ -527,7 +527,9 @@ class LayoutContractTests(unittest.TestCase):
 
     def test_no_code_names_the_retired_runtime_root(self):
         # The two unit tests below assert that the retired mount is absent, so they must name it.
-        allowed = {'replay/test_core.py', 'replay/test_run_export_identity.py'}
+        # lifecycle.py probes it only to start a run created before the layout move: that run's
+        # venv really is there, and probing it is what keeps such a run startable.
+        allowed = {'replay/test_core.py', 'replay/test_run_export_identity.py', 'replay/lifecycle.py'}
         offenders = [str(path.relative_to(self.PROBE)) for path in self.sources()
                      if str(path.relative_to(self.PROBE)) not in allowed and self.RETIRED.search(path.read_text())]
         self.assertEqual(offenders, [])
