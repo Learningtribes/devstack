@@ -24,6 +24,7 @@ BRINGUP_PYTHON := uv run --no-project --python 3.13 python -B
 BRINGUP_DEV_RUN_ID ?= dev313
 BRINGUP_RUNS_ROOT ?= $(HOME)/workspace/hawthorn/py313-runs
 BRINGUP_CONFIG ?= $(BRINGUP_RUNS_ROOT)/$(BRINGUP_DEV_RUN_ID)/config.json
+DISCOVERY_IMAGE ?= ltdps/discovery:py313-local
 export BRINGUP_RUNS_ROOT
 define py313_require_config
 	@test -f "$(BRINGUP_CONFIG)" || { echo "No environment at $(BRINGUP_CONFIG); create it with: make py313-dev-up" >&2; exit 1; }
@@ -199,15 +200,24 @@ lms-shell: ## Open a shell in the development runtime with LMS settings (no argu
 cms-shell: ## Open a shell in the development runtime with CMS settings (no arguments)
 	$(call py313_shell,cms)
 
-discovery-shell-py313: ## Open a shell in the run's course-discovery container (py313, no arguments)
+py313-build-discovery: ## Build the course-discovery runtime image locally (DISCOVERY_REPO=<checkout>; DEBIAN_MIRROR/DEBIAN_SECURITY_MIRROR/NODE_DIST_URL override the Dockerfile defaults)
+	@test -n "$(DISCOVERY_REPO)" || { echo "set DISCOVERY_REPO to a course-discovery checkout" >&2; exit 2; }
+	@test -f "$(DISCOVERY_REPO)/ci/py313/Dockerfile" || { echo "no ci/py313/Dockerfile in $(DISCOVERY_REPO)" >&2; exit 2; }
+	docker build -f "$(DISCOVERY_REPO)/ci/py313/Dockerfile" -t "$(DISCOVERY_IMAGE)" \
+	  $(if $(DEBIAN_MIRROR),--build-arg DEBIAN_MIRROR="$(DEBIAN_MIRROR)") \
+	  $(if $(DEBIAN_SECURITY_MIRROR),--build-arg DEBIAN_SECURITY_MIRROR="$(DEBIAN_SECURITY_MIRROR)") \
+	  $(if $(NODE_DIST_URL),--build-arg NODE_DIST_URL="$(NODE_DIST_URL)") \
+	  "$(DISCOVERY_REPO)"
+
+py313-shell-discovery: ## Open a shell in the run's course-discovery container (no arguments)
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/shell.py --config "$(BRINGUP_CONFIG)" discovery
 
-discovery-status-py313: ## Show the run's course-discovery container state and /health/ code
+py313-status-discovery: ## Show the run's course-discovery container state and /health/ code
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" status
 
-discovery-update-db-py313: ## Run course-discovery migrations in the run's discovery container (py313)
+py313-update-db-discovery: ## Run course-discovery migrations in the run's discovery container
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" migrate
 
