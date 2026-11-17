@@ -21,13 +21,13 @@ from student.roles import (
 from xblock.core import XBlock
 from xmodule.modulestore.django import modulestore
 
-key = CourseKey.from_string(os.environ['PY313_ACCEPTANCE_COURSE_ID'])
+key = CourseKey.from_string(os.environ['BRINGUP_ACCEPTANCE_COURSE_ID'])
 plugins = ['scormxblock', 'pdf', 'iframe', 'externality', 'lbmdonexblock', 'ilt']
 for name in plugins:
     XBlock.load_class(name)
 users = get_user_model()
 credentials = json.loads(Path('/startup/.acceptance-credentials.json').read_text())
-assert credentials['run_id'] == os.environ['PY313_REPLAY_ID']
+assert credentials['run_id'] == os.environ['BRINGUP_REPLAY_ID']
 staff = users.objects.get(username=credentials['staff']['username'])
 assert not staff.is_staff and not staff.is_superuser
 assert staff.groups.filter(name=STUDIO_ADMIN_ACCESS_GROUP).exists()
@@ -45,7 +45,7 @@ assert instructor_role.has_user(staff), 'Expected instructor role on the target 
 assert has_course_author_access(staff, key), 'Expected course-scoped author access for the named staff identity'
 assert get_user_permissions(staff, key) & STUDIO_RELEASE_COURSE, 'Expected course-scoped release permission'
 assert not has_course_author_access(learner, key), 'Ordinary learner unexpectedly has author access'
-other_course = key.replace(course='Unrelated_' + os.environ['PY313_REPLAY_ID'])
+other_course = key.replace(course='Unrelated_' + os.environ['BRINGUP_REPLAY_ID'])
 assert not has_course_author_access(staff, other_course), 'Course author unexpectedly has author access outside the assigned course'
 assert not get_user_permissions(staff, other_course) & STUDIO_RELEASE_COURSE, 'Release permission leaked to another course'
 course.advanced_modules = list(dict.fromkeys(course.advanced_modules + plugins))

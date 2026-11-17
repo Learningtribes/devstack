@@ -36,7 +36,7 @@ def main() -> int:
     lock = json.loads((root / "probe/startup-20261024-run01/replay/infrastructure-images.lock.json").read_text())
     expected = {name: lock["services"][name]["reference"] for name in SERVICES}
     env = os.environ.copy()
-    for key in ("PY313_MYSQL_ROOT_PASSWORD", "PY313_MYSQL_PASSWORD", "PY313_MONGO_PASSWORD", "PY313_RABBITMQ_PASSWORD"):
+    for key in ("BRINGUP_MYSQL_ROOT_PASSWORD", "BRINGUP_MYSQL_PASSWORD", "BRINGUP_MONGO_PASSWORD", "BRINGUP_RABBITMQ_PASSWORD"):
         env.setdefault(key, "delivery-check")
     config = json.loads(run("docker", "compose", "--env-file", "/dev/null", "-f", str(root / "docker-compose.yml"), "config", "--format", "json", env=env))
     configured = {name: config["services"][name]["image"] for name in SERVICES}

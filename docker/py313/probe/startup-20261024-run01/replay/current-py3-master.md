@@ -37,9 +37,9 @@ verified against `theme_commit` (recorded only; keep the checkout on the theme r
 `cms/static/css`. After editing theme files, rebuild with `paver update_assets` (compiles themes found in the theme dirs)
 or `bash /startup/build_frontend.sh`, then `make py313-restart` if templates are cached. The mount is fixed when the
 container is created, so adding or changing `THEME_REPO` needs `make py313-destroy PURGE_DIR=1 && make py313-dev-up`.
-Staging servers use the same Platform-owned scripts with `PY313_THEME_SOURCE` / `PY313_THEME_COMMIT` instead of a mount (Platform `ci/py313/bringup/prepare_theme_inputs.py`).
+Staging servers use the same Platform-owned scripts with `BRINGUP_THEME_SOURCE` / `BRINGUP_THEME_COMMIT` instead of a mount (Platform `ci/py313/bringup/prepare_theme_inputs.py`).
 Override `RUN_ID`, `LMS_PORT`, `CMS_PORT` or `PLATFORM_REPO` for another environment, and
-`PY313_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` leaves no evidence.
+`BRINGUP_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` leaves no evidence.
 
 ### Snapshot-platform run (acceptance)
 
@@ -48,7 +48,7 @@ git -C /path/to/platform worktree add --detach /path/to/platform-worktree origin
 make py313-up RUN_ID=master313r16 LMS_PORT=18100 CMS_PORT=18110 PLATFORM_REPO=/path/to/platform-worktree
 ```
 
-`py313-up` runs `new_run.py` (run directory under `$PY313_RUNS_ROOT`, default
+`py313-up` runs `new_run.py` (run directory under `$BRINGUP_RUNS_ROOT`, default
 `~/workspace/hawthorn/py313-runs/<RUN_ID>`; private inputs in `private/` mode 700; first free
 `172.30.X.0/24`) and then `bring_up.py`: unit tests, secrets, preflight, export, create, install,
 schema, assets, services, heartbeats, course build and seed, superuser, HTTP smoke. It stops at the
@@ -59,10 +59,10 @@ first failing stage; per-stage logs and durations are in `<run>/stage-logs/`, th
 
 - URLs: LMS `http://localhost:<LMS_PORT>`, Studio `http://localhost:<CMS_PORT>`.
 - Superuser (local devstack only, not a secret): `edx` / `edx@example.com` / `edx`. Override with
-  `PY313_DEV_SUPERUSER_USERNAME`, `PY313_DEV_SUPERUSER_EMAIL`, `PY313_DEV_SUPERUSER_PASSWORD`
+  `BRINGUP_DEV_SUPERUSER_USERNAME`, `BRINGUP_DEV_SUPERUSER_EMAIL`, `BRINGUP_DEV_SUPERUSER_PASSWORD`
   in the host environment.
 - Run-scoped acceptance identities (staff, learner, ...): `<run>/private/acceptance.json`, mode 600.
-- `make lms-shell` (also `cms-shell`, `studio-shell`) and `make py313-status` target the development environment unless `PY313_CONFIG` names another run; status shows container states, ports and heartbeats.
+- `make lms-shell` (also `cms-shell`, `studio-shell`) and `make py313-status` target the development environment unless `BRINGUP_CONFIG` names another run; status shows container states, ports and heartbeats.
 - `make py313-destroy` is an explicit operator teardown, separate from the replay
   stages (which never clean up): it removes only the containers, volumes and network named in that
   config that carry its `py313.replay.config` ownership label, and keeps the run directory
@@ -161,7 +161,7 @@ make cms-shell    # DJANGO_SETTINGS_MODULE=startup_cms (make studio-shell is an 
 ```
 
 Run from the Devstack worktree on a host terminal. With no arguments the target is the development
-environment (`$PY313_RUNS_ROOT/dev313/config.json`); set `PY313_CONFIG` for another run. The shell starts
+environment (`$BRINGUP_RUNS_ROOT/dev313/config.json`); set `BRINGUP_CONFIG` for another run. The shell starts
 in `/edx/app/edxapp/edx-platform` (a copy for a snapshot run, the live checkout for a development run) inside the run-owned runtime with `/edx/app/edxapp/venvs/edxapp/bin` first on `PATH` and the run's namespace
 and secrets in the environment, so `python manage.py lms shell` works directly. It is not an
 evidence-capturing command (no label, nothing recorded); use `run_check.py` for

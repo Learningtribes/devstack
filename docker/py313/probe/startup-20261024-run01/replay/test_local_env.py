@@ -353,7 +353,7 @@ class HttpAndSmokeTests(unittest.TestCase):
         with patch.dict(os.environ, {}, clear=True):
             self.assertEqual(http_client.dev_superuser(),
                              {'username': 'edx', 'email': 'edx@example.com', 'password': 'edx'})
-        with patch.dict(os.environ, {'PY313_DEV_SUPERUSER_PASSWORD': 'other'}):
+        with patch.dict(os.environ, {'BRINGUP_DEV_SUPERUSER_PASSWORD': 'other'}):
             self.assertEqual(http_client.dev_superuser()['password'], 'other')
 
     def test_environment_forwards_only_superuser_overrides_of_host_py313_values(self):
@@ -362,12 +362,12 @@ class HttpAndSmokeTests(unittest.TestCase):
             secret = Path(config['secret_env'])
             secret.write_text(''.join(key + '=' + '1' * 48 + '\n' for key in SECRET_KEYS))
             secret.chmod(0o600)
-            with patch.dict(os.environ, {'PY313_DEV_SUPERUSER_PASSWORD': 'x', 'PY313_RUNTIME_CONTAINER': 'stale',
-                                         'PY313_MYSQL_USER': 'stale'}):
+            with patch.dict(os.environ, {'BRINGUP_DEV_SUPERUSER_PASSWORD': 'x', 'BRINGUP_RUNTIME_CONTAINER': 'stale',
+                                         'BRINGUP_MYSQL_USER': 'stale'}):
                 env = core.environment(config)
-        self.assertEqual(env['PY313_DEV_SUPERUSER_PASSWORD'], 'x')
-        self.assertEqual(env['PY313_RUNTIME_CONTAINER'], config['runtime_container'])
-        self.assertEqual(env['PY313_MYSQL_USER'], 'edxapp')
+        self.assertEqual(env['BRINGUP_DEV_SUPERUSER_PASSWORD'], 'x')
+        self.assertEqual(env['BRINGUP_RUNTIME_CONTAINER'], config['runtime_container'])
+        self.assertEqual(env['BRINGUP_MYSQL_USER'], 'edxapp')
 
     def test_heartbeat_wait_returns_when_both_answer_or_on_timeout(self):
         config = {'lms_port': 18000, 'cms_port': 18010}

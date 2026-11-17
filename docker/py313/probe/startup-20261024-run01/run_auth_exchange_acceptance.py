@@ -16,11 +16,11 @@ root = args.run_dir.resolve()
 assert root.is_dir()
 output_path = root / (args.label + '.txt')
 assert not output_path.exists(), output_path
-container = os.environ['PY313_RUNTIME_CONTAINER']
-app_root = os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')
-secret_path = Path(os.environ['PY313_SECRET_ENV_FILE'])
+container = os.environ['BRINGUP_RUNTIME_CONTAINER']
+app_root = os.environ.get('BRINGUP_APP_ROOT', '/edx/app/edxapp')
+secret_path = Path(os.environ['BRINGUP_SECRET_ENV_FILE'])
 env = dict(os.environ)
-flags = ['-e', 'PYTHONPATH=/startup/settings', '-e', 'PY313_PLATFORM_ROOT=' + app_root + '/edx-platform',
+flags = ['-e', 'PYTHONPATH=/startup/settings', '-e', 'BRINGUP_PLATFORM_ROOT=' + app_root + '/edx-platform',
          '-e', 'DJANGO_SETTINGS_MODULE=exchange_acceptance']
 values = []
 for line in secret_path.read_text().splitlines():

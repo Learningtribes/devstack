@@ -8,9 +8,9 @@
 | run42 `replay_after_install.py` container/startup absolute paths | Container from config; startup from committed export root |
 | SQL creator fixed database assertion | New MySQL container/data volume initialized with configured `database` |
 | Mongo database/cache/ES/queue prefixes | Explicit config forwarded to existing local settings |
-| Old process inherited `PY313_*` environment | Discarded; rebuilt only from contract plus protected service secrets |
-| Old test SQL name | Explicit `test_database`, forwarded as `PY313_TEST_DATABASE_NAME` |
-| Course seed/persistence fallback | Explicit `course_key` forwarded as `PY313_ACCEPTANCE_COURSE_ID` |
+| Old process inherited `BRINGUP_*` environment | Discarded; rebuilt only from contract plus protected service secrets |
+| Old test SQL name | Explicit `test_database`, forwarded as `BRINGUP_TEST_DATABASE_NAME` |
+| Course seed/persistence fallback | Explicit `course_key` forwarded as `BRINGUP_ACCEPTANCE_COURSE_ID` |
 | Runtime/volume/service/network names and ports | Configured, required run-id association, preflight existence rejection |
 | Runtime image / infrastructure image tags | Runtime is a local sha256 image ID; six services use the reviewed multi-platform OCI index digests in `infrastructure-images.lock.json`; audit validates normalized registry digest identity and records selected IDs, source metadata and platforms |
 | JWT and acceptance fixture paths | Explicit private file paths, read-only mounts; values excluded/redacted |

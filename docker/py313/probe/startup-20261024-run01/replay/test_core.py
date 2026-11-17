@@ -66,16 +66,16 @@ class ContractTests(unittest.TestCase):
         self.assertFalse(set(physical_names(self.config)) & set(physical_names(second)))
 
     def test_platform_mount_is_optional_and_never_changes_the_process_root(self):
-        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/edx/app/edxapp/edx-platform')
+        self.assertEqual(environment(self.config)['BRINGUP_PLATFORM_ROOT'], '/edx/app/edxapp/edx-platform')
         self.config['platform_mount'] = 'live'
         self.write()
         self.assertEqual(load_config(self.path)['platform_mount'], 'live')
-        self.assertEqual(environment(self.config)['PY313_PLATFORM_ROOT'], '/edx/app/edxapp/edx-platform')
+        self.assertEqual(environment(self.config)['BRINGUP_PLATFORM_ROOT'], '/edx/app/edxapp/edx-platform')
 
     def test_runtime_receives_the_application_root(self):
         env = environment(self.config)
-        self.assertEqual(env['PY313_APP_ROOT'], '/edx/app/edxapp')
-        self.assertEqual(env['PY313_XMODULE_BUILD_ROOT'], '/edx/app/edxapp/py313/xmodule-source-build-v1')
+        self.assertEqual(env['BRINGUP_APP_ROOT'], '/edx/app/edxapp')
+        self.assertEqual(env['BRINGUP_XMODULE_BUILD_ROOT'], '/edx/app/edxapp/py313/xmodule-source-build-v1')
 
     def test_platform_without_the_layout_contract_is_refused(self):
         platform = Path(self.config['platform_repo'])
@@ -360,17 +360,17 @@ class ContractTests(unittest.TestCase):
     def test_protected_env_cannot_override_namespace(self):
         path = Path(self.config['secret_env'])
         with path.open('a') as stream:
-            stream.write('PY313_DATABASE_NAME=old-database\n')
+            stream.write('BRINGUP_DATABASE_NAME=old-database\n')
         with self.assertRaisesRegex(ValueError, 'namespaces belong in config'):
             secret_values(self.config)
 
     def test_prior_environment_is_not_a_target_fallback(self):
-        with patch.dict(os.environ, {'PY313_RUNTIME_CONTAINER': 'old-container', 'PY313_DATABASE_NAME': 'old-database'}):
+        with patch.dict(os.environ, {'BRINGUP_RUNTIME_CONTAINER': 'old-container', 'BRINGUP_DATABASE_NAME': 'old-database'}):
             env = environment(self.config)
-        self.assertEqual(env['PY313_RUNTIME_CONTAINER'], self.config['runtime_container'])
-        self.assertEqual(env['PY313_DATABASE_NAME'], self.config['database'])
-        self.assertEqual(env['PY313_ACCEPTANCE_COURSE_ID'], self.config['course_key'])
-        self.assertEqual(env['PY313_REPLAY_ID'], self.config['run_id'])
+        self.assertEqual(env['BRINGUP_RUNTIME_CONTAINER'], self.config['runtime_container'])
+        self.assertEqual(env['BRINGUP_DATABASE_NAME'], self.config['database'])
+        self.assertEqual(env['BRINGUP_ACCEPTANCE_COURSE_ID'], self.config['course_key'])
+        self.assertEqual(env['BRINGUP_REPLAY_ID'], self.config['run_id'])
 
     def test_run_scoped_acceptance_identities_are_private_and_not_overwritten(self):
         identity_dir = self.root / 'identities'
@@ -411,7 +411,7 @@ class ContractTests(unittest.TestCase):
         effect = self.root / 'effect'
         command = [sys.executable, '-c',
                    'from pathlib import Path;import os;Path(' + repr(str(effect)) + ').write_text("once");'
-                   'print(os.environ["PY313_MYSQL_PASSWORD"])']
+                   'print(os.environ["BRINGUP_MYSQL_PASSWORD"])']
         with contextlib.redirect_stdout(io.StringIO()):
             capture(self.config, 'mutation', command)
         effect.write_text('retained')
@@ -462,7 +462,7 @@ class LayoutContractTests(unittest.TestCase):
     def test_every_repeated_default_equals_the_replay_root(self):
         found = 0
         for path in self.sources():
-            for default in re.findall(r"PY313_APP_ROOT['\"],\s*['\"]([^'\"]+)['\"]", path.read_text()):
+            for default in re.findall(r"BRINGUP_APP_ROOT['\"],\s*['\"]([^'\"]+)['\"]", path.read_text()):
                 found += 1
                 self.assertEqual(default, APP_ROOT, str(path.relative_to(self.PROBE)))
         self.assertGreater(found, 5)

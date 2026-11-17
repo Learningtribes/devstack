@@ -26,13 +26,13 @@ def env(name, default=None):
     return value
 
 
-MYSQL_USER = env("PY313_MYSQL_USER", "edxapp")
-MYSQL_PASSWORD = env("PY313_MYSQL_PASSWORD")
-MYSQL_ROOT_PASSWORD = env("PY313_MYSQL_ROOT_PASSWORD")
-MONGO_USER = env("PY313_MONGO_USER", "edxapp")
-MONGO_PASSWORD = env("PY313_MONGO_PASSWORD")
-RMQ_USER = env("PY313_RABBITMQ_USER", "edxapp")
-RMQ_PASSWORD = env("PY313_RABBITMQ_PASSWORD")
+MYSQL_USER = env("BRINGUP_MYSQL_USER", "edxapp")
+MYSQL_PASSWORD = env("BRINGUP_MYSQL_PASSWORD")
+MYSQL_ROOT_PASSWORD = env("BRINGUP_MYSQL_ROOT_PASSWORD")
+MONGO_USER = env("BRINGUP_MONGO_USER", "edxapp")
+MONGO_PASSWORD = env("BRINGUP_MONGO_PASSWORD")
+RMQ_USER = env("BRINGUP_RABBITMQ_USER", "edxapp")
+RMQ_PASSWORD = env("BRINGUP_RABBITMQ_PASSWORD")
 
 print("python", sys.version.split()[0], "run", RUN)
 for pkg in ("mysqlclient", "pymongo", "mongoengine", "celery", "kombu", "amqp", "pymemcache",

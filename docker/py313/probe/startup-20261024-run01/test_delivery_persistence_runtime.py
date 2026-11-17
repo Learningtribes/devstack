@@ -16,14 +16,14 @@ from acceptance_context import course_key
 
 PHASE = globals().get('PHASE')
 assert PHASE in {'before', 'after'}, 'Use the before/after wrapper for an explicit persistence phase'
-root = Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313'
+root = Path(os.environ.get('BRINGUP_APP_ROOT', '/edx/app/edxapp')) / 'py313'
 baseline_path = root / 'delivery-persistence-baseline.json'
 credentials = json.loads(Path('/startup/.acceptance-credentials.json').read_text())
 scorm = json.loads((root / 'scorm-acceptance-latest.json').read_text())
 assets = json.loads((root / 'gridfs-acceptance-latest.json').read_text())
 course_key_value = course_key()
 assert str(course_key_value) == scorm['course']
-assert credentials['run_id'] == os.environ['PY313_REPLAY_ID']
+assert credentials['run_id'] == os.environ['BRINGUP_REPLAY_ID']
 store = modulestore()
 course = store.get_course(course_key_value)
 assert course.course_status == 'released'

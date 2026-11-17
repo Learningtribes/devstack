@@ -24,7 +24,7 @@ try:
         password = secrets.token_urlsafe(32)
         user = get_user_model().objects.create_user(username='jwt-api-'+suffix, email=suffix+'@example.test', password=password)
         other = get_user_model().objects.create_user(username='jwt-other-'+suffix, email='other-'+suffix+'@example.test')
-        course = CourseKey.from_string(os.environ.get('PY313_ACCEPTANCE_COURSE_ID', 'course-v1:PY313+RuntimeChrome26+2026'))
+        course = CourseKey.from_string(os.environ.get('BRINGUP_ACCEPTANCE_COURSE_ID', 'course-v1:PY313+RuntimeChrome26+2026'))
         foreign = CourseKey.from_string('course-v1:OTHERORG+Runtime+2026')
         for owner in (user, other):
             for key in (course, foreign):

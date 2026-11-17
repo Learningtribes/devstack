@@ -23,7 +23,7 @@ from student.roles import (
 )
 course=course_key()
 store=modulestore(); users=get_user_model(); staff=users.objects.get(username=values['staff']['username'])
-assert values['run_id']==os.environ['PY313_REPLAY_ID']
+assert values['run_id']==os.environ['BRINGUP_REPLAY_ID']
 assert not staff.is_staff and not staff.is_superuser
 assert staff.groups.filter(name=STUDIO_ADMIN_ACCESS_GROUP).exists()
 assert get_platform_role(staff)==CONTENT_EDITOR_LEVEL
@@ -133,7 +133,7 @@ for role in ['anonymous','other_org']:
 metadata={'usage':str(usage),'course':str(course),'learners':[learner.id,u.id],
           'learner_usernames':[learner.username,u.username], 'launch':block.scorm_pkg,
           'markers':[primary_marker,secondary_marker]}
-target=Path(os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'scorm-acceptance-latest.json'
+target=Path(os.environ.get('BRINGUP_APP_ROOT', '/edx/app/edxapp')) / 'py313' / 'scorm-acceptance-latest.json'
 fd=os.open(target,os.O_WRONLY|os.O_CREAT|os.O_TRUNC,0o600)
 with os.fdopen(fd,'w') as output: output.write(json.dumps(metadata,sort_keys=True)+'\n')
 print('PASS real HTTP upload/storage/candidate roles; ordinary commit and enforce_commit; user state and completion isolation')

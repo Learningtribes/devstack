@@ -18,13 +18,13 @@ RUNTIME_LOCK_PATH = Path(__file__).with_name('runtime-image.lock.json')
 IMAGE_INDEX_MEDIA_TYPE = 'application/vnd.oci.image.index.v1+json'
 IMAGE_DIGEST_RE = re.compile(r'sha256:[0-9a-f]{64}')
 RUNTIME_REPOSITORY = 'ltdps/edxapp'
-# Local-devstack superuser overrides; the only host PY313_* values that reach the runtime.
-DEV_SUPERUSER_KEYS = ('PY313_DEV_SUPERUSER_USERNAME', 'PY313_DEV_SUPERUSER_EMAIL', 'PY313_DEV_SUPERUSER_PASSWORD')
+# Local-devstack superuser overrides; the only host BRINGUP_* values that reach the runtime.
+DEV_SUPERUSER_KEYS = ('BRINGUP_DEV_SUPERUSER_USERNAME', 'BRINGUP_DEV_SUPERUSER_EMAIL', 'BRINGUP_DEV_SUPERUSER_PASSWORD')
 RUNTIME_PULL_BACKOFF = (5, 15, 30, 60)
 IMAGE_REFERENCE_RE = re.compile(r'(?P<repository>[a-z0-9][a-z0-9._:/-]*)@(?P<digest>sha256:[0-9a-f]{64})')
 IMAGE_TAG_RE = re.compile(r'[a-z0-9][a-z0-9._/-]*:[A-Za-z0-9_][A-Za-z0-9_.-]*')
-SECRET_KEYS = {'PY313_MYSQL_ROOT_PASSWORD', 'PY313_MYSQL_PASSWORD', 'PY313_MONGO_PASSWORD',
-               'PY313_RABBITMQ_PASSWORD', 'PY313_STARTUP_SECRET_KEY', 'PY313_STARTUP_XQUEUE_PASSWORD'}
+SECRET_KEYS = {'BRINGUP_MYSQL_ROOT_PASSWORD', 'BRINGUP_MYSQL_PASSWORD', 'BRINGUP_MONGO_PASSWORD',
+               'BRINGUP_RABBITMQ_PASSWORD', 'BRINGUP_STARTUP_SECRET_KEY', 'BRINGUP_STARTUP_XQUEUE_PASSWORD'}
 # The application layout (Platform ci/py313/layout.py, path contract v2): code, venv and bring-up state of a run live
 # below one root. Every run uses the default; fresh_preflight refuses a Platform that defines another default.
 APP_ROOT = '/edx/app/edxapp'
@@ -493,21 +493,21 @@ def redact_values(config):
 
 
 def environment(config):
-    # Do not inherit any PY313_* from a previously selected run.
+    # Do not inherit any BRINGUP_* from a previously selected run.
     env = {key: value for key, value in os.environ.items()
-           if not key.startswith('PY313_') or key in DEV_SUPERUSER_KEYS}
+           if not key.startswith('BRINGUP_') or key in DEV_SUPERUSER_KEYS}
     env.update(secret_values(config))
-    env.update(PY313_MYSQL_USER='edxapp', PY313_MONGO_USER='edxapp', PY313_RABBITMQ_USER='edxapp',
-               PY313_RUNTIME_CONTAINER=config['runtime_container'], PY313_SECRET_ENV_FILE=config['secret_env'],
-               PY313_APP_ROOT=APP_ROOT, PY313_PLATFORM_ROOT=APP_SOURCE, PYTHONPATH='/startup/settings',
-               PY313_REPLAY_ID=config['run_id'],
-               PY313_DATABASE_NAME=config['database'], PY313_TEST_DATABASE_NAME=config['test_database'], PY313_MONGO_DB=config['mongo_database'],
-               PY313_CACHE_PREFIX=config['cache_prefix'], PY313_ES_INDEX_PREFIX=config['es_prefix'],
-               PY313_TASK_QUEUE_PREFIX=config['queue_prefix'], PY313_ACCEPTANCE_COURSE_ID=config['course_key'],
-               PY313_XMODULE_BUILD_ROOT=APP_STATE + '/xmodule-source-build-v1',
-               PY313_LMS_DOMAIN='localhost:' + str(config['lms_port']), PY313_CMS_DOMAIN='localhost:' + str(config['cms_port']),
-               PY313_LMS_ROOT_URL='http://localhost:' + str(config['lms_port']),
-               PY313_CMS_ROOT_URL='http://localhost:' + str(config['cms_port']))
+    env.update(BRINGUP_MYSQL_USER='edxapp', BRINGUP_MONGO_USER='edxapp', BRINGUP_RABBITMQ_USER='edxapp',
+               BRINGUP_RUNTIME_CONTAINER=config['runtime_container'], BRINGUP_SECRET_ENV_FILE=config['secret_env'],
+               BRINGUP_APP_ROOT=APP_ROOT, BRINGUP_PLATFORM_ROOT=APP_SOURCE, PYTHONPATH='/startup/settings',
+               BRINGUP_REPLAY_ID=config['run_id'],
+               BRINGUP_DATABASE_NAME=config['database'], BRINGUP_TEST_DATABASE_NAME=config['test_database'], BRINGUP_MONGO_DB=config['mongo_database'],
+               BRINGUP_CACHE_PREFIX=config['cache_prefix'], BRINGUP_ES_INDEX_PREFIX=config['es_prefix'],
+               BRINGUP_TASK_QUEUE_PREFIX=config['queue_prefix'], BRINGUP_ACCEPTANCE_COURSE_ID=config['course_key'],
+               BRINGUP_XMODULE_BUILD_ROOT=APP_STATE + '/xmodule-source-build-v1',
+               BRINGUP_LMS_DOMAIN='localhost:' + str(config['lms_port']), BRINGUP_CMS_DOMAIN='localhost:' + str(config['cms_port']),
+               BRINGUP_LMS_ROOT_URL='http://localhost:' + str(config['lms_port']),
+               BRINGUP_CMS_ROOT_URL='http://localhost:' + str(config['cms_port']))
     return env
 
 
@@ -595,7 +595,7 @@ def docker_exec(config, *args, settings=None, detached=False, interactive=False)
         fail('Interactive and detached execution are mutually exclusive')
     ownership(config)
     env = environment(config)
-    flags = [flag for key in sorted(env) if key.startswith('PY313_') or key == 'PYTHONPATH' for flag in ('-e', key)]
+    flags = [flag for key in sorted(env) if key.startswith('BRINGUP_') or key == 'PYTHONPATH' for flag in ('-e', key)]
     if interactive:
         # Name only: the value comes from the caller's terminal at exec time.
         flags += ['-e', 'TERM']

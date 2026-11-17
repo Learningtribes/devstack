@@ -69,8 +69,8 @@ _mongo_client = pymongo.MongoClient
 
 def authenticated_test_mongo(*args, **kwargs):
     """Use the protected local test credentials for authenticated Mongo."""
-    kwargs["username"] = kwargs.get("username") or os.environ.get("PY313_MONGO_USER", "edxapp")
-    kwargs["password"] = kwargs.get("password") or os.environ["PY313_MONGO_PASSWORD"]
+    kwargs["username"] = kwargs.get("username") or os.environ.get("BRINGUP_MONGO_USER", "edxapp")
+    kwargs["password"] = kwargs.get("password") or os.environ["BRINGUP_MONGO_PASSWORD"]
     kwargs["authSource"] = kwargs.get("authSource") or "admin"
     return _mongo_client(*args, **kwargs)
 
@@ -154,12 +154,12 @@ for _module in (pymongo.pool_shared, pymongo.synchronous.helpers, pymongo.synchr
     _module.socket = _pinned_socket
 
 # --- Test-only package overlay ------------------------------------------------
-# Why: the runtime lock does not ship test-only packages. $PY313_APP_ROOT/py313/test-stubs
+# Why: the runtime lock does not ship test-only packages. $BRINGUP_APP_ROOT/py313/test-stubs
 # holds the nose stub (nose.plugins.attrib.attr) that legacy tests import.
 # factory_boy 3 moved DjangoModelFactory to factory.django; the legacy test
 # factories still use factory.DjangoModelFactory, so alias the old name instead
 # of editing hundreds of factory classes. Factory behaviour is unchanged.
-sys.path.insert(0, os.environ.get("PY313_APP_ROOT", "/edx/app/edxapp") + "/py313/test-stubs")
+sys.path.insert(0, os.environ.get("BRINGUP_APP_ROOT", "/edx/app/edxapp") + "/py313/test-stubs")
 try:
     import factory
     import factory.django
@@ -178,6 +178,6 @@ if __name__ == "__main__":
         raise SystemExit("usage: run_py313_legacy_tests.py lms|cms <manage.py arguments>")
     manage_args = sys.argv[1:]
     sys.argv = ["manage.py"] + manage_args
-    platform_root = os.environ.get("PY313_PLATFORM_ROOT", "/edx/app/edxapp/edx-platform")
+    platform_root = os.environ.get("BRINGUP_PLATFORM_ROOT", "/edx/app/edxapp/edx-platform")
     os.chdir(platform_root)
     runpy.run_path("manage.py", run_name="__main__")

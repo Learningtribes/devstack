@@ -9,12 +9,12 @@ container, platform, environment, forwarded = options()
 system = sys.argv[1]
 if system not in {'lms', 'cms'}:
     raise SystemExit('Choose lms or cms')
-port = int(environment.get('PY313_LMS_CONTAINER_PORT' if system == 'lms'
-                           else 'PY313_CMS_CONTAINER_PORT',
+port = int(environment.get('BRINGUP_LMS_CONTAINER_PORT' if system == 'lms'
+                           else 'BRINGUP_CMS_CONTAINER_PORT',
                            18000 if system == 'lms' else 18010))
 if not 1024 <= port <= 65535:
     raise SystemExit('Invalid local runtime port')
-app_root = os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')
+app_root = os.environ.get('BRINGUP_APP_ROOT', '/edx/app/edxapp')
 command = (f'umask 077; mkdir -p {app_root}/py313/logs; '
            f'exec {app_root}/venvs/edxapp/bin/python manage.py {system} runserver '
            f'0.0.0.0:{port} --noreload --insecure '

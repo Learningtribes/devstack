@@ -58,8 +58,8 @@ outside Git. Exact image, ports, resources and execution evidence are in
 2. Run prepare_theme_inputs.py. In the writable platform root run
    npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund.
 3. Use initialize_local_database.py with a new registered DB, explicit
-   PY313_MYSQL_CONTAINER/PY313_RUNTIME_CONTAINER/PY313_SECRET_ENV_FILE,
-   PY313_CHECK_RUNNER and a unique PY313_SCHEMA_ITERATION. This invokes
+   BRINGUP_MYSQL_CONTAINER/BRINGUP_RUNTIME_CONTAINER/BRINGUP_SECRET_ENV_FILE,
+   BRINGUP_CHECK_RUNNER and a unique BRINGUP_SCHEMA_ITERATION. This invokes
    startup_schema local-model-sync plus full316-model/M2M audit and
    natural-key host Site creation; historical migrations remain0.
 4. Run build_xmodule_assets.py through manage.py lms shell using startup_lms.
@@ -97,9 +97,9 @@ four-process restart persistence all passed. No post-install source repair.
 Exact replay commands/times/exit codes and recovery scope are in run39.
 
 Running container: py313-rebuild-runtime-20261025-run39. LMS loopback18180,
-CMS18190. Set PY313_RUNTIME_CONTAINER to that name,
-PY313_SECRET_ENV_FILE=/Users/noahwang/.codex/py313-runtime-run39.env and
-PY313_PLATFORM_ROOT=/edx/app/edxapp/edx-platform before invoking start_http.py or
+CMS18190. Set BRINGUP_RUNTIME_CONTAINER to that name,
+BRINGUP_SECRET_ENV_FILE=/Users/noahwang/.codex/py313-runtime-run39.env and
+BRINGUP_PLATFORM_ROOT=/edx/app/edxapp/edx-platform before invoking start_http.py or
 start_worker.py with lms/cms. Inspect exact processes before starting a second
 copy; these scripts dispatch rather than prove readiness. Keep protected
 credentials outside Git and evidence. A new reconstruction must use another
@@ -137,11 +137,11 @@ See the protected run-26 README for failed attempts and exact limitations.
 
 The former `install.sh` ran `install_verified_runtime_additions.py` for the
 fs/Poll/JWT/dogapi source repairs; those are now Platform companions.
-`PY313_PLATFORM_ROOT` controls source-dependent settings/locale paths.
-`start_http.py` and `start_worker.py` accept `PY313_RUNTIME_CONTAINER`,
-`PY313_PLATFORM_ROOT`, and a mode-600 `PY313_SECRET_ENV_FILE`. The default
+`BRINGUP_PLATFORM_ROOT` controls source-dependent settings/locale paths.
+`start_http.py` and `start_worker.py` accept `BRINGUP_RUNTIME_CONTAINER`,
+`BRINGUP_PLATFORM_ROOT`, and a mode-600 `BRINGUP_SECRET_ENV_FILE`. The default
 remains the preserved startup runtime, so set the target explicitly.
-`PY313_TASK_QUEUE_PREFIX` names independent priority queues, exchange and
+`BRINGUP_TASK_QUEUE_PREFIX` names independent priority queues, exchange and
 result keys. Runtime ports come from the protected environment.
 
 ## Historical contents (initial checkpoint)
@@ -225,8 +225,8 @@ run against that database. Choose a fresh evidence directory and output label:
 
 ```bash
 mkdir -m 700 /absolute/path/to/new-run
-PY313_RUNTIME_CONTAINER=<separate-runtime> \
-PY313_SECRET_ENV_FILE=/absolute/path/to/protected.env \
+BRINGUP_RUNTIME_CONTAINER=<separate-runtime> \
+BRINGUP_SECRET_ENV_FILE=/absolute/path/to/protected.env \
 uv run --no-project python run_auth_exchange_acceptance.py \
   --run-dir /absolute/path/to/new-run --label exchange-01
 ```

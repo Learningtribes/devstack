@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 from student.models import UserProfile
 from student.roles import STUDIO_ADMIN_ACCESS_GROUP
 credentials = json.loads(Path('/startup/.acceptance-credentials.json').read_text())
-run_id = os.environ['PY313_REPLAY_ID']
+run_id = os.environ['BRINGUP_REPLAY_ID']
 roles = {'staff': False, 'learner': False, 'learner2': False, 'other_org': False}
 studio_login_roles = {'staff', 'other_org'}
 assert credentials.get('run_id') == run_id, 'Protected acceptance identities belong to another run'
