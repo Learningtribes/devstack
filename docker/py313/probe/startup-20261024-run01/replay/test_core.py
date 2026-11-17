@@ -16,7 +16,9 @@ from provision_acceptance import provision
 from core import (APP_ROOT, SECRET_KEYS, SERVICES, capture, check_conflicts, check_platform_layout, environment, load_config,
                   physical_names, secret_values, source_repository_roots,
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
-                  IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet)
+                  IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet,
+                  discovery_enabled, discovery_environment, discovery_names)
+import discovery
 
 
 def example(root, run_id='run44'):
@@ -112,6 +114,77 @@ class ContractTests(unittest.TestCase):
         self.config['platform_mount'] = 'volume'
         self.write()
         with self.assertRaisesRegex(ValueError, 'platform_mount'):
+            load_config(self.path)
+
+    def test_discovery_is_optional_and_absent_keys_keep_the_hash_stable(self):
+        """A run without discovery must keep its config hash, or its existing resources stop matching."""
+        before = config_hash(load_config(self.path))
+        self.assertFalse(discovery_enabled(self.config))
+        self.assertEqual(discovery.destroy_plan(self.config), ([], []))
+        self.assertEqual(config_hash(load_config(self.path)), before)
+
+    def test_discovery_derives_its_resources_from_run_id(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        names = discovery_names(loaded)
+        self.assertEqual(names['container'], 'run44' + '-discovery')
+        self.assertEqual(names['volume'], 'run44' + '-discovery-data')
+        self.assertEqual(names['database'], 'discovery_run44')
+        self.assertEqual(loaded['discovery_port'], 18381)
+        self.assertEqual(discovery.destroy_plan(loaded),
+                         (['run44-discovery'], ['run44-discovery-data']))
+
+    def test_discovery_reuses_the_run_services(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        env = discovery_environment(load_config(self.path))
+        # One database inside this run's MySQL, not a second server.
+        self.assertEqual(env['DB_HOST'], self.config['services']['mysql']['container'])
+        self.assertEqual(env['CACHE_LOCATION'], self.config['services']['memcached']['container'] + ':11211')
+        self.assertEqual(env['DB_USER'], 'edxapp')
+
+    def test_discovery_image_is_required_and_validated(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'discovery_image'):
+            load_config(self.path)
+        for value in ('', 'http://bad', 'has space'):
+            with self.subTest(value=value):
+                self.config['discovery_image'] = value
+                self.write()
+                with self.assertRaisesRegex(ValueError, 'discovery_image'):
+                    load_config(self.path)
+
+    def test_discovery_port_must_be_unique_and_in_range(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        for value, message in ((self.config['lms_port'], 'differ'), (80, 'Invalid port'),
+                               ('18381', 'Invalid port')):
+            with self.subTest(value=value):
+                self.config['discovery_port'] = value
+                self.write()
+                with self.assertRaisesRegex(ValueError, message):
+                    load_config(self.path)
+
+    def test_discovery_database_must_not_collide_with_the_platform(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        for value, message in ((self.config['database'], 'differ'), ('Bad-Name', 'Invalid database'),
+                               ('Ab', 'Invalid database')):
+            with self.subTest(value=value):
+                self.config['discovery_database'] = value
+                self.write()
+                with self.assertRaisesRegex(ValueError, message):
+                    load_config(self.path)
+
+    def test_discovery_repo_counts_as_a_source_for_path_isolation(self):
+        self.config['discovery_repo'] = str(Path(self.config['export_dir']).parent)
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'discovery_repo'):
             load_config(self.path)
 
     def test_generated_search_service_uses_bounded_heap(self):

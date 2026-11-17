@@ -15,6 +15,7 @@ import subprocess
 
 from core import SERVICES, config_hash, load_config
 from http_client import run_root
+import discovery
 
 ARTIFACTS = ('bring-up-result.json', 'acceptance-course.json', 'smoke-result.json', 'superuser-result.json')
 LABEL = 'py313.replay.config'
@@ -45,6 +46,9 @@ def plan(config):
     containers = [config['runtime_container'], *(config['services'][name]['container'] for name in SERVICES)]
     volumes = [config['runtime_volume'], *(record['volume'] for record in config['services'].values()
                                            if 'volume' in record)]
+    discovery_containers, discovery_volumes = discovery.destroy_plan(config)
+    containers += discovery_containers
+    volumes += discovery_volumes
     owned, foreign, absent = [], [], []
     for name in containers:
         found = labels('container', name)
@@ -102,6 +106,8 @@ def purge(config, config_path):
     private = Path(config['secret_env']).parent
     for key in ('secret_env', 'credentials_file', 'jwt_file'):
         Path(config[key]).unlink(missing_ok=True)
+    # Discovery's mounted env file sits beside secret_env; remove it so the private directory can be dropped.
+    Path(config['secret_env']).parent.joinpath('discovery.env').unlink(missing_ok=True)
     for name in ARTIFACTS:
         (root / name).unlink(missing_ok=True)
     if Path(config_path).resolve().parent == root:

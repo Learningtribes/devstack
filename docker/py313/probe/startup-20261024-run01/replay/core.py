@@ -42,7 +42,27 @@ PLATFORM_MOUNTS = ('snapshot', 'live')
 # used as is (not verified against `theme_commit`, which is only recorded).
 LIVE_THEME_ROOT = '/workspace/themes'
 LIVE_THEME_MOUNT = LIVE_THEME_ROOT + '/hawthorn'
-OPTIONAL = {'platform_mount', 'theme_repo'}
+# Optional course-discovery sidecar. It reuses this run's MySQL and memcached (one database inside the shared
+# server, exactly like upstream devstack) and adds a single runtime container, so enabling it costs one container
+# rather than three. Naming is derived from run_id so every derived resource keeps the run prefix.
+DISCOVERY_DEFAULT_PORT = 18381
+DISCOVERY_CONTAINER_SUFFIX = '-discovery'
+DISCOVERY_VOLUME_SUFFIX = '-discovery-data'
+# Mounted at /workspace so the lock's file:// companion URLs (file:///workspace/ci/py313/companions/...) resolve.
+DISCOVERY_MOUNT = '/workspace'
+# Derived layout follows the same v2 path contract as the Platform (no retired root): code is bind-mounted,
+# venv and bring-up state live under one app root that the run's volume owns.
+DISCOVERY_APP_ROOT = '/edx/app/discovery'
+DISCOVERY_VENV = DISCOVERY_APP_ROOT + '/venvs/discovery'
+DISCOVERY_PYTHON = DISCOVERY_VENV + '/bin/python'
+DISCOVERY_SETTINGS = 'course_discovery.settings.py313'
+DISCOVERY_LOCK = 'requirements/py313/local.txt'
+# Network alias the Platform resolves (COURSE_CATALOG_API_URL = http://discovery:8000/api/v1/).
+DISCOVERY_ALIAS = 'discovery'
+# Secrets reach the container as a mounted 0600 env file that the entrypoint sources, so no password ever
+# appears in a docker argv (same reasoning as the platform's name-only `docker exec -e KEY`).
+DISCOVERY_ENV_MOUNT = '/private/discovery.env'
+OPTIONAL = {'platform_mount', 'theme_repo', 'discovery_repo', 'discovery_image', 'discovery_port', 'discovery_database'}
 REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_commit',
             'devstack_repo', 'devstack_commit', 'theme_commit', 'runtime_container', 'runtime_volume',
             'network', 'network_subnet', 'services', 'images', 'lms_port', 'cms_port', 'database', 'test_database', 'mongo_database',
@@ -252,7 +272,7 @@ def validate_path_isolation(config, source_repositories=None):
                 fail('Replay output and protected input paths must be disjoint after resolution: ' +
                      left_name + '=' + str(left) + ' ' + right_name + '=' + str(right))
     sources = source_repositories if source_repositories is not None else {
-        key.removesuffix('_repo'): config[key] for key in ('platform_repo', 'devstack_repo', 'theme_repo')
+        key.removesuffix('_repo'): config[key] for key in ('platform_repo', 'devstack_repo', 'theme_repo', 'discovery_repo')
         if key in config
     }
     sources = {name: resolved_path(path) for name, path in sources.items()}
@@ -344,7 +364,72 @@ def load_config(path):
         fail('Runtime image must be a local sha256 image ID or the reference in runtime-image.lock.json')
     if not re.fullmatch(r'course-v1:[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+', config['course_key']) or token not in config['course_key']:
         fail('Course key must be explicit and contain run_id')
+    if discovery_enabled(config):
+        validate_discovery(config)
     return config
+
+
+def validate_discovery(config):
+    """Validate and default the optional discovery sidecar; absent keys leave an existing run untouched."""
+    repo = Path(config['discovery_repo'])
+    if not repo.is_absolute() or '..' in repo.parts:
+        fail('Expected absolute normalized path: discovery_repo')
+    if 'discovery_image' not in config:
+        fail('discovery_repo requires discovery_image')
+    image = config['discovery_image']
+    if not isinstance(image, str) or not image or any(x.isspace() for x in image):
+        fail('Invalid image: discovery_image')
+    if not (image_reference_parts(image) or image.startswith('sha256:') or IMAGE_TAG_RE.fullmatch(image)):
+        fail('discovery_image must be repository@sha256 digest, a local sha256 image ID, or a repository:tag')
+    port = config.setdefault('discovery_port', DISCOVERY_DEFAULT_PORT)
+    if type(port) is not int or not 1024 <= port <= 65535:
+        fail('Invalid port: discovery_port')
+    if port in (config['lms_port'], config['cms_port']):
+        fail('discovery_port must differ from lms_port and cms_port')
+    database = config.setdefault('discovery_database', 'discovery_' + config['run_id'])
+    if not re.fullmatch(r'[a-z][a-z0-9_]{2,100}', database):
+        fail('Invalid database name: discovery_database')
+    if database in (config['database'], config['test_database']):
+        fail('discovery_database must differ from database and test_database')
+    for name in discovery_names(config).values():
+        if not re.fullmatch(r'[a-z][a-z0-9_-]{2,100}', name):
+            fail('Discovery resource name must use safe characters: ' + name)
+
+
+def discovery_enabled(config):
+    return 'discovery_repo' in config
+
+
+def discovery_names(config):
+    """Derived container/volume names; both carry run_id so they stay inside this run's namespace."""
+    return {'container': config['run_id'] + DISCOVERY_CONTAINER_SUFFIX,
+            'volume': config['run_id'] + DISCOVERY_VOLUME_SUFFIX,
+            'database': config['discovery_database']}
+
+
+def discovery_url(config):
+    return 'http://localhost:%d' % config['discovery_port']
+
+
+def discovery_environment(config):
+    """Environment for the discovery container. Reuses this run's MySQL/memcached and their credentials."""
+    secrets = secret_values(config)
+    names = discovery_names(config)
+    return {
+        'DJANGO_SETTINGS_MODULE': DISCOVERY_SETTINGS,
+        'DB_HOST': config['services']['mysql']['container'],
+        'DB_PORT': '3306',
+        'DB_NAME': names['database'],
+        'DB_USER': 'edxapp',
+        'DB_PASSWORD': secrets.get('BRINGUP_MYSQL_PASSWORD', ''),
+        'CACHE_LOCATION': config['services']['memcached']['container'] + ':11211',
+        'DISCOVERY_CACHE_PREFIX': config['cache_prefix'],
+        # Interop with this run's LMS: the platform signs JWTs with the shared startup secret, so reuse it
+        # instead of a second self-signed key pair.
+        'DISCOVERY_LMS_JWT_SECRET': secrets.get('BRINGUP_STARTUP_SECRET_KEY') or secrets.get('BRINGUP_SECRET_KEY', ''),
+        'DISCOVERY_LMS_JWT_ISSUER': 'http://localhost:%d/oauth2' % config['lms_port'],
+        'DISCOVERY_LMS_JWT_AUDIENCE': config['run_id'] + '-lms',
+    }
 
 
 def physical_names(config):

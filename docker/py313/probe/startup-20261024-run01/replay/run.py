@@ -10,9 +10,10 @@ import sys
 
 from export_identity import verify_export_identity
 
-from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
+from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, discovery_enabled, environment,
                   docker_exec, fresh_preflight, load_config, ownership, read_json,
                   save_new, shell, source_repository_roots, validate_path_isolation)
+import discovery
 
 
 def compose(config):
@@ -117,6 +118,9 @@ def create(config):
         '-p', f'127.0.0.1:{config["lms_port"]}:18000', '-p', f'127.0.0.1:{config["cms_port"]}:18010',
         *mounts, '-e', 'PATH=/opt/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         config['images']['runtime'], 'tail', '-f', '/dev/null'])
+    if discovery_enabled(config):
+        # Optional sidecar: one container on the same network, reusing this run's MySQL and memcached.
+        discovery.create(config)
 
 
 def install(config):
@@ -139,6 +143,9 @@ def install(config):
         # After every identity report: from here the editable installs, cwd and settings all see the host tree.
         capture(config, 'link-live-platform', ['docker', 'exec', config['runtime_container'], 'sh', '-c',
                 'rm -rf %s && ln -s %s %s' % (APP_SOURCE, LIVE_PLATFORM_MOUNT, APP_SOURCE)])
+    if discovery_enabled(config):
+        # Independent venv and lock: discovery never shares the Platform's dependency set.
+        discovery.install(config)
 
 
 def main():

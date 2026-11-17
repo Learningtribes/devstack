@@ -2,7 +2,8 @@
 import argparse
 from pathlib import Path
 import sys
-from core import (APP_PYTHON, STARTUP_REL, capture, docker_exec, load_config, manage, ownership, shell)
+from core import (APP_PYTHON, STARTUP_REL, capture, discovery_enabled, docker_exec, load_config, manage, ownership, shell)
+import discovery
 
 
 def main():
@@ -23,6 +24,8 @@ def main():
         shell(config, 'lms', 'site-themes', '/startup/seed_themes.py')
         for system in ('lms', 'cms'):
             manage(config, system, system + '-check', ['check'])
+        if discovery_enabled(config):
+            discovery.schema(config)
     elif args.phase == 'assets':
         capture(config, 'npm-ci', docker_exec(config, 'npm', 'ci', '--legacy-peer-deps', '--ignore-scripts', '--no-audit', '--no-fund'))
         shell(config, 'lms', 'xmodule-assets', '/startup/build_xmodule_assets.py')
@@ -34,6 +37,8 @@ def main():
         for script in ('start_http.py', 'start_worker.py'):
             for system in ('lms', 'cms'):
                 capture(config, script[:-3] + '-' + system, [sys.executable, '-B', str(startup / script), system])
+        if discovery_enabled(config):
+            discovery.services(config)
     print('PASS', args.phase, config['run_id'], '; business acceptance is separate')
 
 

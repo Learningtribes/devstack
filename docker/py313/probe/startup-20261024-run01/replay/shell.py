@@ -11,6 +11,7 @@ import time
 
 import core
 from core import APP_ROOT, APP_SOURCE, docker_exec, environment, load_config
+import discovery
 
 # node_modules/.bin carries rtlcss, which `paver update_assets` calls by name.
 RUNTIME_PATH = (APP_ROOT + '/venvs/edxapp/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:'
@@ -63,9 +64,13 @@ def command(config, system):
 def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument('--config', required=True, type=Path)
-    parser.add_argument('system', choices=['lms', 'cms'])
+    parser.add_argument('system', choices=['lms', 'cms', 'discovery'])
     args = parser.parse_args()
     config = load_config(args.config)
+    if args.system == 'discovery':
+        # Discovery has its own container, venv and env file; the Platform shell setup does not apply.
+        argv = discovery.shell_argv(config)
+        os.execvp(argv[0], argv)
     ensure_test_mongo(config)
     ensure_npx(config)
     argv = command(config, args.system)
