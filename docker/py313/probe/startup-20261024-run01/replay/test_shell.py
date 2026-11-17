@@ -129,8 +129,8 @@ class ShellTests(unittest.TestCase):
         execvpe = self.run_main('--config', str(self.path), 'lms')
         (_, argv, env), _ = execvpe.call_args
         self.assertFalse([item for item in argv if self.secret in item])
-        self.assertEqual(env['PY313_MYSQL_PASSWORD'], self.secret)
-        self.assertIn('PY313_MYSQL_PASSWORD', argv)
+        self.assertEqual(env['BRINGUP_MYSQL_PASSWORD'], self.secret)
+        self.assertIn('BRINGUP_MYSQL_PASSWORD', argv)
 
     def test_ownership_failure_prevents_exec(self):
         self.ownership_mock.side_effect = ValueError('Runtime does not belong to this exact replay configuration')

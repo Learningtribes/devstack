@@ -22,7 +22,7 @@ COMMIT_RE = re.compile(r'[0-9a-f]{40}')
 
 
 def default_runs_root():
-    return Path(os.environ.get('PY313_RUNS_ROOT') or Path.home() / 'workspace/hawthorn/py313-runs')
+    return Path(os.environ.get('BRINGUP_RUNS_ROOT') or Path.home() / 'workspace/hawthorn/py313-runs')
 
 
 def git_output(repo, *args):
@@ -172,7 +172,7 @@ def main(argv=None):
     parser.add_argument('--platform-commit', help='default: Platform HEAD (must equal it)')
     parser.add_argument('--devstack-repo', default=str(HERE.parents[4]), help='default: this Devstack checkout')
     parser.add_argument('--devstack-commit', help='default: Devstack HEAD (must equal it)')
-    parser.add_argument('--root', help='new run directory (default: $PY313_RUNS_ROOT/<run-id>)')
+    parser.add_argument('--root', help='new run directory (default: $BRINGUP_RUNS_ROOT/<run-id>)')
     parser.add_argument('--subnet', help='dedicated private /24 (default: first free 172.30.X.0/24)')
     parser.add_argument('--live-platform', action='store_true',
                         help='development run: bind-mount the Platform checkout read-write instead of running a copy')

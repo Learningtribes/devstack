@@ -17,26 +17,26 @@ export DEVSTACK_WORKSPACE
 export COMPOSE_PROJECT_NAME
 
 # Python 3.13 is the only supported runtime. `make py313-dev-up` creates one fixed development environment and every
-# py313-* / *-shell target defaults to it, so no arguments are needed. Set PY313_CONFIG to address another run
+# py313-* / *-shell target defaults to it, so no arguments are needed. Set BRINGUP_CONFIG to address another run
 # (for example a frozen-snapshot acceptance run created by py313-up).
-PY313_REPLAY := docker/py313/probe/startup-20261024-run01/replay
-PY313_PYTHON := uv run --no-project --python 3.13 python -B
-PY313_DEV_RUN_ID ?= dev313
-PY313_RUNS_ROOT ?= $(HOME)/workspace/hawthorn/py313-runs
-PY313_CONFIG ?= $(PY313_RUNS_ROOT)/$(PY313_DEV_RUN_ID)/config.json
-export PY313_RUNS_ROOT
+BRINGUP_REPLAY := docker/py313/probe/startup-20261024-run01/replay
+BRINGUP_PYTHON := uv run --no-project --python 3.13 python -B
+BRINGUP_DEV_RUN_ID ?= dev313
+BRINGUP_RUNS_ROOT ?= $(HOME)/workspace/hawthorn/py313-runs
+BRINGUP_CONFIG ?= $(BRINGUP_RUNS_ROOT)/$(BRINGUP_DEV_RUN_ID)/config.json
+export BRINGUP_RUNS_ROOT
 define py313_require_config
-	@test -f "$(PY313_CONFIG)" || { echo "No environment at $(PY313_CONFIG); create it with: make py313-dev-up" >&2; exit 1; }
+	@test -f "$(BRINGUP_CONFIG)" || { echo "No environment at $(BRINGUP_CONFIG); create it with: make py313-dev-up" >&2; exit 1; }
 endef
 define py313_shell
 	$(py313_require_config)
-	@$(PY313_PYTHON) $(PY313_REPLAY)/shell.py --config "$(PY313_CONFIG)" $(1)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/shell.py --config "$(BRINGUP_CONFIG)" $(1)
 endef
 define py313_require_new_run
 	@test -n "$(RUN_ID)" -a -n "$(LMS_PORT)" -a -n "$(CMS_PORT)" -a -n "$(PLATFORM_REPO)" -a -n "$(THEME_REPO)" || { \
 	  echo "RUN_ID, LMS_PORT, CMS_PORT, PLATFORM_REPO and THEME_REPO (a triboo-theme checkout) are required (optional: PLATFORM_COMMIT DEVSTACK_REPO DEVSTACK_COMMIT RUN_ROOT SUBNET RUNTIME_IMAGE)" >&2; exit 1; }
 endef
-PY313_NEW_RUN_ARGS = --run-id "$(RUN_ID)" --lms-port "$(LMS_PORT)" --cms-port "$(CMS_PORT)" \
+BRINGUP_NEW_RUN_ARGS = --run-id "$(RUN_ID)" --lms-port "$(LMS_PORT)" --cms-port "$(CMS_PORT)" \
   --platform-repo "$(PLATFORM_REPO)" $(if $(PLATFORM_COMMIT),--platform-commit "$(PLATFORM_COMMIT)") \
   $(if $(DEVSTACK_REPO),--devstack-repo "$(DEVSTACK_REPO)") $(if $(DEVSTACK_COMMIT),--devstack-commit "$(DEVSTACK_COMMIT)") \
   $(if $(RUN_ROOT),--root "$(RUN_ROOT)") $(if $(SUBNET),--subnet "$(SUBNET)") \
@@ -198,14 +198,14 @@ cms-shell: ## Open a shell in the development runtime with CMS settings (no argu
 
 py313-new-run: ## Create a new Python 3.13 run directory and config; prints the config path (RUN_ID LMS_PORT CMS_PORT PLATFORM_REPO)
 	$(py313_require_new_run)
-	@$(PY313_PYTHON) $(PY313_REPLAY)/new_run.py $(PY313_NEW_RUN_ARGS)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/new_run.py $(BRINGUP_NEW_RUN_ARGS)
 
 py313-up: ## Create a run and bring up the complete local LMS/Studio environment (same variables as py313-new-run; SKIP_UNIT_TESTS=1)
 	$(py313_require_new_run)
-	@CONFIG=$$($(PY313_PYTHON) $(PY313_REPLAY)/new_run.py $(PY313_NEW_RUN_ARGS)) && \
-	  $(PY313_PYTHON) $(PY313_REPLAY)/bring_up.py --config "$$CONFIG" $(if $(SKIP_UNIT_TESTS),--skip-unit-tests)
+	@CONFIG=$$($(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/new_run.py $(BRINGUP_NEW_RUN_ARGS)) && \
+	  $(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/bring_up.py --config "$$CONFIG" $(if $(SKIP_UNIT_TESTS),--skip-unit-tests)
 
-py313-dev-up: RUN_ID ?= $(PY313_DEV_RUN_ID)
+py313-dev-up: RUN_ID ?= $(BRINGUP_DEV_RUN_ID)
 py313-dev-up: LMS_PORT ?= 18000
 py313-dev-up: CMS_PORT ?= 18010
 py313-dev-up: PLATFORM_REPO ?= $(DEVSTACK_WORKSPACE)/platform
@@ -215,15 +215,15 @@ py313-dev-up: ## Create the fixed development environment (dev313, LMS 18000, St
 
 py313-restart: ## Restart LMS and Studio of the development environment so they pick up code changes
 	$(py313_require_config)
-	@$(PY313_PYTHON) $(PY313_REPLAY)/restart.py --config "$(PY313_CONFIG)"
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/restart.py --config "$(BRINGUP_CONFIG)"
 
 py313-status: ## Show container states, ports and heartbeats of the development environment
 	$(py313_require_config)
-	@$(PY313_PYTHON) $(PY313_REPLAY)/status.py --config "$(PY313_CONFIG)"
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/status.py --config "$(BRINGUP_CONFIG)"
 
 py313-destroy: ## Remove only the Docker resources owned by the development environment, keep its directory (DRY_RUN=1, PURGE_DIR=1)
 	$(py313_require_config)
-	@$(PY313_PYTHON) $(PY313_REPLAY)/destroy_run.py --config "$(PY313_CONFIG)" $(if $(DRY_RUN),--dry-run) $(if $(PURGE_DIR),--purge-dir)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/destroy_run.py --config "$(BRINGUP_CONFIG)" $(if $(DRY_RUN),--dry-run) $(if $(PURGE_DIR),--purge-dir)
 
 lms-watcher-shell: ## Run a shell on the LMS watcher container
 	docker exec -it edx.devstack.lms_watcher env TERM=$(TERM) /edx/app/edxapp/devstack.sh open

@@ -45,7 +45,7 @@ rejected as occupied.
 
 `provision-secrets` creates only six random service secrets in a new protected
 file. Namespace values cannot appear in this file and cannot override the JSON
-contract. Existing `PY313_*` host environment values are discarded.
+contract. Existing `BRINGUP_*` host environment values are discarded.
 The generated Elasticsearch service uses a bounded 256 MiB JVM heap; raise it
 only after sizing the complete host/container memory budget.
 
@@ -118,15 +118,15 @@ It also supports CMS and explicit registered settings such as `startup_schema`.
 targeted CMS test with the Python 3.13 legacy nose adapter, the replay's isolated
 runtime, database and authenticated local Mongo test namespace. LMS tests use
 the same form with `lms`. The command and output are captured under the supplied
-unique label. The test adapter honors the replay's `PY313_PLATFORM_ROOT` instead
+unique label. The test adapter honors the replay's `BRINGUP_PLATFORM_ROOT` instead
 of depending on a platform source path from another container.
 `shell.py --config ... lms|cms` (or `make lms-shell` / `make cms-shell` /
-`make studio-shell`; the development environment by default, `PY313_CONFIG=/absolute/path/to/config.json`
+`make studio-shell`; the development environment by default, `BRINGUP_CONFIG=/absolute/path/to/config.json`
 for another run) opens an interactive bash in the run-owned runtime container. It has no label: a terminal session is not evidence, so nothing is captured or
 written to the evidence directory. The entry only verifies the evidence config and
 the runtime ownership label, so it works from any Devstack checkout. You get
 workdir `/edx/app/edxapp/edx-platform` (a copy for a snapshot run, a symlink to the live checkout for a development run), `/edx/app/edxapp/venvs/edxapp/bin` first on `PATH`, the run's
-`PY313_*` namespace and secrets (passed to the container by name, never on argv),
+`BRINGUP_*` namespace and secrets (passed to the container by name, never on argv),
 `PYTHONPATH=/startup/settings` and `DJANGO_SETTINGS_MODULE=startup_lms|startup_cms`.
 Use `python manage.py lms shell` (or `cms`) inside; it needs a TTY on the host.
 `run.py --config ... exchange <unique-label>` runs the existing nine-case process

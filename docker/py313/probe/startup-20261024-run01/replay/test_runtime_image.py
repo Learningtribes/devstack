@@ -311,7 +311,7 @@ class MysqlTestDatabaseGrantTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             sql = Path(directory) / 'sql'
             program = ('docker_process_sql() { cat > "$SQL"; }; MYSQL_USER=edxapp; '
-                       'PY313_TEST_DATABASE="$1"; . "$2"')
+                       'BRINGUP_TEST_DATABASE="$1"; . "$2"')
             result = subprocess.run(['bash', '-c', program, 'run', database, str(self.SCRIPT)],
                                     env={'SQL': str(sql), 'PATH': '/usr/bin:/bin'}, capture_output=True, text=True)
             return result, sql.read_text() if sql.exists() else None
@@ -328,7 +328,7 @@ class MysqlTestDatabaseGrantTests(unittest.TestCase):
     def test_compose_mounts_the_grant_script_and_names_the_test_database(self):
         config = example(Path('/nonexistent'))
         mysql = replay_run.compose(config)['services']['mysql']
-        self.assertEqual(mysql['environment']['PY313_TEST_DATABASE'], config['test_database'])
+        self.assertEqual(mysql['environment']['BRINGUP_TEST_DATABASE'], config['test_database'])
         self.assertTrue(any(volume.endswith('/replay/mysql-grant-test-database.sh:'
                                             '/docker-entrypoint-initdb.d/20-grant-test-database.sh:ro')
                             for volume in mysql['volumes']))

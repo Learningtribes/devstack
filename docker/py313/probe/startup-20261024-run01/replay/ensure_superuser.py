@@ -1,6 +1,6 @@
 """Ensure the local devstack superuser (default edx / edx@example.com / edx) exists in the run.
 
-LOCAL DEVSTACK ONLY. Override with PY313_DEV_SUPERUSER_USERNAME / _EMAIL / _PASSWORD; they reach
+LOCAL DEVSTACK ONLY. Override with BRINGUP_DEV_SUPERUSER_USERNAME / _EMAIL / _PASSWORD; they reach
 the container by name through the environment, never on a command line.
 """
 import argparse

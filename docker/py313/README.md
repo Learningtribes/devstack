@@ -11,7 +11,7 @@ git -C /path/to/platform worktree add --detach /path/to/platform-worktree origin
 make py313-up RUN_ID=master313r16 LMS_PORT=18000 CMS_PORT=18010 PLATFORM_REPO=/path/to/platform-worktree
 ```
 
-`py313-up` runs `new_run.py` (run directory under `$PY313_RUNS_ROOT`, default
+`py313-up` runs `new_run.py` (run directory under `$BRINGUP_RUNS_ROOT`, default
 `~/workspace/hawthorn/py313-runs/<RUN_ID>`; private inputs in `private/` mode 700; first free
 `172.30.X.0/24`) and then `bring_up.py`: unit tests, secrets, preflight, export, create, install,
 schema, assets, services, heartbeats, course build and seed, superuser, HTTP smoke. It stops at the
@@ -22,12 +22,12 @@ first failing stage; per-stage logs and durations are in `<run>/stage-logs/`, th
 
 - URLs: LMS `http://localhost:<LMS_PORT>`, Studio `http://localhost:<CMS_PORT>`.
 - Superuser (local devstack only, not a secret): `edx` / `edx@example.com` / `edx`. Override with
-  `PY313_DEV_SUPERUSER_USERNAME`, `PY313_DEV_SUPERUSER_EMAIL`, `PY313_DEV_SUPERUSER_PASSWORD`
+  `BRINGUP_DEV_SUPERUSER_USERNAME`, `BRINGUP_DEV_SUPERUSER_EMAIL`, `BRINGUP_DEV_SUPERUSER_PASSWORD`
   in the host environment.
 - Run-scoped acceptance identities (staff, learner, ...): `<run>/private/acceptance.json`, mode 600.
-- `make lms-shell PY313_CONFIG=<run>/config.json` (also `cms-shell`, `studio-shell`).
-- `make py313-status PY313_CONFIG=...` shows container states, ports and heartbeats.
-- `make py313-destroy PY313_CONFIG=...` is an explicit operator teardown, separate from the replay
+- `make lms-shell BRINGUP_CONFIG=<run>/config.json` (also `cms-shell`, `studio-shell`).
+- `make py313-status BRINGUP_CONFIG=...` shows container states, ports and heartbeats.
+- `make py313-destroy BRINGUP_CONFIG=...` is an explicit operator teardown, separate from the replay
   stages (which never clean up): it removes only the containers, volumes and network named in that
   config that carry its `py313.replay.config` ownership label, and keeps the run directory
   (`PURGE_DIR=1` deletes the run's known outputs, `DRY_RUN=1` only reports).
@@ -58,7 +58,7 @@ Platform application/Paver/test locks, the Platform-pinned external sources
 (git SHA pins and +hawthorn.1 companions) and ten editables. The older shell/probe commands below are historical
 infrastructure tools and do not install that contract.
 Once a replay is running, the root `make lms-shell` / `make cms-shell` (alias
-`make studio-shell`) open a shell in its runtime; `PY313_CONFIG=/absolute/path/to/config.json` is required.
+`make studio-shell`) open a shell in its runtime; `BRINGUP_CONFIG=/absolute/path/to/config.json` is required.
 
 
 Reference infrastructure (ops versions) plus a `python:3.13-slim-bookworm` runtime image (pinned by digest). Native on the host architecture; no amd64 emulation. Not a production build contract: the pins in `requirements-infra.txt` are probe versions taken from the ops reference table, not frozen choices; `requirements-native-probe.txt` is unpinned.

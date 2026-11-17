@@ -13,8 +13,8 @@ import uuid
 
 import kombu
 
-USER = os.environ.get("PY313_RABBITMQ_USER", "edxapp")
-PASSWORD = os.environ["PY313_RABBITMQ_PASSWORD"]
+USER = os.environ.get("BRINGUP_RABBITMQ_USER", "edxapp")
+PASSWORD = os.environ["BRINGUP_RABBITMQ_PASSWORD"]
 RESULT_BACKEND = "redis://valkey:6379/1"
 
 TASKS = """

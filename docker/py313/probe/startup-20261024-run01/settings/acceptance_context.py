@@ -5,7 +5,7 @@ from xmodule.modulestore.django import modulestore
 
 
 def course_key():
-    return CourseKey.from_string(os.environ['PY313_ACCEPTANCE_COURSE_ID'])
+    return CourseKey.from_string(os.environ['BRINGUP_ACCEPTANCE_COURSE_ID'])
 
 
 def block_key(category):

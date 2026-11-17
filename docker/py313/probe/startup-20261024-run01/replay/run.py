@@ -17,11 +17,11 @@ from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOU
 
 def compose(config):
     specs = {
-        'mysql': ('/var/lib/mysql', {'MYSQL_ROOT_PASSWORD': '${PY313_MYSQL_ROOT_PASSWORD}',
-            'MYSQL_DATABASE': config['database'], 'MYSQL_USER': 'edxapp', 'MYSQL_PASSWORD': '${PY313_MYSQL_PASSWORD}',
-            'PY313_TEST_DATABASE': config['test_database']}),
-        'mongo': ('/data/db', {'MONGO_INITDB_ROOT_USERNAME': 'edxapp', 'MONGO_INITDB_ROOT_PASSWORD': '${PY313_MONGO_PASSWORD}'}),
-        'rabbitmq': ('/var/lib/rabbitmq', {'RABBITMQ_DEFAULT_USER': 'edxapp', 'RABBITMQ_DEFAULT_PASS': '${PY313_RABBITMQ_PASSWORD}'}),
+        'mysql': ('/var/lib/mysql', {'MYSQL_ROOT_PASSWORD': '${BRINGUP_MYSQL_ROOT_PASSWORD}',
+            'MYSQL_DATABASE': config['database'], 'MYSQL_USER': 'edxapp', 'MYSQL_PASSWORD': '${BRINGUP_MYSQL_PASSWORD}',
+            'BRINGUP_TEST_DATABASE': config['test_database']}),
+        'mongo': ('/data/db', {'MONGO_INITDB_ROOT_USERNAME': 'edxapp', 'MONGO_INITDB_ROOT_PASSWORD': '${BRINGUP_MONGO_PASSWORD}'}),
+        'rabbitmq': ('/var/lib/rabbitmq', {'RABBITMQ_DEFAULT_USER': 'edxapp', 'RABBITMQ_DEFAULT_PASS': '${BRINGUP_RABBITMQ_PASSWORD}'}),
         'elasticsearch': ('/usr/share/elasticsearch/data', {'discovery.type': 'single-node', 'xpack.security.enabled': 'false', 'ES_JAVA_OPTS': '-Xms256m -Xmx256m'}),
         'memcached': (None, {}), 'valkey': (None, {}),
     }

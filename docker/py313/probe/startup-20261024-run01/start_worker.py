@@ -11,7 +11,7 @@ container, platform, environment, forwarded = options()
 system = sys.argv[1] if len(sys.argv) > 1 else 'lms'
 if system not in {'lms', 'cms'}:
     raise SystemExit('Choose lms or cms')
-prefix = environment.get('PY313_TASK_QUEUE_PREFIX')
+prefix = environment.get('BRINGUP_TASK_QUEUE_PREFIX')
 queue_option = ''
 if prefix:
     if not re.fullmatch(r'[a-zA-Z0-9_-]+', prefix):
@@ -19,7 +19,7 @@ if prefix:
     queues = ','.join(prefix + '.' + system + '.' + priority
                       for priority in ('high', 'default', 'low', 'high_mem'))
     queue_option = ' --queues=' + shlex.quote(queues)
-app_root = os.environ.get('PY313_APP_ROOT', '/edx/app/edxapp')
+app_root = os.environ.get('BRINGUP_APP_ROOT', '/edx/app/edxapp')
 command = (f'umask 077; mkdir -p {app_root}/py313/logs; '
            f'exec {app_root}/venvs/edxapp/bin/celery -A {system}.celery:APP worker '
            f'--loglevel=INFO --pool=solo --hostname=py313-{system}@%h'
