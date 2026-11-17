@@ -466,6 +466,11 @@
       "config": "goodhabitz.apps.GoodhabitzConfig"
     },
     {
+      "name": "openedx.core.djangoapps.audience_targeting",
+      "label": "audience_targeting",
+      "config": "openedx.core.djangoapps.audience_targeting.apps.AudienceTargetingConfig"
+    },
+    {
       "name": "openedx.core.djangoapps.catalog",
       "label": "catalog",
       "config": "django.apps.config.AppConfig"
@@ -926,6 +931,11 @@
       "name": "openedx.core.djangoapps.user_api",
       "label": "user_api",
       "config": "django.apps.config.AppConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.audience_targeting",
+      "label": "audience_targeting",
+      "config": "openedx.core.djangoapps.audience_targeting.apps.AudienceTargetingConfig"
     },
     {
       "name": "course_action_state",
@@ -1653,6 +1663,11 @@
       "name": "goodhabitz",
       "label": "goodhabitz",
       "config": "goodhabitz.apps.GoodhabitzConfig"
+    },
+    {
+      "name": "openedx.core.djangoapps.audience_targeting",
+      "label": "audience_targeting",
+      "config": "openedx.core.djangoapps.audience_targeting.apps.AudienceTargetingConfig"
     },
     {
       "name": "openedx.core.djangoapps.catalog",
