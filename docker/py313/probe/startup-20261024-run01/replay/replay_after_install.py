@@ -25,6 +25,9 @@ def main():
         for system in ('lms', 'cms'):
             manage(config, system, system + '-check', ['check'])
         if discovery_enabled(config):
+            # The LMS-side half of the discovery contract: register the DOT Application that
+            # discovery authenticates with, then provision discovery's own database and seed.
+            shell(config, 'lms', 'seed-discovery-oauth-app', '/startup/seed_discovery_oauth_app.py')
             discovery.schema(config)
     elif args.phase == 'assets':
         capture(config, 'npm-ci', docker_exec(config, 'npm', 'ci', '--legacy-peer-deps', '--ignore-scripts', '--no-audit', '--no-fund'))

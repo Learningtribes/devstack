@@ -17,7 +17,8 @@ from core import (APP_ROOT, SECRET_KEYS, SERVICES, capture, check_conflicts, che
                   physical_names, secret_values, source_repository_roots,
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
                   IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet,
-                  discovery_enabled, discovery_environment, discovery_names)
+                  discovery_enabled, discovery_environment, discovery_lms_domain, discovery_names,
+                  discovery_oidc_credentials)
 import discovery
 
 
@@ -145,6 +146,66 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(env['DB_HOST'], self.config['services']['mysql']['container'])
         self.assertEqual(env['CACHE_LOCATION'], self.config['services']['memcached']['container'] + ':11211')
         self.assertEqual(env['DB_USER'], 'edxapp')
+
+    def test_discovery_oidc_credentials_are_derived_per_run_and_agree_on_both_sides(self):
+        """Discovery and the LMS seed must compute the same DOT credentials, and not a static pair."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        credentials = discovery_oidc_credentials(loaded)
+        self.assertEqual(credentials, discovery_oidc_credentials(loaded))
+        self.assertNotEqual(credentials['DISCOVERY_OIDC_KEY'], credentials['DISCOVERY_OIDC_SECRET'])
+        # The LMS shell sees the same values, or the DOT Application would not match.
+        env = environment(loaded)
+        self.assertEqual(env['DISCOVERY_OIDC_KEY'], credentials['DISCOVERY_OIDC_KEY'])
+        self.assertEqual(env['DISCOVERY_OIDC_SECRET'], credentials['DISCOVERY_OIDC_SECRET'])
+        # Discovery's own container gets them too.
+        self.assertEqual(discovery_environment(loaded)['DISCOVERY_OIDC_KEY'], credentials['DISCOVERY_OIDC_KEY'])
+        # A different run secret yields a different pair.
+        Path(self.config['secret_env']).write_text(
+            ''.join(key + '=' + '2' * 48 + '\n' for key in SECRET_KEYS))
+        self.assertNotEqual(discovery_oidc_credentials(load_config(self.path))['DISCOVERY_OIDC_KEY'],
+                            credentials['DISCOVERY_OIDC_KEY'])
+
+    def test_discovery_seeds_the_in_network_lms_address_not_the_loopback_port(self):
+        """`refresh_course_metadata` prefixes `site.domain`, and discovery is a separate container."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        domain = discovery_lms_domain(loaded)
+        self.assertEqual(domain, self.config['runtime_container'] + ':18000')
+        self.assertNotIn(str(self.config['lms_port']), domain)
+        env = discovery_environment(loaded)
+        self.assertEqual(env['DISCOVERY_LMS_URL'], 'http://' + domain)
+        self.assertEqual(env['DISCOVERY_STUDIO_URL'], 'http://' + self.config['runtime_container'] + ':18010')
+
+    def test_discovery_schema_seeds_and_migrate_reseeds_without_duplicate_evidence(self):
+        """`migrate` stays repeatable, so only `schema` may reserve a one-shot evidence file."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        recorded = []
+
+        def record(config, label, command, **kwargs):
+            recorded.append((label, command))
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'provision_database'), \
+                patch.object(discovery, 'ownership'), patch.object(discovery, 'capture', record), \
+                patch.object(discovery.subprocess, 'run', return_value=type('R', (), {'returncode': 0, 'stdout': '', 'stderr': ''})()):
+            discovery.schema(loaded)
+            labels = [label for label, _ in recorded]
+            self.assertIn('schema-discovery', labels)
+            self.assertIn('seed-discovery-site-partner', labels)
+            self.assertLess(labels.index('schema-discovery'), labels.index('seed-discovery-site-partner'))
+            self.assertEqual(discovery.DISCOVERY_SEED_SCRIPT, 'ci/py313/seed_sites_and_partners.py')
+
+            recorded.clear()
+            discovery.migrate(loaded)
+            # No evidence label is reused on a repeatable path.
+            self.assertNotIn('schema-discovery', [label for label, _ in recorded])
 
     def test_discovery_image_is_required_and_validated(self):
         self.config['discovery_repo'] = str(self.root / 'discovery')

@@ -31,6 +31,10 @@ APP_ROOT = '/edx/app/edxapp'
 APP_SOURCE = APP_ROOT + '/edx-platform'
 APP_PYTHON = APP_ROOT + '/venvs/edxapp/bin/python'
 APP_STATE = APP_ROOT + '/py313'
+# Container-internal ports of the run's LMS/CMS. The host sees them through the loopback mappings in
+# `run.py create`; other containers on the run network address them directly.
+APP_LMS_PORT = 18000
+APP_CMS_PORT = 18010
 LAYOUT_DEFAULT_RE = re.compile(r"^DEFAULT_APP_ROOT = '([^']+)'$", re.MULTILINE)
 # Where a live run mounts the host Platform checkout. Processes never use this path: the install-time
 # copy at APP_SOURCE is replaced by a symlink to it, because the Platform-owned lock registers
@@ -411,6 +415,30 @@ def discovery_url(config):
     return 'http://localhost:%d' % config['discovery_port']
 
 
+def discovery_oidc_credentials(config):
+    """Derive the DOT client credentials discovery uses to call this run's LMS.
+
+    Discovery reads course metadata with the OAuth2 client-credentials grant, so the LMS needs a
+    DOT Application whose client_id/secret discovery knows. Both are derived from this run's
+    startup secret instead of stored in the config: that keeps them per-run unique and out of
+    committed files, and avoids adding a provision-secrets key, which would change the config
+    hash -- and therefore invalidate -- every run created before discovery existed.
+    """
+    secret = secret_values(config).get('BRINGUP_STARTUP_SECRET_KEY', '')
+    if not secret:
+        fail('The run has no BRINGUP_STARTUP_SECRET_KEY to derive the discovery OAuth2 credentials from')
+    salt = 'py313.replay.discovery-oidc:'
+    return {
+        'DISCOVERY_OIDC_KEY': hashlib.sha256((salt + secret + ':client-id').encode('utf-8')).hexdigest()[:40],
+        'DISCOVERY_OIDC_SECRET': hashlib.sha256((salt + secret + ':client-secret').encode('utf-8')).hexdigest(),
+    }
+
+
+def discovery_lms_domain(config):
+    """In-network host:port of this run's LMS, the value discovery's django_site.domain needs."""
+    return config['runtime_container'] + ':' + str(APP_LMS_PORT)
+
+
 def discovery_environment(config):
     """Environment for the discovery container. Reuses this run's MySQL/memcached and their credentials."""
     secrets = secret_values(config)
@@ -429,6 +457,10 @@ def discovery_environment(config):
         'DISCOVERY_LMS_JWT_SECRET': secrets.get('BRINGUP_STARTUP_SECRET_KEY') or secrets.get('BRINGUP_SECRET_KEY', ''),
         'DISCOVERY_LMS_JWT_ISSUER': 'http://localhost:%d/oauth2' % config['lms_port'],
         'DISCOVERY_LMS_JWT_AUDIENCE': config['run_id'] + '-lms',
+        # Discovery reaches the LMS over the run network, not through the host loopback mapping.
+        'DISCOVERY_LMS_URL': 'http://' + discovery_lms_domain(config),
+        'DISCOVERY_STUDIO_URL': 'http://' + config['runtime_container'] + ':' + str(APP_CMS_PORT),
+        **discovery_oidc_credentials(config),
     }
 
 
@@ -580,7 +612,7 @@ def redact_values(config):
 def environment(config):
     # Do not inherit any BRINGUP_* from a previously selected run.
     env = {key: value for key, value in os.environ.items()
-           if not key.startswith('BRINGUP_') or key in DEV_SUPERUSER_KEYS}
+           if (not key.startswith('BRINGUP_') and not key.startswith('DISCOVERY_')) or key in DEV_SUPERUSER_KEYS}
     env.update(secret_values(config))
     env.update(BRINGUP_MYSQL_USER='edxapp', BRINGUP_MONGO_USER='edxapp', BRINGUP_RABBITMQ_USER='edxapp',
                BRINGUP_RUNTIME_CONTAINER=config['runtime_container'], BRINGUP_SECRET_ENV_FILE=config['secret_env'],
@@ -593,6 +625,11 @@ def environment(config):
                BRINGUP_LMS_DOMAIN='localhost:' + str(config['lms_port']), BRINGUP_CMS_DOMAIN='localhost:' + str(config['cms_port']),
                BRINGUP_LMS_ROOT_URL='http://localhost:' + str(config['lms_port']),
                BRINGUP_CMS_ROOT_URL='http://localhost:' + str(config['cms_port']))
+    if 'discovery_repo' in config:
+        # The LMS-side seed registers the DOT Application that discovery authenticates with; both sides
+        # must agree on the derived client credentials.
+        env.update(discovery_oidc_credentials(config))
+        env['DISCOVERY_LMS_DOMAIN'] = discovery_lms_domain(config)
     return env
 
 
@@ -680,7 +717,9 @@ def docker_exec(config, *args, settings=None, detached=False, interactive=False)
         fail('Interactive and detached execution are mutually exclusive')
     ownership(config)
     env = environment(config)
-    flags = [flag for key in sorted(env) if key.startswith('BRINGUP_') or key == 'PYTHONPATH' for flag in ('-e', key)]
+    flags = [flag for key in sorted(env)
+             if key.startswith('BRINGUP_') or key.startswith('DISCOVERY_') or key == 'PYTHONPATH'
+             for flag in ('-e', key)]
     if interactive:
         # Name only: the value comes from the caller's terminal at exec time.
         flags += ['-e', 'TERM']

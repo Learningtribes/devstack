@@ -15,6 +15,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -22,14 +23,17 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from core import (DISCOVERY_ALIAS, DISCOVERY_APP_ROOT, DISCOVERY_ENV_MOUNT, DISCOVERY_LOCK, DISCOVERY_MOUNT,
-                  DISCOVERY_PYTHON, DISCOVERY_SETTINGS, DISCOVERY_VENV, capture, config_hash, discovery_environment,
-                  discovery_names, discovery_url, environment, fail, load_config, ownership, require_protected)
+from core import (APP_CMS_PORT, DISCOVERY_ALIAS, DISCOVERY_APP_ROOT, DISCOVERY_ENV_MOUNT, DISCOVERY_LOCK,
+                  DISCOVERY_MOUNT, DISCOVERY_PYTHON, DISCOVERY_SETTINGS, DISCOVERY_VENV, capture, config_hash,
+                  discovery_environment, discovery_lms_domain, discovery_names, discovery_url, environment, fail,
+                  load_config, ownership, require_protected)
 
 LABEL = 'py313.replay.config'
 RUNSERVER_PORT = 8000
 STARTUP_TIMEOUT = 180
 HEALTH_TIMEOUT = 300
+# Discovery-owned seed script, run from the mounted repo (/workspace) with the app venv.
+DISCOVERY_SEED_SCRIPT = 'ci/py313/seed_sites_and_partners.py'
 
 
 def define(config):
@@ -126,15 +130,43 @@ def provision_database(config):
         fail('Failed to provision the discovery database')
 
 
+def seed(config, *, evidence=False):
+    """Seed `django_site` + `core_partner` so discovery can reach this run's LMS.
+
+    `refresh_course_metadata` iterates `Site.objects.all()` and calls
+    `{scheme}://{site.domain}/oauth2/access_token`, so without a row it raises
+    `CommandError('No valid site records in Table django_site!')`. The domain must be the
+    in-network LMS address, not the host loopback mapping, because discovery runs in its
+    own container. `seed_sites_and_partners.py` uses `update_or_create`, so re-running is safe.
+    """
+    define(config)
+    domain = discovery_lms_domain(config)
+    overrides = {
+        'DISCOVERY_SITE_DOMAIN': domain,
+        'DISCOVERY_LMS_URL': 'http://' + domain,
+        'DISCOVERY_STUDIO_URL': 'http://' + config['runtime_container'] + ':' + str(APP_CMS_PORT),
+    }
+    assignment = ' '.join('%s=%s' % (key, shlex.quote(value)) for key, value in sorted(overrides.items()))
+    argv = exec_argv(config, 'sh', '-c', assignment + ' exec "$@"', 'sh', DISCOVERY_PYTHON, DISCOVERY_SEED_SCRIPT)
+    if evidence:
+        capture(config, 'seed-discovery-site-partner', argv)
+        return
+    result = subprocess.run(argv, capture_output=True, text=True, env=environment(config))
+    sys.stdout.write(result.stdout + result.stderr)
+    if result.returncode:
+        fail('Discovery site/partner seed failed')
+
+
 def schema(config):
-    """Provision the database and apply migrations from the isolated venv (one-shot, evidence-captured)."""
+    """Provision the database, apply migrations and seed from the isolated venv (one-shot, evidence-captured)."""
     define(config)
     provision_database(config)
     capture(config, 'schema-discovery', exec_argv(config, DISCOVERY_PYTHON, 'manage.py', 'migrate', '--noinput'))
+    seed(config, evidence=True)
 
 
 def migrate(config):
-    """Re-apply migrations on an existing run; no evidence, so `update-db` stays repeatable."""
+    """Re-apply migrations and re-seed on an existing run; no evidence, so `update-db` stays repeatable."""
     define(config)
     provision_database(config)
     result = subprocess.run(exec_argv(config, DISCOVERY_PYTHON, 'manage.py', 'migrate', '--noinput'),
@@ -142,6 +174,7 @@ def migrate(config):
     sys.stdout.write(result.stdout + result.stderr)
     if result.returncode:
         fail('Discovery migrate failed')
+    seed(config)
 
 
 def start_http(config):
@@ -231,7 +264,7 @@ def shell_argv(config):
 def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument('--config', required=True)
-    parser.add_argument('phase', choices=['create', 'install', 'schema', 'migrate', 'services', 'restart', 'status'])
+    parser.add_argument('phase', choices=['create', 'install', 'schema', 'migrate', 'seed', 'services', 'restart', 'status'])
     args = parser.parse_args()
     config = load_config(args.config)
     if args.phase == 'create':
@@ -242,6 +275,8 @@ def main():
         schema(config)
     elif args.phase == 'migrate':
         migrate(config)
+    elif args.phase == 'seed':
+        seed(config)
     elif args.phase == 'services':
         services(config)
     elif args.phase == 'restart':
