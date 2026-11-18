@@ -73,12 +73,14 @@ spec:
                 echo "certificates already present"; exit 0
               fi
               util=/usr/share/elasticsearch/bin/elasticsearch-certutil
-              cd "$(mktemp -d)"
-              "$util" ca --silent --pem --out ca.zip
+              work=$(mktemp -d)
+              cd "$work"
+              # certutil resolves a relative output path against its home directory (read-only here), not the working directory
+              "$util" ca --silent --pem --out "$work/ca.zip"
               unzip -q ca.zip -d ca-out
-              "$util" cert --silent --pem --ca-cert ca-out/ca/ca.crt --ca-key ca-out/ca/ca.key --name elasticsearch \
+              "$util" cert --silent --pem --ca-cert "$work/ca-out/ca/ca.crt" --ca-key "$work/ca-out/ca/ca.key" --name elasticsearch \
                 --dns elasticsearch --dns "elasticsearch.${POD_NAMESPACE}.svc" --dns "elasticsearch.${POD_NAMESPACE}.svc.cluster.local" \
-                --dns localhost --ip 127.0.0.1 --out node.zip
+                --dns localhost --ip 127.0.0.1 --out "$work/node.zip"
               unzip -q node.zip -d node-out
               mkdir -p "$certs/ca" "$certs/node"
               cp ca-out/ca/ca.crt "$certs/ca/ca.crt"

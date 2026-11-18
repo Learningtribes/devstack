@@ -8,6 +8,7 @@ kubeconfig so that nothing can reach a real cluster.
 """
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -362,8 +363,10 @@ class JobsContractTest(unittest.TestCase):
             self.assertNotIn(forbidden, script)
         self.assertNotIn('--settings', script)
         self.assertEqual(job['spec']['backoffLimit'], 0)
-        for path in ('/tmp', '/edx/app/edxapp/py313/config'):
+        for path in ('/tmp', '/edx/app/edxapp/py313/config', '/edx/var/log/lms', '/edx/var/log/cms'):
             self.assertIn(path, {m['mountPath'] for m in container['volumeMounts']})
+        volumes = {v['name'] for v in job['spec']['template']['spec']['volumes']}
+        self.assertLessEqual({m['name'] for m in container['volumeMounts']}, volumes)
 
     def test_db_init_environment_covers_the_startup_settings_contract(self):
         job = named(render(HERE / 'jobs'), 'Job', 'db-init')
@@ -406,7 +409,7 @@ class OrbstackOverlayTest(unittest.TestCase):
                 container = template['spec']['containers'][0]
                 if name in ('mysql', 'mongodb', 'elasticsearch', 'rabbitmq', 'memcached'):
                     continue
-                self.assertEqual(container['image'], 'edxapp:py313-k8s-20261117-b0db03a', name)
+                self.assertEqual(container['image'], 'edxapp:py313-prodimage-b0db03a-local', name)
                 self.assertEqual(container['imagePullPolicy'], 'IfNotPresent', name)
 
     def test_replicas_and_minimum_workers(self):
@@ -445,6 +448,14 @@ class OrbstackOverlayTest(unittest.TestCase):
         self.assertEqual(env['xpack.security.http.ssl.enabled'], 'true')
         self.assertEqual(env['discovery.type'], 'single-node')
         self.assertEqual(env['ES_JAVA_OPTS'], '-Xms512m -Xmx512m')
+
+    def test_elasticsearch_certutil_writes_only_below_the_scratch_directory(self):
+        init = named(self.objects, 'StatefulSet', 'elasticsearch')['spec']['template']['spec']['initContainers'][0]
+        script = init['command'][-1]
+        # certutil resolves a relative --out against its read-only home directory, not the working directory.
+        targets = re.findall(r'--out\s+(\S+)', script)
+        self.assertEqual(len(targets), 2, targets)
+        self.assertTrue(all(target.startswith('"$work/') for target in targets), targets)
 
     def test_rabbitmq_settings_equal_the_devstack_file(self):
         source = (REPO / 'docker/py313/rabbitmq/20-permit-transient-nonexcl.conf').read_text()

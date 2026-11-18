@@ -134,6 +134,12 @@ spec:
               mountPath: /edx/app/edxapp/py313/data
             - name: state-logs
               mountPath: /edx/app/edxapp/py313/logs
+            # The platform hard-codes these paths (the ILT XBlock opens /edx/var/log/lms/ilt_xblock.log at import): on a read-only
+            # root every import logged an OSError traceback.
+            - name: log-lms
+              mountPath: /edx/var/log/lms
+            - name: log-cms
+              mountPath: /edx/var/log/cms
       volumes:
         - name: tmp
           emptyDir:
@@ -150,3 +156,9 @@ spec:
         - name: state-logs
           emptyDir:
             sizeLimit: 256Mi
+        - name: log-lms
+          emptyDir:
+            sizeLimit: 64Mi
+        - name: log-cms
+          emptyDir:
+            sizeLimit: 64Mi

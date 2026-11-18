@@ -11,7 +11,7 @@ images:
   # The arm64 image built into the local Docker daemon, which OrbStack's Kubernetes uses directly: never pulled.
   - name: edxapp
     newName: edxapp
-    newTag: py313-k8s-20261117-b0db03a
+    newTag: py313-prodimage-b0db03a-local
 replicas:
   - name: lms
     count: 1
@@ -30,6 +30,9 @@ replicas:
     count: 0
   - name: worker-cms-low
     count: 0
+# Resources below are LOCAL-MEASURED (OrbStack, arm64, one request each of /heartbeat, /login, /signin, one Celery task; docker stats and
+# cgroup memory.peak, 2026-11-18): lms 300 MiB idle / 724 MiB peak (gunicorn worker, startup import and one `manage lms shell`),
+# cms 275 MiB idle / 279 MiB peak, a default-queue worker 285-305 MiB. Limits keep about 2x the peak; they say nothing about production load.
 patches:
   - target:
       kind: Deployment
@@ -53,7 +56,7 @@ patches:
                     memory: 512Mi
                   limits:
                     cpu: "2"
-                    memory: 2Gi
+                    memory: 1536Mi
   - target:
       kind: Deployment
       name: cms
@@ -70,10 +73,10 @@ patches:
                 resources:
                   requests:
                     cpu: 100m
-                    memory: 512Mi
+                    memory: 320Mi
                   limits:
                     cpu: "1"
-                    memory: 1536Mi
+                    memory: 1Gi
   # Also the template for a real environment's grace period (open question Q8): 60 s here so that a local teardown is quick.
   - target:
       kind: Deployment
@@ -92,7 +95,7 @@ patches:
                 resources:
                   requests:
                     cpu: 100m
-                    memory: 384Mi
+                    memory: 320Mi
                   limits:
                     cpu: "1"
-                    memory: 1Gi
+                    memory: 768Mi

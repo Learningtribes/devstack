@@ -7,7 +7,7 @@ resources:
 images:
   - name: edxapp
     newName: edxapp
-    newTag: py313-k8s-20261117-b0db03a
+    newTag: py313-prodimage-b0db03a-local
 configMapGenerator:
   - name: py313-bringup-env
     envs:
