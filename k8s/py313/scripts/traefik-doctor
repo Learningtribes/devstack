@@ -22,6 +22,12 @@ else
   bad "no local CA: run  NO_CLUSTER=1 $SCRIPTS_DIR/gen-local-tls  (INGRESS=traefik scripts/up does it)"
   exit 1
 fi
+if ca_name_constraints_complete "$CA"; then
+  ok "the CA bounds every name type: DNS, e-mail and URI only for $BASE_DOMAIN, no IP address"
+else
+  bad 'the CA was created by an older script and does not bound IP, e-mail and URI names: a leaked ca.key could issue an IP-address certificate that your keychain would trust'
+  todo+=(caconstraints)
+fi
 
 step 'Direct path to Traefik (bypasses DNS, system proxy and Clash: --noproxy --resolve 127.0.0.1)'
 for port in 80 443; do
@@ -92,6 +98,17 @@ if printf '%s\n' "${todo[@]}" | grep -qx 'trust'; then
      security remove-trusted-cert "$CA"
      security delete-certificate -c "py313 local CA ($BASE_DOMAIN)" ~/Library/Keychains/login.keychain-db
    Firefox keeps its own store: import $CA under Settings > Privacy & Security > Certificates, or set security.enterprise_roots.enabled.
+EOF
+fi
+if printf '%s\n' "${todo[@]}" | grep -qx 'caconstraints'; then
+  cat <<EOF
+
+3. Replace the local CA by one with the name constraints (optional hardening; the current CA keeps working). This deletes the namespace,
+   so the database and every session are recreated, and .local/tls including the old CA key. Run from the Devstack worktree:
+     PURGE_LOCAL=1 PURGE_TLS=1 make -C k8s/py313 k8s-local-down
+     INGRESS=traefik make -C k8s/py313 k8s-local-up
+   Then trust the new CA (step 2; the check above reports it). Remove the old CA from the keychain:
+     security delete-certificate -c "py313 local CA ($BASE_DOMAIN)" ~/Library/Keychains/login.keychain-db
 EOF
 fi
 echo
