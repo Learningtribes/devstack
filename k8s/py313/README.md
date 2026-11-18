@@ -15,6 +15,8 @@ image change; the path is the contract, check it exists before relying on a deta
 | `overlays/orbstack-local/jobs/` | `db-init` for the local overlay; `bringup.env` holds its non-secret `BRINGUP_*` values. |
 | `overlays/orbstack-local-all-workers/` | Opt-in: the local overlay with all eight worker queues running. |
 | `overlays/prod-example/` | README only: what a production overlay has to set. |
+| `traefik/` | Traefik v3 controller for the local Traefik mode (namespace `traefik`, RBAC, CRDs, TLSStore, LoadBalancer Service), plus `coredns-custom.yaml`. Section "Traefik mode (production-like)". |
+| `overlays/orbstack-local-traefik/` | The local overlay with real host names, HTTPS, Ingresses, a `static` Deployment (nginx) and the local CA in every application pod. |
 | `scripts/`, `Makefile` | Local OrbStack run: `up`, `status`, `smoke`, `down` and the secret/config/Elasticsearch helpers (section "Local OrbStack run"). |
 | `test_manifests.py`, `scripts/test_scripts.py` | Static checks, no cluster needed. |
 
@@ -162,7 +164,7 @@ Decisions taken here (the former open questions):
   The database is new; no wipe exists. `up` skips a completed `db-init` (`FORCE_DB_INIT=1` reruns it).
 - **`LOG_DESTINATION`** (was Q2): post-processed to `console` before the Secret is created; the application log appears in `kubectl logs`.
 - **Site domains and scheme**: `localhost:18000` / `localhost:18010`, `BRINGUP_SCHEME=http` (so `SESSION_COOKIE_SECURE` is false); no cookie domain.
-- **Static files** (Q4): not served, see open question 2. **`metrics` cron** (Q5): stays suspended. **Resources** (Q6): measured, below.
+- **Static files** (Q4): not served in this flow (see open question 2); the Traefik mode serves them with nginx. **`metrics` cron** (Q5): stays suspended. **Resources** (Q6): measured, below.
 - The pods log the Django `DisallowedHost` traceback for an unknown `Host` (that is the smoke test's negative check, not a fault).
 - `kubectl apply` reports the StatefulSets and PodDisruptionBudgets as `configured` on every run without restarting any pod
   (client-side apply and defaulted fields); a changed StatefulSet template does restart its pod (a crash-looping pod must be deleted by hand).
@@ -190,16 +192,106 @@ memcached result backend, and the script requires the same task id as `received`
 This proves broker routing to `edx.lms.core.default`, the worker's task registry and the result backend; it does not prove the other
 queues (run with the all-workers overlay, `rabbitmqctl list_queues -p py313` shows one consumer on each) or any real task.
 
-Known limitations: no styled pages (static files, above); no ingress or TLS (port-forward only); media and data are per-pod scratch;
+Known limitations: no styled pages and no ingress or TLS in the default flow (the Traefik mode serves both); media and data are per-pod scratch;
 no mail relay (console backend); no Studio or LMS user exists (staging `12-admin.sh` has no counterpart yet); Elasticsearch runs without
 read-only root (documented exception, `WRITABLE_ROOT_ALLOWED` in the test).
+
+## Traefik mode (production-like)
+
+The port-forward flow above stays the default. `INGRESS=traefik` runs the same stack behind Traefik with host names, HTTPS and static
+files: LMS `https://lms.local-prod.7mud.com`, Studio `https://studio.local-prod.7mud.com` (`BASE_DOMAIN=local-prod.7mud.com`, a public
+wildcard DNS record that resolves to `127.0.0.1`; there is no `preview.` host because the seed creates two Sites only).
+
+```
+browser --80/443--> OrbStack LoadBalancer --> Traefik (ns traefik, :8000/:8443)
+                      web: 301 -> https      |  host lms.*     /        -> svc lms:8000
+                      websecure: TLS (TLSStore |  host studio.*  /        -> svc cms:8010  (Middleware studio-body-limit)
+                      default = local-prod-tls)|  both hosts     /static  -> svc static:8080 (nginx, files copied from the image)
+pods --https://lms.*--> CoreDNS rewrite (coredns-custom) --> Traefik ClusterIP, trusting the local CA through SSL_CERT_FILE
+```
+
+Prerequisites: those of the local run, plus `openssl` 3, image `traefik:v3.7.19` and `nginxinc/nginx-unprivileged:1.31.7-alpine` in the local Docker
+daemon, and free host ports 80 and 443 (OrbStack publishes the LoadBalancer there).
+
+```bash
+make -C k8s/py313 k8s-traefik-up        # = INGRESS=traefik scripts/up: a fresh namespace in Traefik mode (~2 min)
+make -C k8s/py313 k8s-traefik-doctor    # read-only host diagnosis; prints the steps that only you can do
+make -C k8s/py313 k8s-traefik-smoke     # curl --noproxy '*' --resolve --cacert <local CA>; creates and deletes a test user
+make -C k8s/py313 k8s-traefik-status
+make -C k8s/py313 k8s-traefik-down      # removes what the mode created; the namespace py313-prod-local stays
+```
+
+Switching mode changes the site domains stored in the database (`seed_local_host_sites.py` only creates Sites, it does not rename them),
+so `up` records the mode as an annotation on the namespace and refuses to apply the other mode to an existing one. To switch:
+`make k8s-local-down` (or `k8s-traefik-down` to keep the data and only drop the ingress), then `up` in the other mode. The default flow
+without `INGRESS` is unchanged.
+
+User-side steps (the scripts never edit Clash, `/etc/hosts` or the keychain, and never use sudo; `k8s-traefik-doctor` prints exact
+commands and an undo for each):
+
+1. Clash (mihomo) must resolve the domain with the real answer and route it `DIRECT`: rule `DOMAIN-SUFFIX,local-prod.7mud.com,DIRECT` and
+   `dns.fake-ip-filter: '+.local-prod.7mud.com'`; the doctor detects fake-IP answers (198.18.0.0/15) and a proxy that does not reach Traefik.
+2. Trust the local CA in the login keychain (`security add-trusted-cert ...`; Firefox has its own store). The CA carries a name constraint
+   for `local-prod.7mud.com`, so it cannot vouch for any other site.
+
+`scripts/gen-local-tls` (run by `up`) writes `.local/tls/` (git-ignored; CA key mode 600; ECDSA P-256; CA 10 years; wildcard leaf 397 days
+with SAN `*.local-prod.7mud.com` and `local-prod.7mud.com`). A rerun keeps both unless the leaf is expired, has a different SAN or no longer verifies.
+It creates the Secret `local-prod-tls` (namespaces `traefik` and `py313-prod-local`) and the ConfigMap `local-ca-bundle` (the image's system
+bundle plus the local CA, mounted at `/etc/local-ca` with `SSL_CERT_FILE` and `REQUESTS_CA_BUNDLE` in every application pod and job; the
+Elasticsearch CA is separate and unaffected). `PURGE_LOCAL=1 scripts/down` keeps `.local/tls` unless `PURGE_TLS=1`.
+
+Real certificates (ACME DNS-01 with the Aliyun `alidns` provider) are documented, not implemented: Traefik would get a `certificatesResolvers`
+entry and the credentials from a git-ignored `.local/acme.env` that you fill (`ALICLOUD_ACCESS_KEY`, `ALICLOUD_SECRET_KEY`); nothing reads it today.
+
+What the application sees: `BRINGUP_SCHEME=https` (`SESSION_COOKIE_SECURE`, `X-Forwarded-Proto` trusted through `SECURE_PROXY_SSL_HEADER`),
+`BRINGUP_SESSION_COOKIE_DOMAIN=.local-prod.7mud.com` (one login for both hosts), site domains and `ALLOWED_HOSTS` equal to the two hosts.
+Static files: the `static` pod copies `/edx/var/edxapp/staticfiles` from the application image into an `emptyDir` (initContainer) and nginx
+serves it at `/static/` (LMS) and `/static/studio/` (Studio), with the production nginx rules: `.json`/`.xml` at the top level and
+`README.TXT` are 403, content-hashed files are `public, max-age=31536000, immutable`, others `max-age=300`, GET/HEAD only. `/media` is
+not served (per-pod scratch). The app emits HSTS (2 years, `includeSubDomains`) for these names.
+
+Traefik settings worth knowing: no `forwardedHeaders.trustedIPs`, so Traefik rewrites `X-Forwarded-*` itself; `--global.aliasHeadersStrategy=delete`;
+the redirect target is `:443` (a named entry point would put the container port 8443 in `Location`); `respondingTimeouts` read 0 s / write 300 s /
+idle 180 s; encoded `/ \ % ? # ;` are allowed and NUL is refused (explicitly, v3 changed the defaults); `safeNaming=false` keeps the `<ns>-<name>@kubernetescrd`
+form that the Studio Ingress annotation needs; both providers watch `py313-prod-local` and `traefik` only. The Studio body limit
+(`maxRequestBodyBytes` 2147483648, the production nginx `client_max_body_size 2048M`; the buffering spool is a 3 Gi `/tmp` emptyDir) is attached
+to the Studio Ingress only, so static files are unaffected. The Traefik CRD provider needs all ten `traefik.io` CRDs and read access to all of them
+(with fewer, it logs reflector errors and Studio answered 404); `traefik/crds/crds.yaml` is the verbatim upstream v3.7.19 file (sha256 in its header).
+
+Blast radius (everything outside `py313-prod-local`, all labelled `py313.learningtribes.com/feature=traefik-local`):
+Namespace `traefik`; the ten Traefik CRDs; ClusterRole and ClusterRoleBinding `traefik-py313-local`; ConfigMap `kube-system/coredns-custom`
+(key `local-prod.override`) and a CoreDNS rollout restart; host ports 80 and 443. The `coredns` ConfigMap itself is never modified.
+Rollback: `make k8s-traefik-down` deletes exactly those (it refuses a CRD, ConfigMap key or namespace that is not labelled or has foreign content),
+restarts CoreDNS and keeps `py313-prod-local`, `local-prod-tls` and `local-ca-bundle` for a later `up`; `k8s-local-down` removes the namespace.
+
+Verified on this laptop (arm64, OrbStack, Traefik v3.7.19, 2026-11-18, `make k8s-traefik-smoke`):
+
+- `/heartbeat` over HTTPS for both hosts: 200 with the local CA; port 80 answers 301 with `Location: https://<host>/<path>`; unknown Host: 404.
+- LMS `/login` and Studio `/signin`: 200 `text/html`; a hashed CSS (`text/css`) and JS (`application/javascript`) from `/static/` and `/static/studio/`: 200, immutable cache header;
+  `staticfiles.json` 403; path traversal 404.
+- Login: `POST /login_ajax` (LMS) and `/login_post` (Studio) with a run-time random password (never printed) return `success: true`; `sessionid`,
+  `edxloggedin`, `edx-user-info` carry `Secure` and `Domain=.local-prod.7mud.com`; the LMS session opens Studio `/home/` and the Studio
+  session opens LMS `/dashboard` (200). An `Origin: http://` login is refused (403, so the app sees scheme https); a client-sent
+  `X-Forwarded-Proto: http` is overwritten (the underscore spelling is also harmless, but gunicorn drops it itself, so that check does not prove the Traefik option).
+- In-cluster (lms and cms pods): both names resolve to the Traefik ClusterIP; `requests` and `urllib` reach `https://lms.local-prod.7mud.com/heartbeat`
+  with the mounted bundle; the system bundle alone rejects it (negative control).
+- Body limit: with the Middleware lowered to 1024 bytes a 4 KiB POST to Studio is 413, the same POST to LMS is not (403 from the app); restored afterwards.
+- Celery smoke still passes; `k8s-local-test` (72 tests) and the port-forward flow (`k8s-local-up`/`-smoke` on ports 28000/28010) passed before this mode was added.
+- Memory (idle after the smoke): Traefik 25 MiB, static (nginx) 8 MiB, CoreDNS 15 MiB; whole namespace plus controller about 3.0 GiB. `kubectl top` is unavailable.
+
+Differences from production: a local CA instead of real certificates; the OrbStack LoadBalancer instead of a cloud load balancer or hostPort; one replica
+each; no WAF, rate limit or access-log shipping; the static files are copied from the image instead of served from the CDN or an nginx on the host;
+no security headers beyond what the app sets (production nginx adds none either); Ingress objects only, no IngressRoute.
+
+Not proven: behaviour in a real browser behind Clash and AnyConnect (the doctor proves the system proxy path with curl only), real certificates and ACME,
+parity with the production Traefik configuration, `preview.` hosts, media uploads, and the Studio import of a large course against the 2 GiB limit.
 
 ## Open owner decisions and questions
 
 1. **Q8**: worker `terminationGracePeriodSeconds` (above); 3600 is not an agreed value.
 2. **Static files** are not served by gunicorn (`DEBUG` only, no WhiteNoise in the settings). Browser flows need nginx or a sidecar
-   serving `/edx/var/edxapp/staticfiles` (image README: sidecar, nginx `FROM` the image, or object storage). Not in these manifests;
-   verified locally: the CSS referenced by `/login` exists in the image and gunicorn answers 404 for it. Pages return 200 but render unstyled.
+   serving `/edx/var/edxapp/staticfiles` (image README: sidecar, nginx `FROM` the image, or object storage). Not in the base; the Traefik overlay implements the sidecar-less variant (a `static` Deployment).
+   Verified locally for the base: the CSS referenced by `/login` exists in the image and gunicorn answers 404 for it. Pages return 200 but render unstyled.
 3. **Web resources** of the base (lms 1 Gi request / 3 Gi limit with 2 gunicorn workers, cms 768 Mi / 2 Gi, workers 512 Mi / 1.5 Gi, 1 Gi / 3 Gi
    for `high_mem`) are still estimates from staging figures (1.52 GiB PSS for five workers); production hosts run 45 / 16 workers. Only the
    local overlay carries measured values (section "Local OrbStack run").
@@ -211,3 +303,6 @@ read-only root (documented exception, `WRITABLE_ROOT_ALLOWED` in the test).
    (staging `07` drops every table and Mongo collection after a backup and an explicit confirmation).
 7. **Cron time zone** (above) and the `activeDeadlineSeconds` of the cron jobs (2 h, metrics 4 h) are placeholders.
 8. **Secret management** for a real environment (external secrets, sealed secrets) is outside this change.
+9. **Production Traefik parity** (Traefik mode): which entry points and ports, which middlewares (security headers, rate limit, buffering, compression, the
+   Studio body limit), `Ingress` or `IngressRoute`, the certificate resolver, whether `forwardedHeaders.trustedIPs` must trust an upstream load balancer
+   (here Traefik is the edge and trusts nobody), and the ACME provider and credential storage. The local mode assumes the answers given in its section.
