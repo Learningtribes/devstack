@@ -1,0 +1,120 @@
+# Serves /edx/var/edxapp/staticfiles of the very image the pods run (no drift between code and assets): an init container copies
+# the tree (about 1.3 GiB) into an emptyDir, a pinned non-root nginx serves it. Gunicorn does not serve /static (DEBUG only).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static
+  labels:
+    app.kubernetes.io/name: edxapp-static
+    app.kubernetes.io/instance: static
+    app.kubernetes.io/component: static
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edxapp-static
+      app.kubernetes.io/instance: static
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: edxapp-static
+        app.kubernetes.io/instance: static
+        app.kubernetes.io/component: static
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: copy-static
+          image: edxapp
+          imagePullPolicy: IfNotPresent
+          command: ["cp", "-R", "/edx/var/edxapp/staticfiles/.", "/srv/www/static/"]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: "2"
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: static-root
+              mountPath: /srv/www/static
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.31.7-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 10
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: static-root
+              mountPath: /srv/www/static
+              readOnly: true
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d
+              readOnly: true
+            # pid file and the *_temp directories of the unprivileged image live in /tmp
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: static-root
+          emptyDir:
+            sizeLimit: 2Gi
+        - name: nginx-conf
+          configMap:
+            name: static-nginx-conf
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: static
+  labels:
+    app.kubernetes.io/name: edxapp-static
+    app.kubernetes.io/instance: static
+    app.kubernetes.io/component: static
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: edxapp-static
+    app.kubernetes.io/instance: static
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
