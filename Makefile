@@ -221,6 +221,14 @@ py313-update-db-discovery: ## Run course-discovery migrations in the run's disco
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" migrate
 
+py313-check-discovery: ## Run Django's system checks for course-discovery
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" check
+
+py313-test-discovery: ## Run the course-discovery pytest suite against the run's MySQL (SELECTORS="<paths>" to narrow)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" test $(SELECTORS)
+
 py313-new-run: ## Create a new Python 3.13 run directory and config; prints the config path (RUN_ID LMS_PORT CMS_PORT PLATFORM_REPO)
 	$(py313_require_new_run)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/new_run.py $(BRINGUP_NEW_RUN_ARGS)

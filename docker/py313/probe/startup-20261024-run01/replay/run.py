@@ -10,7 +10,7 @@ import sys
 
 from export_identity import verify_export_identity
 
-from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, discovery_enabled, environment,
+from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, discovery_enabled, discovery_test_database, environment,
                   docker_exec, fresh_preflight, load_config, ownership, read_json,
                   save_new, shell, source_repository_roots, validate_path_isolation)
 import discovery
@@ -20,7 +20,11 @@ def compose(config):
     specs = {
         'mysql': ('/var/lib/mysql', {'MYSQL_ROOT_PASSWORD': '${BRINGUP_MYSQL_ROOT_PASSWORD}',
             'MYSQL_DATABASE': config['database'], 'MYSQL_USER': 'edxapp', 'MYSQL_PASSWORD': '${BRINGUP_MYSQL_PASSWORD}',
-            'BRINGUP_TEST_DATABASE': config['test_database']}),
+            'BRINGUP_TEST_DATABASE': config['test_database'],
+            # Optional: the granted database discovery's test runner uses. Only present on runs with
+            # discovery, and only honoured when MySQL initialises a fresh data volume.
+            **({'BRINGUP_DISCOVERY_TEST_DATABASE': discovery_test_database(config)}
+               if discovery_enabled(config) else {})}),
         'mongo': ('/data/db', {'MONGO_INITDB_ROOT_USERNAME': 'edxapp', 'MONGO_INITDB_ROOT_PASSWORD': '${BRINGUP_MONGO_PASSWORD}'}),
         'rabbitmq': ('/var/lib/rabbitmq', {'RABBITMQ_DEFAULT_USER': 'edxapp', 'RABBITMQ_DEFAULT_PASS': '${BRINGUP_RABBITMQ_PASSWORD}'}),
         'elasticsearch': ('/usr/share/elasticsearch/data', {'discovery.type': 'single-node', 'xpack.security.enabled': 'false', 'ES_JAVA_OPTS': '-Xms256m -Xmx256m'}),

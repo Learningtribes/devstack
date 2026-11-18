@@ -18,7 +18,7 @@ from core import (APP_ROOT, SECRET_KEYS, SERVICES, capture, check_conflicts, che
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
                   IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet,
                   discovery_enabled, discovery_environment, discovery_lms_domain, discovery_names,
-                  discovery_oidc_credentials)
+                  discovery_oidc_credentials, discovery_test_database)
 import discovery
 
 
@@ -206,6 +206,106 @@ class ContractTests(unittest.TestCase):
             discovery.migrate(loaded)
             # No evidence label is reused on a repeatable path.
             self.assertNotIn('schema-discovery', [label for label, _ in recorded])
+
+    def test_discovery_schema_and_migrate_both_run_djangos_system_check(self):
+        """`migrate` succeeding does not prove the configuration is sound, so `check` must run."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        captured = []
+        executed = []
+
+        def record(config, label, command, **kwargs):
+            captured.append((label, ' '.join(str(part) for part in command)))
+
+        def record_run(command, **kwargs):
+            executed.append(' '.join(str(part) for part in command))
+            return type('R', (), {'returncode': 0, 'stdout': '', 'stderr': ''})()
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'provision_database'), \
+                patch.object(discovery, 'ownership'), patch.object(discovery, 'capture', record), \
+                patch.object(discovery.subprocess, 'run', side_effect=record_run):
+            discovery.schema(loaded)
+            commands = [text for label, text in captured if label == 'check-discovery']
+            self.assertEqual(len(commands), 1)
+            self.assertIn('manage.py check', commands[0])
+            self.assertNotIn('--deploy', commands[0])
+            # Ordered after the seed: a migrated-and-seeded database is what gets checked.
+            labels = [label for label, _ in captured]
+            self.assertLess(labels.index('seed-discovery-site-partner'), labels.index('check-discovery'))
+
+            captured.clear()
+            executed.clear()
+            discovery.migrate(loaded)
+            # The repeatable path runs the check without reserving an evidence file.
+            self.assertNotIn('check-discovery', [label for label, _ in captured])
+            self.assertTrue(any('manage.py check' in text for text in executed))
+
+    def test_discovery_check_failure_stops_the_stage(self):
+        """A failed `manage.py check` must abort, never be reported as a pass."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+
+        def fail_if_check(command, **kwargs):
+            result = type('R', (), {'returncode': 0, 'stdout': '', 'stderr': ''})()
+            if 'check' in command:
+                result.returncode = 1
+                result.stderr = 'SystemCheckError: something is wrong'
+            return result
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'ownership'), \
+                patch.object(discovery, 'capture'), \
+                patch.object(discovery.subprocess, 'run', side_effect=fail_if_check):
+            with self.assertRaises(ValueError):
+                discovery.check(loaded)
+
+    def test_discovery_test_names_a_granted_database_instead_of_test_prefix(self):
+        """Django would create `test_<name>`, a name edxapp holds no privilege on."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        database = discovery_test_database(loaded)
+        self.assertEqual(database, loaded['discovery_database'] + '_test')
+        # Never the bare application database: the suite must not touch run data.
+        self.assertNotEqual(database, loaded['discovery_database'])
+        captured = []
+
+        def record(config, label, command, **kwargs):
+            captured.append(' '.join(str(part) for part in command))
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'ownership'), \
+                patch.object(discovery, 'capture', record):
+            discovery.test(loaded)
+        self.assertEqual(len(captured), 1)
+        command = captured[0]
+        # The granted name is passed on both sides: the database and Django's TEST override.
+        self.assertIn('DB_NAME=' + database, command)
+        self.assertIn('DB_TEST_NAME=' + database, command)
+        self.assertIn('django.db.backends.mysql', command)
+        self.assertIn('--ds=course_discovery.settings.test', command)
+        # Python comes from the isolated venv, never the image's global site-packages.
+        self.assertIn(discovery.DISCOVERY_PYTHON, command)
+
+    def test_discovery_test_passes_selectors_through(self):
+        """`SELECTORS=` on the make target must reach pytest unchanged."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        captured = []
+
+        def record(config, label, command, **kwargs):
+            captured.append(list(command))
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'ownership'), \
+                patch.object(discovery, 'capture', record):
+            discovery.test(loaded, ['course_discovery/apps/core', '-k', 'partner'])
+        tail = captured[0][-3:]
+        self.assertEqual(tail, ['course_discovery/apps/core', '-k', 'partner'])
 
     def test_discovery_image_is_required_and_validated(self):
         self.config['discovery_repo'] = str(self.root / 'discovery')

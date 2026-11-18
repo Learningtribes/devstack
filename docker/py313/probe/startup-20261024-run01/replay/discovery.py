@@ -24,9 +24,10 @@ import urllib.request
 from pathlib import Path
 
 from core import (APP_CMS_PORT, DISCOVERY_ALIAS, DISCOVERY_APP_ROOT, DISCOVERY_ENV_MOUNT, DISCOVERY_LOCK,
-                  DISCOVERY_MOUNT, DISCOVERY_PYTHON, DISCOVERY_SETTINGS, DISCOVERY_VENV, capture, config_hash,
-                  discovery_environment, discovery_lms_domain, discovery_names, discovery_url, environment, fail,
-                  load_config, ownership, require_protected)
+                  DISCOVERY_MOUNT, DISCOVERY_PYTHON, DISCOVERY_SETTINGS, DISCOVERY_TEST_SETTINGS, DISCOVERY_VENV,
+                  capture, config_hash, discovery_environment, discovery_lms_domain, discovery_names,
+                  discovery_test_database, discovery_url, environment, fail, load_config, ownership,
+                  require_protected, secret_values)
 
 LABEL = 'py313.replay.config'
 RUNSERVER_PORT = 8000
@@ -158,15 +159,68 @@ def seed(config, *, evidence=False):
 
 
 def schema(config):
-    """Provision the database, apply migrations and seed from the isolated venv (one-shot, evidence-captured)."""
+    """Provision the database, apply migrations, seed and run Django's system checks."""
     define(config)
     provision_database(config)
     capture(config, 'schema-discovery', exec_argv(config, DISCOVERY_PYTHON, 'manage.py', 'migrate', '--noinput'))
     seed(config, evidence=True)
+    check(config, evidence=True)
+
+
+def test(config, selectors=(), *, label='test-discovery', evidence=True):
+    """Run discovery's pytest suite against this run's MySQL, in a dedicated granted database.
+
+    Mirrors the Platform replay's `run.py test`: the suite runs inside the container from the
+    isolated venv, never from the image's global site-packages. `settings/test.py` selects MySQL
+    through `DB_*` and pins the database name through `DB_TEST_NAME`, because Django's runner
+    would otherwise create `test_<name>` and the application user holds no global CREATE.
+    """
+    define(config)
+    database = discovery_test_database(config)
+    overrides = {
+        'DB_ENGINE': 'django.db.backends.mysql',
+        'DB_HOST': config['services']['mysql']['container'],
+        'DB_PORT': '3306',
+        'DB_USER': 'edxapp',
+        'DB_PASSWORD': secret_values(config).get('BRINGUP_MYSQL_PASSWORD', ''),
+        'DB_NAME': database,
+        'DB_TEST_NAME': database,
+    }
+    assignment = ' '.join('%s=%s' % (key, shlex.quote(value)) for key, value in sorted(overrides.items()))
+    command = ('set -a; . %s; set +a; export %s; exec "$@"'
+               % (DISCOVERY_ENV_MOUNT, assignment))
+    argv = exec_argv(config, 'sh', '-c', command, 'sh',
+                     DISCOVERY_PYTHON, '-m', 'pytest', '-p', 'no:cacheprovider',
+                     '--ds=' + DISCOVERY_TEST_SETTINGS, *selectors)
+    if evidence:
+        capture(config, label, argv)
+        return
+    result = subprocess.run(argv, capture_output=True, text=True, env=environment(config))
+    sys.stdout.write(result.stdout + result.stderr)
+    if result.returncode:
+        fail('Discovery test suite failed')
+
+
+def check(config, *, evidence=False):
+    """Run Django's system checks: a successful `migrate` does not imply a sound configuration.
+
+    Mirrors the Platform replay, which runs `manage.py <system> check` at the end of its schema
+    stage. `--deploy` is deliberately omitted: it asserts production-only settings (HTTPS,
+    secure cookies) that a local run does not set.
+    """
+    define(config)
+    argv = exec_argv(config, DISCOVERY_PYTHON, 'manage.py', 'check')
+    if evidence:
+        capture(config, 'check-discovery', argv)
+        return
+    result = subprocess.run(argv, capture_output=True, text=True, env=environment(config))
+    sys.stdout.write(result.stdout + result.stderr)
+    if result.returncode:
+        fail('Discovery system check failed')
 
 
 def migrate(config):
-    """Re-apply migrations and re-seed on an existing run; no evidence, so `update-db` stays repeatable."""
+    """Re-apply migrations, re-seed and re-check; no evidence, so `update-db` stays repeatable."""
     define(config)
     provision_database(config)
     result = subprocess.run(exec_argv(config, DISCOVERY_PYTHON, 'manage.py', 'migrate', '--noinput'),
@@ -175,6 +229,7 @@ def migrate(config):
     if result.returncode:
         fail('Discovery migrate failed')
     seed(config)
+    check(config)
 
 
 def start_http(config):
@@ -264,7 +319,9 @@ def shell_argv(config):
 def main():
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument('--config', required=True)
-    parser.add_argument('phase', choices=['create', 'install', 'schema', 'migrate', 'seed', 'services', 'restart', 'status'])
+    parser.add_argument('phase', choices=['create', 'install', 'schema', 'migrate', 'seed', 'check', 'test',
+                                          'services', 'restart', 'status'])
+    parser.add_argument('selectors', nargs='*', help='pytest selectors, for the test phase only')
     args = parser.parse_args()
     config = load_config(args.config)
     if args.phase == 'create':
@@ -277,6 +334,10 @@ def main():
         migrate(config)
     elif args.phase == 'seed':
         seed(config)
+    elif args.phase == 'check':
+        check(config)
+    elif args.phase == 'test':
+        test(config, args.selectors)
     elif args.phase == 'services':
         services(config)
     elif args.phase == 'restart':

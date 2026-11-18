@@ -60,7 +60,12 @@ DISCOVERY_APP_ROOT = '/edx/app/discovery'
 DISCOVERY_VENV = DISCOVERY_APP_ROOT + '/venvs/discovery'
 DISCOVERY_PYTHON = DISCOVERY_VENV + '/bin/python'
 DISCOVERY_SETTINGS = 'course_discovery.settings.py313'
+DISCOVERY_TEST_SETTINGS = 'course_discovery.settings.test'
 DISCOVERY_LOCK = 'requirements/py313/local.txt'
+# Django's test runner refuses to reuse the application database and would create `test_<name>`,
+# which the application user is not granted. Name the granted test database explicitly so a MySQL
+# run never needs global CREATE (mirrors the Platform's BRINGUP_TEST_DATABASE_NAME).
+DISCOVERY_TEST_DATABASE_SUFFIX = '_test'
 # Network alias the Platform resolves (COURSE_CATALOG_API_URL = http://discovery:8000/api/v1/).
 DISCOVERY_ALIAS = 'discovery'
 # Secrets reach the container as a mounted 0600 env file that the entrypoint sources, so no password ever
@@ -413,6 +418,11 @@ def discovery_names(config):
 
 def discovery_url(config):
     return 'http://localhost:%d' % config['discovery_port']
+
+
+def discovery_test_database(config):
+    """The granted MySQL database discovery's Django test runner uses."""
+    return config['discovery_database'] + DISCOVERY_TEST_DATABASE_SUFFIX
 
 
 def discovery_oidc_credentials(config):

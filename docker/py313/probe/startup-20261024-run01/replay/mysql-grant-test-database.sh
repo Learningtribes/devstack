@@ -12,11 +12,15 @@ if [ -z "${BRINGUP_TEST_DATABASE:-}" ]; then
     echo "mysql-grant-test-database: BRINGUP_TEST_DATABASE is required" >&2
     exit 1
 fi
-pattern=$(printf '%s' "$BRINGUP_TEST_DATABASE" | sed 's/[_%]/\\&/g')
 # A function keeps the trailing newline: command substitution in "$(...)" would strip it, and the
-# entrypoint helper reads the statement from this stream.
+# entrypoint helper reads the statement from this stream. `_` and `%` are GRANT wildcards and must
+# be escaped to keep each grant from matching other databases.
 grant_sql() {
-    printf "GRANT ALL PRIVILEGES ON \`%s\`.* TO '%s'@'%%';\n" "$pattern" "$MYSQL_USER"
+    for name in "${BRINGUP_TEST_DATABASE}" "${BRINGUP_DISCOVERY_TEST_DATABASE:-}"; do
+        [ -n "$name" ] || continue
+        pattern=$(printf '%s' "$name" | sed 's/[_%]/\\&/g')
+        printf "GRANT ALL PRIVILEGES ON \`%s\`.* TO '%s'@'%%';\n" "$pattern" "$MYSQL_USER"
+    done
 }
 if type docker_process_sql >/dev/null 2>&1; then
     grant_sql | docker_process_sql
