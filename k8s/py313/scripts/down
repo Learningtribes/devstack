@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Deletes ONLY the namespace py313-prod-local (workloads, services, Secrets and PVCs go with it). Docker containers, images and
+# volumes are not touched. .local/ (credentials, generated config) is kept unless PURGE_LOCAL=1.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+if kc get namespace "$NS" >/dev/null 2>&1; then
+  require_owned_namespace
+  step "Delete namespace $NS"
+  kc delete namespace "$NS" --wait=true --timeout=600s
+else
+  note "namespace $NS does not exist"
+fi
+if [ "${PURGE_LOCAL:-0}" = 1 ]; then
+  [ -d "$LOCAL_DIR" ] && [ "$(basename "$LOCAL_DIR")" = .local ] || die "refusing to purge '$LOCAL_DIR'"
+  rm -rf "$LOCAL_DIR"; note "removed $LOCAL_DIR"
+else
+  note "kept $LOCAL_DIR (PURGE_LOCAL=1 removes it)"
+fi

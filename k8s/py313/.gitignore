@@ -1,0 +1,2 @@
+# Run-time credentials and generated configuration of the local run (scripts/gen-local-secrets, scripts/gen-local-config).
+.local/

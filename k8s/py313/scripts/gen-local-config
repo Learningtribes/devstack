@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Produces lms.env.json, lms.auth.json, cms.env.json, cms.auth.json with the image's own /startup/generate_aws_config.py and creates
+# the Secret edxapp-config (the four files plus es-ca.crt; the JWT key is part of lms.auth.json). The generator chowns its output to
+# root, so it runs as uid 0 in a throwaway local container with no network; pods never run as root. .local/config-out is the only
+# writable mount and is replaced on every run.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+command -v docker >/dev/null || die 'docker is required'
+require_image
+ensure_local_dir
+require_secret_files mysql-database mysql-user mysql-password mongo-user mongo-password rabbitmq-user rabbitmq-password \
+  bringup-secret-key bringup-xqueue-password es-app-password
+[ -s "$LOCAL_DIR/es-ca.crt" ] || die "missing $LOCAL_DIR/es-ca.crt: run scripts/setup-elasticsearch"
+[ -s "$LOCAL_DIR/jwt-private.pem" ] || die "missing $LOCAL_DIR/jwt-private.pem: run scripts/gen-local-secrets"
+
+bringup_env=$OVERLAY/jobs/bringup.env
+lms_domain=$(sed -n 's/^BRINGUP_LMS_DOMAIN=//p' "$bringup_env")
+cms_domain=$(sed -n 's/^BRINGUP_CMS_DOMAIN=//p' "$bringup_env")
+es_ca_path=$CONFIG_MOUNT/es-ca.crt
+out=$LOCAL_DIR/config-out
+envfile=$LOCAL_DIR/generate.env
+
+step 'Generator environment (.local/generate.env, mode 600)'
+{
+  cat "$bringup_env"
+  echo 'BRINGUP_SCHEME=http'
+  echo 'BRINGUP_STATE_DIR=/edx/var/edxapp'
+  echo 'BRINGUP_ES_USE_SSL=true'
+  echo "BRINGUP_ES_CA_CERTS=$es_ca_path"
+  echo "BRINGUP_ES_USER=$ES_USER"
+  echo "BRINGUP_ES_PASSWORD=$(secret_value es-app-password)"
+  echo "BRINGUP_DATABASE_NAME=$(secret_value mysql-database)"
+  echo "BRINGUP_MYSQL_USER=$(secret_value mysql-user)"
+  echo "BRINGUP_MYSQL_PASSWORD=$(secret_value mysql-password)"
+  echo "BRINGUP_MONGO_USER=$(secret_value mongo-user)"
+  echo "BRINGUP_MONGO_PASSWORD=$(secret_value mongo-password)"
+  echo "BRINGUP_RABBITMQ_USER=$(secret_value rabbitmq-user)"
+  echo "BRINGUP_RABBITMQ_PASSWORD=$(secret_value rabbitmq-password)"
+  echo "BRINGUP_STARTUP_SECRET_KEY=$(secret_value bringup-secret-key)"
+  echo "BRINGUP_STARTUP_XQUEUE_PASSWORD=$(secret_value bringup-xqueue-password)"
+  echo 'BRINGUP_SERVICE_GROUP=edxapp'
+  echo 'BRINGUP_CONFIG_OUT=/out'
+  echo 'PYTHONPATH=/startup/settings'
+  echo 'DJANGO_SETTINGS_MODULE=startup_lms'
+  echo 'LANG=C.UTF-8'
+} > "$envfile.tmp"
+chmod 600 "$envfile.tmp"; mv "$envfile.tmp" "$envfile"
+
+step "Run /startup/generate_aws_config.py in $(app_image)"
+# The generator never overwrites: start from an empty directory.
+rm -rf "$out"; install -d -m 700 "$out"
+docker run --rm --user 0 --network none --env-file "$envfile" \
+  -v "$LOCAL_DIR/jwt-private.pem:/startup/jwt-private.pem:ro" -v "$out:/out" \
+  "$(app_image)" python manage.py lms shell -c "exec(open('/startup/generate_aws_config.py').read())" 2>&1 \
+  | grep -E '^/out/|Error|missing|BRINGUP_|must be|requires' | sed 's#^#   #' || true
+for name in lms.env.json lms.auth.json cms.env.json cms.auth.json; do
+  [ -s "$out/$name" ] || die "generator did not write $name"
+done
+# Files are root-owned inside the container; make them readable for the host user without touching modes of other paths.
+docker run --rm --user 0 --network none --entrypoint chown -v "$out:/out" "$(app_image)" -R "$(id -u):$(id -g)" /out
+chmod 700 "$out"; chmod 600 "$out"/*.json
+
+step 'Post-process and verify'
+uv run --no-project --python 3.13 python -B "$SCRIPTS_DIR/postprocess_config.py" "$out" \
+  --lms-domain "$lms_domain" --cms-domain "$cms_domain" --es-ca-path "$es_ca_path" --es-user "$ES_USER" \
+  || die 'generated configuration failed the checks above'
+
+step "Secret edxapp-config in namespace $NS"
+kc get namespace "$NS" >/dev/null 2>&1 || die "namespace $NS does not exist (scripts/up creates it)"
+k create secret generic edxapp-config \
+  "--from-file=lms.env.json=$out/lms.env.json" "--from-file=lms.auth.json=$out/lms.auth.json" \
+  "--from-file=cms.env.json=$out/cms.env.json" "--from-file=cms.auth.json=$out/cms.auth.json" \
+  "--from-file=es-ca.crt=$LOCAL_DIR/es-ca.crt" --dry-run=client -o yaml | apply_secret_stream
+note 'keys: lms.env.json lms.auth.json cms.env.json cms.auth.json es-ca.crt'
