@@ -1,0 +1,98 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Local OrbStack cluster (context `orbstack`, default StorageClass local-path, no ingress controller: use kubectl port-forward).
+# Needs two Secrets that are created at run time and never committed: edxapp-config and backing-credentials (README).
+namespace: py313-prod-local
+resources:
+  - ../../base
+  - namespace.yaml
+  - backing
+images:
+  # The arm64 image built into the local Docker daemon, which OrbStack's Kubernetes uses directly: never pulled.
+  - name: edxapp
+    newName: edxapp
+    newTag: py313-k8s-20261117-b0db03a
+replicas:
+  - name: lms
+    count: 1
+  - name: cms
+    count: 1
+  # Minimum that proves queue consumption: the default queue of each system. Everything else is opt-in via ./all-workers.
+  - name: worker-lms-high
+    count: 0
+  - name: worker-lms-grade
+    count: 0
+  - name: worker-lms-progress
+    count: 0
+  - name: worker-lms-high-mem
+    count: 0
+  - name: worker-lms-low
+    count: 0
+  - name: worker-cms-low
+    count: 0
+patches:
+  - target:
+      kind: Deployment
+      name: lms
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: lms
+      spec:
+        template:
+          spec:
+            containers:
+              - name: lms
+                env:
+                  - name: GUNICORN_WORKERS
+                    value: "1"
+                resources:
+                  requests:
+                    cpu: 250m
+                    memory: 512Mi
+                  limits:
+                    cpu: "2"
+                    memory: 2Gi
+  - target:
+      kind: Deployment
+      name: cms
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: cms
+      spec:
+        template:
+          spec:
+            containers:
+              - name: cms
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 512Mi
+                  limits:
+                    cpu: "1"
+                    memory: 1536Mi
+  # Also the template for a real environment's grace period (open question Q8): 60 s here so that a local teardown is quick.
+  - target:
+      kind: Deployment
+      labelSelector: app.kubernetes.io/component=worker
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: any
+      spec:
+        template:
+          spec:
+            terminationGracePeriodSeconds: 60
+            containers:
+              - name: worker
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 384Mi
+                  limits:
+                    cpu: "1"
+                    memory: 1Gi

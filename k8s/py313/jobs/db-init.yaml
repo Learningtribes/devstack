@@ -1,0 +1,152 @@
+# Schema and seeds of a NEW (empty) database: steps "Schema and seeds" of staging 07-wipe-schema-seed.sh, in the same order and
+# with the same Platform-owned scripts staged in /startup. The destructive half of 07 (dropping every table, emptying MongoDB)
+# is deliberately NOT here: wiping an existing database stays a human decision outside Kubernetes. The Platform scripts refuse
+# any database whose name does not start with py313_startup_ / py313_rebuild_ (or equal BRINGUP_ADOPTED_DATABASE), see
+# ci/py313/bringup/settings/database_guard.py.
+#
+# Per the scripts (read, not run against a populated database): migrate --run-syncdb only creates missing tables, reconcile_schema
+# adds missing constraints, and the seeds use get_or_create, so a rerun after a partial failure should resume. Not proven.
+# Jobs are immutable: delete the Job before applying a changed one.
+#
+# Not in this Job: test accounts (seed_acceptance_users.py is not shipped), the administrator account (staging step 12),
+# generate_aws_config.py (needs root and writes the config files; it is run once per environment, README "Configuration").
+#
+# Environment contract of startup_lms / startup_schema (ci/py313/bringup/settings/local_runtime.py): required variables come from
+# the Secret backing-credentials and the ConfigMap py313-bringup-env, which every overlay must provide (key list in README).
+# The ELASTIC_SEARCH_CONFIG of these settings is not used by any step, so no BRINGUP_ES_* variable is set.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init
+  labels:
+    app.kubernetes.io/name: edxapp
+    app.kubernetes.io/instance: db-init
+    app.kubernetes.io/component: job
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 3600
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: edxapp
+        app.kubernetes.io/instance: db-init
+        app.kubernetes.io/component: job
+    spec:
+      restartPolicy: Never
+      serviceAccountName: edxapp
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: job
+          image: edxapp
+          imagePullPolicy: IfNotPresent
+          # The entrypoint runs an unknown command as given, so DJANGO_SETTINGS_MODULE stays startup_* (`manage` would force --settings=aws).
+          args:
+            - bash
+            - -ec
+            - |
+              export PYTHONPATH=/startup/settings
+              run() { DJANGO_SETTINGS_MODULE="$1" python manage.py lms shell -c "from pathlib import Path;exec(compile(Path('$2').read_text(),'$2','exec'))"; }
+              run startup_schema /startup/initialize_schema.py
+              run startup_lms /startup/seed_local_host_sites.py
+              run startup_lms /startup/seed_completion_tracking.py
+              run startup_lms /startup/seed_themes.py
+          env:
+            - name: LANG
+              value: C.UTF-8
+            - name: BRINGUP_DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: mysql-database
+            - name: BRINGUP_MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: mysql-user
+            - name: BRINGUP_MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: mysql-password
+            - name: BRINGUP_MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: mongo-user
+            - name: BRINGUP_MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: mongo-password
+            - name: BRINGUP_RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: rabbitmq-user
+            - name: BRINGUP_RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: rabbitmq-password
+            - name: BRINGUP_STARTUP_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: bringup-secret-key
+            - name: BRINGUP_STARTUP_XQUEUE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backing-credentials
+                  key: bringup-xqueue-password
+          envFrom:
+            - configMapRef:
+                name: py313-bringup-env
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 3Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          # local_runtime.py places MEDIA_ROOT, DJFS, DATA_DIR and the Studio CSV logs below $BRINGUP_APP_ROOT/py313, and the
+          # site seed writes py313/config/site-ids.json; all of it is scratch for this Job.
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: state-config
+              mountPath: /edx/app/edxapp/py313/config
+            - name: state-media
+              mountPath: /edx/app/edxapp/py313/media
+            - name: state-data
+              mountPath: /edx/app/edxapp/py313/data
+            - name: state-logs
+              mountPath: /edx/app/edxapp/py313/logs
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 512Mi
+        - name: state-config
+          emptyDir:
+            sizeLimit: 16Mi
+        - name: state-media
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: state-data
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: state-logs
+          emptyDir:
+            sizeLimit: 256Mi

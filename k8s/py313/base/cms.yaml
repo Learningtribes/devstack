@@ -1,0 +1,177 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms
+  labels:
+    app.kubernetes.io/name: edxapp
+    app.kubernetes.io/instance: cms
+    app.kubernetes.io/component: cms
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edxapp
+      app.kubernetes.io/instance: cms
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: edxapp
+        app.kubernetes.io/instance: cms
+        app.kubernetes.io/component: cms
+    spec:
+      serviceAccountName: edxapp
+      automountServiceAccountToken: false
+      # gunicorn gives in-flight requests --graceful-timeout (30 s by default) after SIGTERM; the preStop sleep covers endpoint removal.
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          # ScheduleAnyway: a one-node cluster must still schedule every replica.
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: edxapp
+              app.kubernetes.io/instance: cms
+      containers:
+        - name: cms
+          image: edxapp
+          imagePullPolicy: IfNotPresent
+          args: ["cms"]
+          ports:
+            - name: http
+              containerPort: 8010
+          env:
+            - name: EDXAPP_SETTINGS
+              value: aws
+            - name: CONFIG_ROOT
+              value: /edx/app/edxapp/py313-config
+            - name: PORT
+              value: "8010"
+            - name: GUNICORN_WORKERS
+              value: "1"
+            - name: GUNICORN_TIMEOUT
+              value: "300"
+            - name: GUNICORN_MAX_REQUESTS
+              value: "2000"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 768Mi
+            limits:
+              cpu: "1"
+              memory: 2Gi
+          # The first import of the platform takes a minute or more; 90 x 10 s before the other probes start.
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 90
+          # /heartbeat checks MongoDB, MySQL and Elasticsearch. Django rejects a Host that is not in ALLOWED_HOSTS
+          # (generate_aws_config.py always adds localhost); a production overlay may need its public host name here.
+          readinessProbe:
+            httpGet:
+              path: /heartbeat
+              port: http
+              httpHeaders:
+                - name: Host
+                  value: localhost
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+          # TCP only: a database outage must make pods unready, not restart them.
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "5"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: config
+              mountPath: /edx/app/edxapp/py313-config
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+            - name: log-lms
+              mountPath: /edx/var/log/lms
+            - name: log-cms
+              mountPath: /edx/var/log/cms
+            - name: media
+              mountPath: /edx/var/edxapp/media
+            - name: data
+              mountPath: /edx/var/edxapp/data
+      volumes:
+        - name: config
+          secret:
+            secretName: edxapp-config
+            defaultMode: 288 # 0440
+        - name: tmp
+          emptyDir:
+            sizeLimit: 512Mi
+        - name: log-lms
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: log-cms
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: media
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: data
+          emptyDir:
+            sizeLimit: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cms
+  labels:
+    app.kubernetes.io/name: edxapp
+    app.kubernetes.io/instance: cms
+    app.kubernetes.io/component: cms
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: edxapp
+    app.kubernetes.io/instance: cms
+  ports:
+    - name: http
+      port: 8010
+      targetPort: http
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cms
+  labels:
+    app.kubernetes.io/name: edxapp
+    app.kubernetes.io/instance: cms
+    app.kubernetes.io/component: cms
+spec:
+  # maxUnavailable (not minAvailable) so a single-replica overlay can still be drained.
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edxapp
+      app.kubernetes.io/instance: cms
