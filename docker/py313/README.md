@@ -134,3 +134,29 @@ request therefore authenticates, while the JWT from `token_type=JWT` is rejected
 `token_nonexistent`. Discovery's `course_discovery/settings/py313.py` sets
 `COURSES_API['TOKEN_TYPE'] = 'Bearer'`; the management-command default stays `JWT`, so no
 other deployment changes behaviour.
+
+### Why discovery's release script is not in this repository
+
+`py313-build-discovery` builds the image locally from `DISCOVERY_REPO`. Publishing a
+*released* digest works the same way as for the platform image, but the script lives in the
+discovery checkout:
+
+```sh
+cd <discovery>
+uv run --no-project --python 3.13 python -B ci/py313/build-runtime-image.py \
+  --tag ltdps/discovery:py313-devstack-YYYYMMDD --context /new/dir
+```
+
+Then set `DISCOVERY_IMAGE=ltdps/discovery@sha256:<index digest>` on the run. The script is
+function-for-function comparable with `docker/py313/build-runtime-image.py` here, with two
+deliberate differences: its stage is `final` (the last stage of discovery's Dockerfile), and
+its lock records `source_commit` rather than `devstack_commit` because the image is built from
+the discovery repository.
+
+It stays in the discovery repository because every builder here archives its own tree
+(`git archive HEAD`) and builds the Dockerfile beside it: this one archives Devstack and builds
+`docker/py313/Dockerfile`, `platform/ci/py313/build-app-image.py` archives Platform and builds
+`ci/py313/Dockerfile.app`, and discovery's archives discovery and builds `ci/py313/Dockerfile`.
+Moving it here would mean archiving a different repository from the one the script lives in,
+which breaks the clean-tree guarantee that makes the build reproducible, and would make a
+discovery release depend on a Devstack checkout.
