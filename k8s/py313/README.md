@@ -15,11 +15,12 @@ image change; the path is the contract, check it exists before relying on a deta
 | `overlays/orbstack-local/jobs/` | `db-init` for the local overlay; `bringup.env` holds its non-secret `BRINGUP_*` values. |
 | `overlays/orbstack-local-all-workers/` | Opt-in: the local overlay with all eight worker queues running. |
 | `overlays/prod-example/` | README only: what a production overlay has to set. |
-| `test_manifests.py` | Static checks, no cluster needed. |
+| `scripts/`, `Makefile` | Local OrbStack run: `up`, `status`, `smoke`, `down` and the secret/config/Elasticsearch helpers (section "Local OrbStack run"). |
+| `test_manifests.py`, `scripts/test_scripts.py` | Static checks, no cluster needed. |
 
 Render: `kubectl kustomize k8s/py313/overlays/orbstack-local` (also `.../orbstack-local/jobs`, `base`, `jobs`).
 Test: `uv run --no-project --python 3.13 python -B -m unittest discover -s k8s/py313 -p 'test_manifests.py' -v`.
-Nothing here deploys anything; deploy scripts and a Makefile are a separate change.
+The manifests deploy nothing by themselves; `scripts/` and `Makefile` do it for the local OrbStack cluster only.
 
 ## Contract with the image
 
@@ -59,7 +60,7 @@ Image contract (`docker/py313/app/README.md`; staging copy `triboo-doc/docs/stag
 
 The application's own Elasticsearch user and its password live in `lms|cms.env.json` (`ELASTIC_SEARCH_CONFIG`), not here.
 
-## Configuration (run-time sequence for part C, not automated here)
+## Configuration (automated for the local run by `scripts/gen-local-config`)
 
 1. Backing services up (`overlays/orbstack-local/backing`), then `db-init`.
 2. `generate_aws_config.py` needs root, `BRINGUP_*` variables (`jobs/bringup.env` plus the Secret values, `BRINGUP_ES_USE_SSL=true`,
@@ -67,6 +68,9 @@ The application's own Elasticsearch user and its password live in `lms|cms.env.j
    `/startup/jwt-private.pem`) and writes four files into a scratch directory. It cannot be a manifest here: it must run as uid 0,
    which the hardening test forbids, and its output is the Secret. Turn the files into `edxapp-config` without printing them.
 3. Set `LOG_DESTINATION` to `console` in both env files before creating the Secret.
+
+The `JWT_PRIVATE_SIGNING_KEY` of the LMS is written into `lms.auth.json` from `/startup/jwt-private.pem`, so no separate key file or
+Secret key exists; the local scripts generate that RSA key with `openssl genrsa` (as staging does) and mount it only into the throwaway container.
 
 ### Elasticsearch
 
@@ -124,17 +128,86 @@ kubectl -n py313-prod-local port-forward svc/cms 18010:8010
 
 `bringup.env` uses `localhost:18000` and `localhost:18010` as site domains for that reason.
 
+## Local OrbStack run
+
+Everything below is for the OrbStack Kubernetes cluster only. Every script refuses to run unless `kubectl config current-context` is
+`orbstack` (override on purpose with `ALLOW_CONTEXT=<name>`), passes `--context` to each kubectl call, and works in the namespace
+`py313-prod-local` only (fixed in `scripts/lib.sh`; `down` also checks the namespace label). No script removes Docker containers, images or volumes.
+
+Prerequisites: OrbStack with Kubernetes enabled (StorageClass `local-path`), `kubectl`, `docker`, `openssl`, `uv`; the images
+`edxapp:py313-prodimage-b0db03a-local` (image change; the tag is read from `overlays/orbstack-local/kustomization.yaml`),
+`mysql:8.4.13`, `mongo:8.0`, `elasticsearch:8.19.0`, `rabbitmq:4.3`, `memcached:1.6.45` in the local Docker daemon (nothing is pulled);
+about 3 GiB of free memory in the Docker VM for the default overlay, about 5 GiB with all workers.
+
+```bash
+make -C k8s/py313 k8s-local-test      # manifests and script tests, no cluster
+make -C k8s/py313 k8s-local-up        # ~1 min with warm images; APP_OVERLAY=overlays/orbstack-local-all-workers for all queues
+make -C k8s/py313 k8s-local-smoke     # port-forwards 18000/18010, heartbeats, pages, one Celery task
+make -C k8s/py313 k8s-local-status
+make -C k8s/py313 k8s-local-down      # deletes the namespace (and its PVCs); .local/ stays unless PURGE_LOCAL=1
+```
+
+What `up` does (each step is also a script and can be rerun): namespace -> `gen-local-secrets` (random credentials into git-ignored
+`.local/`, mode 700/600, and the Secret `backing-credentials`; existing files are kept so a rerun never rotates a password that a database
+volume was initialised with) -> backing services -> `setup-elasticsearch` (copies the CA to `.local/es-ca.crt`, creates role and user
+`py313_search` with `kubectl exec`; passwords go in through stdin and `curl --config`, never argv) -> `gen-local-config` (runs the
+image's `/startup/generate_aws_config.py` as uid 0 in a throwaway `docker run --rm --network none`, sets `LOG_DESTINATION=console`,
+verifies the result with `scripts/postprocess_config.py`, creates the Secret `edxapp-config`) -> `db-init` Job -> application overlay -> rollouts.
+Secrets reach the cluster through `kubectl create secret ... --dry-run=client -o yaml | kubectl apply --server-side` (no YAML with values on
+disk; server-side apply keeps the data out of the `last-applied-configuration` annotation).
+
+Decisions taken here (the former open questions):
+
+- **Database name** (was Q3): `py313_startup_local`, so the Platform `database_guard.py` accepts it without `BRINGUP_ADOPTED_DATABASE`.
+  The database is new; no wipe exists. `up` skips a completed `db-init` (`FORCE_DB_INIT=1` reruns it).
+- **`LOG_DESTINATION`** (was Q2): post-processed to `console` before the Secret is created; the application log appears in `kubectl logs`.
+- **Site domains and scheme**: `localhost:18000` / `localhost:18010`, `BRINGUP_SCHEME=http` (so `SESSION_COOKIE_SECURE` is false); no cookie domain.
+- **Static files** (Q4): not served, see open question 2. **`metrics` cron** (Q5): stays suspended. **Resources** (Q6): measured, below.
+- The pods log the Django `DisallowedHost` traceback for an unknown `Host` (that is the smoke test's negative check, not a fault).
+- `kubectl apply` reports the StatefulSets and PodDisruptionBudgets as `configured` on every run without restarting any pod
+  (client-side apply and defaulted fields); a changed StatefulSet template does restart its pod (a crash-looping pod must be deleted by hand).
+
+Measured on this laptop (OrbStack Docker VM 15.66 GiB, 10 CPUs, arm64; `docker stats` and the cgroup `memory.peak`; no metrics-server,
+so `kubectl top` is unavailable): one run, idle after the smoke test, memory only.
+
+| Container | Idle | Peak seen |
+| --- | --- | --- |
+| lms (1 gunicorn worker) | 300 MiB | 724 MiB (cgroup peak: start-up import plus the `manage lms shell` of the smoke test) |
+| cms (1 gunicorn worker) | 275 MiB | 279 MiB |
+| worker-lms-default / worker-cms-default | 283 / 305 MiB | 309 MiB |
+| mysql / elasticsearch (heap 512m) / mongodb / rabbitmq / memcached | 567 / 920 / 125 / 117 / 10 MiB | rabbitmq 192 MiB |
+| total, default overlay (9 containers) | about 2.9 GiB | |
+| total with all eight worker queues (15 containers) | about 4.6 GiB | |
+
+The overlay's `resources` for lms, cms and workers are set from these numbers (about 2x the peak as limit). They describe one idle
+instance with a handful of requests, not load. Start-up: lms and cms were Ready 10-11 s after the container started on a warm node;
+`db-init` took 26 s on a populated database.
+
+Smoke test (`scripts/smoke`): `/heartbeat` with `Host: localhost` and with the site host, LMS `/` and `/login`, Studio `/signin`, an unknown
+`Host` (400), then one Celery task: `kubectl exec deploy/lms -- edxapp-entrypoint manage lms shell` calls
+`openedx.core.djangoapps.heartbeat.tasks.sample_task.apply_async()` (returns `True`, no side effects), waits for the result over the
+memcached result backend, and the script requires the same task id as `received` and `succeeded` in the log of `worker-lms-default`.
+This proves broker routing to `edx.lms.core.default`, the worker's task registry and the result backend; it does not prove the other
+queues (run with the all-workers overlay, `rabbitmqctl list_queues -p py313` shows one consumer on each) or any real task.
+
+Known limitations: no styled pages (static files, above); no ingress or TLS (port-forward only); media and data are per-pod scratch;
+no mail relay (console backend); no Studio or LMS user exists (staging `12-admin.sh` has no counterpart yet); Elasticsearch runs without
+read-only root (documented exception, `WRITABLE_ROOT_ALLOWED` in the test).
+
 ## Open owner decisions and questions
 
 1. **Q8**: worker `terminationGracePeriodSeconds` (above); 3600 is not an agreed value.
 2. **Static files** are not served by gunicorn (`DEBUG` only, no WhiteNoise in the settings). Browser flows need nginx or a sidecar
-   serving `/edx/var/edxapp/staticfiles` (image README: sidecar, nginx `FROM` the image, or object storage). Not in these manifests.
-3. **Web resources** (lms 1 Gi request / 3 Gi limit with 2 gunicorn workers, cms 768 Mi / 2 Gi, workers 512 Mi / 1.5 Gi, 1 Gi / 3 Gi
-   for `high_mem`) are estimates from staging figures (1.52 GiB PSS for five workers), not measurements; production hosts run 45 / 16 workers.
+   serving `/edx/var/edxapp/staticfiles` (image README: sidecar, nginx `FROM` the image, or object storage). Not in these manifests;
+   verified locally: the CSS referenced by `/login` exists in the image and gunicorn answers 404 for it. Pages return 200 but render unstyled.
+3. **Web resources** of the base (lms 1 Gi request / 3 Gi limit with 2 gunicorn workers, cms 768 Mi / 2 Gi, workers 512 Mi / 1.5 Gi, 1 Gi / 3 Gi
+   for `high_mem`) are still estimates from staging figures (1.52 GiB PSS for five workers); production hosts run 45 / 16 workers. Only the
+   local overlay carries measured values (section "Local OrbStack run").
 4. **Worker liveness**: workers have no probe. A hung worker is not detected (`celery inspect ping` with the custom hostname is possible but heavy).
-5. **`metrics` cron** reads `/edx/var/log/lms/metrics_*.csv.<yesterday>` written by the LMS pods (a per-pod `emptyDir` here) and writes
+5. **`metrics` cron** (left suspended in every overlay, not exercised locally) reads `/edx/var/log/lms/metrics_*.csv.<yesterday>` written by the LMS pods (a per-pod `emptyDir` here) and writes
    `/edx-data/metrics`; without shared storage or a changed log target it cannot match staging. Also needs the `api_user` account.
-6. **`db-init` rerun safety** is derived from reading the scripts, not proven on a populated database; no wipe is provided on purpose
+6. **`db-init` rerun safety**: proven once on the local database (a second Job on the populated database completed: `get_or_create`
+   seeds reported `created: False`, 0 deferred constraints reconciled); not proven after a *partial* failure or on a production-sized database. No wipe is provided on purpose
    (staging `07` drops every table and Mongo collection after a backup and an explicit confirmation).
 7. **Cron time zone** (above) and the `activeDeadlineSeconds` of the cron jobs (2 h, metrics 4 h) are placeholders.
 8. **Secret management** for a real environment (external secrets, sealed secrets) is outside this change.
