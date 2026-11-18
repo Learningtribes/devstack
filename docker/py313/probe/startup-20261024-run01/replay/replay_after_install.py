@@ -5,6 +5,16 @@ import sys
 from core import (APP_PYTHON, STARTUP_REL, capture, discovery_enabled, docker_exec, load_config, manage, ownership, shell)
 import discovery
 
+# `npm ci` installs ~1500 packages in one transaction and aborts the whole stage on a single
+# socket timeout, of which several were observed on this link. npm parses these four, and its
+# cache under /root/.npm survives a failed attempt, so a retry resumes instead of restarting.
+NPM_FETCH_TOLERANCE = {
+    'npm_config_fetch_retries': '5',
+    'npm_config_fetch_retry_mintimeout': '20000',
+    'npm_config_fetch_retry_maxtimeout': '180000',
+    'npm_config_fetch_timeout': '600000',
+}
+
 
 def main():
     parser = argparse.ArgumentParser(__doc__)
@@ -30,7 +40,8 @@ def main():
             shell(config, 'lms', 'seed-discovery-oauth-app', '/startup/seed_discovery_oauth_app.py')
             discovery.schema(config)
     elif args.phase == 'assets':
-        capture(config, 'npm-ci', docker_exec(config, 'npm', 'ci', '--legacy-peer-deps', '--ignore-scripts', '--no-audit', '--no-fund'))
+        capture(config, 'npm-ci', docker_exec(config, 'npm', 'ci', '--legacy-peer-deps', '--ignore-scripts',
+                                             '--no-audit', '--no-fund', extra_env=NPM_FETCH_TOLERANCE))
         shell(config, 'lms', 'xmodule-assets', '/startup/build_xmodule_assets.py')
         capture(config, 'frontend-assets', docker_exec(config, 'bash', '/startup/build_frontend.sh'))
         for system in ('lms', 'cms'):

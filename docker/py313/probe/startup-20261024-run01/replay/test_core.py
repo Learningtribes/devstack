@@ -18,7 +18,8 @@ from core import (APP_ROOT, SECRET_KEYS, SERVICES, capture, check_conflicts, che
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
                   IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet,
                   discovery_enabled, discovery_environment, discovery_lms_domain, discovery_names,
-                  discovery_oidc_credentials, discovery_test_database, lms_jwt_audience, lms_jwt_issuer)
+                  discovery_oidc_credentials, discovery_test_database, lms_jwt_audience, lms_jwt_issuer,
+                  docker_exec)
 import discovery
 
 
@@ -728,3 +729,25 @@ class LayoutContractTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
+
+class DockerExecExtraEnvTests(unittest.TestCase):
+    """Tool-level tolerance reaches the container through `-e`, ahead of the container name."""
+
+    def setUp(self):
+        super().setUp()
+        for name, value in (('ownership', None), ('environment', {})):
+            patcher = patch('core.' + name, return_value=value) if name == 'environment' else patch('core.' + name)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_extra_env_is_passed_as_flags_before_the_container(self):
+        config = {'runtime_container': 'run-runtime'}
+        command = docker_exec(config, 'npm', 'ci', extra_env={'b': '2', 'a': '1'})
+        self.assertEqual(command[command.index('-e'):command.index('run-runtime')],
+                         ['-e', 'a=1', '-e', 'b=2'])
+        self.assertEqual(command[-2:], ['npm', 'ci'])
+
+    def test_no_extra_env_leaves_the_command_unchanged(self):
+        config = {'runtime_container': 'run-runtime'}
+        self.assertEqual(docker_exec(config, 'npm', 'ci'), docker_exec(config, 'npm', 'ci', extra_env=None))

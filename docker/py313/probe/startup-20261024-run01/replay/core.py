@@ -766,7 +766,7 @@ def ownership(config):
         fail('Runtime does not belong to this exact replay configuration')
 
 
-def docker_exec(config, *args, settings=None, detached=False, interactive=False):
+def docker_exec(config, *args, settings=None, detached=False, interactive=False, extra_env=None):
     if interactive and detached:
         fail('Interactive and detached execution are mutually exclusive')
     ownership(config)
@@ -774,6 +774,9 @@ def docker_exec(config, *args, settings=None, detached=False, interactive=False)
     flags = [flag for key in sorted(env)
              if key.startswith('BRINGUP_') or key.startswith('DISCOVERY_') or key == 'PYTHONPATH'
              for flag in ('-e', key)]
+    if extra_env:
+        # Tool-level tolerance (uv, npm) that has no BRINGUP_ prefix and belongs to the caller.
+        flags += [flag for key in sorted(extra_env) for flag in ('-e', key + '=' + extra_env[key])]
     if interactive:
         # Name only: the value comes from the caller's terminal at exec time.
         flags += ['-e', 'TERM']
