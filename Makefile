@@ -243,7 +243,21 @@ py313-dev-up: LMS_PORT ?= 18000
 py313-dev-up: CMS_PORT ?= 18010
 py313-dev-up: PLATFORM_REPO ?= $(DEVSTACK_WORKSPACE)/platform
 py313-dev-up: THEME_REPO ?= $(wildcard $(DEVSTACK_WORKSPACE)/src/themes/hawthorn)
-py313-dev-up: ## Create the fixed development environment (dev313, LMS 18000, Studio 18010): the sibling platform checkout is bind-mounted read-write, not copied; THEME_REPO=<theme checkout> (default ../src/themes/hawthorn if present) is mounted as theme hawthorn
+py313-dev-up: ## Create the fixed development environment (dev313, LMS 18000, Studio 18010): the sibling platform checkout is bind-mounted read-write, not copied; THEME_REPO=<theme checkout> (default ../src/themes/hawthorn if present) is mounted as theme hawthorn; a missing discovery image is built from DISCOVERY_REPO
+	@if [ -n "$(DISCOVERY_REPO)" ]; then \
+	  case "$(DISCOVERY_IMAGE)" in \
+	    *@sha256:*) echo "discovery: $(DISCOVERY_IMAGE) is a published digest; preflight pulls it" ;; \
+	    *) if docker image inspect "$(DISCOVERY_IMAGE)" >/dev/null 2>&1; then \
+	         echo "discovery: image $(DISCOVERY_IMAGE) already present"; \
+	       else \
+	         echo "discovery: image $(DISCOVERY_IMAGE) is missing; building it from $(DISCOVERY_REPO)"; \
+	         $(MAKE) py313-build-discovery DISCOVERY_REPO="$(DISCOVERY_REPO)" DISCOVERY_IMAGE="$(DISCOVERY_IMAGE)" \
+	           $(if $(DEBIAN_MIRROR),DEBIAN_MIRROR="$(DEBIAN_MIRROR)") \
+	           $(if $(DEBIAN_SECURITY_MIRROR),DEBIAN_SECURITY_MIRROR="$(DEBIAN_SECURITY_MIRROR)") \
+	           $(if $(NODE_DIST_URL),NODE_DIST_URL="$(NODE_DIST_URL)") || exit 1; \
+	       fi ;; \
+	  esac; \
+	fi
 	$(MAKE) py313-up LIVE_PLATFORM=1 RUN_ID="$(RUN_ID)" LMS_PORT="$(LMS_PORT)" CMS_PORT="$(CMS_PORT)" PLATFORM_REPO="$(PLATFORM_REPO)" THEME_REPO="$(THEME_REPO)" \
 	  $(if $(DISCOVERY_REPO),DISCOVERY_REPO="$(DISCOVERY_REPO)") $(if $(DISCOVERY_IMAGE),DISCOVERY_IMAGE="$(DISCOVERY_IMAGE)") \
 	  $(if $(DISCOVERY_PORT),DISCOVERY_PORT="$(DISCOVERY_PORT)")

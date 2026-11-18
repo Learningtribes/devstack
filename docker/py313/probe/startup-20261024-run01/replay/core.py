@@ -691,6 +691,33 @@ def ensure_runtime_image(config, *, sleep=time.sleep):
             'platform': platform}
 
 
+def ensure_discovery_image(config, *, sleep=time.sleep):
+    """Make the discovery image present locally; None when the run has no discovery sidecar.
+
+    Discovery has no published py3.13 release, so a tag can only come from a local build and is
+    never pulled. A digest is a published reference, fetched like the platform runtime image.
+    Failing here keeps the message actionable: `create` would otherwise surface a bare
+    `manifest unknown` from `docker run`, five stages later.
+    """
+    if not discovery_enabled(config):
+        return None
+    reference = config['discovery_image']
+    image = docker_image_inspect(reference)
+    if image is None and image_reference_parts(reference):
+        for delay in (*RUNTIME_PULL_BACKOFF, None):
+            pulled = subprocess.run(['docker', 'pull', '--quiet', reference], capture_output=True, text=True)
+            image = docker_image_inspect(reference) if pulled.returncode == 0 else None
+            if image is not None or delay is None:
+                break
+            sleep(delay)
+    if image is None:
+        fail('discovery_image is not present locally: %s\n'
+             '  build it with: make py313-build-discovery DISCOVERY_REPO=%s'
+             % (reference, config['discovery_repo']))
+    return {'reference': reference, 'image_id': image.get('Id'),
+            'platform': image.get('Os', '') + '/' + image.get('Architecture', '')}
+
+
 def fresh_preflight(config, *, before_prepare):
     repositories = source_repository_roots(config)
     validate_path_isolation(config, repositories)
@@ -720,6 +747,9 @@ def fresh_preflight(config, *, before_prepare):
     runtime_image = ensure_runtime_image(config)
     if runtime_image:
         report['runtime_image'] = runtime_image
+    discovery_image = ensure_discovery_image(config)
+    if discovery_image:
+        report['discovery_image'] = discovery_image
     return report
 
 

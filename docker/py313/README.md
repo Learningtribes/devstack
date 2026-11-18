@@ -105,6 +105,12 @@ make py313-dev-up ... DISCOVERY_REPO=/path/to/discovery \
   DISCOVERY_IMAGE=ltdps/discovery:py313-local DISCOVERY_PORT=18381
 ```
 
+`py313-dev-up` builds a **missing tag** itself, from `DISCOVERY_REPO`, so the explicit
+`py313-build-discovery` above is only needed when it is absent from this checkout, or to rebuild
+on purpose. A `DISCOVERY_IMAGE` given as `repo@sha256:<digest>` is never built: it is a published
+reference, pulled by `preflight` like the platform runtime image. `py313-up`, the canonical
+non-development path, never builds — it fails instead, naming the command to run.
+
 `py313-start` / `py313-stop` / `py313-restart` / `py313-destroy` cover discovery
 automatically: `lifecycle.py` enumerates it when the config carries `discovery_repo`. The
 discovery-only commands are `py313-shell-discovery`, `py313-status-discovery` (exits non-zero
