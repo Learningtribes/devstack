@@ -10,7 +10,7 @@
 #   PURGE_TLS=1       with PURGE_LOCAL=1 also removes .local/tls; the CA must then be trusted again in the keychain
 #   INGRESS=traefik   k8s-local-up in the production-like Traefik mode (same as k8s-traefik-up); needs a namespace created in that mode
 .DEFAULT_GOAL := help
-.PHONY: help k8s-local-up k8s-local-status k8s-local-smoke k8s-local-down k8s-local-test k8s-local-render \
+.PHONY: help k8s-local-up k8s-local-status k8s-local-smoke k8s-local-admin k8s-local-down k8s-local-test k8s-local-render \
 	k8s-traefik-up k8s-traefik-status k8s-traefik-smoke k8s-traefik-doctor k8s-traefik-down
 
 PYTHON := uv run --no-project --python 3.13 python -B
@@ -30,6 +30,9 @@ k8s-local-status: ## Pods, PVCs, rollouts, warning events, kubectl top if availa
 
 k8s-local-smoke: ## Heartbeats, pages and one Celery task through a worker (scripts/smoke)
 	./scripts/smoke
+
+k8s-local-admin: ## Create or update one LMS administrator; the password is typed without echo (scripts/create-admin)
+	./scripts/create-admin
 
 k8s-local-down: ## Delete the namespace py313-prod-local only (scripts/down)
 	./scripts/down

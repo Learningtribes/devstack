@@ -145,6 +145,7 @@ about 3 GiB of free memory in the Docker VM for the default overlay, about 5 GiB
 make -C k8s/py313 k8s-local-test      # manifests and script tests, no cluster
 make -C k8s/py313 k8s-local-up        # ~1 min with warm images; APP_OVERLAY=overlays/orbstack-local-all-workers for all queues
 make -C k8s/py313 k8s-local-smoke     # port-forwards 18000/18010, heartbeats, pages, one Celery task
+make -C k8s/py313 k8s-local-admin     # one administrator (password typed without echo); the LMS signs in by e-mail, the database has no users until then
 make -C k8s/py313 k8s-local-status
 make -C k8s/py313 k8s-local-down      # deletes the namespace (and its PVCs); .local/ stays unless PURGE_LOCAL=1
 ```
