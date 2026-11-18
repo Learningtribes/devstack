@@ -15,6 +15,14 @@ from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOU
                   save_new, shell, source_repository_roots, validate_path_isolation)
 import discovery
 
+# uv parses each of these (an invalid value is rejected), and the installer runs inside the
+# container, so they must be supplied through `docker exec -e` rather than the host environment.
+INSTALL_NETWORK_TOLERANCE = {
+    'UV_HTTP_TIMEOUT': '300',
+    'UV_HTTP_RETRIES': '5',
+    'UV_CONCURRENT_DOWNLOADS': '4',
+}
+
 
 def compose(config):
     specs = {
@@ -132,8 +140,13 @@ def install(config):
     verify_prepared_export(config)
     capture(config, 'prepare-install-inputs', ['docker', 'exec', config['runtime_container'],
         '/usr/local/bin/python3.13', '-B', '/canary/bringup/prepare_current_install.py'])
-    capture(config, 'install', ['docker', 'exec', config['runtime_container'],
-        '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
+    # The installer resolves ~100 packages against PyPI and has no retry of its own, so a single
+    # metadata fetch that exceeds uv's 30-second default fails the whole transaction. There is
+    # nothing to make idempotent here: `uv pip compile` and `uv pip sync` already are, and the
+    # staged inputs are rebuilt from scratch by the step above. Give the fetch room instead.
+    capture(config, 'install', ['docker', 'exec',
+        *[flag for name, value in INSTALL_NETWORK_TOLERANCE.items() for flag in ('-e', name + '=' + value)],
+        config['runtime_container'], '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
     capture(config, 'platform-identity', docker_exec(config,
         APP_PYTHON, '-B', '/canary/verify-platform-identity.py'))
     for label, path in [('installed-companion-report', APP_STATE + '/installed-companion-identity.json'),
