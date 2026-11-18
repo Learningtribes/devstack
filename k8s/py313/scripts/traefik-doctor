@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# Read-only diagnosis of the HOST side of the Traefik mode: why a browser on this Mac may not reach
+# https://lms.local-prod.7mud.com although the cluster side is healthy. It changes nothing (no sudo, no keychain, no hosts file,
+# no proxy or Clash setting) and prints the exact steps for the USER. Exit status 1 when a user-side step is still required.
+#
+# Cluster-independent: it needs only the generated CA (.local/tls/ca.crt) and curl. Every probe states which path it takes.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+set +eu
+LMS_HOST=lms.$BASE_DOMAIN
+CMS_HOST=studio.$BASE_DOMAIN
+CA=$TLS_DIR/ca.crt
+problems=0
+todo=()
+ok() { printf 'PASS   %s\n' "$*"; }
+bad() { printf 'FAIL   %s\n' "$*"; problems=$((problems + 1)); }
+info() { printf 'INFO   %s\n' "$*"; }
+
+step 'Local CA'
+if [ -s "$CA" ] && [ -s "$TLS_DIR/tls.crt" ]; then
+  ok "$CA exists (SHA-256 $(openssl x509 -in "$CA" -noout -fingerprint -sha256 | cut -d= -f2))"
+else
+  bad "no local CA: run  NO_CLUSTER=1 $SCRIPTS_DIR/gen-local-tls  (INGRESS=traefik scripts/up does it)"
+  exit 1
+fi
+
+step 'Direct path to Traefik (bypasses DNS, system proxy and Clash: --noproxy --resolve 127.0.0.1)'
+for port in 80 443; do
+  owner=$(lsof -nP -iTCP:$port -sTCP:LISTEN 2>/dev/null | awk 'NR==2{print $1}')
+  if [ -n "$owner" ]; then ok "something listens on localhost:$port ($owner)"; else bad "nothing listens on localhost:$port: Traefik's LoadBalancer is not published (scripts/traefik-status)"; fi
+done
+code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' --noproxy '*' --resolve "$LMS_HOST:443:127.0.0.1" --cacert "$CA" "https://$LMS_HOST/heartbeat")
+if [ "$code" = 200 ]; then ok "https://$LMS_HOST/heartbeat -> HTTP 200 with the local CA"; else bad "https://$LMS_HOST/heartbeat -> HTTP $code on the direct path (cluster side, not a user-side problem)"; fi
+
+step 'DNS as the system resolver (what a browser uses) answers'
+for host in "$LMS_HOST" "$CMS_HOST"; do
+  addresses=$(dscacheutil -q host -a name "$host" 2>/dev/null | awk '/^ip_address:/{print $2}' | tr '\n' ' ')
+  case "$addresses" in
+    '') bad "$host does not resolve through the system resolver"; todo+=(dns) ;;
+    *198.18.* | *198.19.*) bad "$host -> $addresses (Clash fake-ip range 198.18.0.0/16, not 127.0.0.1)"; todo+=(clash) ;;
+    *127.0.0.1*) ok "$host -> $addresses" ;;
+    *) bad "$host -> $addresses (not 127.0.0.1: the public record is expected to be 127.0.0.1)"; todo+=(dns) ;;
+  esac
+done
+
+step 'System HTTPS proxy'
+proxy=$(scutil --proxy 2>/dev/null)
+if grep -q 'HTTPSEnable : 1' <<<"$proxy"; then
+  proxy_host=$(awk '/HTTPSProxy :/{print $3}' <<<"$proxy"); proxy_port=$(awk '/HTTPSPort :/{print $3}' <<<"$proxy")
+  info "HTTPS proxy $proxy_host:$proxy_port is enabled: browsers send https://$LMS_HOST there first"
+  if grep -qi "\"$BASE_DOMAIN\"\|\*.$BASE_DOMAIN\|\.$BASE_DOMAIN" <<<"$proxy"; then ok "the proxy bypass list names $BASE_DOMAIN"; else info "the bypass list does not name $BASE_DOMAIN; the proxy (Clash) must route it DIRECT"; fi
+  code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' -x "http://$proxy_host:$proxy_port" --cacert "$CA" "https://$LMS_HOST/heartbeat")
+  if [ "$code" = 200 ]; then ok "through the system proxy: https://$LMS_HOST/heartbeat -> HTTP 200"; else bad "through the system proxy: https://$LMS_HOST/heartbeat -> HTTP $code"; todo+=(clash); fi
+else
+  info 'no system HTTPS proxy is enabled'
+fi
+code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' --cacert "$CA" "https://$LMS_HOST/heartbeat")
+if [ "$code" = 200 ]; then ok "plain curl (system DNS, environment proxies only): HTTP 200"; else bad "plain curl (system DNS, environment proxies only): HTTP $code"; todo+=(clash); fi
+
+step 'Local CA trusted by the macOS keychain (what Safari and Chrome use)'
+if security verify-cert -c "$TLS_DIR/tls.crt" -p ssl -s "$LMS_HOST" >/dev/null 2>&1; then
+  ok 'macOS trusts the certificate chain'
+else
+  bad 'macOS does not trust the local CA (browsers will show a certificate warning; curl --cacert is unaffected)'; todo+=(trust)
+fi
+
+step 'Result'
+if [ "$problems" -eq 0 ]; then echo 'DOCTOR: nothing to do'; exit 0; fi
+echo "DOCTOR: $problems finding(s). Steps for the user (nothing below was executed):"
+if printf '%s\n' "${todo[@]}" | grep -qx 'clash\|dns'; then
+  cat <<EOF
+
+1. Clash Party (mihomo) must resolve and route the domain without fake IPs. Profile > Override (YAML), enabled for the active profile:
+
+     +rules:
+       - DOMAIN-SUFFIX,$BASE_DOMAIN,DIRECT
+     dns:
+       +fake-ip-filter:
+         - '+.$BASE_DOMAIN'
+
+   In plain mihomo terms: put the DOMAIN-SUFFIX rule at the top of \`rules:\` and the '+.$BASE_DOMAIN' pattern into
+   \`dns.fake-ip-filter\`. Reload the core, then flush the macOS DNS cache (sudo is yours to run):
+     sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+   Check:  dscacheutil -q host -a name $LMS_HOST   (expected: 127.0.0.1)
+EOF
+fi
+if printf '%s\n' "${todo[@]}" | grep -qx 'trust'; then
+  cat <<EOF
+
+2. Trust the local CA for your user (macOS asks for your login password; the CA is restricted to $BASE_DOMAIN by name constraints):
+     security add-trusted-cert -r trustRoot -k ~/Library/Keychains/login.keychain-db "$CA"
+   Undo:
+     security remove-trusted-cert "$CA"
+     security delete-certificate -c "py313 local CA ($BASE_DOMAIN)" ~/Library/Keychains/login.keychain-db
+   Firefox keeps its own store: import $CA under Settings > Privacy & Security > Certificates, or set security.enterprise_roots.enabled.
+EOF
+fi
+echo
+echo "Then rerun: $SCRIPTS_DIR/traefik-doctor"
+exit 1

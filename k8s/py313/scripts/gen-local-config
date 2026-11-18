@@ -13,17 +13,20 @@ require_secret_files mysql-database mysql-user mysql-password mongo-user mongo-p
 [ -s "$LOCAL_DIR/es-ca.crt" ] || die "missing $LOCAL_DIR/es-ca.crt: run scripts/setup-elasticsearch"
 [ -s "$LOCAL_DIR/jwt-private.pem" ] || die "missing $LOCAL_DIR/jwt-private.pem: run scripts/gen-local-secrets"
 
-bringup_env=$OVERLAY/jobs/bringup.env
-lms_domain=$(sed -n 's/^BRINGUP_LMS_DOMAIN=//p' "$bringup_env")
-cms_domain=$(sed -n 's/^BRINGUP_CMS_DOMAIN=//p' "$bringup_env")
+lms_domain=$(bringup_value BRINGUP_LMS_DOMAIN)
+cms_domain=$(bringup_value BRINGUP_CMS_DOMAIN)
+scheme=$(bringup_value BRINGUP_SCHEME)
+scheme=${scheme:-http}
+cookie_domain=$(bringup_value BRINGUP_SESSION_COOKIE_DOMAIN)
 es_ca_path=$CONFIG_MOUNT/es-ca.crt
 out=$LOCAL_DIR/config-out
 envfile=$LOCAL_DIR/generate.env
 
 step 'Generator environment (.local/generate.env, mode 600)'
 {
-  cat "$bringup_env"
-  echo 'BRINGUP_SCHEME=http'
+  # Later lines win in docker's --env-file, so the Traefik file (listed second) overrides the base values.
+  while IFS= read -r file; do cat "$file"; done < <(bringup_env_files)
+  echo "BRINGUP_SCHEME=$scheme"
   echo 'BRINGUP_STATE_DIR=/edx/var/edxapp'
   echo 'BRINGUP_ES_USE_SSL=true'
   echo "BRINGUP_ES_CA_CERTS=$es_ca_path"
@@ -61,8 +64,11 @@ docker run --rm --user 0 --network none --entrypoint chown -v "$out:/out" "$(app
 chmod 700 "$out"; chmod 600 "$out"/*.json
 
 step 'Post-process and verify'
+extra_checks=()
+[ "$(ingress_mode)" != traefik ] || extra_checks=(--scheme "$scheme" --cookie-domain "$cookie_domain")
 uv run --no-project --python 3.13 python -B "$SCRIPTS_DIR/postprocess_config.py" "$out" \
   --lms-domain "$lms_domain" --cms-domain "$cms_domain" --es-ca-path "$es_ca_path" --es-user "$ES_USER" \
+  ${extra_checks[@]+"${extra_checks[@]}"} \
   || die 'generated configuration failed the checks above'
 
 step "Secret edxapp-config in namespace $NS"

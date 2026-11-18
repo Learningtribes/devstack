@@ -20,8 +20,11 @@ def store(directory, name, data):
     path.chmod(0o600)
 
 
-def process(directory, lms_domain, cms_domain, es_ca_path, es_user):
-    """Switches LOG_DESTINATION to console (pods log to stdout; the generator writes `file`) and returns a list of failed checks."""
+def process(directory, lms_domain, cms_domain, es_ca_path, es_user, scheme=None, cookie_domain=None):
+    """Switches LOG_DESTINATION to console (pods log to stdout; the generator writes `file`) and returns a list of failed checks.
+
+    With `scheme` (the Traefik mode) it also checks the root URLs, the cookie flags and that both site hosts are allowed hosts.
+    """
     failures = []
 
     def expect(ok, text):
@@ -40,6 +43,13 @@ def process(directory, lms_domain, cms_domain, es_ca_path, es_user):
                f'{system}.env.json site domains are {lms_domain} / {cms_domain}')
         hosts = env.get('ALLOWED_HOSTS', [])
         expect('localhost' in hosts and '*' not in hosts, f'{system}.env.json ALLOWED_HOSTS has localhost and no wildcard')
+        if scheme:
+            root = f'{scheme}://{lms_domain}'
+            expect(env.get('LMS_ROOT_URL') == root and env.get('LMS_INTERNAL_ROOT_URL') == root,
+                   f'{system}.env.json LMS_ROOT_URL and LMS_INTERNAL_ROOT_URL are {root}')
+            expect(env.get('SESSION_COOKIE_SECURE') is (scheme == 'https'), f'{system}.env.json SESSION_COOKIE_SECURE follows the {scheme} scheme')
+            expect(env.get('SESSION_COOKIE_DOMAIN') == cookie_domain, f'{system}.env.json SESSION_COOKIE_DOMAIN is {cookie_domain!r}')
+            expect(lms_domain in hosts and cms_domain in hosts, f'{system}.env.json ALLOWED_HOSTS has both site hosts')
         expect(entry.get('use_ssl') is True and entry.get('verify_certs') is True and entry.get('ca_certs') == es_ca_path
                and (entry.get('http_auth') or [None])[0] == es_user,
                f'{system}.env.json Elasticsearch: TLS, verified, CA {es_ca_path}, user {es_user}')
@@ -60,8 +70,10 @@ def main(argv=None):
     parser.add_argument('--cms-domain', required=True)
     parser.add_argument('--es-ca-path', required=True)
     parser.add_argument('--es-user', required=True)
+    parser.add_argument('--scheme', choices=('http', 'https'), help='enables the URL, cookie and host checks of the Traefik mode')
+    parser.add_argument('--cookie-domain')
     args = parser.parse_args(argv)
-    failures = process(args.directory, args.lms_domain, args.cms_domain, args.es_ca_path, args.es_user)
+    failures = process(args.directory, args.lms_domain, args.cms_domain, args.es_ca_path, args.es_user, args.scheme, args.cookie_domain)
     return 1 if failures else 0
 
 

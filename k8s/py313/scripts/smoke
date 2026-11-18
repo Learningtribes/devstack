@@ -4,6 +4,8 @@
 # overlay's BRINGUP_*_DOMAIN), so the Host headers below are fixed to them whatever local ports are used.
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 require_context
+[ "$(kc get namespace "$NS" -o jsonpath='{.metadata.annotations.py313\.learningtribes\.com/ingress-mode}' 2>/dev/null)" != traefik ] \
+  || die 'this namespace runs in Traefik mode (https site domains): use scripts/traefik-smoke'
 LMS_PORT=${LMS_LOCAL_PORT:-18000}
 CMS_PORT=${CMS_LOCAL_PORT:-18010}
 lms_domain=$(sed -n 's/^BRINGUP_LMS_DOMAIN=//p' "$OVERLAY/jobs/bringup.env")
@@ -43,35 +45,7 @@ record 200 "Studio /signin" "$(code -H "Host: $cms_domain" "$cms/signin")"
 record 400 "LMS unknown Host is rejected" "$(code -H 'Host: evil.example' "$lms/login")"
 note 'static files (/static/...) are not served by gunicorn: not checked (README, Local OrbStack run)'
 
-step 'Celery: one task through the broker to a running worker'
-# A one-off process in the running lms pod (same config, same broker as the web process) calls apply_async on a task of the LMS
-# default queue (edx.lms.core.default, the one worker-lms-default consumes) and waits for the result over the memcached result backend. The task is
-# openedx.core.djangoapps.heartbeat.tasks.sample_task (returns True, no side effects).
-since=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-# shellcheck disable=SC2016
-snippet='from openedx.core.djangoapps.heartbeat.tasks import sample_task
-r = sample_task.apply_async()
-print("TASK_ID", r.id)
-print("RESULT", r.get(timeout=60))'
-if output=$(k exec deploy/lms -- edxapp-entrypoint manage lms shell -c "$snippet" 2>&1); then
-  echo "$output" | grep -E '^(TASK_ID|RESULT)' | sed 's/^/   producer: /'
-  task_id=$(sed -n 's/^TASK_ID \([0-9a-f-]*\)$/\1/p' <<<"$output" | head -n 1)
-  if grep -q '^RESULT True$' <<<"$output" && [ -n "$task_id" ]; then
-    sleep 2
-    line=$(k logs deploy/worker-lms-default --since-time="$since" 2>&1 | grep -F "$task_id" || true)
-    echo "$line" | sed 's/^/   worker-lms-default: /'
-    if grep -q 'received' <<<"$line" && grep -q 'succeeded' <<<"$line"; then
-      printf 'PASS   task %s received and succeeded in worker-lms-default\n' "$task_id"
-    else
-      printf 'FAIL   worker log of worker-lms-default does not show the task %s\n' "$task_id"; fails=$((fails + 1))
-    fi
-  else
-    printf 'FAIL   task result was not True\n'; fails=$((fails + 1))
-  fi
-else
-  echo "$output" | tail -n 15 | sed 's/^/   /'
-  printf 'FAIL   could not run the producer in the lms pod\n'; fails=$((fails + 1))
-fi
+celery_check
 
 step 'Result'
 if [ "$fails" -eq 0 ]; then echo 'SMOKE PASSED'; else echo "SMOKE FAILED ($fails checks)"; exit 1; fi
