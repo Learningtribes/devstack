@@ -59,8 +59,10 @@ spec:
               value: /edx/app/edxapp/py313-config
             - name: PORT
               value: "8010"
+            # At least two sync workers: /heartbeat (readiness) needs a free worker while another one serves a request of up to
+            # GUNICORN_TIMEOUT (legacy gunicorn: sync class, timeout 300, no threads). One worker answers 503 to everybody meanwhile.
             - name: GUNICORN_WORKERS
-              value: "1"
+              value: "2"
             - name: GUNICORN_TIMEOUT
               value: "300"
             - name: GUNICORN_MAX_REQUESTS
@@ -90,7 +92,8 @@ spec:
                   value: localhost
             periodSeconds: 10
             timeoutSeconds: 10
-            failureThreshold: 3
+            # 6 x 10 s: a short saturation of both workers must not take the only replica out of rotation.
+            failureThreshold: 6
           # TCP only: a database outage must make pods unready, not restart them.
           livenessProbe:
             tcpSocket:
@@ -126,9 +129,12 @@ spec:
           secret:
             secretName: edxapp-config
             defaultMode: 288 # 0440
+        # Studio accepts bodies up to 2 GiB (production nginx client_max_body_size 2048M). A course import then needs: the upload
+        # spooled by Django in /tmp, a copy of the archive in `data` (GITHUB_REPO_ROOT; _write_chunk never deletes it, so it stays until
+        # the pod restarts: 6Gi = two maximal imports) and one in `media` (import storage; the worker removes it after reading).
         - name: tmp
           emptyDir:
-            sizeLimit: 512Mi
+            sizeLimit: 3Gi
         - name: log-lms
           emptyDir:
             sizeLimit: 256Mi
@@ -137,10 +143,10 @@ spec:
             sizeLimit: 256Mi
         - name: media
           emptyDir:
-            sizeLimit: 1Gi
+            sizeLimit: 3Gi
         - name: data
           emptyDir:
-            sizeLimit: 1Gi
+            sizeLimit: 6Gi
 ---
 apiVersion: v1
 kind: Service

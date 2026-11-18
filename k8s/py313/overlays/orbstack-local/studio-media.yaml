@@ -1,0 +1,16 @@
+# Import and export hand a file from the cms pod (upload) to the cms worker (import_olx) through COURSE_IMPORT_EXPORT_STORAGE, which
+# is FileSystemStorage under MEDIA_ROOT unless a bucket is configured. Per-pod emptyDirs cannot do that hand-off ("Tar file not found").
+# One local-path volume is mounted by cms and the cms workers; this works because the cluster has one node (ReadWriteOnce is per node).
+# A real environment uses object storage (COURSE_IMPORT_EXPORT_BUCKET in cms.env.json) or a ReadWriteMany volume.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: studio-media
+  labels:
+    app.kubernetes.io/name: edxapp
+    app.kubernetes.io/instance: studio-media
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 6Gi

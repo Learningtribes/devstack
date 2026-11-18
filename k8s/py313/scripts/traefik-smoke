@@ -16,10 +16,29 @@ SMOKE_EMAIL=traefik-smoke@example.invalid
 work=$(mktemp -d)
 fails=0
 user_created=0
+IMPORT_SRC=course-v1:SmokeOrg+IMPSRC+2026
+IMPORT_DST=course-v1:SmokeOrg+IMPDST+2026
+courses_created=0
+# shellcheck disable=SC2016  # the snippets run inside the pod
+delete_courses() {
+  k exec deploy/cms -- edxapp-entrypoint manage cms shell -c '
+from opaque_keys.edx.keys import CourseKey
+from xmodule.modulestore import ModuleStoreEnum
+from xmodule.modulestore.django import modulestore
+for key in ("'"$IMPORT_SRC"'", "'"$IMPORT_DST"'"):
+    try:
+        modulestore().delete_course(CourseKey.from_string(key), ModuleStoreEnum.UserID.test)
+    except Exception as exc:
+        print("delete", key, type(exc).__name__)' >/dev/null 2>&1 || true
+}
 delete_user() {
   k exec deploy/lms -- edxapp-entrypoint manage lms shell -c "from django.contrib.auth.models import User; User.objects.filter(username='$SMOKE_USER').delete()" >/dev/null 2>&1 || true
 }
-cleanup() { [ "$user_created" = 0 ] || delete_user; rm -rf "$work"; }
+cleanup() {
+  [ "$courses_created" = 0 ] || delete_courses
+  [ "$user_created" = 0 ] || delete_user
+  rm -rf "$work"
+}
 trap cleanup EXIT
 
 pass() { printf 'PASS   %s\n' "$*"; }
@@ -84,6 +103,7 @@ password = sys.stdin.readline().strip()
 User.objects.filter(username="'"$SMOKE_USER"'").delete()
 user = User.objects.create_user("'"$SMOKE_USER"'", "'"$SMOKE_EMAIL"'", password)
 user.is_staff = True
+user.is_superuser = True  # Studio authoring rights need a course role or the platform developer level
 user.is_active = True
 user.save()
 UserProfile.objects.create(user=user, name="Traefik Smoke")
@@ -101,6 +121,57 @@ login() { # login JAR HOST ENDPOINT PAGE [ORIGIN_SCHEME [EXTRA_HEADER]]
     -H "X-CSRFToken: $(csrf "$jar")" -H "Referer: https://$host$page" -H "Origin: $oscheme://$host" -H "$extra" -H 'X-Requested-With: XMLHttpRequest' \
     --data-urlencode "email=$SMOKE_EMAIL" --data-urlencode "password@$work/pw" -w '%{http_code}'
 }
+# A real course import through Studio: the upload lands in GITHUB_REPO_ROOT of the cms pod, is stored in the import storage, and the
+# import_olx task of worker-cms-default (another pod) must read it from there, unpack it under its own GITHUB_REPO_ROOT and write the
+# course into the modulestore. Needs the Studio session cookie jar of a staff user.
+# shellcheck disable=SC2016  # the snippets run inside the pod
+studio_import_proof() { # studio_import_proof JAR
+  local jar=$1 tarball=$work/import-smoke.tar.gz status stage i=0 verified created
+  step 'Studio course import (upload -> import storage -> cms worker -> modulestore)'
+  courses_created=1
+  created=$(k exec deploy/cms -- edxapp-entrypoint manage cms shell -c '
+from xmodule.modulestore import ModuleStoreEnum
+from xmodule.modulestore.django import modulestore
+from contentstore.management.commands.export_olx import export_course_to_tarfile
+store = modulestore()
+uid = ModuleStoreEnum.UserID.test
+with store.default_store(ModuleStoreEnum.Type.split):
+    src = store.create_course("SmokeOrg", "IMPSRC", "2026", uid, fields={"display_name": "Import smoke source"})
+    chapter = store.create_child(uid, src.location, "chapter", block_id="ch1", fields={"display_name": "Imported chapter"})
+    seq = store.create_child(uid, chapter.location, "sequential", block_id="seq1", fields={"display_name": "Imported sequence"})
+    vert = store.create_child(uid, seq.location, "vertical", block_id="vert1", fields={"display_name": "Imported unit"})
+    store.create_child(uid, vert.location, "html", block_id="html1", fields={"display_name": "Imported text", "data": "<p>import-smoke-marker</p>"})
+    store.create_course("SmokeOrg", "IMPDST", "2026", uid, fields={"display_name": "Import smoke target"})
+export_course_to_tarfile(src.id, "/tmp/import-smoke.tar.gz")
+print("COURSES_READY")' 2>&1 || true)
+  if ! grep -q '^COURSES_READY$' <<< "$created"; then
+    fail 'could not create and export the source course'; return 0
+  fi
+  k exec deploy/cms -- cat /tmp/import-smoke.tar.gz > "$tarball"
+  k exec deploy/cms -- rm -f /tmp/import-smoke.tar.gz
+  [ -s "$tarball" ] && pass "exported course archive ($(wc -c < "$tarball" | tr -d ' ') bytes)" || { fail 'empty export archive'; return 0; }
+  status=$(cc -o "$work/import.json" -b "$jar" -c "$jar" -X POST "https://$CMS/import/$IMPORT_DST" \
+    -H "X-CSRFToken: $(csrf "$jar")" -H "Referer: https://$CMS/import/$IMPORT_DST" -H "Origin: https://$CMS" -H 'Accept: application/json' \
+    -F "course-data=@$tarball;filename=import-smoke.tar.gz;type=application/gzip" -w '%{http_code}' 2>/dev/null || true)
+  expect 200 "POST /import/<course> with the .tar.gz upload (GITHUB_REPO_ROOT must be writable in the cms pod)" "$status"
+  stage=0
+  while [ "$i" -lt 60 ]; do
+    stage=$(cc -b "$jar" "https://$CMS/import_status/$IMPORT_DST/import-smoke.tar.gz" 2>/dev/null | sed -nE 's/.*"ImportStatus": *(-?[0-9]+).*/\1/p' || true)
+    case "${stage:-0}" in 4 | -*) break ;; esac
+    i=$((i + 1)); sleep 2
+  done
+  expect 4 "import_status reaches 4 (successful); -N means the task failed in stage N" "${stage:-none}"
+  verified=$(k exec deploy/cms -- edxapp-entrypoint manage cms shell -c '
+from opaque_keys.edx.keys import CourseKey
+from xmodule.modulestore.django import modulestore
+store = modulestore()
+course = store.get_course(CourseKey.from_string("'"$IMPORT_DST"'"))
+chapters = [store.get_item(c) for c in course.children]
+html = store.get_item(course.id.make_usage_key("html", "html1"))
+print("IMPORTED", [c.display_name for c in chapters], "marker" if "import-smoke-marker" in html.data else "nomarker")' 2>&1 | sed -n 's/^IMPORTED //p' || true)
+  [ "$verified" = "['Imported chapter'] marker" ] && pass "modulestore holds the imported chapter and the html marker" || fail "modulestore content after import: '${verified:-nothing}'"
+  k logs deploy/worker-cms-default --tail=400 2>/dev/null | grep -E "Course import .*(Download from storage complete|Course import successful|Temp data cleared)" | sed 's/^.*\] //' | tail -n 3 | sed 's/^/   worker-cms-default: /' || true
+}
 if [ "$user_created" = 1 ]; then
   jar1=$work/jar1
   status=$(login "$jar1" "$LMS" /login_ajax /login 2>/dev/null || true)
@@ -117,6 +188,7 @@ if [ "$user_created" = 1 ]; then
   grep -q '"success": *true' "$work/login.json" && pass 'Studio login success: true' || fail 'Studio login did not succeed'
   expect 200 "Studio /home/ after the Studio login" "$(code -b "$jar2" "https://$CMS/home/")"
   expect 200 "LMS /dashboard with the Studio-issued session" "$(code -b "$jar2" "https://$LMS/dashboard")"
+  studio_import_proof "$jar2"
   # Last: a successful login ends the user's earlier sessions (concurrent login prevention).
   # Django derives the request scheme only from X-Forwarded-Proto: an http Origin must be refused, and a client-sent header, in either
   # spelling, must not change it. The underscore case also passes with aliasHeadersStrategy=keep (gunicorn drops such headers itself),

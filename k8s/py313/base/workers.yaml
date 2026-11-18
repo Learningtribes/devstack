@@ -503,7 +503,7 @@ spec:
             defaultMode: 288 # 0440
         - name: tmp
           emptyDir:
-            sizeLimit: 512Mi
+            sizeLimit: 3Gi
         - name: log-lms
           emptyDir:
             sizeLimit: 256Mi
@@ -512,10 +512,10 @@ spec:
             sizeLimit: 256Mi
         - name: media
           emptyDir:
-            sizeLimit: 1Gi
+            sizeLimit: 3Gi
         - name: data
           emptyDir:
-            sizeLimit: 1Gi
+            sizeLimit: 6Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -809,7 +809,7 @@ spec:
             defaultMode: 288 # 0440
         - name: tmp
           emptyDir:
-            sizeLimit: 512Mi
+            sizeLimit: 3Gi
         - name: log-lms
           emptyDir:
             sizeLimit: 256Mi
@@ -818,7 +818,7 @@ spec:
             sizeLimit: 256Mi
         - name: media
           emptyDir:
-            sizeLimit: 1Gi
+            sizeLimit: 3Gi
         - name: data
           emptyDir:
-            sizeLimit: 1Gi
+            sizeLimit: 6Gi

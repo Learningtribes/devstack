@@ -90,7 +90,8 @@ spec:
                   value: localhost
             periodSeconds: 10
             timeoutSeconds: 10
-            failureThreshold: 3
+            # 6 x 10 s: a short saturation of both workers must not take the only replica out of rotation.
+            failureThreshold: 6
           # TCP only: a database outage must make pods unready, not restart them.
           livenessProbe:
             tcpSocket:

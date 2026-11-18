@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 
 SYSTEMS = ('lms', 'cms')
+DATA_MOUNT = '/edx/var/edxapp/data'
 
 
 def load(directory, name):
@@ -21,7 +22,13 @@ def store(directory, name, data):
 
 
 def process(directory, lms_domain, cms_domain, es_ca_path, es_user, scheme=None, cookie_domain=None):
-    """Switches LOG_DESTINATION to console (pods log to stdout; the generator writes `file`) and returns a list of failed checks.
+    """Switches LOG_DESTINATION to console (pods log to stdout; the generator writes `file`), points every writable course-data path at
+    the mounted data volume and returns a list of failed checks; every check reads the files back from disk.
+
+    The settings default for these paths is /edx/app/edxapp/data, on the read-only root, and the generator keeps it in two places:
+    cms GITHUB_REPO_ROOT (course import and export; cms/envs/aws.py reads it only from env.json, the generator never writes it) and
+    the `fs_root` of every MODULESTORE store in lms.auth.json and cms.auth.json (a copy of the settings default taken before DATA_DIR
+    is overridden; the split store creates <fs_root>/<org>/<course>/<run> whenever a course is loaded, so any course page would fail).
 
     With `scheme` (the Traefik mode) it also checks the root URLs, the cookie flags and that both site hosts are allowed hosts.
     """
@@ -35,10 +42,20 @@ def process(directory, lms_domain, cms_domain, es_ca_path, es_user, scheme=None,
     for system in SYSTEMS:
         env = load(directory, f'{system}.env.json')
         env['LOG_DESTINATION'] = 'console'
+        if system == 'cms':
+            env['GITHUB_REPO_ROOT'] = DATA_MOUNT
         store(directory, f'{system}.env.json', env)
+        env = load(directory, f'{system}.env.json')
+        auth = load(directory, f'{system}.auth.json')
+        for store_config in auth.get('MODULESTORE', {}).get('default', {}).get('OPTIONS', {}).get('stores', []):
+            store_config.setdefault('OPTIONS', {})['fs_root'] = DATA_MOUNT
+        store(directory, f'{system}.auth.json', auth)
         auth = load(directory, f'{system}.auth.json')
         entry = (env.get('ELASTIC_SEARCH_CONFIG') or [{}])[0]
-        expect(env['LOG_DESTINATION'] == 'console', f'{system}.env.json LOG_DESTINATION is console')
+        expect(env.get('LOG_DESTINATION') == 'console', f'{system}.env.json LOG_DESTINATION is console')
+        if system == 'cms':
+            expect(env.get('GITHUB_REPO_ROOT') == DATA_MOUNT == env.get('DATA_DIR'),
+                   f'{system}.env.json GITHUB_REPO_ROOT is the writable data mount {DATA_MOUNT}')
         expect(env.get('LMS_BASE') == lms_domain and env.get('CMS_BASE') == cms_domain,
                f'{system}.env.json site domains are {lms_domain} / {cms_domain}')
         hosts = env.get('ALLOWED_HOSTS', [])
@@ -56,6 +73,8 @@ def process(directory, lms_domain, cms_domain, es_ca_path, es_user, scheme=None,
         expect(env.get('LOG_DIR') == f'/edx/var/log/{system}', f'{system}.env.json LOG_DIR is the mounted /edx/var/log/{system}')
         expect(env.get('MEDIA_ROOT') == '/edx/var/edxapp/media' and env.get('DATA_DIR') == '/edx/var/edxapp/data',
                f'{system}.env.json MEDIA_ROOT and DATA_DIR are the writable mounts')
+        fs_roots = [item.get('OPTIONS', {}).get('fs_root') for item in auth.get('MODULESTORE', {}).get('default', {}).get('OPTIONS', {}).get('stores', [])]
+        expect(fs_roots and set(fs_roots) == {DATA_MOUNT}, f'{system}.auth.json MODULESTORE fs_root of every store is the writable data mount (stores: {len(fs_roots)})')
         expect(auth.get('CELERY_BROKER_PASSWORD') and auth.get('SECRET_KEY'), f'{system}.auth.json has broker password and SECRET_KEY (not printed)')
         expect(('JWT_PRIVATE_SIGNING_KEY' in auth) == (system == 'lms'), f'{system}.auth.json JWT_PRIVATE_SIGNING_KEY only for lms')
         print('keys', f'{system}.env.json:', ' '.join(sorted(env)))

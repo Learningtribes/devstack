@@ -6,6 +6,7 @@ namespace: py313-prod-local
 resources:
   - ../../base
   - namespace.yaml
+  - studio-media.yaml
   - backing
 images:
   # The arm64 image built into the local Docker daemon, which OrbStack's Kubernetes uses directly: never pulled.
@@ -33,6 +34,7 @@ replicas:
 # Resources below are LOCAL-MEASURED (OrbStack, arm64, one request each of /heartbeat, /login, /signin, one Celery task; docker stats and
 # cgroup memory.peak, 2026-11-18): lms 300 MiB idle / 724 MiB peak (gunicorn worker, startup import and one `manage lms shell`),
 # cms 275 MiB idle / 279 MiB peak, a default-queue worker 285-305 MiB. Limits keep about 2x the peak; they say nothing about production load.
+# lms and cms run two sync gunicorn workers each (README, "Gunicorn workers"): the numbers are re-measured there.
 patches:
   - target:
       kind: Deployment
@@ -49,14 +51,14 @@ patches:
               - name: lms
                 env:
                   - name: GUNICORN_WORKERS
-                    value: "1"
+                    value: "2"
                 resources:
                   requests:
                     cpu: 250m
-                    memory: 512Mi
+                    memory: 768Mi
                   limits:
                     cpu: "2"
-                    memory: 1536Mi
+                    memory: 2Gi
   - target:
       kind: Deployment
       name: cms
@@ -70,13 +72,53 @@ patches:
           spec:
             containers:
               - name: cms
+                env:
+                  - name: GUNICORN_WORKERS
+                    value: "2"
                 resources:
                   requests:
                     cpu: 100m
-                    memory: 320Mi
+                    memory: 512Mi
                   limits:
                     cpu: "1"
-                    memory: 1Gi
+                    memory: 1536Mi
+            volumes:
+              - name: media
+                emptyDir: null
+                persistentVolumeClaim:
+                  claimName: studio-media
+  - target:
+      kind: Deployment
+      name: worker-cms-default
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker-cms-default
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: media
+                emptyDir: null
+                persistentVolumeClaim:
+                  claimName: studio-media
+  - target:
+      kind: Deployment
+      name: worker-cms-low
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker-cms-low
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: media
+                emptyDir: null
+                persistentVolumeClaim:
+                  claimName: studio-media
   # Also the template for a real environment's grace period (open question Q8): 60 s here so that a local teardown is quick.
   - target:
       kind: Deployment
