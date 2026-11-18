@@ -8,10 +8,12 @@ note "$(kc get namespace "$NS" -o jsonpath='{.metadata.annotations.py313\.learni
 step "Traefik ($TNS)"
 kt get deployment,pods,service -o wide
 step "Ingress, Middleware, static ($NS)"
-k get ingress,middlewares.traefik.io,deployment/static,pods -l "$FEATURE_LABEL" 2>&1
+k get ingress,middlewares.traefik.io,deployment,pods -l "$FEATURE_LABEL" 2>&1
 step 'Traefik CRDs and cluster objects'
 kc get crd --selector "$FEATURE_LABEL" -o name
 kc get clusterrole,clusterrolebinding traefik-py313-local -o name 2>&1
+k get role,rolebinding -l "$FEATURE_LABEL" -o name 2>&1
+kt get role,rolebinding -o name 2>&1
 step 'CoreDNS custom configuration'
 kc -n kube-system get configmap coredns-custom -o go-template='{{range $k, $v := .data}}{{$k}}: {{$v}}{{end}}' 2>&1
 step 'Certificates'

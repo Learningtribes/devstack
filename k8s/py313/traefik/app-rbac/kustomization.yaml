@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# No `namespace:` transformer: it would also rewrite the namespace of the ServiceAccount subject (it lives in the namespace traefik).
+resources:
+  - rbac.yaml
+labels:
+  - pairs:
+      py313.learningtribes.com/feature: traefik-local
+    includeSelectors: false

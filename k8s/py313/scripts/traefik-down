@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Removes ONLY what the Traefik mode created, each object proven ours by the label py313.learningtribes.com/feature=traefik-local:
-#   in py313-prod-local: the Ingress objects, the Middleware, the static Deployment/Service and its nginx ConfigMap;
+#   in py313-prod-local: the Ingress objects, the Middleware, the static Deployment/Service and its nginx ConfigMap, and the Role and
+#   RoleBinding that let Traefik read there;
 #   namespace traefik; ClusterRole/ClusterRoleBinding traefik-py313-local; the CRDs (traefik.io / traefik.containo.us only);
 #   ConfigMap kube-system/coredns-custom (refused when it has keys this tool did not create) and a CoreDNS rollout restart.
 # It does not delete py313-prod-local (scripts/down does), and it keeps the Secret local-prod-tls and the ConfigMap local-ca-bundle in
@@ -12,7 +13,7 @@ OUR_KEYS='local-prod.override'
 step "Objects in $NS"
 if kc get namespace "$NS" >/dev/null 2>&1; then
   require_owned_namespace
-  k delete ingress,deployment,service --selector "$FEATURE_LABEL" --ignore-not-found --wait=true
+  k delete ingress,deployment,service,rolebinding,role --selector "$FEATURE_LABEL" --ignore-not-found --wait=true
   if kc get crd middlewares.traefik.io >/dev/null 2>&1; then k delete middlewares.traefik.io --selector "$FEATURE_LABEL" --ignore-not-found; fi
   for name in $(k get configmap --selector "$FEATURE_LABEL" -o name | grep -v '/local-ca-bundle$' || true); do k delete "$name"; done
   note 'kept local-prod-tls and local-ca-bundle (removed with the namespace by scripts/down)'

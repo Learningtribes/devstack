@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Installs the cluster side of the Traefik mode. Cluster-level objects (the complete list, see README "Blast radius"):
-#   Namespace traefik, the ten CRDs of the traefik.io group, ClusterRole/ClusterRoleBinding traefik-py313-local,
+#   Namespace traefik, the ten CRDs of the traefik.io group, ClusterRole/ClusterRoleBinding traefik-py313-local (IngressClass only;
+#   everything namespaced is a Role in traefik or in py313-prod-local),
 #   ConfigMap kube-system/coredns-custom (+ a CoreDNS rollout restart). Run by scripts/up when INGRESS=traefik, after the namespace guard.
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 require_context
@@ -18,6 +19,8 @@ step 'Pre-flight: nothing foreign is adopted'
 owned_or_absent namespace "$TNS"
 owned_or_absent clusterrole traefik-py313-local
 owned_or_absent clusterrolebinding traefik-py313-local
+owned_or_absent role traefik-py313-local "$NS"
+owned_or_absent rolebinding traefik-py313-local "$NS"
 for crd in $(sed -n 's/^  name: \(.*\.traefik\.io\)$/\1/p' "$TRAEFIK_DIR/crds/crds.yaml"); do owned_or_absent crd "$crd"; done
 owned_or_absent configmap coredns-custom kube-system
 note 'ok'
@@ -33,6 +36,10 @@ step 'Traefik CRDs (traefik.io, all ten: the CRD provider watches every kind)'
 kc apply --server-side --force-conflicts --field-manager=py313-local -k "$TRAEFIK_DIR/crds" >/dev/null
 kc wait --for=condition=Established --selector "$FEATURE_LABEL" crd --timeout=60s >/dev/null
 note 'established'
+
+step "Role and RoleBinding for Traefik in $NS (before Traefik starts, so that its first list calls are allowed)"
+kc apply -k "$TRAEFIK_DIR/app-rbac" >/dev/null
+note "applied role/traefik-py313-local in $NS"
 
 step 'Traefik'
 kc apply -k "$TRAEFIK_DIR" >/dev/null
