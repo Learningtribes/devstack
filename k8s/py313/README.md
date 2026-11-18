@@ -139,7 +139,7 @@ Everything below is for the OrbStack Kubernetes cluster only. Every script refus
 Prerequisites: OrbStack with Kubernetes enabled (StorageClass `local-path`), `kubectl`, `docker`, `openssl`, `uv`; the images
 `edxapp:py313-prodimage-b0db03a-local` (image change; the tag is read from `overlays/orbstack-local/kustomization.yaml`),
 `mysql:8.4.13`, `mongo:8.0`, `elasticsearch:8.19.0`, `rabbitmq:4.3`, `memcached:1.6.45` in the local Docker daemon (nothing is pulled);
-about 3 GiB of free memory in the Docker VM for the default overlay, about 5 GiB with all workers.
+about 4 GiB of free memory in the Docker VM for the default overlay, about 6 GiB with all workers.
 
 ```bash
 make -C k8s/py313 k8s-local-test      # manifests and script tests, no cluster
@@ -162,7 +162,8 @@ disk; server-side apply keeps the data out of the `last-applied-configuration` a
 Decisions taken here (the former open questions):
 
 - **Database name** (was Q3): `py313_startup_local`, so the Platform `database_guard.py` accepts it without `BRINGUP_ADOPTED_DATABASE`.
-  The database is new; no wipe exists. `up` skips a completed `db-init` (`FORCE_DB_INIT=1` reruns it).
+  The database is new; no wipe exists. `up` skips a completed `db-init` (`FORCE_DB_INIT=1` reruns it). The Job has `ttlSecondsAfterFinished: 86400`, so completion is recorded durably
+  as the namespace annotation `py313.learningtribes.com/db-init-completed=<database name>` (set after the Job succeeded; a still-complete Job of an older run is backfilled).
 - **`LOG_DESTINATION`** (was Q2): post-processed to `console` before the Secret is created; the application log appears in `kubectl logs`.
 - **Site domains and scheme**: `localhost:18000` / `localhost:18010`, `BRINGUP_SCHEME=http` (so `SESSION_COOKIE_SECURE` is false); no cookie domain.
 - **Static files** (Q4): not served in this flow (see open question 2); the Traefik mode serves them with nginx. **`metrics` cron** (Q5): stays suspended. **Resources** (Q6): measured, below.
@@ -171,20 +172,37 @@ Decisions taken here (the former open questions):
   (client-side apply and defaulted fields); a changed StatefulSet template does restart its pod (a crash-looping pod must be deleted by hand).
 
 Measured on this laptop (OrbStack Docker VM 15.66 GiB, 10 CPUs, arm64; `docker stats` and the cgroup `memory.peak`; no metrics-server,
-so `kubectl top` is unavailable): one run, idle after the smoke test, memory only.
+so `kubectl top` is unavailable): one run, idle right after `up` and the smoke test, memory only. The web rows were re-measured after raising gunicorn to two workers (below); the other rows are from the earlier run.
 
 | Container | Idle | Peak seen |
 | --- | --- | --- |
-| lms (1 gunicorn worker) | 300 MiB | 724 MiB (cgroup peak: start-up import plus the `manage lms shell` of the smoke test) |
-| cms (1 gunicorn worker) | 275 MiB | 279 MiB |
-| worker-lms-default / worker-cms-default | 283 / 305 MiB | 309 MiB |
+| lms (2 gunicorn workers) | 586 MiB | not re-measured (1 worker: cgroup peak 724 MiB during start-up import plus the `manage lms shell` of the smoke test) |
+| cms (2 gunicorn workers) | 507 MiB | not re-measured (1 worker: 279 MiB) |
+| worker-lms-default / worker-cms-default | 339 / 352 MiB | 1 worker: 309 MiB |
 | mysql / elasticsearch (heap 512m) / mongodb / rabbitmq / memcached | 567 / 920 / 125 / 117 / 10 MiB | rabbitmq 192 MiB |
-| total, default overlay (9 containers) | about 2.9 GiB | |
-| total with all eight worker queues (15 containers) | about 4.6 GiB | |
+| total, default overlay (9 containers) | about 3.6 GiB | |
+| total with all eight worker queues (15 containers) | about 5.3 GiB (estimate: the earlier 4.6 GiB plus the second web worker) | |
 
-The overlay's `resources` for lms, cms and workers are set from these numbers (about 2x the peak as limit). They describe one idle
+The overlay's `resources` for lms, cms and workers are set from these numbers (about 2x the peak as limit; with two workers lms is 250m/768Mi to 2 CPU/2Gi and cms 100m/512Mi to 1 CPU/1536Mi). They describe one idle
 instance with a handful of requests, not load. Start-up: lms and cms were Ready 10-11 s after the container started on a warm node;
 `db-init` took 26 s on a populated database.
+
+Web concurrency and probes (Studio and LMS): the legacy gunicorn configuration is `sync` workers with `timeout 300`, no threads (production 45 LMS / 16 Studio
+workers, staging 2 / 1). With one sync worker the readiness probe on `/heartbeat` queues behind a long request (an import, an export, a slow page); after
+the probe fails the pod leaves the Service and everybody gets 503. The base and the local overlay therefore run **two sync workers** and the readiness probes
+tolerate six failures (`failureThreshold: 6`, 60 s) instead of three, so one slow request occupies one worker while the other answers the probe. No threads,
+no other worker class and no `GUNICORN_CMD_ARGS`, because those would change application semantics (thread-safety of the legacy code); a test guards that.
+Both workers busy for more than 60 s still takes the pod out of rotation, as it does in production when all workers of a host are busy; capacity beyond two workers is a replica or `GUNICORN_WORKERS` decision after a load test.
+
+Studio course import and export: Studio writes the uploaded archive below `GITHUB_REPO_ROOT` and hands it to a Celery task (`import_olx`, queue `edx.cms.core.default`,
+run by `worker-cms-default`) through `course_import_export_storage`, a `FileSystemStorage` under `MEDIA_ROOT` unless `COURSE_IMPORT_EXPORT_BUCKET` is set.
+Two settings pointed at the read-only image path `/edx/app/edxapp/data` (`GITHUB_REPO_ROOT` defaults to it; the generated `MODULESTORE` carries `fs_root` for the XML/split
+stores, and the split store creates directories there when a course loads), so `scripts/postprocess_config.py` (run by `gen-local-config`, checked by the same script)
+sets both to the writable `data` volume (`/edx/var/edxapp/data`) and refuses a config that differs. Volumes of the cms and its workers: `/tmp` 3 Gi (the
+2 GiB request body is spooled there), `media` 3 Gi, `data` 6 Gi (each upload stays in `data` until the pod restarts, which is Platform behaviour; 6 Gi holds two maximal imports).
+Locally the cms and both cms workers share one PVC `studio-media` (6 Gi) as `media`, because the web pod stores the archive there and the worker reads it; the `local-path`
+volume is `ReadWriteOnce` but all pods run on the one node. In a real cluster use S3 (`COURSE_IMPORT_EXPORT_BUCKET`) or a ReadWriteMany volume. `k8s-traefik-smoke` exports a course to a tarball in the cms pod (`export_course_to_tarfile`, which writes below `fs_root`), uploads it to Studio over HTTPS, and checks import status 4,
+the worker log and the removal of the temporary directory; the HTTP export endpoint and its download are not exercised (`/media` is not served locally).
 
 Smoke test (`scripts/smoke`): `/heartbeat` with `Host: localhost` and with the site host, LMS `/` and `/login`, Studio `/signin`, an unknown
 `Host` (400), then one Celery task: `kubectl exec deploy/lms -- edxapp-entrypoint manage lms shell` calls
@@ -232,8 +250,10 @@ commands and an undo for each):
 
 1. Clash (mihomo) must resolve the domain with the real answer and route it `DIRECT`: rule `DOMAIN-SUFFIX,local-prod.7mud.com,DIRECT` and
    `dns.fake-ip-filter: '+.local-prod.7mud.com'`; the doctor detects fake-IP answers (198.18.0.0/15) and a proxy that does not reach Traefik.
-2. Trust the local CA in the login keychain (`security add-trusted-cert ...`; Firefox has its own store). The CA carries a name constraint
-   for `local-prod.7mud.com`, so it cannot vouch for any other site.
+2. Trust the local CA in the login keychain (`security add-trusted-cert ...`; Firefox has its own store). The CA carries name constraints: DNS, e-mail and URI names are
+   limited to `local-prod.7mud.com`, and every IPv4 and IPv6 address is excluded (a name type without a constraint is unconstrained in X.509, and
+   `excluded;email:.` is accepted by OpenSSL but does nothing, so e-mail and URI are bounded with `permitted`). A CA created by an older script lacks the IP/e-mail/URI parts;
+   `gen-local-tls` keeps it (it is trusted in your keychain) and warns, and `k8s-traefik-doctor` reports it with the exact replacement steps.
 
 `scripts/gen-local-tls` (run by `up`) writes `.local/tls/` (git-ignored; CA key mode 600; ECDSA P-256; CA 10 years; wildcard leaf 397 days
 with SAN `*.local-prod.7mud.com` and `local-prod.7mud.com`). A rerun keeps both unless the leaf is expired, has a different SAN or no longer verifies.
@@ -260,7 +280,7 @@ to the Studio Ingress only, so static files are unaffected. The Traefik CRD prov
 (with fewer, it logs reflector errors and Studio answered 404); `traefik/crds/crds.yaml` is the verbatim upstream v3.7.19 file (sha256 in its header).
 
 Blast radius (everything outside `py313-prod-local`, all labelled `py313.learningtribes.com/feature=traefik-local`):
-Namespace `traefik`; the ten Traefik CRDs; ClusterRole and ClusterRoleBinding `traefik-py313-local`; ConfigMap `kube-system/coredns-custom`
+Namespace `traefik`; the ten Traefik CRDs; ClusterRole and ClusterRoleBinding `traefik-py313-local` (only `ingressclasses` and `nodes`, read-only: Traefik starts a Node informer and does not sync without it) plus a Role and RoleBinding of the same name in `traefik` and in `py313-prod-local` (services, secrets, configmaps, endpointslices, ingresses, `ingresses/status`, the ten `traefik.io` kinds; Traefik cannot read a Secret of another namespace). The `py313-prod-local` Role is installed by `traefik-install` (`traefik/app-rbac/`) and removed by `traefik-down`; it disappears with the namespace on `k8s-local-down`; ConfigMap `kube-system/coredns-custom`
 (key `local-prod.override`) and a CoreDNS rollout restart; host ports 80 and 443. The `coredns` ConfigMap itself is never modified.
 Rollback: `make k8s-traefik-down` deletes exactly those (it refuses a CRD, ConfigMap key or namespace that is not labelled or has foreign content),
 restarts CoreDNS and keeps `py313-prod-local`, `local-prod-tls` and `local-ca-bundle` for a later `up`; `k8s-local-down` removes the namespace.
@@ -277,15 +297,16 @@ Verified on this laptop (arm64, OrbStack, Traefik v3.7.19, 2026-11-18, `make k8s
 - In-cluster (lms and cms pods): both names resolve to the Traefik ClusterIP; `requests` and `urllib` reach `https://lms.local-prod.7mud.com/heartbeat`
   with the mounted bundle; the system bundle alone rejects it (negative control).
 - Body limit: with the Middleware lowered to 1024 bytes a 4 KiB POST to Studio is 413, the same POST to LMS is not (403 from the app); restored afterwards.
-- Celery smoke still passes; `k8s-local-test` (72 tests) and the port-forward flow (`k8s-local-up`/`-smoke` on ports 28000/28010) passed before this mode was added.
-- Memory (idle after the smoke): Traefik 25 MiB, static (nginx) 8 MiB, CoreDNS 15 MiB; whole namespace plus controller about 3.0 GiB. `kubectl top` is unavailable.
+- Celery smoke still passes; the port-forward flow (`k8s-local-up`/`-smoke` on ports 28000/28010) passed before this mode was added (the namespace is in Traefik mode now, so only the server-side dry run of both port-forward overlays was repeated). `k8s-local-test`: 57 manifest and 34 script tests, plus 27 image tests.
+- Studio course export (management command) and import over HTTPS through the cms and its worker (status 4, worker log "Course import successful"/"Temp data cleared"); Traefik logs no `forbidden` after a restart with the namespaced RBAC.
+- Memory (idle after the smoke): Traefik 35 MiB, static (nginx) 8 MiB, CoreDNS 15 MiB; whole namespace plus controller about 3.0 GiB. `kubectl top` is unavailable.
 
 Differences from production: a local CA instead of real certificates; the OrbStack LoadBalancer instead of a cloud load balancer or hostPort; one replica
 each; no WAF, rate limit or access-log shipping; the static files are copied from the image instead of served from the CDN or an nginx on the host;
 no security headers beyond what the app sets (production nginx adds none either); Ingress objects only, no IngressRoute.
 
 Not proven: behaviour in a real browser behind Clash and AnyConnect (the doctor proves the system proxy path with curl only), real certificates and ACME,
-parity with the production Traefik configuration, `preview.` hosts, media uploads, and the Studio import of a large course against the 2 GiB limit.
+parity with the production Traefik configuration, `preview.` hosts, media uploads, and a Studio import of a large course against the 2 GiB limit (only a small course was imported). Production needs S3 or a ReadWriteMany volume for the import hand-off.
 
 ## Open owner decisions and questions
 
