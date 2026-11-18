@@ -57,9 +57,8 @@ step 'Configuration'
 "$SCRIPTS_DIR/gen-local-config"
 
 step 'db-init Job'
-state=$(k get job db-init -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}' 2>/dev/null || true)
-if [ "$state" = True ] && [ "${FORCE_DB_INIT:-0}" != 1 ]; then
-  note 'db-init already completed (FORCE_DB_INIT=1 reruns it)'
+if ! db_init_needed; then
+  note 'db-init already completed (recorded on the namespace; FORCE_DB_INIT=1 reruns it)'
 else
   k delete job db-init --ignore-not-found --wait=true >/dev/null
   k apply -k "$(jobs_overlay)" >/dev/null
@@ -76,6 +75,7 @@ else
     [ "$SECONDS" -lt "$deadline" ] || die 'db-init did not finish in 30 minutes'
     sleep 10
   done
+  record_db_init
   note 'db-init completed'
   k logs job/db-init --tail=12 | sed 's/^/   | /'
 fi

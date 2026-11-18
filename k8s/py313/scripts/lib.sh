@@ -23,6 +23,7 @@ readonly BASE_DOMAIN=local-prod.7mud.com
 readonly FEATURE_LABEL_KEY=py313.learningtribes.com/feature
 readonly FEATURE_LABEL=py313.learningtribes.com/feature=traefik-local
 readonly MODE_ANNOTATION=py313.learningtribes.com/ingress-mode
+readonly DB_INIT_ANNOTATION=py313.learningtribes.com/db-init-completed
 TRAEFIK_DIR=$K8S_DIR/traefik
 TRAEFIK_OVERLAY=$K8S_DIR/overlays/orbstack-local-traefik
 TLS_DIR=$LOCAL_DIR/tls
@@ -141,4 +142,31 @@ print("RESULT", r.get(timeout=60))'
     echo "$output" | tail -n 15 | sed 's/^/   /'
     printf 'FAIL   could not run the producer in the lms pod\n'; fails=$((fails + 1))
   fi
+}
+
+# The db-init Job disappears after ttlSecondsAfterFinished, so its Complete condition is not a durable record. `up` writes the database
+# name it initialised into a Namespace annotation; the annotation goes away with the namespace (k8s-local-down), together with the
+# MySQL volume it describes. A Job that is still Complete (namespace created before the annotation existed) is recorded on the spot.
+record_db_init() { kc annotate namespace "$NS" --overwrite "$DB_INIT_ANNOTATION=$(secret_value mysql-database)" >/dev/null; }
+
+db_init_needed() { # exit 0 = run the Job
+  [ "${FORCE_DB_INIT:-0}" != 1 ] || return 0
+  local recorded state
+  recorded=$(kc get namespace "$NS" -o "jsonpath={.metadata.annotations.py313\\.learningtribes\\.com/db-init-completed}" 2>/dev/null || true)
+  [ "$recorded" != "$(secret_value mysql-database)" ] || return 1
+  state=$(k get job db-init -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}' 2>/dev/null || true)
+  if [ "$state" = True ]; then record_db_init; return 1; fi
+  return 0
+}
+
+# The local CA is name-constrained on every type a TLS verifier checks (see gen-local-tls): DNS, e-mail and URI permitted for BASE_DOMAIN
+# only, all IP addresses excluded. A name type without a constraint is unconstrained per RFC 5280.
+ca_name_constraints_complete() { # ca_name_constraints_complete CA_CRT
+  local out permitted excluded
+  out=$(openssl x509 -in "$1" -noout -ext nameConstraints 2>/dev/null) || return 1
+  [[ "$out" == *Permitted:*Excluded:* ]] || return 1
+  permitted=${out#*Permitted:}; permitted=${permitted%%Excluded:*}
+  excluded=${out#*Excluded:}
+  [[ "$permitted" == *"DNS:$BASE_DOMAIN"* && "$permitted" == *"email:$BASE_DOMAIN"* && "$permitted" == *"URI:$BASE_DOMAIN"* ]] || return 1
+  [[ "$excluded" == *"IP:0.0.0.0/0.0.0.0"* && "$excluded" == *"IP:0:0:0:0:0:0:0:0/0:0:0:0:0:0:0:0"* ]]
 }
