@@ -449,6 +449,17 @@ def discovery_lms_domain(config):
     return config['runtime_container'] + ':' + str(APP_LMS_PORT)
 
 
+# The LMS signs JWTs with these two strings; discovery rejects a token whose `iss` or `aud`
+# does not match. Both sides are derived here, from one expression, because a mismatch only
+# shows up as a 401 on a metadata call, far from the setting that caused it.
+def lms_jwt_issuer(config):
+    return 'http://localhost:%d/oauth2' % config['lms_port']
+
+
+def lms_jwt_audience(config):
+    return config['run_id'] + '-lms'
+
+
 def discovery_environment(config):
     """Environment for the discovery container. Reuses this run's MySQL/memcached and their credentials."""
     secrets = secret_values(config)
@@ -465,8 +476,8 @@ def discovery_environment(config):
         # Interop with this run's LMS: the platform signs JWTs with the shared startup secret, so reuse it
         # instead of a second self-signed key pair.
         'DISCOVERY_LMS_JWT_SECRET': secrets.get('BRINGUP_STARTUP_SECRET_KEY') or secrets.get('BRINGUP_SECRET_KEY', ''),
-        'DISCOVERY_LMS_JWT_ISSUER': 'http://localhost:%d/oauth2' % config['lms_port'],
-        'DISCOVERY_LMS_JWT_AUDIENCE': config['run_id'] + '-lms',
+        'DISCOVERY_LMS_JWT_ISSUER': lms_jwt_issuer(config),
+        'DISCOVERY_LMS_JWT_AUDIENCE': lms_jwt_audience(config),
         # Discovery reaches the LMS over the run network, not through the host loopback mapping.
         'DISCOVERY_LMS_URL': 'http://' + discovery_lms_domain(config),
         'DISCOVERY_STUDIO_URL': 'http://' + config['runtime_container'] + ':' + str(APP_CMS_PORT),
@@ -640,6 +651,9 @@ def environment(config):
         # must agree on the derived client credentials.
         env.update(discovery_oidc_credentials(config))
         env['DISCOVERY_LMS_DOMAIN'] = discovery_lms_domain(config)
+        # Same two strings discovery validates against, so a token this LMS signs is accepted.
+        env['BRINGUP_JWT_ISSUER'] = lms_jwt_issuer(config)
+        env['BRINGUP_JWT_AUDIENCE'] = lms_jwt_audience(config)
     return env
 
 

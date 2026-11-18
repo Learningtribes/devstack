@@ -18,7 +18,7 @@ from core import (APP_ROOT, SECRET_KEYS, SERVICES, capture, check_conflicts, che
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
                   IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet,
                   discovery_enabled, discovery_environment, discovery_lms_domain, discovery_names,
-                  discovery_oidc_credentials, discovery_test_database)
+                  discovery_oidc_credentials, discovery_test_database, lms_jwt_audience, lms_jwt_issuer)
 import discovery
 
 
@@ -180,6 +180,28 @@ class ContractTests(unittest.TestCase):
         env = discovery_environment(loaded)
         self.assertEqual(env['DISCOVERY_LMS_URL'], 'http://' + domain)
         self.assertEqual(env['DISCOVERY_STUDIO_URL'], 'http://' + self.config['runtime_container'] + ':18010')
+
+    def test_discovery_issuer_and_audience_match_what_the_lms_will_sign(self):
+        """A mismatch here is invisible until a metadata call 401s, so assert both sides agree."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        discovery_env = discovery_environment(loaded)
+        lms_env = environment(loaded)
+        self.assertEqual(lms_env['BRINGUP_JWT_ISSUER'], discovery_env['DISCOVERY_LMS_JWT_ISSUER'])
+        self.assertEqual(lms_env['BRINGUP_JWT_AUDIENCE'], discovery_env['DISCOVERY_LMS_JWT_AUDIENCE'])
+        self.assertEqual(lms_env['BRINGUP_JWT_AUDIENCE'], self.config['run_id'] + '-lms')
+        # The issuer carries this run's published port, not the container-internal one, so two
+        # runs on one host cannot accept each other's tokens.
+        self.assertEqual(lms_env['BRINGUP_JWT_ISSUER'], 'http://localhost:%d/oauth2' % self.config['lms_port'])
+
+    def test_a_run_without_discovery_leaves_the_lms_jwt_contract_at_its_default(self):
+        """The LMS settings fall back to their own defaults; bring-up must not invent values."""
+        loaded = load_config(self.path)
+        lms_env = environment(loaded)
+        self.assertNotIn('BRINGUP_JWT_ISSUER', lms_env)
+        self.assertNotIn('BRINGUP_JWT_AUDIENCE', lms_env)
 
     def test_discovery_schema_seeds_and_migrate_reseeds_without_duplicate_evidence(self):
         """`migrate` stays repeatable, so only `schema` may reserve a one-shot evidence file."""
