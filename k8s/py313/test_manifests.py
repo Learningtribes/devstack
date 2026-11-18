@@ -22,13 +22,15 @@ REPO = HERE.parent.parent
 STAGING_ENV = Path(os.environ.get(
     'STAGING_ENV', REPO.parent / 'triboo-doc/docs/staging/py313-staging-deploy-v2/staging.env'))
 
-SECRET_ALLOW_LIST = {'edxapp-config', 'backing-credentials'}
+SECRET_ALLOW_LIST = {'edxapp-config', 'backing-credentials', 'local-prod-tls'}
 LOCAL_NAMESPACE = 'py313-prod-local'
 PLACEHOLDER_IMAGE = 'edxapp'
 # Elasticsearch writes config/elasticsearch.keystore when ELASTIC_PASSWORD is set; no other container may write its root.
 WRITABLE_ROOT_ALLOWED = {('elasticsearch', 'elasticsearch')}
 # The Job reads this ConfigMap from the overlay; only the overlay-less `jobs` render may reference it without defining it.
 OVERLAY_PROVIDED_CONFIGMAPS = {'py313-bringup-env'}
+# Created at run time by scripts/gen-local-tls (it embeds the generated local CA), referenced only by the Traefik overlays.
+RUNTIME_CONFIGMAPS = {'local-ca-bundle'}
 SENSITIVE_NAME_PARTS = ('PASSWORD', 'SECRET', 'TOKEN', 'PRIVATE_KEY', 'API_KEY')
 
 # staging.env WORKER_SET of PLATFORM_COMMIT b0db03a9e3e (py313-staging-deploy-v2): program -> system:queue:pool:concurrency.
@@ -127,6 +129,10 @@ class RenderTest(unittest.TestCase):
     def test_every_kustomization_renders(self):
         directories = kustomization_dirs()
         self.assertGreaterEqual(len(directories), 6)
+        relative = {str(d.relative_to(HERE)) for d in directories}
+        for expected in ('traefik', 'traefik/crds', 'overlays/orbstack-local-traefik', 'overlays/orbstack-local-traefik/ingress',
+                         'overlays/orbstack-local-traefik/jobs'):
+            self.assertIn(expected, relative)
         for directory in directories:
             with self.subTest(directory=str(directory.relative_to(HERE))):
                 self.assertTrue(render(directory))
@@ -195,7 +201,11 @@ class WorkloadSecurityTest(unittest.TestCase):
                     if 'secret' in volume:
                         self.assertIn(volume['secret']['secretName'], SECRET_ALLOW_LIST, where)
                     if 'configMap' in volume:
-                        self.assertIn(volume['configMap']['name'], configmaps, where)
+                        wanted = volume['configMap']['name']
+                        if wanted in RUNTIME_CONFIGMAPS:
+                            self.assertIn('traefik', label, where + ' only the Traefik mode mounts a run-time ConfigMap')
+                            continue
+                        self.assertIn(wanted, configmaps, where)
                 for container in containers(template):
                     for var in container.get('env', []):
                         source = var.get('valueFrom', {})
@@ -467,6 +477,265 @@ class OrbstackOverlayTest(unittest.TestCase):
         self.assertNotIn('Ingress', kinds)
         names = {o['metadata']['name'] for o in self.objects}
         self.assertNotIn('valkey', names)
+
+
+BASE_DOMAIN = 'local-prod.7mud.com'
+TRAEFIK_DIR = HERE / 'traefik'
+TRAEFIK_OVERLAY = HERE / 'overlays/orbstack-local-traefik'
+FEATURE_LABEL = ('py313.learningtribes.com/feature', 'traefik-local')
+CA_BUNDLE = '/etc/local-ca/ca-bundle.crt'
+
+
+def env_file(path):
+    return dict(line.split('=', 1) for line in Path(path).read_text().splitlines() if '=' in line)
+
+
+class TraefikControllerTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.objects = render(TRAEFIK_DIR)
+        cls.crds = render(TRAEFIK_DIR / 'crds')
+        cls.deployment = named(cls.objects, 'Deployment', 'traefik')
+        cls.container = cls.deployment['spec']['template']['spec']['containers'][0]
+
+    def test_image_is_a_pinned_v3_release(self):
+        self.assertRegex(self.container['image'], r'^traefik:v3\.\d+\.\d+$')
+        crd_header = (TRAEFIK_DIR / 'crds/crds.yaml').read_text()
+        self.assertIn('Traefik ' + self.container['image'].split(':')[1], crd_header, 'CRDs and image are from different Traefik versions')
+
+    def test_entrypoints_redirect_and_tls(self):
+        args = self.container['args']
+        for arg in ('--entrypoints.web.address=:8000', '--entrypoints.websecure.address=:8443',
+                    '--entrypoints.web.http.redirections.entryPoint.to=:443',
+                    '--entrypoints.web.http.redirections.entryPoint.scheme=https',
+                    '--entrypoints.websecure.http.tls=true', '--accesslog=true', '--ping=true'):
+            self.assertIn(arg, args)
+        ports = {p['name']: p['containerPort'] for p in self.container['ports']}
+        self.assertEqual(ports, {'web': 8000, 'websecure': 8443, 'ping': 9000})
+
+    def test_forwarded_headers_are_not_trusted_from_clients(self):
+        joined = ' '.join(self.container['args'])
+        self.assertIn('--global.aliasHeadersStrategy=delete', self.container['args'])
+        self.assertNotIn('forwardedHeaders', joined, 'default (untrusted) handling must stay: Traefik then sets X-Forwarded-Proto itself')
+        self.assertNotIn('--api.insecure', joined)
+        self.assertNotIn('proxyProtocol', joined)
+
+    def test_probes_use_ping_and_the_service_exposes_only_80_and_443(self):
+        for probe in ('readinessProbe', 'livenessProbe'):
+            self.assertEqual(self.container[probe]['httpGet'], {'path': '/ping', 'port': 'ping'})
+        service = named(self.objects, 'Service', 'traefik')
+        self.assertEqual(service['spec']['type'], 'LoadBalancer')
+        self.assertEqual({(p['name'], p['port'], p['targetPort']) for p in service['spec']['ports']},
+                         {('web', 80, 'web'), ('websecure', 443, 'websecure')})
+        self.assertEqual(service['spec']['selector'].items() <= self.deployment['spec']['template']['metadata']['labels'].items(), True)
+
+    def test_default_certificate_secret(self):
+        store = named(self.objects, 'TLSStore', 'default')
+        self.assertEqual(store['spec']['defaultCertificate']['secretName'], 'local-prod-tls')
+        self.assertEqual(store['metadata']['namespace'], 'traefik')
+
+    def test_cluster_level_objects_are_the_documented_set(self):
+        cluster = {(o['kind'], o['metadata']['name']) for o in self.objects
+                   if o['kind'] in ('Namespace', 'ClusterRole', 'ClusterRoleBinding', 'CustomResourceDefinition')}
+        self.assertEqual(cluster, {('Namespace', 'traefik'), ('ClusterRole', 'traefik-py313-local'),
+                                   ('ClusterRoleBinding', 'traefik-py313-local')})
+        crds = {o['metadata']['name'] for o in self.crds}
+        self.assertEqual(crds, {r + '.traefik.io' for r in (
+            'ingressroutes', 'ingressroutetcps', 'ingressrouteudps', 'middlewares', 'middlewaretcps', 'serverstransports',
+            'serverstransporttcps', 'tlsoptions', 'tlsstores', 'traefikservices')})
+        for crd in self.crds:
+            self.assertEqual(crd['spec']['group'], 'traefik.io', crd['metadata']['name'])
+        for obj in self.objects + self.crds:
+            self.assertEqual(obj['metadata']['labels'][FEATURE_LABEL[0]], FEATURE_LABEL[1], obj['metadata']['name'])
+            self.assertTrue(obj['metadata'].get('namespace') in (None, 'traefik'), obj['metadata']['name'])
+        namespace = named(self.objects, 'Namespace', 'traefik')
+        self.assertEqual(namespace['metadata']['labels']['pod-security.kubernetes.io/enforce'], 'restricted')
+
+    def test_rbac_covers_every_installed_crd_kind_read_only(self):
+        rules = named(self.objects, 'ClusterRole', 'traefik-py313-local')['rules']
+        granted = {r for rule in rules if rule['apiGroups'] == ['traefik.io'] for r in rule['resources']}
+        self.assertEqual(granted, {crd['spec']['names']['plural'] for crd in self.crds},
+                         'the CRD provider watches every kind: a missing permission or CRD stalls its configuration')
+
+    def test_rbac_has_no_wildcards_and_no_write_except_ingress_status(self):
+        rules = named(self.objects, 'ClusterRole', 'traefik-py313-local')['rules']
+        for rule in rules:
+            for field in ('apiGroups', 'resources', 'verbs'):
+                self.assertNotIn('*', rule[field])
+            if set(rule['verbs']) - {'get', 'list', 'watch'}:
+                self.assertEqual((rule['resources'], rule['verbs']), (['ingresses/status'], ['update']))
+        binding = named(self.objects, 'ClusterRoleBinding', 'traefik-py313-local')
+        self.assertEqual(binding['subjects'], [{'kind': 'ServiceAccount', 'name': 'traefik', 'namespace': 'traefik'}])
+
+    def test_buffering_spool_fits_the_tmp_volume(self):
+        volume = {v['name']: v for v in self.deployment['spec']['template']['spec']['volumes']}['tmp']
+        self.assertEqual(volume['emptyDir']['sizeLimit'], '3Gi')
+        self.assertIn('/tmp', {m['mountPath'] for m in self.container['volumeMounts']})
+
+
+class TraefikOverlayTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.objects = render(TRAEFIK_OVERLAY)
+        cls.ingress_objects = render(TRAEFIK_OVERLAY / 'ingress')
+        cls.jobs = render(TRAEFIK_OVERLAY / 'jobs')
+        cls.base_objects = render(HERE / 'overlays/orbstack-local')
+        cls.bringup = env_file(TRAEFIK_OVERLAY / 'jobs/bringup.env')
+
+    def test_site_domains_scheme_and_cookie_domain(self):
+        self.assertEqual(self.bringup['BRINGUP_LMS_DOMAIN'], 'lms.' + BASE_DOMAIN)
+        self.assertEqual(self.bringup['BRINGUP_CMS_DOMAIN'], 'studio.' + BASE_DOMAIN)
+        self.assertEqual(self.bringup['BRINGUP_SCHEME'], 'https')
+        self.assertEqual(self.bringup['BRINGUP_LMS_ROOT_URL'], 'https://lms.' + BASE_DOMAIN)
+        self.assertEqual(self.bringup['BRINGUP_CMS_ROOT_URL'], 'https://studio.' + BASE_DOMAIN)
+        self.assertEqual(self.bringup['BRINGUP_SESSION_COOKIE_DOMAIN'], '.' + BASE_DOMAIN)
+        config = named(self.jobs, 'ConfigMap', 'py313-bringup-env')['data']
+        for key, value in self.bringup.items():
+            self.assertEqual(config[key], value)
+        # keys the Traefik file does not override still come from the local overlay
+        for key, value in env_file(HERE / 'overlays/orbstack-local/jobs/bringup.env').items():
+            if key not in self.bringup:
+                self.assertEqual(config[key], value, key)
+        self.assertEqual(env_file(HERE / 'overlays/orbstack-local/jobs/bringup.env')['BRINGUP_LMS_DOMAIN'], 'localhost:18000',
+                         'the port-forward flow keeps its own domains')
+
+    def test_every_ingress_host_is_in_the_base_domain_and_matches_the_site_domains(self):
+        hosts = set()
+        for ingress in of_kind(self.objects, 'Ingress'):
+            for rule in ingress['spec']['rules']:
+                hosts.add(rule['host'])
+            for tls in ingress['spec']['tls']:
+                self.assertEqual(tls['secretName'], 'local-prod-tls')
+                for host in tls['hosts']:
+                    self.assertTrue(host.endswith('.' + BASE_DOMAIN), host)
+        self.assertEqual(hosts, {self.bringup['BRINGUP_LMS_DOMAIN'], self.bringup['BRINGUP_CMS_DOMAIN']})
+        for host in hosts:
+            self.assertTrue(host.endswith('.' + BASE_DOMAIN), host)
+
+    def test_ingress_backends_exist_and_static_is_routed_for_both_hosts(self):
+        services = {s['metadata']['name']: {p['name'] for p in s['spec']['ports']} for s in of_kind(self.objects, 'Service')}
+        routes = {}
+        for ingress in of_kind(self.objects, 'Ingress'):
+            for rule in ingress['spec']['rules']:
+                for path in rule['http']['paths']:
+                    backend = path['backend']['service']
+                    self.assertIn(backend['name'], services, ingress['metadata']['name'])
+                    self.assertIn(backend['port']['name'], services[backend['name']], ingress['metadata']['name'])
+                    routes[(rule['host'], path['path'])] = backend['name']
+        self.assertEqual(routes, {
+            ('lms.' + BASE_DOMAIN, '/'): 'lms', ('studio.' + BASE_DOMAIN, '/'): 'cms',
+            ('lms.' + BASE_DOMAIN, '/static'): 'static', ('studio.' + BASE_DOMAIN, '/static'): 'static'})
+        for ingress in of_kind(self.objects, 'Ingress'):
+            for rule in ingress['spec']['rules']:
+                for path in rule['http']['paths']:
+                    self.assertEqual(path['pathType'], 'Prefix')
+            self.assertNotIn('ingressClassName', ingress['spec'])
+
+    def test_studio_body_limit_matches_production_nginx(self):
+        middleware = named(self.objects, 'Middleware', 'studio-body-limit')
+        self.assertEqual(middleware['spec']['buffering']['maxRequestBodyBytes'], 2048 * 1024 * 1024)
+        annotation = named(self.objects, 'Ingress', 'studio')['metadata']['annotations']['traefik.ingress.kubernetes.io/router.middlewares']
+        self.assertEqual(annotation, '%s-%s@kubernetescrd' % (LOCAL_NAMESPACE, middleware['metadata']['name']))
+        for name in ('lms', 'static'):
+            self.assertNotIn('traefik.ingress.kubernetes.io/router.middlewares', named(self.objects, 'Ingress', name)['metadata']['annotations'])
+
+    def test_static_deployment_serves_the_image_tree_with_the_same_image(self):
+        deployment = named(self.objects, 'Deployment', 'static')
+        spec = deployment['spec']['template']['spec']
+        init = spec['initContainers'][0]
+        local_tag = named(self.base_objects, 'Deployment', 'lms')['spec']['template']['spec']['containers'][0]['image']
+        self.assertEqual(init['image'], local_tag, 'the static tree must come from the very image the pods run')
+        self.assertEqual(init['command'][-2:], ['/edx/var/edxapp/staticfiles/.', '/srv/www/static/'])
+        nginx = spec['containers'][0]
+        self.assertRegex(nginx['image'], r'^nginxinc/nginx-unprivileged:\d+\.\d+\.\d+-alpine$')
+        self.assertEqual(nginx['ports'][0]['containerPort'], 8080)
+        mounts = {m['mountPath']: m for m in nginx['volumeMounts']}
+        self.assertTrue(mounts['/srv/www/static']['readOnly'])
+        self.assertTrue(mounts['/etc/nginx/conf.d']['readOnly'])
+        self.assertIn('/tmp', mounts)
+        self.assertEqual(named(self.objects, 'Service', 'static')['spec']['ports'][0]['port'], 8080)
+
+    def test_nginx_rules_match_the_production_static_rules(self):
+        conf = (TRAEFIK_OVERLAY / 'ingress/nginx.conf').read_text()
+        self.assertIn('listen 8080;', conf)
+        self.assertIn('root /srv/www;', conf)
+        self.assertRegex(conf, r'\^/static/\(studio/\)\?\[\^/\]\+\\\.\(json\|xml\)\$ \{ return 403; \}')
+        self.assertIn('README\\.TXT', conf)
+        self.assertIn('[0-9a-f]{12}', conf)
+        self.assertIn('immutable', conf)
+        self.assertNotIn('autoindex on', conf)
+        configmap = [c for c in of_kind(self.objects, 'ConfigMap') if c['metadata']['name'].startswith('static-nginx-conf')]
+        self.assertEqual(len(configmap), 1)
+        self.assertEqual(configmap[0]['data']['default.conf'], conf)
+
+    def test_every_application_pod_trusts_the_local_ca_bundle(self):
+        checked = 0
+        for objects in (self.objects, self.jobs):
+            for kind, name, template in pod_templates(objects):
+                if template['metadata']['labels'].get('app.kubernetes.io/name') != 'edxapp':
+                    continue
+                checked += 1
+                volumes = {v['name']: v for v in template['spec']['volumes']}
+                self.assertEqual(volumes['local-ca-bundle'], {'name': 'local-ca-bundle', 'configMap': {'name': 'local-ca-bundle'}}, name)
+                for container in template['spec']['containers']:
+                    env = {e['name']: e.get('value') for e in container['env']}
+                    self.assertEqual(env['SSL_CERT_FILE'], CA_BUNDLE, name)
+                    self.assertEqual(env['REQUESTS_CA_BUNDLE'], CA_BUNDLE, name)
+                    mounts = {m['mountPath']: m for m in container['volumeMounts']}
+                    self.assertTrue(mounts['/etc/local-ca']['readOnly'], name)
+        self.assertGreaterEqual(checked, 2 + 2 + 3 + 1, 'lms, cms, workers, cron jobs and db-init')
+
+    def test_other_containers_are_not_given_the_bundle(self):
+        for kind, name, template in pod_templates(self.objects):
+            if template['metadata']['labels'].get('app.kubernetes.io/name') == 'edxapp':
+                continue
+            for container in containers(template):
+                names = {e['name'] for e in container.get('env', [])}
+                self.assertFalse({'SSL_CERT_FILE', 'REQUESTS_CA_BUNDLE'} & names, name)
+        es = named(self.objects, 'StatefulSet', 'elasticsearch')['spec']['template']['spec']['containers'][0]
+        self.assertNotIn('local-ca-bundle', [m['name'] for m in es['volumeMounts']])
+
+    def test_feature_objects_carry_the_label_and_the_rest_does_not(self):
+        feature = {(o['kind'], o['metadata']['name']) for o in self.ingress_objects}
+        for obj in self.ingress_objects:
+            self.assertEqual(obj['metadata']['labels'][FEATURE_LABEL[0]], FEATURE_LABEL[1], obj['metadata']['name'])
+        labelled = {(o['kind'], o['metadata']['name']) for o in self.objects
+                    if o['metadata'].get('labels', {}).get(FEATURE_LABEL[0]) == FEATURE_LABEL[1]}
+        self.assertEqual(labelled, feature)
+        self.assertEqual({k for k, _ in feature}, {'Ingress', 'Middleware', 'Deployment', 'Service', 'ConfigMap'})
+
+    def test_local_overlay_content_is_kept(self):
+        base = {(o['kind'], o['metadata']['name']) for o in self.base_objects}
+        overlay = {(o['kind'], o['metadata']['name']) for o in self.objects}
+        self.assertTrue(base <= overlay)
+        self.assertEqual(overlay - base, {('Ingress', 'lms'), ('Ingress', 'studio'), ('Ingress', 'static'),
+                                          ('Middleware', 'studio-body-limit'), ('Deployment', 'static'), ('Service', 'static')}
+                         | {(o['kind'], o['metadata']['name']) for o in self.ingress_objects if o['kind'] == 'ConfigMap'})
+
+    def test_readiness_probes_keep_a_host_that_is_always_allowed(self):
+        for name in ('lms', 'cms'):
+            container = named(self.objects, 'Deployment', name)['spec']['template']['spec']['containers'][0]
+            self.assertIn({'name': 'Host', 'value': 'localhost'}, container['readinessProbe']['httpGet']['httpHeaders'])
+
+    def test_image_tag_is_the_one_of_the_local_overlay(self):
+        pattern = re.compile(r'newTag:\s*(\S+)')
+        tags = {pattern.search(p.read_text()).group(1) for p in (
+            HERE / 'overlays/orbstack-local/kustomization.yaml', HERE / 'overlays/orbstack-local/jobs/kustomization.yaml',
+            TRAEFIK_OVERLAY / 'ingress/kustomization.yaml')}
+        self.assertEqual(len(tags), 1, tags)
+
+    def test_coredns_rewrite_targets_the_traefik_service(self):
+        text = (TRAEFIK_DIR / 'coredns-custom.yaml').read_text()
+        self.assertIn('name: coredns-custom', text)
+        self.assertIn('namespace: kube-system', text)
+        self.assertIn('py313.learningtribes.com/feature: traefik-local', text)
+        rule = [l.strip() for l in text.splitlines() if l.strip().startswith('rewrite stop name regex')]
+        self.assertEqual(rule, [r'rewrite stop name regex ^(.*\.)?local-prod\.7mud\.com\.$ traefik.traefik.svc.cluster.local. answer auto'])
+        self.assertEqual(text.count('.override: |'), 1)
+        self.assertEqual(rule[0].split()[4], r'^(.*\.)?%s\.$' % BASE_DOMAIN.replace('.', r'\.'))
+
+    def test_base_domain_is_defined_once_in_the_scripts_and_matches(self):
+        self.assertIn('readonly BASE_DOMAIN=%s\n' % BASE_DOMAIN, (HERE / 'scripts/lib.sh').read_text())
 
 
 if __name__ == '__main__':
