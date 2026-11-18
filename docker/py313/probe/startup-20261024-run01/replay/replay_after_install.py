@@ -31,6 +31,9 @@ def main():
         shell(config, 'lms', 'natural-sites', '/startup/seed_local_host_sites.py')
         shell(config, 'lms', 'acceptance-users', '/startup/seed_acceptance_users.py')
         shell(config, 'lms', 'completion-tracking', '/startup/seed_completion_tracking.py')
+        # Learning Paths read three LMS rows that no migration creates: the catalog service
+        # user the program indexer resolves, and the two feature-configuration models.
+        shell(config, 'lms', 'learning-path-config', '/startup/seed_learning_path_config.py')
         shell(config, 'lms', 'site-themes', '/startup/seed_themes.py')
         for system in ('lms', 'cms'):
             manage(config, system, system + '-check', ['check'])
