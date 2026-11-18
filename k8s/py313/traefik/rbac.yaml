@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik
+  namespace: traefik
+# Traefik talks to the API server (Ingress, Middleware, TLSStore, Secrets, EndpointSlices), so it needs its token.
+automountServiceAccountToken: true
+---
+# From the upstream kubernetes-crd-rbac.yml of v3.7.19 without its pods rule (only for OpenTelemetry attributes). Read access to every
+# traefik.io kind is required because the CRD provider watches all of them (see crds/crds.yaml).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: traefik-py313-local
+rules:
+  - apiGroups: [""]
+    resources: [services, secrets, nodes, configmaps]
+    verbs: [get, list, watch]
+  - apiGroups: [discovery.k8s.io]
+    resources: [endpointslices]
+    verbs: [list, watch]
+  - apiGroups: [networking.k8s.io]
+    resources: [ingresses, ingressclasses]
+    verbs: [get, list, watch]
+  # publishedService: writes the LoadBalancer address into the Ingress status.
+  - apiGroups: [networking.k8s.io]
+    resources: [ingresses/status]
+    verbs: [update]
+  - apiGroups: [traefik.io]
+    resources:
+      - middlewares
+      - middlewaretcps
+      - ingressroutes
+      - traefikservices
+      - ingressroutetcps
+      - ingressrouteudps
+      - tlsoptions
+      - tlsstores
+      - serverstransports
+      - serverstransporttcps
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: traefik-py313-local
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: traefik-py313-local
+subjects:
+  - kind: ServiceAccount
+    name: traefik
+    namespace: traefik

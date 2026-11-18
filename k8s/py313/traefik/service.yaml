@@ -1,0 +1,20 @@
+# type LoadBalancer: OrbStack publishes these ports on the Mac's localhost (80/443 here); in the cluster the ClusterIP
+# traefik.traefik.svc.cluster.local is what the CoreDNS rewrite of coredns-custom resolves the site names to.
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: traefik
+  ports:
+    - name: web
+      port: 80
+      targetPort: web
+    - name: websecure
+      port: 443
+      targetPort: websecure

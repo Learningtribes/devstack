@@ -1,0 +1,9 @@
+# Served for any SNI that no router claims (and for clients without SNI); the Secret is created at run time by scripts/gen-local-tls.
+apiVersion: traefik.io/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+  namespace: traefik
+spec:
+  defaultCertificate:
+    secretName: local-prod-tls
