@@ -104,8 +104,17 @@ class DockerfileContract(unittest.TestCase):
 
     def test_no_latest_tag(self):
         self.assertNotRegex("\n".join(self.lines), r":latest\b")
+        stages = set()
         for line in self.froms:
-            self.assertRegex(line, r"@sha256:|\$\{\w+\}|AS\s|FROM \w+$", line)
+            m = re.match(r"FROM\s+(\S+)(?:\s+AS\s+(\S+))?$", line)
+            self.assertIsNotNone(m, line)
+            image = self.expand(m.group(1))
+            if image not in stages:  # a reference to an earlier build stage is not a registry image
+                tag = image.split("@", 1)[0].rsplit("/", 1)[-1]
+                self.assertTrue(":" in tag or "@sha256:" in image, f"untagged base image resolves to :latest: {line}")
+                self.assertNotEqual(tag.partition(":")[2], "latest", line)
+            if m.group(2):
+                stages.add(m.group(2))
 
     def test_inputs_env_pins_both_commits(self):
         values = dict(

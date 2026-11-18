@@ -122,6 +122,18 @@ def worker_arguments(container):
     return args[1], options['queues'], 'solo' if solo else 'prefork', concurrency, options['hostname']
 
 
+def gib(size):
+    number, unit = re.fullmatch(r'(\d+)(Mi|Gi)', size).groups()
+    return int(number) * (1 if unit == 'Gi' else 1 / 1024)
+
+
+def volumes_of(template):
+    return {v['name']: v for v in template['spec'].get('volumes', [])}
+
+
+STUDIO_BODY_LIMIT_BYTES = 2048 * 1024 * 1024
+
+
 class RenderTest(unittest.TestCase):
     def test_kubectl_is_available(self):
         self.assertIsNotNone(shutil.which('kubectl'), 'kubectl (with bundled kustomize) is required')
@@ -130,7 +142,7 @@ class RenderTest(unittest.TestCase):
         directories = kustomization_dirs()
         self.assertGreaterEqual(len(directories), 6)
         relative = {str(d.relative_to(HERE)) for d in directories}
-        for expected in ('traefik', 'traefik/crds', 'overlays/orbstack-local-traefik', 'overlays/orbstack-local-traefik/ingress',
+        for expected in ('traefik', 'traefik/crds', 'traefik/app-rbac', 'overlays/orbstack-local-traefik', 'overlays/orbstack-local-traefik/ingress',
                          'overlays/orbstack-local-traefik/jobs'):
             self.assertIn(expected, relative)
         for directory in directories:
@@ -308,6 +320,32 @@ class BaseContractTest(unittest.TestCase):
                 for var in ('GUNICORN_WORKERS', 'GUNICORN_TIMEOUT', 'GUNICORN_MAX_REQUESTS', 'EDXAPP_SETTINGS'):
                     self.assertIn(var, env)
 
+    def test_web_pods_run_at_least_two_sync_gunicorn_workers(self):
+        # Legacy production: sync worker class, timeout 300, no threads (py313-staging-deploy-v2/templates/gunicorn.py.tmpl). /heartbeat
+        # needs a free worker while another one serves a request of up to that timeout.
+        for name in ('lms', 'cms'):
+            container = named(self.objects, 'Deployment', name)['spec']['template']['spec']['containers'][0]
+            env = {e['name']: e.get('value') for e in container['env']}
+            self.assertGreaterEqual(int(env['GUNICORN_WORKERS']), 2, name)
+            self.assertEqual(env['GUNICORN_TIMEOUT'], '300', name)
+            self.assertNotIn('GUNICORN_CMD_ARGS', env, f'{name}: threads or another worker class would change application semantics')
+            readiness = container['readinessProbe']
+            self.assertGreaterEqual(readiness['failureThreshold'] * readiness['periodSeconds'], 60, name)
+
+    def test_studio_pods_have_scratch_space_for_a_maximal_import(self):
+        body_gib = STUDIO_BODY_LIMIT_BYTES / 2 ** 30
+        studio = [(n, t) for k, n, t in pod_templates(self.objects) if n == 'cms' or n.startswith('worker-cms-')]
+        self.assertEqual({n for n, _ in studio}, {'cms', 'worker-cms-default', 'worker-cms-low'})
+        for name, template in studio:
+            volumes = volumes_of(template)
+            size = {v: gib(volumes[v]['emptyDir']['sizeLimit']) for v in ('tmp', 'media', 'data')}
+            self.assertGreaterEqual(size['tmp'], body_gib + 1, f'{name}: upload spooled by Django')
+            self.assertGreaterEqual(size['media'], body_gib + 1, f'{name}: import storage copy')
+            self.assertGreaterEqual(size['data'], 2 * body_gib, f'{name}: archive copy plus extraction under GITHUB_REPO_ROOT')
+        for name in ('lms', 'worker-lms-default'):
+            template = {n: t for k, n, t in pod_templates(self.objects)}[name]
+            self.assertLessEqual(gib(volumes_of(template)['data']['emptyDir']['sizeLimit']), 1, name)
+
     def test_services_select_pods_and_ports_exist(self):
         workloads = {}
         for kind, name, template in pod_templates(self.objects):
@@ -432,6 +470,26 @@ class OrbstackOverlayTest(unittest.TestCase):
                       if o['metadata']['name'].startswith('worker-') and o['spec']['replicas'] > 0}
         self.assertEqual(len(everything), len(EXPECTED_WORKERS))
 
+    def test_import_export_hand_off_volume_is_shared_by_cms_and_its_workers(self):
+        claim = named(self.objects, 'PersistentVolumeClaim', 'studio-media')
+        self.assertEqual(claim['spec']['accessModes'], ['ReadWriteOnce'])
+        self.assertGreaterEqual(gib(claim['spec']['resources']['requests']['storage']), 2 * STUDIO_BODY_LIMIT_BYTES / 2 ** 30)
+        for kind, name, template in pod_templates(self.objects):
+            media = volumes_of(template).get('media')
+            if name == 'cms' or name.startswith('worker-cms-'):
+                self.assertEqual(media, {'name': 'media', 'persistentVolumeClaim': {'claimName': 'studio-media'}}, name)
+            elif media:
+                self.assertIn('emptyDir', media, name)
+
+    def test_web_pods_run_two_gunicorn_workers_with_memory_for_them(self):
+        for name, minimum_limit in (('lms', 1536), ('cms', 1536)):
+            container = named(self.objects, 'Deployment', name)['spec']['template']['spec']['containers'][0]
+            env = {e['name']: e.get('value') for e in container['env']}
+            self.assertEqual(env['GUNICORN_WORKERS'], '2', name)
+            limit = int(container['resources']['limits']['memory'].removesuffix('Mi')) if container['resources']['limits']['memory'].endswith('Mi') \
+                else int(container['resources']['limits']['memory'].removesuffix('Gi')) * 1024
+            self.assertGreaterEqual(limit, minimum_limit, name)
+
     def test_worker_grace_override_is_applied(self):
         for deployment in of_kind(self.objects, 'Deployment'):
             if deployment['metadata']['name'].startswith('worker-'):
@@ -551,14 +609,44 @@ class TraefikControllerTest(unittest.TestCase):
         namespace = named(self.objects, 'Namespace', 'traefik')
         self.assertEqual(namespace['metadata']['labels']['pod-security.kubernetes.io/enforce'], 'restricted')
 
-    def test_rbac_covers_every_installed_crd_kind_read_only(self):
+    def roles(self):
+        return {'traefik': named(self.objects, 'Role', 'traefik-py313-local'),
+                LOCAL_NAMESPACE: named(render(TRAEFIK_DIR / 'app-rbac'), 'Role', 'traefik-py313-local')}
+
+    def test_rbac_covers_every_installed_crd_kind_read_only_in_each_watched_namespace(self):
+        for namespace, role in self.roles().items():
+            self.assertEqual(role['metadata']['namespace'], namespace)
+            granted = {r for rule in role['rules'] if rule['apiGroups'] == ['traefik.io'] for r in rule['resources']}
+            self.assertEqual(granted, {crd['spec']['names']['plural'] for crd in self.crds},
+                             f'{namespace}: the CRD provider watches every kind: a missing permission stalls its configuration')
+
+    def test_namespaced_access_is_limited_to_the_namespaces_the_providers_watch(self):
+        watched = set()
+        for arg in self.container['args']:
+            if arg.endswith('.namespaces=py313-prod-local,traefik'):
+                watched.add(arg.split('.namespaces=')[0])
+        self.assertEqual(watched, {'--providers.kubernetesingress', '--providers.kubernetescrd'})
+        self.assertEqual(set(self.roles()), {'traefik', LOCAL_NAMESPACE})
+        self.assertEqual(self.roles()['traefik']['rules'], self.roles()[LOCAL_NAMESPACE]['rules'])
+        for objects in (self.objects, render(TRAEFIK_DIR / 'app-rbac')):
+            binding = named(objects, 'RoleBinding', 'traefik-py313-local')
+            self.assertEqual(binding['roleRef'], {'apiGroup': 'rbac.authorization.k8s.io', 'kind': 'Role', 'name': 'traefik-py313-local'})
+            self.assertEqual(binding['subjects'], [{'kind': 'ServiceAccount', 'name': 'traefik', 'namespace': 'traefik'}])
+        for obj in render(TRAEFIK_DIR / 'app-rbac'):
+            self.assertEqual(obj['metadata']['namespace'], LOCAL_NAMESPACE)
+            self.assertEqual(obj['metadata']['labels'][FEATURE_LABEL[0]], FEATURE_LABEL[1])
+
+    def test_cluster_role_grants_only_cluster_scoped_kinds_and_never_secrets(self):
         rules = named(self.objects, 'ClusterRole', 'traefik-py313-local')['rules']
-        granted = {r for rule in rules if rule['apiGroups'] == ['traefik.io'] for r in rule['resources']}
-        self.assertEqual(granted, {crd['spec']['names']['plural'] for crd in self.crds},
-                         'the CRD provider watches every kind: a missing permission or CRD stalls its configuration')
+        self.assertEqual({(tuple(r['apiGroups']), tuple(r['resources']), tuple(r['verbs'])) for r in rules},
+                         {(('networking.k8s.io',), ('ingressclasses',), ('get', 'list', 'watch')),
+                          (('',), ('nodes',), ('get', 'list', 'watch'))})
+        for rule in rules:
+            self.assertFalse({'secrets', 'configmaps', 'services', 'endpointslices', 'ingresses'} & set(rule['resources']))
 
     def test_rbac_has_no_wildcards_and_no_write_except_ingress_status(self):
-        rules = named(self.objects, 'ClusterRole', 'traefik-py313-local')['rules']
+        rules = [rule for role in self.roles().values() for rule in role['rules']]
+        rules += named(self.objects, 'ClusterRole', 'traefik-py313-local')['rules']
         for rule in rules:
             for field in ('apiGroups', 'resources', 'verbs'):
                 self.assertNotIn('*', rule[field])

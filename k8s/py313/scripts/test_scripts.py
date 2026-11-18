@@ -30,7 +30,8 @@ def env_json(system):
 
 
 def auth_json(system):
-    data = {'SECRET_KEY': 'k', 'CELERY_BROKER_PASSWORD': 'p'}
+    stores = [{'NAME': name, 'OPTIONS': {'fs_root': '/edx/app/edxapp/data', 'default_class': 'x'}} for name in ('split', 'draft')]
+    data = {'SECRET_KEY': 'k', 'CELERY_BROKER_PASSWORD': 'p', 'MODULESTORE': {'default': {'OPTIONS': {'stores': stores}}}}
     if system == 'lms':
         data['JWT_PRIVATE_SIGNING_KEY'] = 'pem'
     return data
@@ -58,6 +59,29 @@ class PostprocessTest(unittest.TestCase):
             for system in ('lms', 'cms'):
                 self.assertEqual(json.loads((directory / f'{system}.env.json').read_text())['LOG_DESTINATION'], 'console')
                 self.assertEqual(stat.S_IMODE((directory / f'{system}.env.json').stat().st_mode), 0o600)
+
+    def test_course_data_paths_are_moved_to_the_writable_mount_and_read_back_from_disk(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            self.write(directory)
+            self.assertEqual(self.run_process(directory), [])
+            for system in ('lms', 'cms'):
+                auth = json.loads((directory / f'{system}.auth.json').read_text())
+                stores = auth['MODULESTORE']['default']['OPTIONS']['stores']
+                self.assertEqual([item['OPTIONS']['fs_root'] for item in stores], ['/edx/var/edxapp/data'] * 2, system)
+                self.assertEqual(stores[0]['OPTIONS']['default_class'], 'x', 'other store options stay untouched')
+                self.assertEqual(stat.S_IMODE((directory / f'{system}.auth.json').stat().st_mode), 0o600)
+                env = json.loads((directory / f'{system}.env.json').read_text())
+                self.assertEqual(env.get('GITHUB_REPO_ROOT'), '/edx/var/edxapp/data' if system == 'cms' else None, system)
+
+    def test_a_config_without_modulestore_stores_fails_the_check(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            self.write(directory)
+            auth = json.loads((directory / 'cms.auth.json').read_text())
+            del auth['MODULESTORE']
+            (directory / 'cms.auth.json').write_text(json.dumps(auth))
+            self.assertTrue([f for f in self.run_process(directory) if 'fs_root' in f])
 
     def test_wildcard_host_or_plain_http_search_fails(self):
         def wildcard(system, env):
@@ -97,12 +121,18 @@ class ContextGuardTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             bin_dir = Path(tmp) / 'bin'
             bin_dir.mkdir()
+            log = Path(tmp) / 'calls.log'
             stub = bin_dir / 'kubectl'
-            stub.write_text('#!/bin/sh\nif [ "$1 $2" = "config current-context" ]; then echo other; exit 0; fi\nexit 1\n')
+            stub.write_text('#!/bin/sh\nif [ "$1 $2" = "config current-context" ]; then echo other; exit 0; fi\n'
+                            f'echo "$@" >> {log}\nexit 1\n')
             stub.chmod(0o755)
             env = dict(os.environ, PATH=f'{bin_dir}:{os.environ["PATH"]}', ALLOW_CONTEXT='other')
             result = subprocess.run([str(HERE / 'status')], env=env, capture_output=True, text=True, timeout=60)
-            self.assertNotIn("expected 'other'", result.stderr)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('namespace py313-prod-local does not exist', result.stdout)
+            calls = log.read_text().splitlines()
+            self.assertTrue(calls and all(call.startswith('--context other ') for call in calls), calls)
+            self.assertNotIn('orbstack', log.read_text())
 
     def test_namespace_is_not_configurable(self):
         text = (HERE / 'lib.sh').read_text()
@@ -249,7 +279,7 @@ exit 0"""
             self.assertEqual(result.returncode, 0, result.stderr)
             calls = log.read_text().splitlines()
             deletes = [c for c in calls if ' delete ' in c]
-            self.assertIn('kubectl --context orbstack -n py313-prod-local delete ingress,deployment,service --selector py313.learningtribes.com/feature=traefik-local --ignore-not-found --wait=true', deletes)
+            self.assertIn('kubectl --context orbstack -n py313-prod-local delete ingress,deployment,service,rolebinding,role --selector py313.learningtribes.com/feature=traefik-local --ignore-not-found --wait=true', deletes)
             self.assertIn('kubectl --context orbstack delete namespace traefik --wait=true --timeout=300s', deletes)
             self.assertIn('kubectl --context orbstack delete clusterrole traefik-py313-local', deletes)
             self.assertIn('kubectl --context orbstack delete customresourcedefinition.apiextensions.k8s.io/middlewares.traefik.io', deletes)
@@ -378,21 +408,82 @@ class GenLocalTlsTest(unittest.TestCase):
             self.assertNotEqual(verdict.returncode, 0)
             self.assertIn('permitted subtree violation', verdict.stdout + verdict.stderr)
 
+    def sign(self, tmp, tls, san, serial):
+        """Signs a leaf with the given subjectAltName using the CA of `tls`; returns the openssl verify result."""
+        work = Path(tmp)
+        (work / 'x.cnf').write_text('[req]\ndistinguished_name=dn\nprompt=no\n[dn]\nCN=x\n')
+        (work / 'x.ext').write_text(f'basicConstraints=critical,CA:FALSE\nsubjectAltName={san}\nextendedKeyUsage=serverAuth\n')
+        self.openssl('req', '-new', '-newkey', 'ec', '-pkeyopt', 'ec_paramgen_curve:P-256', '-nodes', '-keyout', str(work / 'x.key'),
+                     '-config', str(work / 'x.cnf'), '-out', str(work / 'x.csr'))
+        self.openssl('x509', '-req', '-in', str(work / 'x.csr'), '-CA', str(tls / 'ca.crt'), '-CAkey', str(tls / 'ca.key'),
+                     '-set_serial', str(serial), '-days', '1', '-extfile', str(work / 'x.ext'), '-out', str(work / 'x.crt'))
+        return subprocess.run(['openssl', 'verify', '-CAfile', str(tls / 'ca.crt'), '-purpose', 'sslserver', str(work / 'x.crt')],
+                              capture_output=True, text=True)
+
+    def test_ca_bounds_every_name_type_a_tls_verifier_checks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(self.run_tls(tmp).returncode, 0)
+            tls = Path(tmp) / 'local/tls'
+            constraints = self.openssl('x509', '-in', str(tls / 'ca.crt'), '-noout', '-ext', 'nameConstraints')
+            self.assertIn('critical', constraints)
+            for expected in (f'DNS:{DOMAIN}', f'email:{DOMAIN}', f'URI:{DOMAIN}', 'IP:0.0.0.0/0.0.0.0', 'IP:0:0:0:0:0:0:0:0/0:0:0:0:0:0:0:0'):
+                self.assertIn(expected, constraints)
+            self.openssl('verify', '-CAfile', str(tls / 'ca.crt'), '-purpose', 'sslserver', str(tls / 'tls.crt'))
+            accepted = self.sign(tmp, tls, f'DNS:lms.{DOMAIN},DNS:*.{DOMAIN}', 10)
+            self.assertEqual(accepted.returncode, 0, accepted.stdout + accepted.stderr)
+            for serial, (san, violation) in enumerate((
+                    ('IP:127.0.0.1', 'excluded subtree violation'), ('IP:::1', 'excluded subtree violation'),
+                    ('email:admin@example.com', 'permitted subtree violation'), ('URI:https://evil.example/x', 'permitted subtree violation'),
+                    ('DNS:evil.example', 'permitted subtree violation')), start=11):
+                verdict = self.sign(tmp, tls, san, serial)
+                self.assertNotEqual(verdict.returncode, 0, san)
+                self.assertIn(violation, verdict.stdout + verdict.stderr, san)
+
+    def test_an_existing_unconstrained_ca_is_kept_and_reported(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            DoctorTest().make_legacy_ca(tmp)
+            tls = Path(tmp) / 'local/tls'
+            before = (tls / 'ca.crt').read_bytes()
+            result = self.run_tls(tmp)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(before, (tls / 'ca.crt').read_bytes(), 'the CA the user trusts is never regenerated')
+            self.assertIn('WARN', result.stdout)
+            self.assertIn('PURGE_LOCAL=1 PURGE_TLS=1 make k8s-local-down', result.stdout)
+            self.openssl('verify', '-CAfile', str(tls / 'ca.crt'), '-purpose', 'sslserver', str(tls / 'tls.crt'))
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertNotIn('WARN', self.run_tls(tmp).stdout)
+
 
 class DoctorTest(unittest.TestCase):
+    def make_legacy_ca(self, tmp):
+        tls = Path(tmp) / 'local/tls'
+        tls.mkdir(parents=True, mode=0o700)
+        (Path(tmp) / 'ca.cnf').write_text('[req]\ndistinguished_name=dn\nprompt=no\nx509_extensions=v3\n[dn]\nCN=old\n[v3]\n'
+                                          'basicConstraints=critical,CA:TRUE,pathlen:0\nkeyUsage=critical,keyCertSign\n'
+                                          'nameConstraints=critical,permitted;DNS:%s\n' % DOMAIN)
+        subprocess.run(['openssl', 'req', '-x509', '-new', '-newkey', 'ec', '-pkeyopt', 'ec_paramgen_curve:P-256', '-nodes',
+                        '-keyout', str(tls / 'ca.key'), '-config', str(Path(tmp) / 'ca.cnf'), '-days', '365', '-out', str(tls / 'ca.crt')],
+                       check=True, capture_output=True)
+
+    def run_doctor(self, tmp, legacy_ca=False):
+        if legacy_ca:
+            self.make_legacy_ca(tmp)
+        subprocess.run([str(HERE / 'gen-local-tls')], env=dict(os.environ, LOCAL_DIR=str(Path(tmp) / 'local'), NO_CLUSTER='1'),
+                       check=True, capture_output=True)
+        bin_dir, log = stub_bin(tmp, extra=('sudo', 'security', 'lsof', 'curl'))
+        (bin_dir / 'dscacheutil').write_text('#!/bin/sh\necho "dscacheutil $@" >> %s\nprintf "name: x\\nip_address: 198.18.4.94\\n"\n' % log)
+        (bin_dir / 'scutil').write_text('#!/bin/sh\necho "scutil $@" >> %s\nprintf "<dictionary> {\\n  HTTPSEnable : 1\\n  HTTPSPort : 7890\\n  HTTPSProxy : 127.0.0.1\\n}\\n"\n' % log)
+        (bin_dir / 'curl').write_text('#!/bin/sh\necho "curl $@" >> %s\nprintf 000\nexit 7\n' % log)
+        (bin_dir / 'security').write_text('#!/bin/sh\necho "security $@" >> %s\nexit 1\n' % log)
+        for path in bin_dir.iterdir():
+            path.chmod(0o755)
+        result = subprocess.run([str(HERE / 'traefik-doctor')], env=dict(os.environ, PATH=f'{bin_dir}:{os.environ["PATH"]}', LOCAL_DIR=str(Path(tmp) / 'local')),
+                                capture_output=True, text=True, timeout=60)
+        return result, log
+
     def test_doctor_is_read_only_and_prints_the_user_steps(self):
         with tempfile.TemporaryDirectory() as tmp:
-            subprocess.run([str(HERE / 'gen-local-tls')], env=dict(os.environ, LOCAL_DIR=str(Path(tmp) / 'local'), NO_CLUSTER='1'),
-                           check=True, capture_output=True)
-            bin_dir, log = stub_bin(tmp, extra=('sudo', 'security', 'lsof', 'curl'))
-            (bin_dir / 'dscacheutil').write_text('#!/bin/sh\necho "dscacheutil $@" >> %s\nprintf "name: x\\nip_address: 198.18.4.94\\n"\n' % log)
-            (bin_dir / 'scutil').write_text('#!/bin/sh\necho "scutil $@" >> %s\nprintf "<dictionary> {\\n  HTTPSEnable : 1\\n  HTTPSPort : 7890\\n  HTTPSProxy : 127.0.0.1\\n}\\n"\n' % log)
-            (bin_dir / 'curl').write_text('#!/bin/sh\necho "curl $@" >> %s\nprintf 000\nexit 7\n' % log)
-            (bin_dir / 'security').write_text('#!/bin/sh\necho "security $@" >> %s\nexit 1\n' % log)
-            for path in bin_dir.iterdir():
-                path.chmod(0o755)
-            result = subprocess.run([str(HERE / 'traefik-doctor')], env=dict(os.environ, PATH=f'{bin_dir}:{os.environ["PATH"]}', LOCAL_DIR=str(Path(tmp) / 'local')),
-                                    capture_output=True, text=True, timeout=60)
+            result, log = self.run_doctor(tmp)
             self.assertEqual(result.returncode, 1)
             out = result.stdout
             self.assertIn('198.18.0.0/16', out)
@@ -400,6 +491,8 @@ class DoctorTest(unittest.TestCase):
             self.assertIn("'+.%s'" % DOMAIN, out)
             self.assertIn('fake-ip-filter', out)
             self.assertIn('security add-trusted-cert -r trustRoot -k ~/Library/Keychains/login.keychain-db', out)
+            self.assertIn('the CA bounds every name type', out)
+            self.assertNotIn('PURGE_TLS=1', out, 'a CA with the constraints needs no replacement')
             calls = log.read_text()
             self.assertNotIn('sudo', calls)
             self.assertNotIn('kubectl', calls)
@@ -413,6 +506,103 @@ class DoctorTest(unittest.TestCase):
                     self.assertNotIn('--data', line)
             for forbidden in ('/etc/hosts', 'networksetup', 'tee '):
                 self.assertNotIn(forbidden, (HERE / 'traefik-doctor').read_text().replace('/etc/hosts file', ''), forbidden)
+
+    def test_doctor_reports_a_ca_without_the_name_constraints_and_prints_the_replacement_steps(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result, log = self.run_doctor(tmp, legacy_ca=True)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn('FAIL   the CA was created by an older script and does not bound IP, e-mail and URI names', result.stdout)
+            for step in ('PURGE_LOCAL=1 PURGE_TLS=1 make -C k8s/py313 k8s-local-down', 'INGRESS=traefik make -C k8s/py313 k8s-local-up'):
+                self.assertIn(step, result.stdout)
+            self.assertNotIn('make', log.read_text(), 'the doctor only prints the commands')
+
+
+class TraefikStatusTest(unittest.TestCase):
+    # kubectl refuses `get type/name` together with a label selector; a stub that does the same makes `bash -n` level checks real.
+    REJECT_NAME_WITH_SELECTOR = r'''
+selector=0; named=0
+for arg in "$@"; do
+  case "$arg" in -l | --selector | --selector=* | -l=*) selector=1 ;; esac
+done
+for arg in "$@"; do
+  case "$arg" in get | -* | *=*) ;; */*) named=1 ;; esac
+done
+if [ "$selector" = 1 ] && [ "$named" = 1 ]; then
+  echo "error: arguments in resource/name form must have a single resource and name" >&2
+  exit 1
+fi
+exit 0'''
+
+    def test_every_section_runs_with_a_kubectl_that_rejects_name_arguments_combined_with_a_selector(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            bin_dir, log = stub_bin(tmp, self.REJECT_NAME_WITH_SELECTOR)
+            result = run_script('traefik-status', tmp, bin_dir)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertNotIn('resource/name form', result.stdout + result.stderr)
+            for section in ('Ingress, Middleware, static', 'Traefik CRDs and cluster objects', 'CoreDNS custom configuration',
+                            'Certificates', 'Recent warning events', 'Memory (docker stats'):
+                self.assertIn(section, result.stdout)
+
+    def test_the_stub_really_rejects_the_old_command_line(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            bin_dir, _ = stub_bin(tmp, self.REJECT_NAME_WITH_SELECTOR)
+            old = subprocess.run([str(bin_dir / 'kubectl'), 'get', 'ingress,deployment/static,pods', '-l', 'a=b'], capture_output=True, text=True)
+            self.assertEqual(old.returncode, 1)
+
+
+class DbInitDecisionTest(unittest.TestCase):
+    """`up` must not rerun initialize_schema.py and the seeds on a live database after the Job's TTL removed its record."""
+    STUB = r'''
+case "$*" in
+  *'annotate namespace'*) exit 0 ;;
+  *'get namespace'*db-init-completed*) printf '%s' "$FAKE_ANNOTATION" ;;
+  *'get job db-init'*) printf '%s' "$FAKE_JOB" ;;
+esac
+exit 0'''
+
+    def decide(self, annotation='', job='', force=None, database='py313_startup_local'):
+        with tempfile.TemporaryDirectory() as tmp:
+            bin_dir, log = stub_bin(tmp, self.STUB)
+            secrets = Path(tmp) / 'local/secrets'
+            secrets.mkdir(parents=True)
+            (secrets / 'mysql-database').write_text(database)
+            env = dict(os.environ, PATH=f'{bin_dir}:{os.environ["PATH"]}', LOCAL_DIR=str(Path(tmp) / 'local'),
+                       FAKE_ANNOTATION=annotation, FAKE_JOB=job)
+            env.pop('FORCE_DB_INIT', None)
+            if force:
+                env['FORCE_DB_INIT'] = force
+            result = subprocess.run(['bash', '-c', '. "$0/lib.sh"; if db_init_needed; then echo RUN; else echo SKIP; fi', str(HERE)],
+                                    env=env, capture_output=True, text=True, timeout=60)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            annotates = [c for c in (log.read_text().splitlines() if log.exists() else []) if 'annotate namespace' in c]
+            return result.stdout.strip(), annotates
+
+    def test_a_recorded_completion_survives_the_job_being_garbage_collected(self):
+        self.assertEqual(self.decide(annotation='py313_startup_local', job=''), ('SKIP', []))
+
+    def test_a_job_that_is_still_complete_is_recorded_and_skipped(self):
+        decision, annotates = self.decide(job='True')
+        self.assertEqual(decision, 'SKIP')
+        self.assertEqual(len(annotates), 1)
+        self.assertIn('py313.learningtribes.com/db-init-completed=py313_startup_local', annotates[0])
+        self.assertIn('--overwrite', annotates[0])
+
+    def test_a_new_namespace_runs_the_job(self):
+        self.assertEqual(self.decide(), ('RUN', []))
+        self.assertEqual(self.decide(job='False'), ('RUN', []))
+
+    def test_a_record_for_another_database_does_not_count(self):
+        self.assertEqual(self.decide(annotation='py313_startup_old', job=''), ('RUN', []))
+
+    def test_force_reruns_even_when_recorded(self):
+        self.assertEqual(self.decide(annotation='py313_startup_local', job='True', force='1'), ('RUN', []))
+
+    def test_up_records_the_completion_only_after_the_job_succeeded(self):
+        text = (HERE / 'up').read_text()
+        self.assertIn('if ! db_init_needed; then', text)
+        self.assertNotIn('Complete")].status', text, 'the Job condition alone is not a durable record')
+        self.assertLess(text.index("die 'db-init did not finish in 30 minutes'"), text.index('record_db_init'))
+        self.assertLess(text.index('record_db_init'), text.index("note 'db-init completed'"))
 
 
 if __name__ == '__main__':
