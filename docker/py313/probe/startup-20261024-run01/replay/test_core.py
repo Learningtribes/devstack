@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -697,6 +698,39 @@ class ContractTests(unittest.TestCase):
         ownership.assert_called_once_with(self.config)
         self.assertEqual(verify_export.call_args_list, [unittest.mock.call(self.config)] * 2)
 
+    def enable_discovery(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        return load_config(self.path)
+
+    def test_the_env_file_keeps_every_value_inert_when_sourced_by_sh(self):
+        loaded = self.enable_discovery()
+        hostile = {'DB_PASSWORD': "a b$HOME;touch /tmp/x'\"`id`"}
+        with patch.object(discovery, 'define'), \
+                patch.object(discovery, 'discovery_environment', return_value=hostile):
+            target = discovery.write_env_file(loaded)
+        result = subprocess.run(['sh', '-c', 'set -a; . "$1"; set +a; printf %s "$DB_PASSWORD"', 'sh', str(target)],
+                                capture_output=True, text=True)
+        self.assertEqual(result.stdout, hostile['DB_PASSWORD'])
+        self.assertEqual(result.stderr, '')
+
+    def test_start_http_leaves_a_healthy_server_alone(self):
+        loaded = self.enable_discovery()
+        with patch.object(discovery, 'define'), patch.object(discovery, 'http_status', return_value=200), \
+                patch.object(discovery.subprocess, 'run') as run:
+            self.assertEqual(discovery.start_http(loaded), 200)
+        run.assert_not_called()
+
+    def test_start_http_dispatches_when_nothing_answers(self):
+        loaded = self.enable_discovery()
+        with patch.object(discovery, 'define'), patch.object(discovery, 'http_status', return_value=None), \
+                patch.object(discovery, 'wait_for_health', return_value=200) as wait, \
+                patch.object(discovery.subprocess, 'run') as run:
+            self.assertEqual(discovery.start_http(loaded), 200)
+        self.assertEqual(run.call_args.args[0][:3], ['docker', 'exec', '-d'])
+        wait.assert_called_once()
+
 
 class LayoutContractTests(unittest.TestCase):
     PROBE = Path(__file__).resolve().parents[1]
@@ -727,10 +761,6 @@ class LayoutContractTests(unittest.TestCase):
         self.assertGreater(found, 5)
 
 
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
-
-
 class DockerExecExtraEnvTests(unittest.TestCase):
     """Tool-level tolerance reaches the container through `-e`, ahead of the container name."""
 
@@ -751,3 +781,6 @@ class DockerExecExtraEnvTests(unittest.TestCase):
     def test_no_extra_env_leaves_the_command_unchanged(self):
         config = {'runtime_container': 'run-runtime'}
         self.assertEqual(docker_exec(config, 'npm', 'ci'), docker_exec(config, 'npm', 'ci', extra_env=None))
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

@@ -132,6 +132,12 @@ hash of every run created before discovery existed. `seed()` writes the **in-net
 address (`<run>-runtime:18000`) as `django_site.domain`, because discovery runs in a
 different container than the LMS; the host loopback port is unusable there.
 
+### Local-only trust shortcuts
+
+Discovery verifies the LMS's HS256 JWTs with the run's startup secret and connects to MySQL as the
+run's `edxapp` user. Both keep a local run to one container and one secret set; neither belongs in a
+shared or long-lived environment, which should use its own signing key and a dedicated database user.
+
 ### Token type
 
 The platform LMS resolves a `Bearer` token by `sha256(token)` against

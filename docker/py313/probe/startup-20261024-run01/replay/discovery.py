@@ -52,7 +52,8 @@ def paths(config):
 def write_env_file(config):
     """Write the container environment to a 0600 file; idempotent so retries reuse the same bytes."""
     target = paths(config)['env_file']
-    body = ''.join('%s=%s\n' % (key, value) for key, value in sorted(discovery_environment(config).items()))
+    # The file is sourced by `sh`, so every value is quoted: a space, `$`, `;` or quote must stay data.
+    body = ''.join('%s=%s\n' % (key, shlex.quote(value)) for key, value in sorted(discovery_environment(config).items()))
     if target.exists():
         if require_protected(target).read_text() != body:
             target.chmod(0o600)
@@ -233,8 +234,15 @@ def migrate(config):
 
 
 def start_http(config):
-    """Dispatch the discovery runserver and wait for /health/, mirroring the Platform's start_http.py."""
+    """Dispatch the discovery runserver and wait for /health/, mirroring the Platform's start_http.py.
+
+    A healthy server is left alone: a second `runserver` could not bind port 8000 and would only
+    leave an extra failing process behind. `restart()` restarts the container first, so code
+    changes still reach a fresh process.
+    """
     define(config)
+    if http_status(discovery_url(config)) == 200:
+        return 200
     places = paths(config)
     command = ('umask 077; mkdir -p /tmp/discovery-logs; '
                'set -a; . %s; set +a; exec %s manage.py runserver 0.0.0.0:%d --noreload '
