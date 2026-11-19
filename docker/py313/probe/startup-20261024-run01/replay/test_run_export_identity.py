@@ -233,6 +233,22 @@ class ReplayExportIdentityTests(unittest.TestCase):
         replay_run.install(self.config)
         self.assertNotIn('link-live-platform', [c.args[1] for c in self.capture.call_args_list])
 
+    def test_install_gives_the_dependency_fetch_more_room_than_the_default(self):
+        """The installer resolves ~100 packages with no retry of its own.
+
+        One metadata fetch over uv's 30-second default failed the whole transaction twice, so the
+        tolerance has to reach the container: the installer runs there, not on the host.
+        """
+        self.prepare()
+        replay_run.install(self.config)
+        command = next(c.args[2] for c in self.capture.call_args_list if c.args[1] == 'install')
+        passed = dict(command[index + 1].split('=', 1)
+                      for index, value in enumerate(command) if value == '-e')
+        self.assertEqual(passed, replay_run.INSTALL_NETWORK_TOLERANCE)
+        # Every knob must sit before the container name, or docker treats it as the command.
+        self.assertLess(command.index('-e'), command.index(self.config['runtime_container']))
+        self.assertEqual(command[-1], '/canary/install.py')
+
     def test_install_failure_stops_before_identity_or_success_reports(self):
         self.prepare()
         def fail_install(config, label, command, **kwargs):

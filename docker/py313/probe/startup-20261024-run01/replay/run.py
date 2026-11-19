@@ -10,16 +10,29 @@ import sys
 
 from export_identity import verify_export_identity
 
-from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, environment,
+from core import (APP_PYTHON, APP_ROOT, APP_SOURCE, APP_STATE, LIVE_PLATFORM_MOUNT, LIVE_THEME_MOUNT, SECRET_KEYS, SERVICES, STARTUP_REL, capture, config_hash, discovery_enabled, discovery_test_database, environment,
                   docker_exec, fresh_preflight, load_config, ownership, read_json,
                   save_new, shell, source_repository_roots, validate_path_isolation)
+import discovery
+
+# uv parses each of these (an invalid value is rejected), and the installer runs inside the
+# container, so they must be supplied through `docker exec -e` rather than the host environment.
+INSTALL_NETWORK_TOLERANCE = {
+    'UV_HTTP_TIMEOUT': '300',
+    'UV_HTTP_RETRIES': '5',
+    'UV_CONCURRENT_DOWNLOADS': '4',
+}
 
 
 def compose(config):
     specs = {
         'mysql': ('/var/lib/mysql', {'MYSQL_ROOT_PASSWORD': '${BRINGUP_MYSQL_ROOT_PASSWORD}',
             'MYSQL_DATABASE': config['database'], 'MYSQL_USER': 'edxapp', 'MYSQL_PASSWORD': '${BRINGUP_MYSQL_PASSWORD}',
-            'BRINGUP_TEST_DATABASE': config['test_database']}),
+            'BRINGUP_TEST_DATABASE': config['test_database'],
+            # Optional: the granted database discovery's test runner uses. Only present on runs with
+            # discovery, and only honoured when MySQL initialises a fresh data volume.
+            **({'BRINGUP_DISCOVERY_TEST_DATABASE': discovery_test_database(config)}
+               if discovery_enabled(config) else {})}),
         'mongo': ('/data/db', {'MONGO_INITDB_ROOT_USERNAME': 'edxapp', 'MONGO_INITDB_ROOT_PASSWORD': '${BRINGUP_MONGO_PASSWORD}'}),
         'rabbitmq': ('/var/lib/rabbitmq', {'RABBITMQ_DEFAULT_USER': 'edxapp', 'RABBITMQ_DEFAULT_PASS': '${BRINGUP_RABBITMQ_PASSWORD}'}),
         'elasticsearch': ('/usr/share/elasticsearch/data', {'discovery.type': 'single-node', 'xpack.security.enabled': 'false', 'ES_JAVA_OPTS': '-Xms256m -Xmx256m'}),
@@ -117,6 +130,9 @@ def create(config):
         '-p', f'127.0.0.1:{config["lms_port"]}:18000', '-p', f'127.0.0.1:{config["cms_port"]}:18010',
         *mounts, '-e', 'PATH=/opt/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         config['images']['runtime'], 'tail', '-f', '/dev/null'])
+    if discovery_enabled(config):
+        # Optional sidecar: one container on the same network, reusing this run's MySQL and memcached.
+        discovery.create(config)
 
 
 def install(config):
@@ -124,8 +140,13 @@ def install(config):
     verify_prepared_export(config)
     capture(config, 'prepare-install-inputs', ['docker', 'exec', config['runtime_container'],
         '/usr/local/bin/python3.13', '-B', '/canary/bringup/prepare_current_install.py'])
-    capture(config, 'install', ['docker', 'exec', config['runtime_container'],
-        '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
+    # The installer resolves ~100 packages against PyPI and has no retry of its own, so a single
+    # metadata fetch that exceeds uv's 30-second default fails the whole transaction. There is
+    # nothing to make idempotent here: `uv pip compile` and `uv pip sync` already are, and the
+    # staged inputs are rebuilt from scratch by the step above. Give the fetch room instead.
+    capture(config, 'install', ['docker', 'exec',
+        *[flag for name, value in INSTALL_NETWORK_TOLERANCE.items() for flag in ('-e', name + '=' + value)],
+        config['runtime_container'], '/usr/local/bin/python3.13', '-B', '/canary/install.py'])
     capture(config, 'platform-identity', docker_exec(config,
         APP_PYTHON, '-B', '/canary/verify-platform-identity.py'))
     for label, path in [('installed-companion-report', APP_STATE + '/installed-companion-identity.json'),
@@ -139,6 +160,9 @@ def install(config):
         # After every identity report: from here the editable installs, cwd and settings all see the host tree.
         capture(config, 'link-live-platform', ['docker', 'exec', config['runtime_container'], 'sh', '-c',
                 'rm -rf %s && ln -s %s %s' % (APP_SOURCE, LIVE_PLATFORM_MOUNT, APP_SOURCE)])
+    if discovery_enabled(config):
+        # Independent venv and lock: discovery never shares the Platform's dependency set.
+        discovery.install(config)
 
 
 def main():

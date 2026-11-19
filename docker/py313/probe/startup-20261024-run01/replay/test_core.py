@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -16,7 +17,11 @@ from provision_acceptance import provision
 from core import (APP_ROOT, SECRET_KEYS, SERVICES, capture, check_conflicts, check_platform_layout, environment, load_config,
                   physical_names, secret_values, source_repository_roots,
                   validate_path_isolation, validate_selected_image, config_hash, read_json,
-                  IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet)
+                  IMAGE_LOCK_PATH, image_reference_parts, validate_image_lock, validate_network_subnet,
+                  discovery_enabled, discovery_environment, discovery_lms_domain, discovery_names,
+                  discovery_oidc_credentials, discovery_test_database, lms_jwt_audience, lms_jwt_issuer,
+                  docker_exec)
+import discovery
 
 
 def example(root, run_id='run44'):
@@ -112,6 +117,259 @@ class ContractTests(unittest.TestCase):
         self.config['platform_mount'] = 'volume'
         self.write()
         with self.assertRaisesRegex(ValueError, 'platform_mount'):
+            load_config(self.path)
+
+    def test_discovery_is_optional_and_absent_keys_keep_the_hash_stable(self):
+        """A run without discovery must keep its config hash, or its existing resources stop matching."""
+        before = config_hash(load_config(self.path))
+        self.assertFalse(discovery_enabled(self.config))
+        self.assertEqual(discovery.destroy_plan(self.config), ([], []))
+        self.assertEqual(config_hash(load_config(self.path)), before)
+
+    def test_discovery_derives_its_resources_from_run_id(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        names = discovery_names(loaded)
+        self.assertEqual(names['container'], 'run44' + '-discovery')
+        self.assertEqual(names['volume'], 'run44' + '-discovery-data')
+        self.assertEqual(names['database'], 'discovery_run44')
+        self.assertEqual(loaded['discovery_port'], 18381)
+        self.assertEqual(discovery.destroy_plan(loaded),
+                         (['run44-discovery'], ['run44-discovery-data']))
+
+    def test_discovery_reuses_the_run_services(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        env = discovery_environment(load_config(self.path))
+        # One database inside this run's MySQL, not a second server.
+        self.assertEqual(env['DB_HOST'], self.config['services']['mysql']['container'])
+        self.assertEqual(env['CACHE_LOCATION'], self.config['services']['memcached']['container'] + ':11211')
+        self.assertEqual(env['DB_USER'], 'edxapp')
+
+    def test_discovery_oidc_credentials_are_derived_per_run_and_agree_on_both_sides(self):
+        """Discovery and the LMS seed must compute the same DOT credentials, and not a static pair."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        credentials = discovery_oidc_credentials(loaded)
+        self.assertEqual(credentials, discovery_oidc_credentials(loaded))
+        self.assertNotEqual(credentials['DISCOVERY_OIDC_KEY'], credentials['DISCOVERY_OIDC_SECRET'])
+        # The LMS shell sees the same values, or the DOT Application would not match.
+        env = environment(loaded)
+        self.assertEqual(env['DISCOVERY_OIDC_KEY'], credentials['DISCOVERY_OIDC_KEY'])
+        self.assertEqual(env['DISCOVERY_OIDC_SECRET'], credentials['DISCOVERY_OIDC_SECRET'])
+        # Discovery's own container gets them too.
+        self.assertEqual(discovery_environment(loaded)['DISCOVERY_OIDC_KEY'], credentials['DISCOVERY_OIDC_KEY'])
+        # A different run secret yields a different pair.
+        Path(self.config['secret_env']).write_text(
+            ''.join(key + '=' + '2' * 48 + '\n' for key in SECRET_KEYS))
+        self.assertNotEqual(discovery_oidc_credentials(load_config(self.path))['DISCOVERY_OIDC_KEY'],
+                            credentials['DISCOVERY_OIDC_KEY'])
+
+    def test_discovery_seeds_the_in_network_lms_address_not_the_loopback_port(self):
+        """`refresh_course_metadata` prefixes `site.domain`, and discovery is a separate container."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        domain = discovery_lms_domain(loaded)
+        self.assertEqual(domain, self.config['runtime_container'] + ':18000')
+        self.assertNotIn(str(self.config['lms_port']), domain)
+        env = discovery_environment(loaded)
+        self.assertEqual(env['DISCOVERY_LMS_URL'], 'http://' + domain)
+        self.assertEqual(env['DISCOVERY_STUDIO_URL'], 'http://' + self.config['runtime_container'] + ':18010')
+
+    def test_discovery_issuer_and_audience_match_what_the_lms_will_sign(self):
+        """A mismatch here is invisible until a metadata call 401s, so assert both sides agree."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        discovery_env = discovery_environment(loaded)
+        lms_env = environment(loaded)
+        self.assertEqual(lms_env['BRINGUP_JWT_ISSUER'], discovery_env['DISCOVERY_LMS_JWT_ISSUER'])
+        self.assertEqual(lms_env['BRINGUP_JWT_AUDIENCE'], discovery_env['DISCOVERY_LMS_JWT_AUDIENCE'])
+        self.assertEqual(lms_env['BRINGUP_JWT_AUDIENCE'], self.config['run_id'] + '-lms')
+        # The issuer carries this run's published port, not the container-internal one, so two
+        # runs on one host cannot accept each other's tokens.
+        self.assertEqual(lms_env['BRINGUP_JWT_ISSUER'], 'http://localhost:%d/oauth2' % self.config['lms_port'])
+
+    def test_a_run_without_discovery_leaves_the_lms_jwt_contract_at_its_default(self):
+        """The LMS settings fall back to their own defaults; bring-up must not invent values."""
+        loaded = load_config(self.path)
+        lms_env = environment(loaded)
+        self.assertNotIn('BRINGUP_JWT_ISSUER', lms_env)
+        self.assertNotIn('BRINGUP_JWT_AUDIENCE', lms_env)
+
+    def test_discovery_schema_seeds_and_migrate_reseeds_without_duplicate_evidence(self):
+        """`migrate` stays repeatable, so only `schema` may reserve a one-shot evidence file."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        recorded = []
+
+        def record(config, label, command, **kwargs):
+            recorded.append((label, command))
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'provision_database'), \
+                patch.object(discovery, 'ownership'), patch.object(discovery, 'capture', record), \
+                patch.object(discovery.subprocess, 'run', return_value=type('R', (), {'returncode': 0, 'stdout': '', 'stderr': ''})()):
+            discovery.schema(loaded)
+            labels = [label for label, _ in recorded]
+            self.assertIn('schema-discovery', labels)
+            self.assertIn('seed-discovery-site-partner', labels)
+            self.assertLess(labels.index('schema-discovery'), labels.index('seed-discovery-site-partner'))
+            self.assertEqual(discovery.DISCOVERY_SEED_SCRIPT, 'ci/py313/seed_sites_and_partners.py')
+
+            recorded.clear()
+            discovery.migrate(loaded)
+            # No evidence label is reused on a repeatable path.
+            self.assertNotIn('schema-discovery', [label for label, _ in recorded])
+
+    def test_discovery_schema_and_migrate_both_run_djangos_system_check(self):
+        """`migrate` succeeding does not prove the configuration is sound, so `check` must run."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        captured = []
+        executed = []
+
+        def record(config, label, command, **kwargs):
+            captured.append((label, ' '.join(str(part) for part in command)))
+
+        def record_run(command, **kwargs):
+            executed.append(' '.join(str(part) for part in command))
+            return type('R', (), {'returncode': 0, 'stdout': '', 'stderr': ''})()
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'provision_database'), \
+                patch.object(discovery, 'ownership'), patch.object(discovery, 'capture', record), \
+                patch.object(discovery.subprocess, 'run', side_effect=record_run):
+            discovery.schema(loaded)
+            commands = [text for label, text in captured if label == 'check-discovery']
+            self.assertEqual(len(commands), 1)
+            self.assertIn('manage.py check', commands[0])
+            self.assertNotIn('--deploy', commands[0])
+            # Ordered after the seed: a migrated-and-seeded database is what gets checked.
+            labels = [label for label, _ in captured]
+            self.assertLess(labels.index('seed-discovery-site-partner'), labels.index('check-discovery'))
+
+            captured.clear()
+            executed.clear()
+            discovery.migrate(loaded)
+            # The repeatable path runs the check without reserving an evidence file.
+            self.assertNotIn('check-discovery', [label for label, _ in captured])
+            self.assertTrue(any('manage.py check' in text for text in executed))
+
+    def test_discovery_check_failure_stops_the_stage(self):
+        """A failed `manage.py check` must abort, never be reported as a pass."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+
+        def fail_if_check(command, **kwargs):
+            result = type('R', (), {'returncode': 0, 'stdout': '', 'stderr': ''})()
+            if 'check' in command:
+                result.returncode = 1
+                result.stderr = 'SystemCheckError: something is wrong'
+            return result
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'ownership'), \
+                patch.object(discovery, 'capture'), \
+                patch.object(discovery.subprocess, 'run', side_effect=fail_if_check):
+            with self.assertRaises(ValueError):
+                discovery.check(loaded)
+
+    def test_discovery_test_names_a_granted_database_instead_of_test_prefix(self):
+        """Django would create `test_<name>`, a name edxapp holds no privilege on."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        database = discovery_test_database(loaded)
+        self.assertEqual(database, loaded['discovery_database'] + '_test')
+        # Never the bare application database: the suite must not touch run data.
+        self.assertNotEqual(database, loaded['discovery_database'])
+        captured = []
+
+        def record(config, label, command, **kwargs):
+            captured.append(' '.join(str(part) for part in command))
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'ownership'), \
+                patch.object(discovery, 'capture', record):
+            discovery.test(loaded)
+        self.assertEqual(len(captured), 1)
+        command = captured[0]
+        # The granted name is passed on both sides: the database and Django's TEST override.
+        self.assertIn('DB_NAME=' + database, command)
+        self.assertIn('DB_TEST_NAME=' + database, command)
+        self.assertIn('django.db.backends.mysql', command)
+        self.assertIn('--ds=course_discovery.settings.test', command)
+        # Python comes from the isolated venv, never the image's global site-packages.
+        self.assertIn(discovery.DISCOVERY_PYTHON, command)
+
+    def test_discovery_test_passes_selectors_through(self):
+        """`SELECTORS=` on the make target must reach pytest unchanged."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        captured = []
+
+        def record(config, label, command, **kwargs):
+            captured.append(list(command))
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'ownership'), \
+                patch.object(discovery, 'capture', record):
+            discovery.test(loaded, ['course_discovery/apps/core', '-k', 'partner'])
+        tail = captured[0][-3:]
+        self.assertEqual(tail, ['course_discovery/apps/core', '-k', 'partner'])
+
+    def test_discovery_image_is_required_and_validated(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'discovery_image'):
+            load_config(self.path)
+        for value in ('', 'http://bad', 'has space'):
+            with self.subTest(value=value):
+                self.config['discovery_image'] = value
+                self.write()
+                with self.assertRaisesRegex(ValueError, 'discovery_image'):
+                    load_config(self.path)
+
+    def test_discovery_port_must_be_unique_and_in_range(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        for value, message in ((self.config['lms_port'], 'differ'), (80, 'Invalid port'),
+                               ('18381', 'Invalid port')):
+            with self.subTest(value=value):
+                self.config['discovery_port'] = value
+                self.write()
+                with self.assertRaisesRegex(ValueError, message):
+                    load_config(self.path)
+
+    def test_discovery_database_must_not_collide_with_the_platform(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        for value, message in ((self.config['database'], 'differ'), ('Bad-Name', 'Invalid database'),
+                               ('Ab', 'Invalid database')):
+            with self.subTest(value=value):
+                self.config['discovery_database'] = value
+                self.write()
+                with self.assertRaisesRegex(ValueError, message):
+                    load_config(self.path)
+
+    def test_discovery_repo_counts_as_a_source_for_path_isolation(self):
+        self.config['discovery_repo'] = str(Path(self.config['export_dir']).parent)
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        with self.assertRaisesRegex(ValueError, 'discovery_repo'):
             load_config(self.path)
 
     def test_generated_search_service_uses_bounded_heap(self):
@@ -440,6 +698,39 @@ class ContractTests(unittest.TestCase):
         ownership.assert_called_once_with(self.config)
         self.assertEqual(verify_export.call_args_list, [unittest.mock.call(self.config)] * 2)
 
+    def enable_discovery(self):
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        return load_config(self.path)
+
+    def test_the_env_file_keeps_every_value_inert_when_sourced_by_sh(self):
+        loaded = self.enable_discovery()
+        hostile = {'DB_PASSWORD': "a b$HOME;touch /tmp/x'\"`id`"}
+        with patch.object(discovery, 'define'), \
+                patch.object(discovery, 'discovery_environment', return_value=hostile):
+            target = discovery.write_env_file(loaded)
+        result = subprocess.run(['sh', '-c', 'set -a; . "$1"; set +a; printf %s "$DB_PASSWORD"', 'sh', str(target)],
+                                capture_output=True, text=True)
+        self.assertEqual(result.stdout, hostile['DB_PASSWORD'])
+        self.assertEqual(result.stderr, '')
+
+    def test_start_http_leaves_a_healthy_server_alone(self):
+        loaded = self.enable_discovery()
+        with patch.object(discovery, 'define'), patch.object(discovery, 'http_status', return_value=200), \
+                patch.object(discovery.subprocess, 'run') as run:
+            self.assertEqual(discovery.start_http(loaded), 200)
+        run.assert_not_called()
+
+    def test_start_http_dispatches_when_nothing_answers(self):
+        loaded = self.enable_discovery()
+        with patch.object(discovery, 'define'), patch.object(discovery, 'http_status', return_value=None), \
+                patch.object(discovery, 'wait_for_health', return_value=200) as wait, \
+                patch.object(discovery.subprocess, 'run') as run:
+            self.assertEqual(discovery.start_http(loaded), 200)
+        self.assertEqual(run.call_args.args[0][:3], ['docker', 'exec', '-d'])
+        wait.assert_called_once()
+
 
 class LayoutContractTests(unittest.TestCase):
     PROBE = Path(__file__).resolve().parents[1]
@@ -454,7 +745,9 @@ class LayoutContractTests(unittest.TestCase):
 
     def test_no_code_names_the_retired_runtime_root(self):
         # The two unit tests below assert that the retired mount is absent, so they must name it.
-        allowed = {'replay/test_core.py', 'replay/test_run_export_identity.py'}
+        # lifecycle.py probes it only to start a run created before the layout move: that run's
+        # venv really is there, and probing it is what keeps such a run startable.
+        allowed = {'replay/test_core.py', 'replay/test_run_export_identity.py', 'replay/lifecycle.py'}
         offenders = [str(path.relative_to(self.PROBE)) for path in self.sources()
                      if str(path.relative_to(self.PROBE)) not in allowed and self.RETIRED.search(path.read_text())]
         self.assertEqual(offenders, [])
@@ -467,6 +760,27 @@ class LayoutContractTests(unittest.TestCase):
                 self.assertEqual(default, APP_ROOT, str(path.relative_to(self.PROBE)))
         self.assertGreater(found, 5)
 
+
+class DockerExecExtraEnvTests(unittest.TestCase):
+    """Tool-level tolerance reaches the container through `-e`, ahead of the container name."""
+
+    def setUp(self):
+        super().setUp()
+        for name, value in (('ownership', None), ('environment', {})):
+            patcher = patch('core.' + name, return_value=value) if name == 'environment' else patch('core.' + name)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_extra_env_is_passed_as_flags_before_the_container(self):
+        config = {'runtime_container': 'run-runtime'}
+        command = docker_exec(config, 'npm', 'ci', extra_env={'b': '2', 'a': '1'})
+        self.assertEqual(command[command.index('-e'):command.index('run-runtime')],
+                         ['-e', 'a=1', '-e', 'b=2'])
+        self.assertEqual(command[-2:], ['npm', 'ci'])
+
+    def test_no_extra_env_leaves_the_command_unchanged(self):
+        config = {'runtime_container': 'run-runtime'}
+        self.assertEqual(docker_exec(config, 'npm', 'ci'), docker_exec(config, 'npm', 'ci', extra_env=None))
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

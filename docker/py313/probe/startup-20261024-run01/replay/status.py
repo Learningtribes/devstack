@@ -4,8 +4,9 @@ import json
 from pathlib import Path
 import subprocess
 
-from core import SERVICES, load_config
+from core import SERVICES, discovery_enabled, discovery_url, load_config
 from http_client import base_urls, heartbeat
+import discovery
 
 
 def container_names(config):
@@ -33,7 +34,12 @@ def collect(config):
         rows.append({'name': name, 'state': info['state'] if info else 'absent',
                      'health': ((info['health'] or {}).get('Status') if info else None),
                      'ports': published(info['ports']) if info else ''})
+    if discovery_enabled(config):
+        row, _ = discovery.status(config)
+        rows.append({'name': row['name'], 'state': row['state'], 'health': None, 'ports': row['ports']})
     heartbeats = {system: heartbeat(url) for system, url in base_urls(config).items()}
+    if discovery_enabled(config):
+        heartbeats['discovery'] = discovery.http_status(discovery_url(config))
     return rows, heartbeats
 
 
@@ -52,6 +58,8 @@ def main():
     urls = base_urls(config)
     for system in ('lms', 'cms'):
         print('%s %s/heartbeat -> %s' % (system.upper(), urls[system], heartbeats[system]))
+    if discovery_enabled(config):
+        print('DISCOVERY %s/health/ -> %s' % (discovery_url(config), heartbeats['discovery']))
     raise SystemExit(0 if healthy(rows, heartbeats) else 1)
 
 

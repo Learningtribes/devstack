@@ -8,8 +8,9 @@ from pathlib import Path
 import subprocess
 import sys
 
-from core import STARTUP_REL, environment, load_config, ownership
+from core import STARTUP_REL, discovery_enabled, environment, load_config, ownership
 from http_client import wait_for_heartbeats
+import discovery
 
 
 def restart(config, timeout):
@@ -20,6 +21,8 @@ def restart(config, timeout):
     for script in ('start_http.py', 'start_worker.py'):
         for system in ('lms', 'cms'):
             subprocess.run([sys.executable, '-B', str(startup / script), system], env=env, check=True)
+    if discovery_enabled(config):
+        discovery.restart(config)
     codes = wait_for_heartbeats(config, timeout)
     if not all(code == 200 for code in codes.values()):
         raise SystemExit('Heartbeat failed after restart: ' + str(codes))
