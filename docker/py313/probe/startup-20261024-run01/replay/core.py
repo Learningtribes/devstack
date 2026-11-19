@@ -470,6 +470,11 @@ def discovery_environment(config):
     names = discovery_names(config)
     return {
         'DJANGO_SETTINGS_MODULE': DISCOVERY_SETTINGS,
+        # `settings.py313` enables DEBUG, accepts any Host header and may fall back to a
+        # repository-published JWT secret, so it refuses to import unless this says the run is
+        # local. Written to the container env file rather than passed ad hoc, so every phase
+        # (check, migrate, seed, test, services) gets it from one place.
+        'DISCOVERY_LOCAL_RUN': '1',
         'DB_HOST': config['services']['mysql']['container'],
         'DB_PORT': '3306',
         'DB_NAME': names['database'],
