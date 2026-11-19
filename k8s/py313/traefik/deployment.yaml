@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: traefik
+    spec:
+      serviceAccountName: traefik
+      automountServiceAccountToken: true
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: traefik
+          image: traefik:v3.7.19
+          imagePullPolicy: IfNotPresent
+          args:
+            - --global.checknewversion=false
+            - --global.sendanonymoususage=false
+            - --log.level=INFO
+            # WSGI maps X_Forwarded_Proto and X-Forwarded-Proto to the same environ key, so a client could spoof the header that
+            # SECURE_PROXY_SSL_HEADER trusts with an underscore alias; delete such request headers on every entrypoint.
+            - --global.aliasHeadersStrategy=delete
+            - --accesslog=true
+            # Non-root: 8000/8443 inside the pod, published as 80/443 by the Service.
+            - --entrypoints.web.address=:8000
+            # `to=websecure` would put the container port (8443) into the Location header; the published port is 443.
+            - --entrypoints.web.http.redirections.entryPoint.to=:443
+            - --entrypoints.web.http.redirections.entryPoint.scheme=https
+            - --entrypoints.websecure.address=:8443
+            - --entrypoints.websecure.http.tls=true
+            # Django and gunicorn decode these like nginx passes them (course and usage keys appear percent-encoded in URLs); only NUL
+            # is refused. Explicit, so that the choice does not hide behind a Traefik default that changed in v3.
+            - --entrypoints.websecure.http.encodedCharacters.allowEncodedSlash=true
+            - --entrypoints.websecure.http.encodedCharacters.allowEncodedBackSlash=true
+            - --entrypoints.websecure.http.encodedCharacters.allowEncodedPercent=true
+            - --entrypoints.websecure.http.encodedCharacters.allowEncodedQuestionMark=true
+            - --entrypoints.websecure.http.encodedCharacters.allowEncodedHash=true
+            - --entrypoints.websecure.http.encodedCharacters.allowEncodedSemicolon=true
+            - --entrypoints.websecure.http.encodedCharacters.allowEncodedNullCharacter=false
+            # No forwardedHeaders.trustedIPs / insecure: every client is untrusted, so Traefik discards inbound X-Forwarded-*
+            # and sets X-Forwarded-Proto (https here), -Host and -For from the connection itself. A client cannot spoof
+            # the header that SECURE_PROXY_SSL_HEADER trusts. No proxy protocol: the LoadBalancer does not send it.
+            # Total request-read time is unlimited (Studio imports and uploads of up to 2 GiB); write and idle follow gunicorn's 300 s.
+            - --entrypoints.websecure.transport.respondingTimeouts.readTimeout=0s
+            - --entrypoints.websecure.transport.respondingTimeouts.writeTimeout=300s
+            - --entrypoints.websecure.transport.respondingTimeouts.idleTimeout=180s
+            # Liveness and readiness on an internal port that is not in the Service.
+            - --entrypoints.traefik.address=:9000
+            - --ping=true
+            - --ping.entryPoint=traefik
+            - --providers.kubernetesingress=true
+            - --providers.kubernetesingress.namespaces=py313-prod-local,traefik
+            - --providers.kubernetesingress.ingressendpoint.publishedservice=traefik/traefik
+            - --providers.kubernetescrd=true
+            - --providers.kubernetescrd.namespaces=py313-prod-local,traefik
+            # false keeps the documented `<namespace>-<name>@kubernetescrd` form that the Studio Ingress annotation uses (true appends a
+            # hash to the name, so the annotation would no longer find the Middleware). One namespace of routers here: no collisions.
+            - --providers.kubernetescrd.safeNaming=false
+          ports:
+            - name: web
+              containerPort: 8000
+            - name: websecure
+              containerPort: 8443
+            - name: ping
+              containerPort: 9000
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: ping
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: ping
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            # The buffering middleware of Studio spools request bodies above 2 MiB (up to 2 GiB) to a temporary file.
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 3Gi

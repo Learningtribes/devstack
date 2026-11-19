@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# After elasticsearch-0 is ready: copies the public CA to .local/es-ca.crt and creates (or updates) the application role and user,
+# as staging 03a-elasticsearch.sh does. Passwords never appear in argv: the bootstrap password is already in the pod's environment
+# and the application password goes in over stdin; curl reads both through --config on a pipe.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+ensure_local_dir
+require_secret_files es-app-password
+prefix=$(sed -n 's/^BRINGUP_ES_INDEX_PREFIX=//p' "$OVERLAY/jobs/bringup.env")
+[ -n "$prefix" ] || die 'BRINGUP_ES_INDEX_PREFIX missing in overlays/orbstack-local/jobs/bringup.env'
+
+pod=elasticsearch-0
+ca_in_pod=/usr/share/elasticsearch/config/certs/ca/ca.crt
+step 'Elasticsearch CA'
+k wait --for=condition=Ready "pod/$pod" --timeout=600s >/dev/null || die "$pod is not ready"
+k exec "$pod" -c elasticsearch -- cat "$ca_in_pod" > "$LOCAL_DIR/es-ca.crt.tmp"
+grep -q 'BEGIN CERTIFICATE' "$LOCAL_DIR/es-ca.crt.tmp" || die 'could not read the CA from the pod'
+mv "$LOCAL_DIR/es-ca.crt.tmp" "$LOCAL_DIR/es-ca.crt"; chmod 600 "$LOCAL_DIR/es-ca.crt"
+note "wrote $LOCAL_DIR/es-ca.crt (public certificate)"
+
+step "Role $ES_ROLE and user $ES_USER"
+# The search engine creates and deletes only indices below ELASTIC_SEARCH_INDEX_PREFIX (prefix + "_"). cluster:monitor is needed for
+# GET / (the client's product check), exactly as in 03a.
+# shellcheck disable=SC2016  # the script runs inside the pod
+remote='
+set -euo pipefail
+ca=/usr/share/elasticsearch/config/certs/ca/ca.crt
+es=https://localhost:9200
+# the secret file has no trailing newline: read then returns 1 although the value is complete
+IFS= read -r app_password || [ -n "$app_password" ]
+admin() { curl -fsS -m 30 --cacert "$ca" --config <(printf "user = \"elastic:%s\"\n" "$ELASTIC_PASSWORD") "$@"; }
+admin -X PUT -H "Content-Type: application/json" "$es/_security/role/$ES_ROLE" \
+  --data "{\"cluster\":[\"monitor\"],\"indices\":[{\"names\":[\"${INDEX_PREFIX}_*\"],\"privileges\":[\"all\"]}]}" >/dev/null
+printf "{\"password\":\"%s\",\"roles\":[\"%s\"],\"full_name\":\"py313 application\"}" "$app_password" "$ES_ROLE" |
+  admin -X PUT -H "Content-Type: application/json" "$es/_security/user/$ES_USER" --data-binary @- >/dev/null
+code=$(curl -s -o /dev/null -m 15 -w "%{http_code}" --cacert "$ca" --config <(printf "user = \"%s:%s\"\n" "$ES_USER" "$app_password") "$es/" || true)
+echo "application user GET / -> HTTP $code"
+[ "$code" = 200 ]
+'
+secret_value es-app-password | k exec -i "$pod" -c elasticsearch -- env "ES_ROLE=$ES_ROLE" "ES_USER=$ES_USER" "INDEX_PREFIX=$prefix" bash -c "$remote" \
+  | sed 's/^/   /' || die 'role/user setup failed'

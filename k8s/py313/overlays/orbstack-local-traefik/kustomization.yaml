@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Production-like local ingress: Traefik (../../traefik) -> lms / cms / static on https://{lms,studio}.local-prod.7mud.com.
+# Apply with scripts/traefik-up (INGRESS=traefik scripts/up). The site domains live in the database, so this mode needs a database
+# that was seeded for it: ./jobs carries the matching db-init configuration and `up` refuses to switch an existing namespace.
+resources:
+  - ../orbstack-local
+  - ingress
+# The site names resolve inside the cluster to Traefik (coredns-custom) and present the local CA's certificate, so every pod that
+# runs the platform trusts bundle = system CAs + local CA. SSL_CERT_FILE covers `ssl` default contexts, REQUESTS_CA_BUNDLE `requests`;
+# the Elasticsearch client passes its own ca_certs and is unaffected. The ConfigMap local-ca-bundle is created by scripts/gen-local-tls
+# (it depends on the generated CA, so it is not rendered here).
+patches:
+  - target:
+      kind: Deployment
+      labelSelector: app.kubernetes.io/name=edxapp
+    patch: |-
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value: {name: local-ca-bundle, configMap: {name: local-ca-bundle}}
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts/-
+        value: {name: local-ca-bundle, mountPath: /etc/local-ca, readOnly: true}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: SSL_CERT_FILE, value: /etc/local-ca/ca-bundle.crt}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: REQUESTS_CA_BUNDLE, value: /etc/local-ca/ca-bundle.crt}
+  - target:
+      kind: CronJob
+      labelSelector: app.kubernetes.io/name=edxapp
+    patch: |-
+      - op: add
+        path: /spec/jobTemplate/spec/template/spec/volumes/-
+        value: {name: local-ca-bundle, configMap: {name: local-ca-bundle}}
+      - op: add
+        path: /spec/jobTemplate/spec/template/spec/containers/0/volumeMounts/-
+        value: {name: local-ca-bundle, mountPath: /etc/local-ca, readOnly: true}
+      - op: add
+        path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
+        value: {name: SSL_CERT_FILE, value: /etc/local-ca/ca-bundle.crt}
+      - op: add
+        path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
+        value: {name: REQUESTS_CA_BUNDLE, value: /etc/local-ca/ca-bundle.crt}

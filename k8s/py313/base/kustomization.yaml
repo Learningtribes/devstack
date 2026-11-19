@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - serviceaccount.yaml
+  - lms.yaml
+  - cms.yaml
+  - workers.yaml
+  - cronjobs.yaml
+# Labels are added to metadata and pod templates only; selectors stay under manual control.
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: openedx
+      app.kubernetes.io/managed-by: kustomize
+    includeSelectors: false
+    includeTemplates: true

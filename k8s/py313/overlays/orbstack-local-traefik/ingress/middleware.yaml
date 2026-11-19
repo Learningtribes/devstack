@@ -1,0 +1,11 @@
+# Equivalent of the production nginx `client_max_body_size 2048M` on the Studio server block (triboo-doc py313-prod-na-baseline-20261112).
+# Traefik has no body limit by default; the buffering middleware is its only one. It reads the whole request before forwarding:
+# bodies above memRequestBodyBytes go to a temporary file in the Traefik pod (/tmp emptyDir, 3 GiB).
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: studio-body-limit
+spec:
+  buffering:
+    maxRequestBodyBytes: 2147483648
+    memRequestBodyBytes: 2097152

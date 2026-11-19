@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# In-cluster stand-ins for the managed services of a real environment; local use only.
+resources:
+  - mysql.yaml
+  - mongodb.yaml
+  - elasticsearch.yaml
+  - rabbitmq.yaml
+  - memcached.yaml

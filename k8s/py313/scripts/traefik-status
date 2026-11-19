@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Read-only overview of the Traefik mode.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+kc get namespace "$TNS" >/dev/null 2>&1 || { echo "namespace $TNS does not exist (INGRESS=traefik scripts/up creates it)"; exit 0; }
+step "Ingress mode of $NS"
+note "$(kc get namespace "$NS" -o jsonpath='{.metadata.annotations.py313\.learningtribes\.com/ingress-mode}' 2>/dev/null || true)"
+step "Traefik ($TNS)"
+kt get deployment,pods,service -o wide
+step "Ingress, Middleware, static ($NS)"
+k get ingress,middlewares.traefik.io,deployment,pods -l "$FEATURE_LABEL" 2>&1
+step 'Traefik CRDs and cluster objects'
+kc get crd --selector "$FEATURE_LABEL" -o name
+kc get clusterrole,clusterrolebinding traefik-py313-local -o name 2>&1
+k get role,rolebinding -l "$FEATURE_LABEL" -o name 2>&1
+kt get role,rolebinding -o name 2>&1
+step 'CoreDNS custom configuration'
+kc -n kube-system get configmap coredns-custom -o go-template='{{range $k, $v := .data}}{{$k}}: {{$v}}{{end}}' 2>&1
+step 'Certificates'
+if [ -s "$TLS_DIR/tls.crt" ]; then
+  openssl x509 -in "$TLS_DIR/tls.crt" -noout -subject -enddate | sed 's/^/   leaf: /'
+  openssl x509 -in "$TLS_DIR/ca.crt" -noout -enddate -fingerprint -sha256 | sed 's/^/   ca:   /'
+else
+  note "no $TLS_DIR/tls.crt (scripts/gen-local-tls)"
+fi
+step 'Recent warning events'
+kt get events --field-selector type=Warning --sort-by=.lastTimestamp 2>/dev/null | tail -n 8
+k get events --field-selector type=Warning --sort-by=.lastTimestamp 2>/dev/null | tail -n 8
+step 'Memory (docker stats, Traefik and static containers)'
+docker stats --no-stream --format '   {{.Name}}  {{.MemUsage}}' 2>/dev/null | grep -E 'k8s_(traefik|nginx)_' || note 'no matching containers'

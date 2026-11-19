@@ -1,0 +1,238 @@
+#!/usr/bin/env bash
+# Smoke test of the Traefik mode. Every host-side request bypasses the system DNS, the system proxy and Clash:
+#   curl --noproxy '*' --resolve <host>:443:127.0.0.1 --resolve <host>:80:127.0.0.1 --cacert .local/tls/ca.crt
+# so it proves the cluster side only (scripts/traefik-doctor covers the browser side). A throw-away staff user is created through
+# `manage lms shell` with a random password that goes over stdin and a mode-600 temp file (never argv, never printed) and is deleted at the end.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+[ "$(kc get namespace "$NS" -o jsonpath='{.metadata.annotations.py313\.learningtribes\.com/ingress-mode}' 2>/dev/null)" = traefik ] \
+  || die "namespace $NS is not in Traefik mode (INGRESS=traefik scripts/up)"
+CA=$TLS_DIR/ca.crt
+[ -s "$CA" ] || die "missing $CA: run scripts/gen-local-tls"
+LMS=lms.$BASE_DOMAIN
+CMS=studio.$BASE_DOMAIN
+SMOKE_USER=traefik-smoke
+SMOKE_EMAIL=traefik-smoke@example.invalid
+work=$(mktemp -d)
+fails=0
+user_created=0
+IMPORT_SRC=course-v1:SmokeOrg+IMPSRC+2026
+IMPORT_DST=course-v1:SmokeOrg+IMPDST+2026
+courses_created=0
+# shellcheck disable=SC2016  # the snippets run inside the pod
+delete_courses() {
+  k exec deploy/cms -- edxapp-entrypoint manage cms shell -c '
+from opaque_keys.edx.keys import CourseKey
+from xmodule.modulestore import ModuleStoreEnum
+from xmodule.modulestore.django import modulestore
+for key in ("'"$IMPORT_SRC"'", "'"$IMPORT_DST"'"):
+    try:
+        modulestore().delete_course(CourseKey.from_string(key), ModuleStoreEnum.UserID.test)
+    except Exception as exc:
+        print("delete", key, type(exc).__name__)' >/dev/null 2>&1 || true
+}
+delete_user() {
+  k exec deploy/lms -- edxapp-entrypoint manage lms shell -c "from django.contrib.auth.models import User; User.objects.filter(username='$SMOKE_USER').delete()" >/dev/null 2>&1 || true
+}
+cleanup() {
+  [ "$courses_created" = 0 ] || delete_courses
+  [ "$user_created" = 0 ] || delete_user
+  rm -rf "$work"
+}
+trap cleanup EXIT
+
+pass() { printf 'PASS   %s\n' "$*"; }
+fail() { printf 'FAIL   %s\n' "$*"; fails=$((fails + 1)); }
+expect() { # expect WANTED_REGEX "description" GOT
+  if [[ "$3" =~ ^($1)$ ]]; then pass "$2 -> $3"; else fail "$2 -> $3 (wanted $1)"; fi
+}
+cc() {
+  curl -sS --noproxy '*' --cacert "$CA" -m 60 \
+    --resolve "$LMS:443:127.0.0.1" --resolve "$LMS:80:127.0.0.1" --resolve "$CMS:443:127.0.0.1" --resolve "$CMS:80:127.0.0.1" "$@"
+}
+code() { cc -o /dev/null -w '%{http_code}' "$@" 2>/dev/null || true; }
+redact_cookies() { sed -E 's/^([Ss]et-[Cc]ookie: [^=]+)=[^;]*/\1=<redacted>/'; }
+
+step 'HTTPS through Traefik: heartbeats'
+expect 200 "https://$LMS/heartbeat" "$(code "https://$LMS/heartbeat")"
+expect 200 "https://$CMS/heartbeat" "$(code "https://$CMS/heartbeat")"
+
+step 'HTTP -> HTTPS redirect on port 80'
+for host in "$LMS" "$CMS"; do
+  cc -o /dev/null -D "$work/h" "http://$host/heartbeat" || true
+  status=$(head -n 1 "$work/h" | tr -d '\r' | awk '{print $2}')
+  location=$(tr -d '\r' < "$work/h" | awk 'tolower($1)=="location:"{print $2}')
+  expect '301|302|307|308' "http://$host/heartbeat" "$status"
+  [ "$location" = "https://$host/heartbeat" ] && pass "Location is $location" || fail "Location is '$location'"
+done
+
+step 'Pages and static files'
+static_check() { # static_check LABEL HOST PAGE_PATH PREFIX
+  local label=$1 host=$2 page=$3 prefix=$4 body=$work/$1.html url ext want type status
+  status=$(cc -o "$body" -D "$work/page.h" -w '%{http_code}' "https://$host$page" 2>/dev/null || true)
+  expect 200 "$label https://$host$page" "$status"
+  grep -qi '^content-type: text/html' "$work/page.h" && pass "$label page content-type is text/html" || fail "$label page content-type is not text/html"
+  for ext in css js; do
+    url=$(grep -oE "(href|src)=\"[^\"]*${prefix}[^\"]*\.${ext}(\?[^\"]*)?\"" "$body" | head -n 1 | sed -E 's/^[a-z]+="//; s/"$//' || true)
+    if [ -z "$url" ]; then fail "$label page references no $ext file below $prefix"; continue; fi
+    url=${url#https://"$host"}
+    status=$(cc -o /dev/null -D "$work/s.h" -w '%{http_code}' "https://$host$url" 2>/dev/null || true)
+    type=$(tr -d '\r' < "$work/s.h" | awk 'tolower($1)=="content-type:"{print $2}' | head -n 1)
+    [ "$ext" = css ] && want='text/css.*' || want='(application|text)/javascript.*'
+    expect 200 "$label $ext $url" "$status"
+    [[ "$type" =~ ^($want)$ ]] && pass "$label $ext content-type $type" || fail "$label $ext content-type '$type'"
+    printf '   cache-control: %s\n' "$(tr -d '\r' < "$work/s.h" | awk 'tolower($1)=="cache-control:"{$1=""; print}' | head -n 1)"
+  done
+}
+static_check LMS "$LMS" /login /static/
+static_check Studio "$CMS" /signin /static/studio/
+expect 403 "static staticfiles.json is private" "$(code "https://$LMS/static/staticfiles.json")"
+expect '400|404' "static path traversal" "$(code --path-as-is "https://$LMS/static/../etc/passwd")"
+expect '404|421|400' "unknown Host header through Traefik" "$(code -H 'Host: evil.example' "https://$LMS/login")"
+absolute=$(grep -oE "https?://$LMS" "$work/LMS.html" | sort | uniq -c | tr '\n' ' ' || true)
+note "absolute LMS URLs in the /login HTML: ${absolute:-none}"
+
+step 'Login across both hosts (shared session cookie), X-Forwarded-Proto and Secure cookies'
+pw="$(openssl rand -hex 16)Aa1!"
+( umask 077; printf '%s' "$pw" > "$work/pw" )
+# shellcheck disable=SC2016  # the snippet runs inside the pod
+create='import sys
+from django.contrib.auth.models import User
+from student.models import UserProfile
+password = sys.stdin.readline().strip()
+User.objects.filter(username="'"$SMOKE_USER"'").delete()
+user = User.objects.create_user("'"$SMOKE_USER"'", "'"$SMOKE_EMAIL"'", password)
+user.is_staff = True
+user.is_superuser = True  # Studio authoring rights need a course role or the platform developer level
+user.is_active = True
+user.save()
+UserProfile.objects.create(user=user, name="Traefik Smoke")
+print("USER_READY")'
+if printf '%s\n' "$pw" | k exec -i deploy/lms -- edxapp-entrypoint manage lms shell -c "$create" 2>&1 | grep -q '^USER_READY$'; then
+  user_created=1; pass 'test user created (password not printed)'
+else
+  fail 'could not create the test user'
+fi
+csrf() { awk '$6=="csrftoken"{print $7}' "$1"; }
+login() { # login JAR HOST ENDPOINT PAGE [ORIGIN_SCHEME [EXTRA_HEADER]]
+  local jar=$1 host=$2 endpoint=$3 page=$4 oscheme=${5:-https} extra=${6:-X-Smoke-Noop: 1}
+  cc -o /dev/null -c "$jar" "https://$host$page"
+  cc -o "$work/login.json" -D "$work/login.h" -b "$jar" -c "$jar" -X POST "https://$host$endpoint" \
+    -H "X-CSRFToken: $(csrf "$jar")" -H "Referer: https://$host$page" -H "Origin: $oscheme://$host" -H "$extra" -H 'X-Requested-With: XMLHttpRequest' \
+    --data-urlencode "email=$SMOKE_EMAIL" --data-urlencode "password@$work/pw" -w '%{http_code}'
+}
+# A real course import through Studio: the upload lands in GITHUB_REPO_ROOT of the cms pod, is stored in the import storage, and the
+# import_olx task of worker-cms-default (another pod) must read it from there, unpack it under its own GITHUB_REPO_ROOT and write the
+# course into the modulestore. Needs the Studio session cookie jar of a staff user.
+# shellcheck disable=SC2016  # the snippets run inside the pod
+studio_import_proof() { # studio_import_proof JAR
+  local jar=$1 tarball=$work/import-smoke.tar.gz status stage i=0 verified created
+  step 'Studio course import (upload -> import storage -> cms worker -> modulestore)'
+  courses_created=1
+  created=$(k exec deploy/cms -- edxapp-entrypoint manage cms shell -c '
+from xmodule.modulestore import ModuleStoreEnum
+from xmodule.modulestore.django import modulestore
+from contentstore.management.commands.export_olx import export_course_to_tarfile
+store = modulestore()
+uid = ModuleStoreEnum.UserID.test
+with store.default_store(ModuleStoreEnum.Type.split):
+    src = store.create_course("SmokeOrg", "IMPSRC", "2026", uid, fields={"display_name": "Import smoke source"})
+    chapter = store.create_child(uid, src.location, "chapter", block_id="ch1", fields={"display_name": "Imported chapter"})
+    seq = store.create_child(uid, chapter.location, "sequential", block_id="seq1", fields={"display_name": "Imported sequence"})
+    vert = store.create_child(uid, seq.location, "vertical", block_id="vert1", fields={"display_name": "Imported unit"})
+    store.create_child(uid, vert.location, "html", block_id="html1", fields={"display_name": "Imported text", "data": "<p>import-smoke-marker</p>"})
+    store.create_course("SmokeOrg", "IMPDST", "2026", uid, fields={"display_name": "Import smoke target"})
+export_course_to_tarfile(src.id, "/tmp/import-smoke.tar.gz")
+print("COURSES_READY")' 2>&1 || true)
+  if ! grep -q '^COURSES_READY$' <<< "$created"; then
+    fail 'could not create and export the source course'; return 0
+  fi
+  k exec deploy/cms -- cat /tmp/import-smoke.tar.gz > "$tarball"
+  k exec deploy/cms -- rm -f /tmp/import-smoke.tar.gz
+  [ -s "$tarball" ] && pass "exported course archive ($(wc -c < "$tarball" | tr -d ' ') bytes)" || { fail 'empty export archive'; return 0; }
+  status=$(cc -o "$work/import.json" -b "$jar" -c "$jar" -X POST "https://$CMS/import/$IMPORT_DST" \
+    -H "X-CSRFToken: $(csrf "$jar")" -H "Referer: https://$CMS/import/$IMPORT_DST" -H "Origin: https://$CMS" -H 'Accept: application/json' \
+    -F "course-data=@$tarball;filename=import-smoke.tar.gz;type=application/gzip" -w '%{http_code}' 2>/dev/null || true)
+  expect 200 "POST /import/<course> with the .tar.gz upload (GITHUB_REPO_ROOT must be writable in the cms pod)" "$status"
+  stage=0
+  while [ "$i" -lt 60 ]; do
+    stage=$(cc -b "$jar" "https://$CMS/import_status/$IMPORT_DST/import-smoke.tar.gz" 2>/dev/null | sed -nE 's/.*"ImportStatus": *(-?[0-9]+).*/\1/p' || true)
+    case "${stage:-0}" in 4 | -*) break ;; esac
+    i=$((i + 1)); sleep 2
+  done
+  expect 4 "import_status reaches 4 (successful); -N means the task failed in stage N" "${stage:-none}"
+  verified=$(k exec deploy/cms -- edxapp-entrypoint manage cms shell -c '
+from opaque_keys.edx.keys import CourseKey
+from xmodule.modulestore.django import modulestore
+store = modulestore()
+course = store.get_course(CourseKey.from_string("'"$IMPORT_DST"'"))
+chapters = [store.get_item(c) for c in course.children]
+html = store.get_item(course.id.make_usage_key("html", "html1"))
+print("IMPORTED", [c.display_name for c in chapters], "marker" if "import-smoke-marker" in html.data else "nomarker")' 2>&1 | sed -n 's/^IMPORTED //p' || true)
+  [ "$verified" = "['Imported chapter'] marker" ] && pass "modulestore holds the imported chapter and the html marker" || fail "modulestore content after import: '${verified:-nothing}'"
+  k logs deploy/worker-cms-default --tail=400 2>/dev/null | grep -E "Course import .*(Download from storage complete|Course import successful|Temp data cleared)" | sed 's/^.*\] //' | tail -n 3 | sed 's/^/   worker-cms-default: /' || true
+}
+if [ "$user_created" = 1 ]; then
+  jar1=$work/jar1
+  status=$(login "$jar1" "$LMS" /login_ajax /login 2>/dev/null || true)
+  expect 200 "LMS POST /login_ajax with Origin https://$LMS (CSRF origin check needs X-Forwarded-Proto)" "$status"
+  grep -q '"success": *true' "$work/login.json" && pass 'LMS login success: true' || fail 'LMS login did not succeed'
+  tr -d '\r' < "$work/login.h" | grep -i '^set-cookie:' | redact_cookies | sed 's/^/   /'
+  if tr -d '\r' < "$work/login.h" | grep -i '^set-cookie: *sessionid' | grep -qi 'secure'; then pass 'session cookie has the Secure flag'; else fail 'session cookie lacks the Secure flag'; fi
+  if tr -d '\r' < "$work/login.h" | grep -i '^set-cookie: *sessionid' | grep -qi "domain=\.\?$BASE_DOMAIN"; then pass "session cookie Domain is .$BASE_DOMAIN"; else fail 'session cookie has no shared Domain'; fi
+  expect 200 "Studio /home/ with the LMS session cookie (shared cookie domain)" "$(code -b "$jar1" "https://$CMS/home/")"
+  expect 200 "LMS /dashboard with the LMS session" "$(code -b "$jar1" "https://$LMS/dashboard")"
+  jar2=$work/jar2
+  status=$(login "$jar2" "$CMS" /login_post /signin 2>/dev/null || true)
+  expect 200 "Studio POST /login_post with Origin https://$CMS" "$status"
+  grep -q '"success": *true' "$work/login.json" && pass 'Studio login success: true' || fail 'Studio login did not succeed'
+  expect 200 "Studio /home/ after the Studio login" "$(code -b "$jar2" "https://$CMS/home/")"
+  expect 200 "LMS /dashboard with the Studio-issued session" "$(code -b "$jar2" "https://$LMS/dashboard")"
+  studio_import_proof "$jar2"
+  # Last: a successful login ends the user's earlier sessions (concurrent login prevention).
+  # Django derives the request scheme only from X-Forwarded-Proto: an http Origin must be refused, and a client-sent header, in either
+  # spelling, must not change it. The underscore case also passes with aliasHeadersStrategy=keep (gunicorn drops such headers itself),
+  # so it is a regression guard for the stack, not proof of the Traefik setting.
+  status=$(login "$work/jar-neg" "$LMS" /login_ajax /login http 2>/dev/null || true)
+  expect 403 "LMS POST with Origin http:// is refused (the app sees scheme https)" "$status"
+  status=$(login "$work/jar-sp1" "$LMS" /login_ajax /login https 'X-Forwarded-Proto: http' 2>/dev/null || true)
+  expect 200 "client-sent X-Forwarded-Proto: http is overwritten by Traefik" "$status"
+  status=$(login "$work/jar-sp2" "$LMS" /login_ajax /login https 'X_Forwarded_Proto: http' 2>/dev/null || true)
+  expect 200 "client-sent X_Forwarded_Proto (underscore alias) does not change the scheme the app sees" "$status"
+  location=$(cc -o /dev/null -D - -b "$jar1" "https://$CMS/home/nonexistent-course" 2>/dev/null | tr -d '\r' | awk 'tolower($1)=="location:"{print $2}' | head -n 1 || true)
+  note "sample redirect Location from Studio: ${location:-none}"
+fi
+
+step 'In-cluster: the site names resolve to Traefik and the CA bundle is trusted'
+traefik_ip=$(kt get service traefik -o jsonpath='{.spec.clusterIP}')
+probe() { # probe DEPLOYMENT
+  # shellcheck disable=SC2016
+  k exec "deploy/$1" -- python -c '
+import os, socket, ssl, sys, urllib.request
+import requests
+lms, cms = sys.argv[1], sys.argv[2]
+print("RESOLVE", lms, socket.gethostbyname(lms), cms, socket.gethostbyname(cms))
+print("ENV", os.environ["SSL_CERT_FILE"], os.environ["REQUESTS_CA_BUNDLE"])
+r = requests.get("https://" + lms + "/heartbeat", timeout=20)
+print("REQUESTS", r.status_code, r.url)
+print("URLLIB", urllib.request.urlopen("https://" + cms + "/heartbeat", timeout=20).status)
+try:
+    requests.get("https://" + lms + "/heartbeat", timeout=20, verify="/etc/ssl/certs/ca-certificates.crt")
+    print("SYSTEM-BUNDLE-ONLY", "unexpectedly trusted")
+except requests.exceptions.SSLError:
+    print("SYSTEM-BUNDLE-ONLY", "rejected, as expected: the local CA is not a public CA")
+' "$LMS" "$CMS" 2>&1
+}
+for deployment in lms cms; do
+  out=$(probe "$deployment" || true)
+  echo "$out" | sed "s/^/   $deployment: /"
+  grep -q "^RESOLVE $LMS $traefik_ip $CMS $traefik_ip\$" <<<"$out" && pass "$deployment pod resolves both names to the Traefik ClusterIP $traefik_ip" || fail "$deployment pod name resolution is not $traefik_ip"
+  grep -q '^REQUESTS 200 ' <<<"$out" && grep -q '^URLLIB 200$' <<<"$out" && pass "$deployment pod: HTTPS to the site names succeeds with requests and urllib" || fail "$deployment pod HTTPS to the site names failed"
+done
+celery_check
+
+step 'Traefik access log (last lines for this run, no cookies or bodies)'
+kt logs deploy/traefik --tail=5 | sed 's/^/   /'
+
+step 'Result'
+if [ "$fails" -eq 0 ]; then echo 'TRAEFIK SMOKE PASSED'; else echo "TRAEFIK SMOKE FAILED ($fails checks)"; exit 1; fi

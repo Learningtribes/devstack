@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Read-only overview of the local namespace.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+kc get namespace "$NS" >/dev/null 2>&1 || { echo "namespace $NS does not exist (scripts/up creates it)"; exit 0; }
+step 'Pods'; k get pods -o wide
+step 'PVCs'; k get pvc
+step 'Rollouts'
+for kind_name in $(k get deployment,statefulset -o name); do k rollout status "$kind_name" --timeout=5s 2>&1 | sed "s#^#   $kind_name: #" || true; done
+step 'Jobs'; k get jobs
+step 'Recent warning events'
+k get events --field-selector type=Warning --sort-by=.lastTimestamp 2>/dev/null | tail -n 15
+step 'Resource usage (kubectl top)'
+if k top pods 2>/dev/null; then :; else note 'metrics API not available (no metrics-server in this cluster): skipped'; fi

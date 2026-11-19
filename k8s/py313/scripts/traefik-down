@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Removes ONLY what the Traefik mode created, each object proven ours by the label py313.learningtribes.com/feature=traefik-local:
+#   in py313-prod-local: the Ingress objects, the Middleware, the static Deployment/Service and its nginx ConfigMap, and the Role and
+#   RoleBinding that let Traefik read there;
+#   namespace traefik; ClusterRole/ClusterRoleBinding traefik-py313-local; the CRDs (traefik.io / traefik.containo.us only);
+#   ConfigMap kube-system/coredns-custom (refused when it has keys this tool did not create) and a CoreDNS rollout restart.
+# It does not delete py313-prod-local (scripts/down does), and it keeps the Secret local-prod-tls and the ConfigMap local-ca-bundle in
+# that namespace: the application pods of the Traefik mode mount the bundle and must still start. .local/tls is never touched.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+OUR_KEYS='local-prod.override'
+
+step "Objects in $NS"
+if kc get namespace "$NS" >/dev/null 2>&1; then
+  require_owned_namespace
+  k delete ingress,deployment,service,rolebinding,role --selector "$FEATURE_LABEL" --ignore-not-found --wait=true
+  if kc get crd middlewares.traefik.io >/dev/null 2>&1; then k delete middlewares.traefik.io --selector "$FEATURE_LABEL" --ignore-not-found; fi
+  for name in $(k get configmap --selector "$FEATURE_LABEL" -o name | grep -v '/local-ca-bundle$' || true); do k delete "$name"; done
+  note 'kept local-prod-tls and local-ca-bundle (removed with the namespace by scripts/down)'
+else
+  note "namespace $NS does not exist"
+fi
+
+step "Namespace $TNS"
+if kc get namespace "$TNS" >/dev/null 2>&1; then
+  [ "$(kc get namespace "$TNS" -o jsonpath='{.metadata.labels.py313\.learningtribes\.com/feature}')" = traefik-local ] \
+    || die "namespace $TNS was not created by this feature: refusing to delete it"
+  kc delete namespace "$TNS" --wait=true --timeout=300s
+else
+  note "namespace $TNS does not exist"
+fi
+
+step 'ClusterRole and ClusterRoleBinding'
+for kind in clusterrolebinding clusterrole; do
+  if kc get "$kind" traefik-py313-local >/dev/null 2>&1; then
+    [ "$(kc get "$kind" traefik-py313-local -o jsonpath='{.metadata.labels.py313\.learningtribes\.com/feature}')" = traefik-local ] \
+      || die "$kind/traefik-py313-local was not created by this feature: refusing to delete it"
+    kc delete "$kind" traefik-py313-local
+  fi
+done
+
+step 'Traefik CRDs'
+for crd in $(kc get crd --selector "$FEATURE_LABEL" -o name); do
+  case "$crd" in
+    customresourcedefinition.apiextensions.k8s.io/*.traefik.io | customresourcedefinition.apiextensions.k8s.io/*.traefik.containo.us) kc delete "$crd" ;;
+    *) die "$crd carries the feature label but is not a Traefik CRD: refusing to delete it" ;;
+  esac
+done
+
+step 'CoreDNS custom configuration'
+if kc -n kube-system get configmap coredns-custom >/dev/null 2>&1; then
+  [ "$(kc -n kube-system get configmap coredns-custom -o jsonpath='{.metadata.labels.py313\.learningtribes\.com/feature}')" = traefik-local ] \
+    || die 'kube-system/coredns-custom was not created by this feature: refusing to delete it'
+  keys=$(kc -n kube-system get configmap coredns-custom -o go-template='{{range $k, $v := .data}}{{$k}}{{"\n"}}{{end}}')
+  [ "$keys" = "$OUR_KEYS" ] || die "kube-system/coredns-custom has keys this tool did not create ($(echo "$keys" | tr '\n' ' ')): refusing to delete it"
+  kc -n kube-system delete configmap coredns-custom
+  kc -n kube-system rollout restart deployment/coredns >/dev/null
+  kc -n kube-system rollout status deployment/coredns --timeout=120s >/dev/null
+  note 'removed coredns-custom and restarted coredns'
+else
+  note 'coredns-custom does not exist'
+fi

@@ -1,0 +1,48 @@
+# Same Role as in ../rbac.yaml, for the application namespace that Traefik routes to. Applied by scripts/traefik-install (not by the
+# overlay, so that it exists before Traefik starts) and removed by scripts/traefik-down or together with the namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: traefik-py313-local
+  namespace: py313-prod-local
+rules:
+  - apiGroups: [""]
+    resources: [services, secrets, configmaps]
+    verbs: [get, list, watch]
+  - apiGroups: [discovery.k8s.io]
+    resources: [endpointslices]
+    verbs: [list, watch]
+  - apiGroups: [networking.k8s.io]
+    resources: [ingresses]
+    verbs: [get, list, watch]
+  # publishedService: writes the LoadBalancer address into the Ingress status.
+  - apiGroups: [networking.k8s.io]
+    resources: [ingresses/status]
+    verbs: [update]
+  - apiGroups: [traefik.io]
+    resources:
+      - middlewares
+      - middlewaretcps
+      - ingressroutes
+      - traefikservices
+      - ingressroutetcps
+      - ingressrouteudps
+      - tlsoptions
+      - tlsstores
+      - serverstransports
+      - serverstransporttcps
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: traefik-py313-local
+  namespace: py313-prod-local
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: traefik-py313-local
+subjects:
+  - kind: ServiceAccount
+    name: traefik
+    namespace: traefik
