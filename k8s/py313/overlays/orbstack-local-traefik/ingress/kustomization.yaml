@@ -15,7 +15,7 @@ images:
   # Same tag as ../../orbstack-local (a test asserts it).
   - name: edxapp
     newName: edxapp
-    newTag: py313-prodimage-b0db03a-local
+    newTag: py313-prodimage-3c3f2f7-local
 labels:
   - pairs:
       app.kubernetes.io/part-of: openedx

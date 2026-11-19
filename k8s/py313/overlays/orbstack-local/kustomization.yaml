@@ -12,7 +12,7 @@ images:
   # The arm64 image built into the local Docker daemon, which OrbStack's Kubernetes uses directly: never pulled.
   - name: edxapp
     newName: edxapp
-    newTag: py313-prodimage-b0db03a-local
+    newTag: py313-prodimage-3c3f2f7-local
 replicas:
   - name: lms
     count: 1

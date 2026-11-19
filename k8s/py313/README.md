@@ -137,7 +137,7 @@ Everything below is for the OrbStack Kubernetes cluster only. Every script refus
 `py313-prod-local` only (fixed in `scripts/lib.sh`; `down` also checks the namespace label). No script removes Docker containers, images or volumes.
 
 Prerequisites: OrbStack with Kubernetes enabled (StorageClass `local-path`), `kubectl`, `docker`, `openssl`, `uv`; the images
-`edxapp:py313-prodimage-b0db03a-local` (image change; the tag is read from `overlays/orbstack-local/kustomization.yaml`),
+`edxapp:py313-prodimage-3c3f2f7-local` (image change; the tag is read from `overlays/orbstack-local/kustomization.yaml`),
 `mysql:8.4.13`, `mongo:8.0`, `elasticsearch:8.19.0`, `rabbitmq:4.3`, `memcached:1.6.45` in the local Docker daemon (nothing is pulled);
 about 4 GiB of free memory in the Docker VM for the default overlay, about 6 GiB with all workers.
 

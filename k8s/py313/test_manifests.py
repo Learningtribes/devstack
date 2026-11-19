@@ -33,7 +33,7 @@ OVERLAY_PROVIDED_CONFIGMAPS = {'py313-bringup-env'}
 RUNTIME_CONFIGMAPS = {'local-ca-bundle'}
 SENSITIVE_NAME_PARTS = ('PASSWORD', 'SECRET', 'TOKEN', 'PRIVATE_KEY', 'API_KEY')
 
-# staging.env WORKER_SET of PLATFORM_COMMIT b0db03a9e3e (py313-staging-deploy-v2): program -> system:queue:pool:concurrency.
+# staging.env WORKER_SET (py313-staging-deploy-v2; identical at PLATFORM_COMMIT b0db03a9e3e and 3c3f2f721d1): program -> system:queue:pool:concurrency.
 EXPECTED_WORKERS = {
     'lms_default_1': ('lms', 'edx.lms.core.default', 'prefork', '1'),
     'lms_high_1': ('lms', 'edx.lms.core.high', 'solo', '1'),
@@ -457,7 +457,7 @@ class OrbstackOverlayTest(unittest.TestCase):
                 container = template['spec']['containers'][0]
                 if name in ('mysql', 'mongodb', 'elasticsearch', 'rabbitmq', 'memcached'):
                     continue
-                self.assertEqual(container['image'], 'edxapp:py313-prodimage-b0db03a-local', name)
+                self.assertEqual(container['image'], 'edxapp:py313-prodimage-3c3f2f7-local', name)
                 self.assertEqual(container['imagePullPolicy'], 'IfNotPresent', name)
 
     def test_replicas_and_minimum_workers(self):

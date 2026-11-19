@@ -62,16 +62,50 @@ Decide the static files path (nginx sidecar, a `static` Deployment as locally, o
 - Worker `terminationGracePeriodSeconds` (open question Q8): the local value is a placeholder, staging uses `stopwaitsecs=432000`.
 - Worker liveness (none today), NetworkPolicy and PodSecurity labels, scheduling constraints, which CronJobs to enable, their time zone, deadlines and the shared storage that the `metrics` job needs.
 
+### 3.6 Learning Paths and course-discovery (no manifests here)
+
+Studio's Learning Path feature spans the image's database and a separate discovery service that this bundle does not deploy. Everything below
+was found on the single-host staging on 2026-11-19 (read back there) and in the code at Platform `3c3f2f721d1`; none of it was run on Kubernetes.
+Reference: triboo-doc `docs/staging/py313-staging-discovery-enable-20261119.md` (PR #11) and `docs/py313/course-discovery-py313-upgrade-2026-11-13.md` section 3.6.
+
+**Data in the edxapp database (not in the image).** Three rows are configuration data that no migration creates:
+the user `lms_catalog_service_user` (active, not staff, unusable password), a `CatalogIntegration` row with `enabled=True`, and a
+`ProgramsApiConfig` row with `enabled` and `enable_student_dashboard`. Without the last one Studio shows no Learning Path entry and the
+LMS hides every Learning Path surface; without the user, creating a Learning Path fails with `User.DoesNotExist` **after** discovery has accepted the
+POST (`ProgramESIndex.add_new_program` resolves it unguarded). The image ships `/startup/seed_learning_path_config.py` for this, but it refuses any database whose
+name does not start with `py313_` (a guard for the local replay), so production needs its own seeding step. It is idempotent (rows are only appended when the
+active one disagrees).
+
+**Discovery (Platform side of the contract).**
+
+| Item | Requirement | Why |
+| --- | --- | --- |
+| `COURSE_CATALOG_API_URL` in `lms.env.json` and `cms.env.json` | the in-cluster discovery Service URL, `.../api/v1/` | The Platform default is `http://0.0.0.0:18381/api/v1/`, which only works when discovery shares the host. Studio sends `Host: <site_domain>`, so the URL host is free. |
+| discovery `django_site` and `core_partner` | one Site whose domain is the public **LMS** host, a Partner with id 1 (`DEFAULT_PARTNER_ID`); `SITE_ID` stays unset | discovery resolves the Site from the request `Host` and reuses `request.site.domain` as `https://{domain}/oauth2/access_token`; an empty table makes every URL, `/health/` included, answer 500. `127.0.0.1` and Studio hosts do not work. |
+| Studio `SiteConfiguration.site_domain` | the LMS host, not the Studio host | It is the `Host` Studio sends; the Studio host does not serve `/oauth2`. |
+| JWT | Studio's `JWT_AUTH` (`JWT_ISSUER`, `JWT_AUDIENCE`, `JWT_SECRET_KEY`) equals discovery's `JWT_AUTH.JWT_ISSUERS[0]` | Studio signs the token (`JwtBuilder`); `/api/v1/programs/` validates it, `/api/v1/refresh_course_metadata/` does not. |
+| discovery `JWT_AUTH_HEADER_PREFIX` | `JWT` | drf-jwt 1.19 defaults to `Bearer`; the Platform sends `JWT <token>`. Only `settings/py313.py` of discovery sets it, `settings.production` does not (fix open in course-discovery). |
+| discovery `COURSES_API` | `URL`, `OIDC_URL_ROOT`, and the id/secret of an LMS OAuth (DOT) application | discovery fetches course metadata from the LMS with client credentials. |
+
+The configuration this bundle renders gives Studio **no** `JWT_AUTH`: `generate_aws_config.py` writes only `JWT_PRIVATE_SIGNING_KEY` and only for the LMS, so Studio signs
+with the Platform defaults (`change-me` for issuer, audience and secret, as on staging today). Set real values in `cms.auth.json` and mirror them in discovery before this is more than a test setup.
+
+Elasticsearch: Studio indexes Learning Paths under the `program_index` name (with the configured index prefix) and creates it on the first write; the search user must be
+allowed to create it. The local run does this; staging had not exercised it when this was written. The hot-index command (`run_hot_index`) is separately broken (triboo-doc issue #3).
+
 ## 4. Not proven
 
 - Real browser behaviour behind Clash or AnyConnect; real certificates and ACME; parity with the production Traefik configuration.
-- Services outside this change: forum, discovery, veda and xqueue of the legacy hosts have no manifests here.
+- Services outside this change: forum, discovery, veda and xqueue of the legacy hosts have no manifests here (discovery's contract with the Platform is in 3.6).
 - S3 media storage, mail relay, SAML and SSO, XQueue and certificate generation, `preview.` hosts, media uploads, a large (near 2 GiB) Studio import; a small course was exported in the pod and imported through the Studio endpoint; the HTTP export download was not exercised.
 - Rolling update, rollback, autoscaling and node failure; `/heartbeat` removes every pod from the Service when MongoDB, MySQL or Elasticsearch is down (liveness is a TCP check on purpose).
 - Monitoring: the application sends StatsD metrics to `localhost:8125` (seen in the pod logs); an agent or sidecar is required.
 - Load behaviour: all measurements are idle values from one single-node arm64 cluster.
 
 ## 5. Evidence recorded locally (single-node OrbStack, arm64)
+- **Pin bump 2026-11-19**: `inputs.env` moved from Platform `b0db03a9e3e` to `3c3f2f721d1` (adds the program-index factory fix and the Learning Path bring-up seed, Platform #2474; theme unchanged at `e4ed4e346811`; no lock or requirement changes).
+  The image was rebuilt natively on arm64 (`edxapp:py313-prodimage-3c3f2f7-local`, id `5f7532872c52`); contract tests (27) and manifests (57) pass, `build.sh --check` reports no warnings, and the built image contains
+  the removed legacy index mapping, the `TieredCache.delete_all_tiers` fix and `/startup/seed_learning_path_config.py`. **The cluster run, the Traefik smoke and the login checks listed below were recorded on the previous image and were not repeated on this one.**
 - Contract tests of the image (27), manifests (57) and scripts (34) pass; `buildx --check` reports no warnings.
 - Pods run as uid 1000 with a read-only root filesystem; heartbeats return 200 on both hosts through Traefik over HTTPS; HTTP redirects to HTTPS without a container port in the `Location`; static CSS and JS are served; login works on LMS and Studio with a shared Secure session cookie; one Celery task is consumed; the Studio body limit returns 413 when lowered.
 - Memory: about 3.6 GiB for the default stack (Elasticsearch about 0.9 GiB, MySQL about 0.6 GiB, each web pod about 0.5-0.6 GiB at idle with two workers).
