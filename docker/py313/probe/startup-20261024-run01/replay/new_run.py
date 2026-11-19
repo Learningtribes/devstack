@@ -116,7 +116,19 @@ def build_config(args, root, platform_commit, devstack_commit, subnet):
         'jwt_file': str(private / 'jwt.pem'), 'services': services, 'images': images,
         **({'platform_mount': 'live'} if getattr(args, 'live_platform', False) else {}),
         **({'theme_repo': args.theme_repo} if getattr(args, 'theme_repo', None) else {}),
+        **discovery_keys(args),
     }
+
+
+def discovery_keys(args):
+    """Optional course-discovery sidecar keys; omitted entirely when --discovery-repo is absent."""
+    repo = getattr(args, 'discovery_repo', None)
+    if not repo:
+        return {}
+    keys = {'discovery_repo': str(Path(repo).resolve()), 'discovery_image': args.discovery_image}
+    if getattr(args, 'discovery_port', None):
+        keys['discovery_port'] = args.discovery_port
+    return keys
 
 
 def write_private(path, data):
@@ -179,7 +191,14 @@ def main(argv=None):
     parser.add_argument('--theme-repo', required=True, help='triboo-theme checkout, bind-mounted read-write as theme '
                                                            '`hawthorn` (the theme is not packaged with Platform or Devstack)')
     parser.add_argument('--runtime-image', help='override images.runtime (local sha256 ID or the locked reference)')
+    parser.add_argument('--discovery-repo', help='course-discovery checkout; also enables the discovery sidecar '
+                                                 '(reuses this run\'s MySQL and memcached)')
+    parser.add_argument('--discovery-image', help='discovery runtime image (repository@sha256, local sha256 ID or tag); '
+                                                  'required together with --discovery-repo')
+    parser.add_argument('--discovery-port', type=int, help='loopback port for discovery (default 18381)')
     args = parser.parse_args(argv)
+    if getattr(args, 'discovery_repo', None) and not args.discovery_image:
+        raise SystemExit('new_run: --discovery-repo requires --discovery-image')
     try:
         target, config = create_run(args)
     except ValueError as error:

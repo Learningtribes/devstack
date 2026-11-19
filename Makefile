@@ -24,6 +24,7 @@ BRINGUP_PYTHON := uv run --no-project --python 3.13 python -B
 BRINGUP_DEV_RUN_ID ?= dev313
 BRINGUP_RUNS_ROOT ?= $(HOME)/workspace/hawthorn/py313-runs
 BRINGUP_CONFIG ?= $(BRINGUP_RUNS_ROOT)/$(BRINGUP_DEV_RUN_ID)/config.json
+DISCOVERY_IMAGE ?= ltdps/discovery:py313-local
 export BRINGUP_RUNS_ROOT
 define py313_require_config
 	@test -f "$(BRINGUP_CONFIG)" || { echo "No environment at $(BRINGUP_CONFIG); create it with: make py313-dev-up" >&2; exit 1; }
@@ -34,14 +35,17 @@ define py313_shell
 endef
 define py313_require_new_run
 	@test -n "$(RUN_ID)" -a -n "$(LMS_PORT)" -a -n "$(CMS_PORT)" -a -n "$(PLATFORM_REPO)" -a -n "$(THEME_REPO)" || { \
-	  echo "RUN_ID, LMS_PORT, CMS_PORT, PLATFORM_REPO and THEME_REPO (a triboo-theme checkout) are required (optional: PLATFORM_COMMIT DEVSTACK_REPO DEVSTACK_COMMIT RUN_ROOT SUBNET RUNTIME_IMAGE)" >&2; exit 1; }
+	  echo "RUN_ID, LMS_PORT, CMS_PORT, PLATFORM_REPO and THEME_REPO (a triboo-theme checkout) are required (optional: PLATFORM_COMMIT DEVSTACK_REPO DEVSTACK_COMMIT RUN_ROOT SUBNET RUNTIME_IMAGE DISCOVERY_REPO DISCOVERY_IMAGE DISCOVERY_PORT)" >&2; exit 1; }
 endef
 BRINGUP_NEW_RUN_ARGS = --run-id "$(RUN_ID)" --lms-port "$(LMS_PORT)" --cms-port "$(CMS_PORT)" \
   --platform-repo "$(PLATFORM_REPO)" $(if $(PLATFORM_COMMIT),--platform-commit "$(PLATFORM_COMMIT)") \
   $(if $(DEVSTACK_REPO),--devstack-repo "$(DEVSTACK_REPO)") $(if $(DEVSTACK_COMMIT),--devstack-commit "$(DEVSTACK_COMMIT)") \
   $(if $(RUN_ROOT),--root "$(RUN_ROOT)") $(if $(SUBNET),--subnet "$(SUBNET)") \
   $(if $(RUNTIME_IMAGE),--runtime-image "$(RUNTIME_IMAGE)") $(if $(LIVE_PLATFORM),--live-platform) \
-  $(if $(THEME_REPO),--theme-repo "$(THEME_REPO)")
+  $(if $(THEME_REPO),--theme-repo "$(THEME_REPO)") \
+  $(if $(DISCOVERY_REPO),--discovery-repo "$(DISCOVERY_REPO)") \
+  $(if $(DISCOVERY_IMAGE),--discovery-image "$(DISCOVERY_IMAGE)") \
+  $(if $(DISCOVERY_PORT),--discovery-port "$(DISCOVERY_PORT)")
 
 include *.mk
 
@@ -196,6 +200,35 @@ lms-shell: ## Open a shell in the development runtime with LMS settings (no argu
 cms-shell: ## Open a shell in the development runtime with CMS settings (no arguments)
 	$(call py313_shell,cms)
 
+py313-build-discovery: ## Build the course-discovery runtime image locally (DISCOVERY_REPO=<checkout>; DEBIAN_MIRROR/DEBIAN_SECURITY_MIRROR/NODE_DIST_URL override the Dockerfile defaults)
+	@test -n "$(DISCOVERY_REPO)" || { echo "set DISCOVERY_REPO to a course-discovery checkout" >&2; exit 2; }
+	@test -f "$(DISCOVERY_REPO)/ci/py313/Dockerfile" || { echo "no ci/py313/Dockerfile in $(DISCOVERY_REPO)" >&2; exit 2; }
+	docker build -f "$(DISCOVERY_REPO)/ci/py313/Dockerfile" -t "$(DISCOVERY_IMAGE)" \
+	  $(if $(DEBIAN_MIRROR),--build-arg DEBIAN_MIRROR="$(DEBIAN_MIRROR)") \
+	  $(if $(DEBIAN_SECURITY_MIRROR),--build-arg DEBIAN_SECURITY_MIRROR="$(DEBIAN_SECURITY_MIRROR)") \
+	  $(if $(NODE_DIST_URL),--build-arg NODE_DIST_URL="$(NODE_DIST_URL)") \
+	  "$(DISCOVERY_REPO)"
+
+py313-shell-discovery: ## Open a shell in the run's course-discovery container (no arguments)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/shell.py --config "$(BRINGUP_CONFIG)" discovery
+
+py313-status-discovery: ## Show the run's course-discovery container state and /health/ code
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" status
+
+py313-update-db-discovery: ## Run course-discovery migrations in the run's discovery container
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" migrate
+
+py313-check-discovery: ## Run Django's system checks for course-discovery
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" check
+
+py313-test-discovery: ## Run the course-discovery pytest suite against the run's MySQL (SELECTORS="<paths>" to narrow)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/discovery.py --config "$(BRINGUP_CONFIG)" test $(SELECTORS)
+
 py313-new-run: ## Create a new Python 3.13 run directory and config; prints the config path (RUN_ID LMS_PORT CMS_PORT PLATFORM_REPO)
 	$(py313_require_new_run)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/new_run.py $(BRINGUP_NEW_RUN_ARGS)
@@ -210,12 +243,44 @@ py313-dev-up: LMS_PORT ?= 18000
 py313-dev-up: CMS_PORT ?= 18010
 py313-dev-up: PLATFORM_REPO ?= $(DEVSTACK_WORKSPACE)/platform
 py313-dev-up: THEME_REPO ?= $(wildcard $(DEVSTACK_WORKSPACE)/src/themes/hawthorn)
-py313-dev-up: ## Create the fixed development environment (dev313, LMS 18000, Studio 18010): the sibling platform checkout is bind-mounted read-write, not copied; THEME_REPO=<theme checkout> (default ../src/themes/hawthorn if present) is mounted as theme hawthorn
-	$(MAKE) py313-up LIVE_PLATFORM=1 RUN_ID="$(RUN_ID)" LMS_PORT="$(LMS_PORT)" CMS_PORT="$(CMS_PORT)" PLATFORM_REPO="$(PLATFORM_REPO)" THEME_REPO="$(THEME_REPO)"
+py313-dev-up: ## Create the fixed development environment (dev313, LMS 18000, Studio 18010): the sibling platform checkout is bind-mounted read-write, not copied; THEME_REPO=<theme checkout> (default ../src/themes/hawthorn if present) is mounted as theme hawthorn; a missing discovery image is built from DISCOVERY_REPO
+	@if [ -n "$(DISCOVERY_REPO)" ]; then \
+	  case "$(DISCOVERY_IMAGE)" in \
+	    *@sha256:*) echo "discovery: $(DISCOVERY_IMAGE) is a published digest; preflight pulls it" ;; \
+	    *) if docker image inspect "$(DISCOVERY_IMAGE)" >/dev/null 2>&1; then \
+	         echo "discovery: image $(DISCOVERY_IMAGE) already present"; \
+	       else \
+	         echo "discovery: image $(DISCOVERY_IMAGE) is missing; building it from $(DISCOVERY_REPO)"; \
+	         $(MAKE) py313-build-discovery DISCOVERY_REPO="$(DISCOVERY_REPO)" DISCOVERY_IMAGE="$(DISCOVERY_IMAGE)" \
+	           $(if $(DEBIAN_MIRROR),DEBIAN_MIRROR="$(DEBIAN_MIRROR)") \
+	           $(if $(DEBIAN_SECURITY_MIRROR),DEBIAN_SECURITY_MIRROR="$(DEBIAN_SECURITY_MIRROR)") \
+	           $(if $(NODE_DIST_URL),NODE_DIST_URL="$(NODE_DIST_URL)") || exit 1; \
+	       fi ;; \
+	  esac; \
+	fi
+	$(MAKE) py313-up LIVE_PLATFORM=1 RUN_ID="$(RUN_ID)" LMS_PORT="$(LMS_PORT)" CMS_PORT="$(CMS_PORT)" PLATFORM_REPO="$(PLATFORM_REPO)" THEME_REPO="$(THEME_REPO)" \
+	  $(if $(DISCOVERY_REPO),DISCOVERY_REPO="$(DISCOVERY_REPO)") $(if $(DISCOVERY_IMAGE),DISCOVERY_IMAGE="$(DISCOVERY_IMAGE)") \
+	  $(if $(DISCOVERY_PORT),DISCOVERY_PORT="$(DISCOVERY_PORT)")
 
 py313-restart: ## Restart LMS and Studio of the development environment so they pick up code changes
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/restart.py --config "$(BRINGUP_CONFIG)"
+
+py313-stop: ## Stop every container of the environment without deleting data (reverse of py313-start)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" stop
+
+py313-start: ## Start every stopped container of the environment and re-dispatch LMS/CMS/discovery
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" start
+
+py313-shell-lms: ## Shell in the run's runtime with LMS settings (works for any run age)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" --system lms shell
+
+py313-shell-cms: ## Shell in the run's runtime with CMS settings (works for any run age)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" --system cms shell
 
 py313-status: ## Show container states, ports and heartbeats of the development environment
 	$(py313_require_config)

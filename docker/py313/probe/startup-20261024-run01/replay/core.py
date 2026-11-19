@@ -31,6 +31,10 @@ APP_ROOT = '/edx/app/edxapp'
 APP_SOURCE = APP_ROOT + '/edx-platform'
 APP_PYTHON = APP_ROOT + '/venvs/edxapp/bin/python'
 APP_STATE = APP_ROOT + '/py313'
+# Container-internal ports of the run's LMS/CMS. The host sees them through the loopback mappings in
+# `run.py create`; other containers on the run network address them directly.
+APP_LMS_PORT = 18000
+APP_CMS_PORT = 18010
 LAYOUT_DEFAULT_RE = re.compile(r"^DEFAULT_APP_ROOT = '([^']+)'$", re.MULTILINE)
 # Where a live run mounts the host Platform checkout. Processes never use this path: the install-time
 # copy at APP_SOURCE is replaced by a symlink to it, because the Platform-owned lock registers
@@ -42,7 +46,32 @@ PLATFORM_MOUNTS = ('snapshot', 'live')
 # used as is (not verified against `theme_commit`, which is only recorded).
 LIVE_THEME_ROOT = '/workspace/themes'
 LIVE_THEME_MOUNT = LIVE_THEME_ROOT + '/hawthorn'
-OPTIONAL = {'platform_mount', 'theme_repo'}
+# Optional course-discovery sidecar. It reuses this run's MySQL and memcached (one database inside the shared
+# server, exactly like upstream devstack) and adds a single runtime container, so enabling it costs one container
+# rather than three. Naming is derived from run_id so every derived resource keeps the run prefix.
+DISCOVERY_DEFAULT_PORT = 18381
+DISCOVERY_CONTAINER_SUFFIX = '-discovery'
+DISCOVERY_VOLUME_SUFFIX = '-discovery-data'
+# Mounted at /workspace so the lock's file:// companion URLs (file:///workspace/ci/py313/companions/...) resolve.
+DISCOVERY_MOUNT = '/workspace'
+# Derived layout follows the same v2 path contract as the Platform (no retired root): code is bind-mounted,
+# venv and bring-up state live under one app root that the run's volume owns.
+DISCOVERY_APP_ROOT = '/edx/app/discovery'
+DISCOVERY_VENV = DISCOVERY_APP_ROOT + '/venvs/discovery'
+DISCOVERY_PYTHON = DISCOVERY_VENV + '/bin/python'
+DISCOVERY_SETTINGS = 'course_discovery.settings.py313'
+DISCOVERY_TEST_SETTINGS = 'course_discovery.settings.test'
+DISCOVERY_LOCK = 'requirements/py313/local.txt'
+# Django's test runner refuses to reuse the application database and would create `test_<name>`,
+# which the application user is not granted. Name the granted test database explicitly so a MySQL
+# run never needs global CREATE (mirrors the Platform's BRINGUP_TEST_DATABASE_NAME).
+DISCOVERY_TEST_DATABASE_SUFFIX = '_test'
+# Network alias the Platform resolves (COURSE_CATALOG_API_URL = http://discovery:8000/api/v1/).
+DISCOVERY_ALIAS = 'discovery'
+# Secrets reach the container as a mounted 0600 env file that the entrypoint sources, so no password ever
+# appears in a docker argv (same reasoning as the platform's name-only `docker exec -e KEY`).
+DISCOVERY_ENV_MOUNT = '/private/discovery.env'
+OPTIONAL = {'platform_mount', 'theme_repo', 'discovery_repo', 'discovery_image', 'discovery_port', 'discovery_database'}
 REQUIRED = {'run_id', 'evidence_dir', 'export_dir', 'platform_repo', 'platform_commit',
             'devstack_repo', 'devstack_commit', 'theme_commit', 'runtime_container', 'runtime_volume',
             'network', 'network_subnet', 'services', 'images', 'lms_port', 'cms_port', 'database', 'test_database', 'mongo_database',
@@ -252,7 +281,7 @@ def validate_path_isolation(config, source_repositories=None):
                 fail('Replay output and protected input paths must be disjoint after resolution: ' +
                      left_name + '=' + str(left) + ' ' + right_name + '=' + str(right))
     sources = source_repositories if source_repositories is not None else {
-        key.removesuffix('_repo'): config[key] for key in ('platform_repo', 'devstack_repo', 'theme_repo')
+        key.removesuffix('_repo'): config[key] for key in ('platform_repo', 'devstack_repo', 'theme_repo', 'discovery_repo')
         if key in config
     }
     sources = {name: resolved_path(path) for name, path in sources.items()}
@@ -344,7 +373,116 @@ def load_config(path):
         fail('Runtime image must be a local sha256 image ID or the reference in runtime-image.lock.json')
     if not re.fullmatch(r'course-v1:[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+\+[A-Za-z0-9_-]+', config['course_key']) or token not in config['course_key']:
         fail('Course key must be explicit and contain run_id')
+    if discovery_enabled(config):
+        validate_discovery(config)
     return config
+
+
+def validate_discovery(config):
+    """Validate and default the optional discovery sidecar; absent keys leave an existing run untouched."""
+    repo = Path(config['discovery_repo'])
+    if not repo.is_absolute() or '..' in repo.parts:
+        fail('Expected absolute normalized path: discovery_repo')
+    if 'discovery_image' not in config:
+        fail('discovery_repo requires discovery_image')
+    image = config['discovery_image']
+    if not isinstance(image, str) or not image or any(x.isspace() for x in image):
+        fail('Invalid image: discovery_image')
+    if not (image_reference_parts(image) or image.startswith('sha256:') or IMAGE_TAG_RE.fullmatch(image)):
+        fail('discovery_image must be repository@sha256 digest, a local sha256 image ID, or a repository:tag')
+    port = config.setdefault('discovery_port', DISCOVERY_DEFAULT_PORT)
+    if type(port) is not int or not 1024 <= port <= 65535:
+        fail('Invalid port: discovery_port')
+    if port in (config['lms_port'], config['cms_port']):
+        fail('discovery_port must differ from lms_port and cms_port')
+    database = config.setdefault('discovery_database', 'discovery_' + config['run_id'])
+    if not re.fullmatch(r'[a-z][a-z0-9_]{2,100}', database):
+        fail('Invalid database name: discovery_database')
+    if database in (config['database'], config['test_database']):
+        fail('discovery_database must differ from database and test_database')
+    for name in discovery_names(config).values():
+        if not re.fullmatch(r'[a-z][a-z0-9_-]{2,100}', name):
+            fail('Discovery resource name must use safe characters: ' + name)
+
+
+def discovery_enabled(config):
+    return 'discovery_repo' in config
+
+
+def discovery_names(config):
+    """Derived container/volume names; both carry run_id so they stay inside this run's namespace."""
+    return {'container': config['run_id'] + DISCOVERY_CONTAINER_SUFFIX,
+            'volume': config['run_id'] + DISCOVERY_VOLUME_SUFFIX,
+            'database': config['discovery_database']}
+
+
+def discovery_url(config):
+    return 'http://localhost:%d' % config['discovery_port']
+
+
+def discovery_test_database(config):
+    """The granted MySQL database discovery's Django test runner uses."""
+    return config['discovery_database'] + DISCOVERY_TEST_DATABASE_SUFFIX
+
+
+def discovery_oidc_credentials(config):
+    """Derive the DOT client credentials discovery uses to call this run's LMS.
+
+    Discovery reads course metadata with the OAuth2 client-credentials grant, so the LMS needs a
+    DOT Application whose client_id/secret discovery knows. Both are derived from this run's
+    startup secret instead of stored in the config: that keeps them per-run unique and out of
+    committed files, and avoids adding a provision-secrets key, which would change the config
+    hash -- and therefore invalidate -- every run created before discovery existed.
+    """
+    secret = secret_values(config).get('BRINGUP_STARTUP_SECRET_KEY', '')
+    if not secret:
+        fail('The run has no BRINGUP_STARTUP_SECRET_KEY to derive the discovery OAuth2 credentials from')
+    salt = 'py313.replay.discovery-oidc:'
+    return {
+        'DISCOVERY_OIDC_KEY': hashlib.sha256((salt + secret + ':client-id').encode('utf-8')).hexdigest()[:40],
+        'DISCOVERY_OIDC_SECRET': hashlib.sha256((salt + secret + ':client-secret').encode('utf-8')).hexdigest(),
+    }
+
+
+def discovery_lms_domain(config):
+    """In-network host:port of this run's LMS, the value discovery's django_site.domain needs."""
+    return config['runtime_container'] + ':' + str(APP_LMS_PORT)
+
+
+# The LMS signs JWTs with these two strings; discovery rejects a token whose `iss` or `aud`
+# does not match. Both sides are derived here, from one expression, because a mismatch only
+# shows up as a 401 on a metadata call, far from the setting that caused it.
+def lms_jwt_issuer(config):
+    return 'http://localhost:%d/oauth2' % config['lms_port']
+
+
+def lms_jwt_audience(config):
+    return config['run_id'] + '-lms'
+
+
+def discovery_environment(config):
+    """Environment for the discovery container. Reuses this run's MySQL/memcached and their credentials."""
+    secrets = secret_values(config)
+    names = discovery_names(config)
+    return {
+        'DJANGO_SETTINGS_MODULE': DISCOVERY_SETTINGS,
+        'DB_HOST': config['services']['mysql']['container'],
+        'DB_PORT': '3306',
+        'DB_NAME': names['database'],
+        'DB_USER': 'edxapp',
+        'DB_PASSWORD': secrets.get('BRINGUP_MYSQL_PASSWORD', ''),
+        'CACHE_LOCATION': config['services']['memcached']['container'] + ':11211',
+        'DISCOVERY_CACHE_PREFIX': config['cache_prefix'],
+        # Interop with this run's LMS: the platform signs JWTs with the shared startup secret, so reuse it
+        # instead of a second self-signed key pair.
+        'DISCOVERY_LMS_JWT_SECRET': secrets.get('BRINGUP_STARTUP_SECRET_KEY') or secrets.get('BRINGUP_SECRET_KEY', ''),
+        'DISCOVERY_LMS_JWT_ISSUER': lms_jwt_issuer(config),
+        'DISCOVERY_LMS_JWT_AUDIENCE': lms_jwt_audience(config),
+        # Discovery reaches the LMS over the run network, not through the host loopback mapping.
+        'DISCOVERY_LMS_URL': 'http://' + discovery_lms_domain(config),
+        'DISCOVERY_STUDIO_URL': 'http://' + config['runtime_container'] + ':' + str(APP_CMS_PORT),
+        **discovery_oidc_credentials(config),
+    }
 
 
 def physical_names(config):
@@ -495,7 +633,7 @@ def redact_values(config):
 def environment(config):
     # Do not inherit any BRINGUP_* from a previously selected run.
     env = {key: value for key, value in os.environ.items()
-           if not key.startswith('BRINGUP_') or key in DEV_SUPERUSER_KEYS}
+           if (not key.startswith('BRINGUP_') and not key.startswith('DISCOVERY_')) or key in DEV_SUPERUSER_KEYS}
     env.update(secret_values(config))
     env.update(BRINGUP_MYSQL_USER='edxapp', BRINGUP_MONGO_USER='edxapp', BRINGUP_RABBITMQ_USER='edxapp',
                BRINGUP_RUNTIME_CONTAINER=config['runtime_container'], BRINGUP_SECRET_ENV_FILE=config['secret_env'],
@@ -508,6 +646,14 @@ def environment(config):
                BRINGUP_LMS_DOMAIN='localhost:' + str(config['lms_port']), BRINGUP_CMS_DOMAIN='localhost:' + str(config['cms_port']),
                BRINGUP_LMS_ROOT_URL='http://localhost:' + str(config['lms_port']),
                BRINGUP_CMS_ROOT_URL='http://localhost:' + str(config['cms_port']))
+    if 'discovery_repo' in config:
+        # The LMS-side seed registers the DOT Application that discovery authenticates with; both sides
+        # must agree on the derived client credentials.
+        env.update(discovery_oidc_credentials(config))
+        env['DISCOVERY_LMS_DOMAIN'] = discovery_lms_domain(config)
+        # Same two strings discovery validates against, so a token this LMS signs is accepted.
+        env['BRINGUP_JWT_ISSUER'] = lms_jwt_issuer(config)
+        env['BRINGUP_JWT_AUDIENCE'] = lms_jwt_audience(config)
     return env
 
 
@@ -545,6 +691,33 @@ def ensure_runtime_image(config, *, sleep=time.sleep):
             'platform': platform}
 
 
+def ensure_discovery_image(config, *, sleep=time.sleep):
+    """Make the discovery image present locally; None when the run has no discovery sidecar.
+
+    Discovery has no published py3.13 release, so a tag can only come from a local build and is
+    never pulled. A digest is a published reference, fetched like the platform runtime image.
+    Failing here keeps the message actionable: `create` would otherwise surface a bare
+    `manifest unknown` from `docker run`, five stages later.
+    """
+    if not discovery_enabled(config):
+        return None
+    reference = config['discovery_image']
+    image = docker_image_inspect(reference)
+    if image is None and image_reference_parts(reference):
+        for delay in (*RUNTIME_PULL_BACKOFF, None):
+            pulled = subprocess.run(['docker', 'pull', '--quiet', reference], capture_output=True, text=True)
+            image = docker_image_inspect(reference) if pulled.returncode == 0 else None
+            if image is not None or delay is None:
+                break
+            sleep(delay)
+    if image is None:
+        fail('discovery_image is not present locally: %s\n'
+             '  build it with: make py313-build-discovery DISCOVERY_REPO=%s'
+             % (reference, config['discovery_repo']))
+    return {'reference': reference, 'image_id': image.get('Id'),
+            'platform': image.get('Os', '') + '/' + image.get('Architecture', '')}
+
+
 def fresh_preflight(config, *, before_prepare):
     repositories = source_repository_roots(config)
     validate_path_isolation(config, repositories)
@@ -574,6 +747,9 @@ def fresh_preflight(config, *, before_prepare):
     runtime_image = ensure_runtime_image(config)
     if runtime_image:
         report['runtime_image'] = runtime_image
+    discovery_image = ensure_discovery_image(config)
+    if discovery_image:
+        report['discovery_image'] = discovery_image
     return report
 
 
@@ -590,12 +766,17 @@ def ownership(config):
         fail('Runtime does not belong to this exact replay configuration')
 
 
-def docker_exec(config, *args, settings=None, detached=False, interactive=False):
+def docker_exec(config, *args, settings=None, detached=False, interactive=False, extra_env=None):
     if interactive and detached:
         fail('Interactive and detached execution are mutually exclusive')
     ownership(config)
     env = environment(config)
-    flags = [flag for key in sorted(env) if key.startswith('BRINGUP_') or key == 'PYTHONPATH' for flag in ('-e', key)]
+    flags = [flag for key in sorted(env)
+             if key.startswith('BRINGUP_') or key.startswith('DISCOVERY_') or key == 'PYTHONPATH'
+             for flag in ('-e', key)]
+    if extra_env:
+        # Tool-level tolerance (uv, npm) that has no BRINGUP_ prefix and belongs to the caller.
+        flags += [flag for key in sorted(extra_env) for flag in ('-e', key + '=' + extra_env[key])]
     if interactive:
         # Name only: the value comes from the caller's terminal at exec time.
         flags += ['-e', 'TERM']

@@ -91,3 +91,84 @@ Service hostnames inside the network are `mysql`, `mongo`, `rabbitmq`, `memcache
 Host ports (127.0.0.1 only): MySQL 13306, MongoDB 27117, RabbitMQ 15673 (management 15674), Memcached 11311, Valkey 16379, Elasticsearch 19200.
 
 RabbitMQ 4.3 denies non-exclusive transient queues by default; `rabbitmq/20-permit-transient-nonexcl.conf` re-enables them for Celery's pidbox queues. The `noperm` compose profile starts a default-policy broker for the control experiment.
+
+## Optional: course-discovery sidecar
+
+`mode: "py313, optional"`. A run with `discovery_repo` also gets one course-discovery
+container on the same network. It reuses that run's MySQL (its own database) and memcached,
+so enabling it costs one container and no extra infrastructure. Runs created without
+`discovery_repo` keep their config hash and are unaffected.
+
+```sh
+make py313-build-discovery DISCOVERY_REPO=/path/to/discovery
+make py313-dev-up ... DISCOVERY_REPO=/path/to/discovery \
+  DISCOVERY_IMAGE=ltdps/discovery:py313-local DISCOVERY_PORT=18381
+```
+
+`py313-dev-up` builds a **missing tag** itself, from `DISCOVERY_REPO`, so the explicit
+`py313-build-discovery` above is only needed when it is absent from this checkout, or to rebuild
+on purpose. A `DISCOVERY_IMAGE` given as `repo@sha256:<digest>` is never built: it is a published
+reference, pulled by `preflight` like the platform runtime image. `py313-up`, the canonical
+non-development path, never builds — it fails instead, naming the command to run.
+
+`py313-start` / `py313-stop` / `py313-restart` / `py313-destroy` cover discovery
+automatically: `lifecycle.py` enumerates it when the config carries `discovery_repo`. The
+discovery-only commands are `py313-shell-discovery`, `py313-status-discovery` (exits non-zero
+unless the container runs and `/health/` returns 200) and `py313-update-db-discovery`.
+
+### Two halves of the contract, and neither is optional
+
+Discovery only reads courses when both of these exist:
+
+| Row | Written by | Why it is needed |
+| --- | --- | --- |
+| `oauth2_provider.Application` (LMS database) | Platform `ci/py313/bringup/seed_discovery_oauth_app.py`, run during the `schema` stage | Discovery authenticates to the LMS with the OAuth2 client-credentials grant |
+| `django_site` + `core_partner` (discovery database) | `discovery.py seed()` -> discovery's `ci/py313/seed_sites_and_partners.py` | `refresh_course_metadata` raises `CommandError` on an empty `django_site`; `core_partner` is the org-ownership backbone |
+
+The DOT credentials are derived per run from that run's startup secret
+(`core.discovery_oidc_credentials`) rather than stored in the config: they stay unique per
+run, never appear in a committed file, and adding them would otherwise change the config
+hash of every run created before discovery existed. `seed()` writes the **in-network** LMS
+address (`<run>-runtime:18000`) as `django_site.domain`, because discovery runs in a
+different container than the LMS; the host loopback port is unusable there.
+
+### Local-only trust shortcuts
+
+Discovery verifies the LMS's HS256 JWTs with the run's startup secret and connects to MySQL as the
+run's `edxapp` user. Both keep a local run to one container and one secret set; neither belongs in a
+shared or long-lived environment, which should use its own signing key and a dedicated database user.
+
+### Token type
+
+The platform LMS resolves a `Bearer` token by `sha256(token)` against
+`oauth2_provider.AccessToken.token_checksum`. The opaque token from a `token_type=Bearer`
+request therefore authenticates, while the JWT from `token_type=JWT` is rejected with
+`token_nonexistent`. Discovery's `course_discovery/settings/py313.py` sets
+`COURSES_API['TOKEN_TYPE'] = 'Bearer'`; the management-command default stays `JWT`, so no
+other deployment changes behaviour.
+
+### Why discovery's release script is not in this repository
+
+`py313-build-discovery` builds the image locally from `DISCOVERY_REPO`. Publishing a
+*released* digest works the same way as for the platform image, but the script lives in the
+discovery checkout:
+
+```sh
+cd <discovery>
+uv run --no-project --python 3.13 python -B ci/py313/build-runtime-image.py \
+  --tag ltdps/discovery:py313-devstack-YYYYMMDD --context /new/dir
+```
+
+Then set `DISCOVERY_IMAGE=ltdps/discovery@sha256:<index digest>` on the run. The script is
+function-for-function comparable with `docker/py313/build-runtime-image.py` here, with two
+deliberate differences: its stage is `final` (the last stage of discovery's Dockerfile), and
+its lock records `source_commit` rather than `devstack_commit` because the image is built from
+the discovery repository.
+
+It stays in the discovery repository because every builder here archives its own tree
+(`git archive HEAD`) and builds the Dockerfile beside it: this one archives Devstack and builds
+`docker/py313/Dockerfile`, `platform/ci/py313/build-app-image.py` archives Platform and builds
+`ci/py313/Dockerfile.app`, and discovery's archives discovery and builds `ci/py313/Dockerfile`.
+Moving it here would mean archiving a different repository from the one the script lives in,
+which breaks the clean-tree guarantee that makes the build reproducible, and would make a
+discovery release depend on a Devstack checkout.
