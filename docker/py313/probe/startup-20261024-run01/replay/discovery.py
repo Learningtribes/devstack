@@ -116,8 +116,11 @@ def install(config):
         DISCOVERY_MOUNT + '/' + DISCOVERY_LOCK,
         '--companions-dir', DISCOVERY_MOUNT + '/' + DISCOVERY_COMPANIONS,
         '--output-dir', DISCOVERY_LOCK_OUTPUT))
+    # `sync`, not `install`: the lock is the definition of this environment, and `install` only
+    # adds. Re-installing after a lock change left the packages the lock no longer lists, so the
+    # venv silently drifted from the file that is supposed to describe it.
     capture(config, 'install-discovery-deps', exec_argv(
-        config, 'uv', 'pip', 'install', '--python', DISCOVERY_PYTHON, '-r',
+        config, 'uv', 'pip', 'sync', '--python', DISCOVERY_PYTHON,
         DISCOVERY_LOCK_OUTPUT + '/local.txt'))
     capture(config, 'install-discovery-check', exec_argv(
         config, 'uv', 'pip', 'check', '--python', DISCOVERY_PYTHON))
