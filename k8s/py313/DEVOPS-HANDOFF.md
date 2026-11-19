@@ -66,7 +66,7 @@ Decide the static files path (nginx sidecar, a `static` Deployment as locally, o
 
 Studio's Learning Path feature spans the image's database and a separate discovery service that this bundle does not deploy. Everything below
 was found on the single-host staging on 2026-11-19 (read back there) and in the code at Platform `3c3f2f721d1`; none of it was run on Kubernetes.
-Reference: triboo-doc `docs/staging/py313-staging-discovery-enable-20261119.md` (PR #11) and `docs/py313/course-discovery-py313-upgrade-2026-11-13.md` section 3.6.
+Reference (triboo-doc `master`): [`docs/staging/py313-staging-discovery-enable-20261119.md`](https://github.com/Learningtribes/triboo-doc/blob/master/docs/staging/py313-staging-discovery-enable-20261119.md) and [`docs/py313/course-discovery-py313-upgrade-2026-11-13.md`](https://github.com/Learningtribes/triboo-doc/blob/master/docs/py313/course-discovery-py313-upgrade-2026-11-13.md) section 3.6.
 
 **Data in the edxapp database (not in the image).** Three rows are configuration data that no migration creates:
 the user `lms_catalog_service_user` (active, not staff, unusable password), a `CatalogIntegration` row with `enabled=True`, and a
