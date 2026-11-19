@@ -23,8 +23,9 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from core import (APP_CMS_PORT, DISCOVERY_ALIAS, DISCOVERY_APP_ROOT, DISCOVERY_ENV_MOUNT, DISCOVERY_LOCK,
-                  DISCOVERY_MOUNT, DISCOVERY_PYTHON, DISCOVERY_SETTINGS, DISCOVERY_TEST_SETTINGS, DISCOVERY_VENV,
+from core import (APP_CMS_PORT, DISCOVERY_ALIAS, DISCOVERY_APP_ROOT, DISCOVERY_COMPANIONS, DISCOVERY_ENV_MOUNT,
+                  DISCOVERY_LOCK, DISCOVERY_LOCK_OUTPUT, DISCOVERY_MOUNT, DISCOVERY_PYTHON, DISCOVERY_SETTINGS,
+                  DISCOVERY_TEST_SETTINGS, DISCOVERY_VENV,
                   capture, config_hash, discovery_environment, discovery_lms_domain, discovery_names,
                   discovery_test_database, discovery_url, environment, fail, load_config, ownership,
                   require_protected, secret_values)
@@ -99,13 +100,25 @@ def create(config):
 
 
 def install(config):
-    """Create the isolated venv and install the locked dependency set into it."""
+    """Create the isolated venv and install the locked dependency set into it.
+
+    The lock names its one non-PyPI input with the `@COMPANIONS_DIR@` placeholder rather than an
+    absolute path, so it stays valid outside this container layout. `materialize-lock.py` resolves
+    it against the mounted repository and refuses to write a lock whose archive does not match
+    `ci/py313/companions/manifest.json`; the resolved copy is what pip installs.
+    """
     define(config)
     capture(config, 'install-discovery-venv', exec_argv(
         config, 'sh', '-c',
         'test -x %s || uv venv --python /usr/local/bin/python3.13 %s' % (DISCOVERY_PYTHON, DISCOVERY_VENV)))
+    capture(config, 'install-discovery-lock', exec_argv(
+        config, DISCOVERY_PYTHON, DISCOVERY_MOUNT + '/ci/py313/materialize-lock.py',
+        DISCOVERY_MOUNT + '/' + DISCOVERY_LOCK,
+        '--companions-dir', DISCOVERY_MOUNT + '/' + DISCOVERY_COMPANIONS,
+        '--output-dir', DISCOVERY_LOCK_OUTPUT))
     capture(config, 'install-discovery-deps', exec_argv(
-        config, 'uv', 'pip', 'install', '--python', DISCOVERY_PYTHON, '-r', DISCOVERY_LOCK))
+        config, 'uv', 'pip', 'install', '--python', DISCOVERY_PYTHON, '-r',
+        DISCOVERY_LOCK_OUTPUT + '/local.txt'))
     capture(config, 'install-discovery-check', exec_argv(
         config, 'uv', 'pip', 'check', '--python', DISCOVERY_PYTHON))
 
