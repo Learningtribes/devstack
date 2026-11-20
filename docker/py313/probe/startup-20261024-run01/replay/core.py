@@ -766,6 +766,19 @@ def ownership(config):
         fail('Runtime does not belong to this exact replay configuration')
 
 
+def ensure_runtime_log_dirs(config):
+    """Create the LMS/CMS file-log directories the schema phase used to create once.
+
+    XBlock and Django FileHandlers write under /edx/var/log/{lms,cms}. Schema creates them
+    under capture(), so a later start/restart of a wiped volume (or a run that never reached
+    schema) would leave FileNotFoundError on first request. Operator start/restart recreate
+    them without evidence.
+    """
+    subprocess.run(
+        ['docker', 'exec', config['runtime_container'], 'mkdir', '-p', '/edx/var/log/lms', '/edx/var/log/cms'],
+        check=True, stdout=subprocess.DEVNULL)
+
+
 def docker_exec(config, *args, settings=None, detached=False, interactive=False, extra_env=None):
     if interactive and detached:
         fail('Interactive and detached execution are mutually exclusive')

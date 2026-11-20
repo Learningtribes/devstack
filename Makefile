@@ -266,6 +266,22 @@ py313-restart: ## Restart LMS and Studio of the development environment so they 
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/restart.py --config "$(BRINGUP_CONFIG)"
 
+py313-rebuild-assets: ## Rebuild XModule + Sass/webpack into the Platform tree (no collectstatic; then py313-restart)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" assets
+
+py313-rebuild-translations: ## Recompile locale catalogs + collectstatic (use after .po changes or for collectstatic-only files)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" translations
+
+py313-rebuild-all: ## Rebuild assets then translations (repeatable; unlike the one-shot assets bring-up phase)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" all
+
+py313-rebuild-npm: ## npm ci only when webpack is missing (does not re-run after package-lock.json changes)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" npm
+
 py313-stop: ## Stop every container of the environment without deleting data (reverse of py313-start)
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" stop
