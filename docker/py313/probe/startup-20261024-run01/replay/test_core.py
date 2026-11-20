@@ -215,7 +215,6 @@ class ContractTests(unittest.TestCase):
         labels = [label for label, _ in stages]
         self.assertEqual(labels, ['install-discovery-venv', 'install-discovery-lock',
                                   'install-discovery-deps', 'install-discovery-check'])
-        joined = {' '.join(str(part) for part in command) for _, command in stages}
         materialize = next(command for _, command in stages
                            if 'materialize-lock.py' in ' '.join(str(p) for p in command))
         sync = next(command for _, command in stages
@@ -229,7 +228,6 @@ class ContractTests(unittest.TestCase):
         self.assertIn('sync', sync)
         self.assertIn(discovery.DISCOVERY_LOCK_OUTPUT + '/local.txt', sync)
         self.assertNotIn(discovery.DISCOVERY_MOUNT + '/' + discovery.DISCOVERY_LOCK, sync)
-        self.assertTrue(joined)
 
     def test_discovery_issuer_and_audience_match_what_the_lms_will_sign(self):
         """A mismatch here is invisible until a metadata call 401s, so assert both sides agree."""
