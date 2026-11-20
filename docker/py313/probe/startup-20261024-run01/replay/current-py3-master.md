@@ -37,8 +37,9 @@ tree are visible to the runtime (the locale build therefore compiles only git-tr
 do not fail after a volume wipe.
 
 Static rebuild: `make py313-rebuild-assets` is enough for Sass/JS/XModule on this runtime
-(`DEBUG=False` + `DevelopmentStorage`): Sass lands in the Platform tree (staticfiles finders serve it),
-webpack writes into `STATIC_ROOT`, and XModule copies into `common/static/xmodule`.
+(`DEBUG=False` + `DevelopmentStorage`, runserver `--insecure`): Sass and webpack bundles land in the
+Platform tree (`lms|cms|common/static/...`, including `common/static/bundles`); finders serve them.
+Only `webpack-stats.json` is written under `STATIC_ROOT_*`. XModule copies into `common/static/xmodule`.
 `locale_static.py` (via `py313-rebuild-translations`) is the path that runs `collectstatic`; use that
 after `.po` changes or for collectstatic-only package files, not because Sass/JS needs it.
 `py313-rebuild-npm` only runs `npm ci` when `node_modules/.bin/webpack` is missing — after

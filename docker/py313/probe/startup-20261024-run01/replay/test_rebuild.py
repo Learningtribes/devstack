@@ -58,6 +58,22 @@ class RebuildTests(unittest.TestCase):
         self.events.prune_xmodule_build_dirs.assert_not_called()
 
 
+class PruneXmoduleBuildDirsTests(unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.config = example(Path(temporary.name))
+
+    def test_prune_glob_is_timestamped_only(self):
+        with patch('rebuild.subprocess.run') as run:
+            replay_rebuild.prune_xmodule_build_dirs(self.config)
+        self.assertEqual(
+            run.call_args.args[0],
+            ['docker', 'exec', self.config['runtime_container'], 'bash', '-c',
+             'rm -rf %s/xmodule-source-build-[0-9]*' % APP_STATE])
+
+
 class EnsureNpmTests(unittest.TestCase):
     def setUp(self):
         super().setUp()

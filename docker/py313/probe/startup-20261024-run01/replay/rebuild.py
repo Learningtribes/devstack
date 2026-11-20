@@ -9,10 +9,12 @@ BRINGUP_XMODULE_BUILD_ROOT, build_frontend.sh, locale_static.py). Leaves no evid
 Afterward: make py313-restart if templates or static are cached in the running servers.
 
 collectstatic: locale_static.py runs it; rebuild-assets does not. On the local runtime
-(DEBUG=False, DevelopmentStorage) that is enough for Sass/JS: build_frontend writes Sass
-into the Platform tree (served by the staticfiles finders) and webpack into STATIC_ROOT,
-and build_xmodule_assets copies into common/static/xmodule. Use rebuild-translations (or
-rebuild-all) when locale catalogs / static i18n / collectstatic-only package files change.
+(DEBUG=False, DevelopmentStorage, runserver --insecure) that is enough for Sass/JS:
+build_frontend writes Sass into the Platform tree and webpack bundles into
+common/static/bundles (finders serve both); only webpack-stats.json goes under
+STATIC_ROOT_*. build_xmodule_assets copies into common/static/xmodule. Use
+rebuild-translations (or rebuild-all) when locale catalogs / static i18n /
+collectstatic-only package files change.
 """
 import argparse
 import datetime
@@ -60,10 +62,14 @@ def ensure_npm(config):
 
 
 def prune_xmodule_build_dirs(config):
-    """Drop leftover exclusive xmodule staging dirs from earlier rebuilds or a crashed run."""
+    """Drop leftover timestamped xmodule staging dirs from earlier rebuilds or a crashed run.
+
+    Bring-up keeps xmodule-source-build-v1 (sha256.json receipt); only stamped
+    xmodule-source-build-<digits> dirs from this tool are removed.
+    """
     subprocess.run(
         ['docker', 'exec', config['runtime_container'], 'bash', '-c',
-         'rm -rf %s/xmodule-source-build-*' % APP_STATE],
+         'rm -rf %s/xmodule-source-build-[0-9]*' % APP_STATE],
         check=True)
 
 

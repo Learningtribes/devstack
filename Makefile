@@ -266,7 +266,7 @@ py313-restart: ## Restart LMS and Studio of the development environment so they 
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/restart.py --config "$(BRINGUP_CONFIG)"
 
-py313-rebuild-assets: ## Rebuild XModule + Sass/webpack into the live tree/STATIC_ROOT (no collectstatic; then py313-restart)
+py313-rebuild-assets: ## Rebuild XModule + Sass/webpack into the Platform tree (no collectstatic; then py313-restart)
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" assets
 
