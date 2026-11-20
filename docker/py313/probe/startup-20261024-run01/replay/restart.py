@@ -8,7 +8,8 @@ from pathlib import Path
 import subprocess
 import sys
 
-from core import STARTUP_REL, discovery_enabled, environment, load_config, ownership
+from core import (STARTUP_REL, discovery_enabled, ensure_runtime_log_dirs, environment, load_config,
+                  ownership)
 from http_client import wait_for_heartbeats
 import discovery
 
@@ -16,6 +17,7 @@ import discovery
 def restart(config, timeout):
     ownership(config)
     subprocess.run(['docker', 'restart', config['runtime_container']], check=True, stdout=subprocess.DEVNULL)
+    ensure_runtime_log_dirs(config)
     startup = Path(config['export_dir']) / 'devstack' / STARTUP_REL
     env = environment(config)
     for script in ('start_http.py', 'start_worker.py'):
