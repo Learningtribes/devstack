@@ -249,9 +249,9 @@ class EntrypointBehaviour(Workspace):
     def test_gunicorn_env_overrides_and_extra_args(self):
         self.write_config("lms")
         proc, rec = self.start("lms", "--preload", PORT="9000", GUNICORN_WORKERS="7", GUNICORN_TIMEOUT="60",
-                               GUNICORN_MAX_REQUESTS="5", EDXAPP_SETTINGS="devstack_docker")
+                               GUNICORN_MAX_REQUESTS="5", EDXAPP_SETTINGS="devstack")
         args = rec["args"]
-        self.assertEqual(rec["settings"], "lms.envs.devstack_docker")
+        self.assertEqual(rec["settings"], "lms.envs.devstack")
         for flag, value in (("--bind", "0.0.0.0:9000"), ("--workers", "7"), ("--timeout", "60"), ("--max-requests", "5")):
             self.assertEqual(args[args.index(flag) + 1], value, flag)
         self.assertEqual(args[-1], "--preload")
