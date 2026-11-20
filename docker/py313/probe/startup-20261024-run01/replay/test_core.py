@@ -183,6 +183,54 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(env['DISCOVERY_LMS_URL'], 'http://' + domain)
         self.assertEqual(env['DISCOVERY_STUDIO_URL'], 'http://' + self.config['runtime_container'] + ':18010')
 
+    def test_discovery_local_run_marks_the_container_as_local_and_nothing_else(self):
+        """`settings.py313` refuses to import without this, and only discovery may see it."""
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        self.assertEqual(discovery_environment(loaded)['DISCOVERY_LOCAL_RUN'], '1')
+        # The LMS runtime is a different settings module; a stray flag there would be a bug.
+        self.assertNotIn('DISCOVERY_LOCAL_RUN', environment(loaded))
+
+    def test_discovery_installs_only_from_the_materialized_lock(self):
+        """The mounted lock still holds the `@COMPANIONS_DIR@` placeholder pip cannot resolve.
+
+        Materializing must therefore come first, and `uv pip sync` must be pointed at the
+        resolved copy rather than the file in the repository.
+        """
+        self.config['discovery_repo'] = str(self.root / 'discovery')
+        self.config['discovery_image'] = 'ltdps/discovery:py313-local'
+        self.write()
+        loaded = load_config(self.path)
+        stages = []
+
+        def record(config, label, command, **kwargs):
+            stages.append((label, list(command)))
+
+        with patch.object(discovery, 'define'), patch.object(discovery, 'ownership'), \
+                patch.object(discovery, 'capture', record):
+            discovery.install(loaded)
+
+        labels = [label for label, _ in stages]
+        self.assertEqual(labels, ['install-discovery-venv', 'install-discovery-lock',
+                                  'install-discovery-deps', 'install-discovery-check'])
+        joined = {' '.join(str(part) for part in command) for _, command in stages}
+        materialize = next(command for _, command in stages
+                           if 'materialize-lock.py' in ' '.join(str(p) for p in command))
+        sync = next(command for _, command in stages
+                    if 'sync' in command and 'uv' in command)
+        # The placeholder is resolved into the mounted companions directory and written outside
+        # the repository, so a materialized lock never appears as a worktree change.
+        self.assertIn('--companions-dir', materialize)
+        self.assertIn(discovery.DISCOVERY_MOUNT + '/' + discovery.DISCOVERY_COMPANIONS, materialize)
+        self.assertIn(discovery.DISCOVERY_LOCK_OUTPUT, materialize)
+        # `sync`, not `install`: a package the lock no longer lists must be removed.
+        self.assertIn('sync', sync)
+        self.assertIn(discovery.DISCOVERY_LOCK_OUTPUT + '/local.txt', sync)
+        self.assertNotIn(discovery.DISCOVERY_MOUNT + '/' + discovery.DISCOVERY_LOCK, sync)
+        self.assertTrue(joined)
+
     def test_discovery_issuer_and_audience_match_what_the_lms_will_sign(self):
         """A mismatch here is invisible until a metadata call 401s, so assert both sides agree."""
         self.config['discovery_repo'] = str(self.root / 'discovery')
