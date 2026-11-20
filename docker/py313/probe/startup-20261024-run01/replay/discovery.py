@@ -105,7 +105,7 @@ def install(config):
     The lock names its one non-PyPI input with the `@COMPANIONS_DIR@` placeholder rather than an
     absolute path, so it stays valid outside this container layout. `materialize-lock.py` resolves
     it against the mounted repository and refuses to write a lock whose archive does not match
-    `ci/py313/companions/manifest.json`; the resolved copy is what pip installs.
+    `ci/py313/companions/manifest.json`; the resolved copy is what `uv pip sync` installs.
     """
     define(config)
     capture(config, 'install-discovery-venv', exec_argv(
