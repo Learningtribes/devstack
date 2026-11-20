@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: traefik
+  labels:
+    app.kubernetes.io/part-of: traefik-local
+    py313.learningtribes.com/feature: traefik-local
+    pod-security.kubernetes.io/enforce: restricted

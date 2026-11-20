@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Deletes ONLY the namespace py313-prod-local (workloads, services, Secrets and PVCs go with it). Docker containers, images and
+# volumes are not touched. .local/ (credentials, generated config) is kept unless PURGE_LOCAL=1; even then .local/tls (the local CA that
+# the user may have trusted in the keychain) survives unless PURGE_TLS=1. Traefik mode: this removes the application namespace only;
+# the cluster-level parts of the feature (namespace traefik, CRDs, coredns-custom) are removed by scripts/traefik-down.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+if kc get namespace "$NS" >/dev/null 2>&1; then
+  require_owned_namespace
+  step "Delete namespace $NS"
+  kc delete namespace "$NS" --wait=true --timeout=600s
+else
+  note "namespace $NS does not exist"
+fi
+if [ "${PURGE_LOCAL:-0}" = 1 ]; then
+  [ -d "$LOCAL_DIR" ] && [ "$(basename "$LOCAL_DIR")" = .local ] || die "refusing to purge '$LOCAL_DIR'"
+  if [ "${PURGE_TLS:-0}" = 1 ]; then
+    rm -rf "$LOCAL_DIR"; note "removed $LOCAL_DIR including the local CA"
+  else
+    find "$LOCAL_DIR" -mindepth 1 -maxdepth 1 ! -name tls -exec rm -rf {} +; note "removed $LOCAL_DIR except tls/ (the local CA; PURGE_TLS=1 removes it too)"
+  fi
+else
+  note "kept $LOCAL_DIR (PURGE_LOCAL=1 removes it)"
+fi

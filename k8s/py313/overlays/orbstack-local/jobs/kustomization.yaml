@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Deploy-time Jobs for the local overlay. Apply after the main overlay is up (it provides the ServiceAccount and the services).
+namespace: py313-prod-local
+resources:
+  - ../../../jobs
+images:
+  - name: edxapp
+    newName: edxapp
+    newTag: py313-prodimage-3c3f2f7-local
+configMapGenerator:
+  - name: py313-bringup-env
+    envs:
+      - bringup.env
+generatorOptions:
+  # Jobs refer to the ConfigMap by this fixed name, and part C reads the same file to run generate_aws_config.py.
+  disableNameSuffixHash: true

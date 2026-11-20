@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# Local OrbStack bring-up: guards -> namespace -> secrets -> backing services -> Elasticsearch role/user -> configuration ->
+# db-init Job -> application overlay -> rollouts. Idempotent: every step can be rerun; a completed db-init is not run again unless
+# FORCE_DB_INIT=1 (the database is new; no wipe exists, by design). APP_OVERLAY selects another application overlay, e.g.
+# overlays/orbstack-local-all-workers (it renders the same namespace and base).
+# INGRESS=traefik switches to the production-like mode (Traefik, https://{lms,studio}.local-prod.7mud.com, static files): the site
+# domains are database rows seeded by db-init, so the mode is recorded on the namespace and an existing namespace of the other mode is
+# refused (k8s-local-down first). Re-seeding in place is not offered: seed_local_host_sites.py only get_or_creates Site rows by domain
+# and setdefaults their values, so a switch would leave the old localhost rows behind and never update an existing row.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+require_image
+command -v docker >/dev/null && command -v openssl >/dev/null || die 'docker and openssl are required'
+MODE=$(ingress_mode)
+if [ "$MODE" = traefik ]; then
+  APP_OVERLAY=${APP_OVERLAY:-$TRAEFIK_OVERLAY}
+  [ "$APP_OVERLAY" = "$TRAEFIK_OVERLAY" ] || die 'INGRESS=traefik supports only overlays/orbstack-local-traefik as the application overlay'
+else
+  APP_OVERLAY=${APP_OVERLAY:-$OVERLAY}
+fi
+[ -f "$APP_OVERLAY/kustomization.yaml" ] || die "no kustomization in $APP_OVERLAY"
+start=$SECONDS
+
+step "Namespace $NS (ingress mode: $MODE)"
+if kc get namespace "$NS" >/dev/null 2>&1; then
+  existing_mode=$(kc get namespace "$NS" -o jsonpath='{.metadata.annotations.py313\.learningtribes\.com/ingress-mode}')
+  existing_mode=${existing_mode:-port-forward}
+  [ "$existing_mode" = "$MODE" ] || die "namespace $NS was created for ingress mode '$existing_mode'; its database holds that mode's site domains. Run scripts/down (k8s-local-down), then rerun with the mode you want"
+  fresh=0
+else
+  fresh=1
+fi
+kc apply -f "$OVERLAY/namespace.yaml" >/dev/null
+require_owned_namespace
+[ "$fresh" = 0 ] || kc annotate namespace "$NS" "$MODE_ANNOTATION=$MODE" >/dev/null
+# db-init uses the ServiceAccount of the base before the application overlay exists.
+k apply -f "$K8S_DIR/base/serviceaccount.yaml" >/dev/null
+
+if [ "$MODE" = traefik ]; then
+  step 'Traefik, TLS, CoreDNS (scripts/traefik-install)'
+  "$SCRIPTS_DIR/traefik-install"
+fi
+
+step 'Secrets'
+"$SCRIPTS_DIR/gen-local-secrets"
+
+step 'Backing services'
+k apply -k "$OVERLAY/backing" >/dev/null
+for kind_name in statefulset/mysql statefulset/mongodb statefulset/elasticsearch statefulset/rabbitmq deployment/memcached; do
+  wait_rollout "$kind_name" 900s
+done
+
+step 'Elasticsearch role and user'
+"$SCRIPTS_DIR/setup-elasticsearch"
+
+step 'Configuration'
+"$SCRIPTS_DIR/gen-local-config"
+
+step 'db-init Job'
+if ! db_init_needed; then
+  note 'db-init already completed (recorded on the namespace; FORCE_DB_INIT=1 reruns it)'
+else
+  k delete job db-init --ignore-not-found --wait=true >/dev/null
+  k apply -k "$(jobs_overlay)" >/dev/null
+  # Wait for either outcome; a failed Job must not hide behind a timeout.
+  deadline=$((SECONDS + 1800))
+  while :; do
+    ok=$(k get job db-init -o jsonpath='{.status.succeeded}' 2>/dev/null || true)
+    bad=$(k get job db-init -o jsonpath='{.status.failed}' 2>/dev/null || true)
+    [ "${ok:-0}" -ge 1 ] 2>/dev/null && break
+    if [ "${bad:-0}" -ge 1 ] 2>/dev/null; then
+      k logs job/db-init --tail=60 >&2 || true
+      die 'db-init failed (logs above); fix the cause, then rerun scripts/up (the Job is recreated)'
+    fi
+    [ "$SECONDS" -lt "$deadline" ] || die 'db-init did not finish in 30 minutes'
+    sleep 10
+  done
+  record_db_init
+  note 'db-init completed'
+  k logs job/db-init --tail=12 | sed 's/^/   | /'
+fi
+
+step "Application overlay ${APP_OVERLAY#"$K8S_DIR"/}"
+kc apply -k "$APP_OVERLAY" >/dev/null
+for name in $(k get deployment -o jsonpath='{range .items[?(@.spec.replicas>0)]}{.metadata.name}{"\n"}{end}'); do
+  wait_rollout "deployment/$name" 1200s
+done
+
+step 'Summary'
+k get pods -o wide --no-headers | awk '{printf "   %-48s %-7s %-10s restarts=%s\n", $1, $2, $3, $4}'
+if [ "$MODE" = traefik ]; then
+  printf '   elapsed: %ds\n   next: scripts/traefik-smoke, scripts/traefik-doctor (what the browser needs)\n' $((SECONDS - start))
+else
+  printf '   elapsed: %ds\n   next: scripts/smoke   (port-forward svc/lms 18000:8000, svc/cms 18010:8010)\n' $((SECONDS - start))
+fi

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Smoke test of the running local namespace. Records HTTP codes and evidence; exits non-zero when any check fails.
+# Port-forwards svc/lms and svc/cms in the background (removed on exit). The site domains are localhost:18000 / localhost:18010 (the
+# overlay's BRINGUP_*_DOMAIN), so the Host headers below are fixed to them whatever local ports are used.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+[ "$(kc get namespace "$NS" -o jsonpath='{.metadata.annotations.py313\.learningtribes\.com/ingress-mode}' 2>/dev/null)" != traefik ] \
+  || die 'this namespace runs in Traefik mode (https site domains): use scripts/traefik-smoke'
+LMS_PORT=${LMS_LOCAL_PORT:-18000}
+CMS_PORT=${CMS_LOCAL_PORT:-18010}
+lms_domain=$(sed -n 's/^BRINGUP_LMS_DOMAIN=//p' "$OVERLAY/jobs/bringup.env")
+cms_domain=$(sed -n 's/^BRINGUP_CMS_DOMAIN=//p' "$OVERLAY/jobs/bringup.env")
+fails=0
+pf_pids=()
+cleanup() { for pid in ${pf_pids[@]+"${pf_pids[@]}"}; do kill "$pid" 2>/dev/null || true; done; wait 2>/dev/null || true; }
+trap cleanup EXIT
+
+record() { # record WANTED_REGEX "description" GOT
+  if [[ "$3" =~ ^($1)$ ]]; then printf 'PASS   %s -> HTTP %s\n' "$2" "$3"; else printf 'FAIL   %s -> HTTP %s (wanted %s)\n' "$2" "$3" "$1"; fails=$((fails + 1)); fi
+}
+code() { curl -s -o /dev/null -m 60 -w '%{http_code}' "$@" || true; }
+
+for port in "$LMS_PORT" "$CMS_PORT"; do
+  ! lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1 || die "local port $port is in use (set LMS_LOCAL_PORT / CMS_LOCAL_PORT)"
+done
+step 'Port-forward'
+k port-forward svc/lms "$LMS_PORT:8000" >/dev/null 2>&1 & pf_pids+=($!)
+k port-forward svc/cms "$CMS_PORT:8010" >/dev/null 2>&1 & pf_pids+=($!)
+for port in "$LMS_PORT" "$CMS_PORT"; do
+  for _ in $(seq 1 30); do lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1 && break; sleep 1; done
+  lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1 || die "port-forward to $port did not start"
+done
+note "lms -> localhost:$LMS_PORT, cms -> localhost:$CMS_PORT"
+lms=http://127.0.0.1:$LMS_PORT
+cms=http://127.0.0.1:$CMS_PORT
+
+step 'HTTP checks'
+record 200 "LMS /heartbeat (Host: localhost, the readiness probe)" "$(code -H 'Host: localhost' "$lms/heartbeat")"
+record 200 "LMS /heartbeat (Host: $lms_domain)" "$(code -H "Host: $lms_domain" "$lms/heartbeat")"
+record 200 "CMS /heartbeat (Host: localhost, the readiness probe)" "$(code -H 'Host: localhost' "$cms/heartbeat")"
+record 200 "CMS /heartbeat (Host: $cms_domain)" "$(code -H "Host: $cms_domain" "$cms/heartbeat")"
+record '200|301|302' "LMS home /" "$(code -H "Host: $lms_domain" "$lms/")"
+record 200 "LMS /login" "$(code -H "Host: $lms_domain" "$lms/login")"
+record 200 "Studio /signin" "$(code -H "Host: $cms_domain" "$cms/signin")"
+record 400 "LMS unknown Host is rejected" "$(code -H 'Host: evil.example' "$lms/login")"
+note 'static files (/static/...) are not served by gunicorn: not checked (README, Local OrbStack run)'
+
+celery_check
+
+step 'Result'
+if [ "$fails" -eq 0 ]; then echo 'SMOKE PASSED'; else echo "SMOKE FAILED ($fails checks)"; exit 1; fi

@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Everything the Traefik mode adds to the application namespace. The label is how traefik-down removes exactly this set (the parent
+# overlay also contains ../orbstack-local, which must not carry it).
+namespace: py313-prod-local
+resources:
+  - ingress.yaml
+  - middleware.yaml
+  - static.yaml
+configMapGenerator:
+  - name: static-nginx-conf
+    files:
+      - default.conf=nginx.conf
+images:
+  # Same tag as ../../orbstack-local (a test asserts it).
+  - name: edxapp
+    newName: edxapp
+    newTag: py313-prodimage-3c3f2f7-local
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: openedx
+      py313.learningtribes.com/feature: traefik-local
+    includeSelectors: false
+    includeTemplates: true

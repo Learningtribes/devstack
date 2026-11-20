@@ -1,0 +1,17 @@
+# Not part of a kustomization on purpose: it lives in kube-system and is applied only by scripts/traefik-install (and removed by
+# scripts/traefik-down, which refuses when the ConfigMap has other keys). The `coredns` ConfigMap itself is never touched: k3s CoreDNS
+# imports /etc/coredns/custom/*.override into the `.:53` block from this optional ConfigMap.
+#
+# Why: the site names are public DNS records for 127.0.0.1 (and fake IPs on this Mac). Inside a pod 127.0.0.1 is the pod, so LMS and
+# Studio could not reach each other through their public URLs (LMS_ROOT_URL, LMS_INTERNAL_ROOT_URL). The rewrite answers the names
+# with the ClusterIP of the Traefik Service, so in-cluster traffic takes the same path (and TLS) as the browser's.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+  labels:
+    py313.learningtribes.com/feature: traefik-local
+data:
+  local-prod.override: |
+    rewrite stop name regex ^(.*\.)?local-prod\.7mud\.com\.$ traefik.traefik.svc.cluster.local. answer auto

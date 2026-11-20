@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# Local CA and wildcard certificate for *.local-prod.7mud.com (openssl only), then the cluster objects that carry them:
+#   Secret local-prod-tls (kubernetes.io/tls) in namespaces traefik (TLSStore default certificate) and py313-prod-local (Ingress tls),
+#   ConfigMap local-ca-bundle in py313-prod-local (system CAs of the application image + the local CA; mounted by the pods).
+# Files: .local/tls/ca.key (600), ca.crt, tls.key (600), tls.crt, git-ignored. Idempotent: an existing CA is kept (so the user's
+# keychain trust stays valid); the leaf is reissued only when missing, within 30 days of expiry, for other names, or not signed by the CA.
+# NO_CLUSTER=1 stops after the files. The ACME DNS-01 alternative for real certificates is documented in the README, not implemented.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+command -v openssl >/dev/null || die 'openssl is required'
+openssl version | grep -q '^OpenSSL 3' || die "openssl 3 is required (found: $(openssl version)); put /opt/homebrew/bin first in PATH"
+ensure_local_dir
+install -d -m 700 "$TLS_DIR"
+chmod 700 "$TLS_DIR"
+ca_key=$TLS_DIR/ca.key ca_crt=$TLS_DIR/ca.crt key=$TLS_DIR/tls.key crt=$TLS_DIR/tls.crt
+ca_cn="py313 local CA ($BASE_DOMAIN)"
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+step "Local CA in $TLS_DIR"
+if [ -s "$ca_key" ] && [ -s "$ca_crt" ]; then
+  openssl x509 -in "$ca_crt" -noout -checkend $((60 * 86400)) >/dev/null \
+    || die "the CA expires within 60 days: remove $TLS_DIR to create a new one (and trust it again)"
+  note 'kept the existing CA'
+  if ! ca_name_constraints_complete "$ca_crt"; then
+    printf 'WARN   the existing CA does not bound IP, e-mail and URI names (created by an older version of this script); it is kept so that the trust in your keychain stays valid.\n'
+    printf '       To replace it: PURGE_LOCAL=1 PURGE_TLS=1 make k8s-local-down; INGRESS=traefik make k8s-local-up; then trust the new CA (scripts/traefik-doctor prints the command).\n'
+  fi
+else
+  cat > "$work/ca.cnf" <<EOF
+[req]
+distinguished_name = dn
+prompt = no
+x509_extensions = v3_ca
+[dn]
+CN = $ca_cn
+[v3_ca]
+basicConstraints = critical,CA:TRUE,pathlen:0
+keyUsage = critical,keyCertSign,cRLSign
+subjectKeyIdentifier = hash
+# The CA can only vouch for the site names. A name type without any constraint is unconstrained (RFC 5280), so every type a TLS
+# verifier looks at is bounded: DNS, e-mail and URI names to the site domain, IP addresses excluded altogether. (`excluded;email:.`
+# does not work: OpenSSL 3 still verifies a@b.example under it; a permitted in-domain e-mail constraint does reject it.)
+nameConstraints = critical,permitted;DNS:$BASE_DOMAIN,permitted;email:$BASE_DOMAIN,permitted;URI:$BASE_DOMAIN,permitted;URI:.$BASE_DOMAIN,excluded;IP:0.0.0.0/0.0.0.0,excluded;IP:0:0:0:0:0:0:0:0/0:0:0:0:0:0:0:0
+EOF
+  openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out "$ca_key.tmp" 2>/dev/null
+  chmod 600 "$ca_key.tmp"
+  openssl req -x509 -new -key "$ca_key.tmp" -sha256 -days 3650 -config "$work/ca.cnf" -out "$ca_crt.tmp"
+  mv "$ca_key.tmp" "$ca_key"; mv "$ca_crt.tmp" "$ca_crt"
+  chmod 600 "$ca_key"; chmod 644 "$ca_crt"
+  note "created $ca_crt (ECDSA P-256, 10 years, restricted to $BASE_DOMAIN)"
+fi
+
+step "Wildcard certificate *.$BASE_DOMAIN"
+leaf_ok() {
+  [ -s "$key" ] && [ -s "$crt" ] || return 1
+  openssl x509 -in "$crt" -noout -checkend $((30 * 86400)) >/dev/null || return 1
+  openssl verify -CAfile "$ca_crt" -purpose sslserver "$crt" >/dev/null 2>&1 || return 1
+  local sans
+  sans=$(openssl x509 -in "$crt" -noout -ext subjectAltName 2>/dev/null)
+  [[ "$sans" == *"DNS:*.$BASE_DOMAIN"* && "$sans" == *"DNS:$BASE_DOMAIN"* ]] || return 1
+  [ "$(openssl pkey -in "$key" -pubout 2>/dev/null)" = "$(openssl x509 -in "$crt" -noout -pubkey)" ]
+}
+if leaf_ok; then
+  note 'kept the existing certificate'
+else
+  cat > "$work/leaf.cnf" <<EOF
+[req]
+distinguished_name = dn
+prompt = no
+[dn]
+CN = *.$BASE_DOMAIN
+EOF
+  cat > "$work/leaf.ext" <<EOF
+basicConstraints = critical,CA:FALSE
+keyUsage = critical,digitalSignature
+extendedKeyUsage = serverAuth
+subjectAltName = DNS:*.$BASE_DOMAIN,DNS:$BASE_DOMAIN
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid
+EOF
+  openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out "$key.tmp" 2>/dev/null
+  chmod 600 "$key.tmp"
+  openssl req -new -key "$key.tmp" -config "$work/leaf.cnf" -out "$work/leaf.csr"
+  # 397 days: the longest leaf lifetime that Safari/macOS accepts.
+  openssl x509 -req -in "$work/leaf.csr" -CA "$ca_crt" -CAkey "$ca_key" -set_serial "0x$(openssl rand -hex 15)" \
+    -days 397 -sha256 -extfile "$work/leaf.ext" -out "$crt.tmp" 2>/dev/null
+  mv "$key.tmp" "$key"; mv "$crt.tmp" "$crt"
+  chmod 600 "$key"; chmod 644 "$crt"
+  note "issued $crt"
+fi
+openssl verify -CAfile "$ca_crt" -purpose sslserver "$crt" >/dev/null || die 'the issued certificate does not verify against the CA'
+openssl x509 -in "$crt" -noout -subject -enddate -ext subjectAltName | sed 's/^/   /'
+note "CA SHA-256 fingerprint: $(openssl x509 -in "$ca_crt" -noout -fingerprint -sha256 | cut -d= -f2)"
+
+if [ "${NO_CLUSTER:-0}" = 1 ]; then note 'NO_CLUSTER=1: cluster objects skipped'; exit 0; fi
+require_context
+require_image
+kc get namespace "$TNS" >/dev/null 2>&1 || die "namespace $TNS does not exist (scripts/traefik-install creates it)"
+kc get namespace "$NS" >/dev/null 2>&1 || die "namespace $NS does not exist (scripts/up creates it)"
+
+step "Secret local-prod-tls in $TNS and $NS"
+for namespace in "$TNS" "$NS"; do
+  kubectl --context "$CTX" -n "$namespace" create secret tls local-prod-tls --cert="$crt" --key="$key" --dry-run=client -o yaml \
+    | apply_feature_stream "$namespace" >/dev/null
+  note "applied $namespace/local-prod-tls"
+done
+
+step "ConfigMap local-ca-bundle in $NS (system CAs of $(app_image) + local CA)"
+docker run --rm --network none --entrypoint cat "$(app_image)" /etc/ssl/certs/ca-certificates.crt > "$work/system.crt"
+[ "$(grep -c 'BEGIN CERTIFICATE' "$work/system.crt")" -gt 50 ] || die 'could not read the system CA bundle from the image'
+{ cat "$work/system.crt"; echo; cat "$ca_crt"; } > "$work/bundle.crt"
+k create configmap local-ca-bundle "--from-file=ca-bundle.crt=$work/bundle.crt" "--from-file=local-ca.crt=$ca_crt" --dry-run=client -o yaml \
+  | apply_feature_stream "$NS" >/dev/null
+note "applied $NS/local-ca-bundle ($(grep -c 'BEGIN CERTIFICATE' "$work/bundle.crt") certificates)"

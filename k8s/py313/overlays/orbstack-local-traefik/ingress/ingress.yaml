@@ -1,0 +1,86 @@
+# Standard Ingress objects, portable to any controller; the annotations below are Traefik hints and harmless elsewhere
+# (entrypoints/tls select the HTTPS entrypoint, the middleware attaches the Studio body limit). No ingressClassName: this cluster
+# has one controller and creating an IngressClass would be a further cluster-level object.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lms
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  tls:
+    - hosts: [lms.local-prod.7mud.com]
+      secretName: local-prod-tls
+  rules:
+    - host: lms.local-prod.7mud.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lms
+                port:
+                  name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: studio
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # <namespace>-<name>@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: py313-prod-local-studio-body-limit@kubernetescrd
+spec:
+  tls:
+    - hosts: [studio.local-prod.7mud.com]
+      secretName: local-prod-tls
+  rules:
+    - host: studio.local-prod.7mud.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cms
+                port:
+                  name: http
+---
+# Separate from the two above so that the Studio body limit does not apply to static files. Longest prefix wins in Traefik,
+# so /static goes here and everything else to the application. LMS uses STATIC_URL /static/, Studio /static/studio/
+# (cms/envs/aws.py appends studio/); both are below the one collected tree.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: static
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  tls:
+    - hosts: [lms.local-prod.7mud.com, studio.local-prod.7mud.com]
+      secretName: local-prod-tls
+  rules:
+    - host: lms.local-prod.7mud.com
+      http:
+        paths:
+          - path: /static
+            pathType: Prefix
+            backend:
+              service:
+                name: static
+                port:
+                  name: http
+    - host: studio.local-prod.7mud.com
+      http:
+        paths:
+          - path: /static
+            pathType: Prefix
+            backend:
+              service:
+                name: static
+                port:
+                  name: http

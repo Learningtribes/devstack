@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# db-init for the Traefik mode: the local Job with the https site domains (merged over ../../orbstack-local/jobs/bringup.env) and the CA bundle.
+namespace: py313-prod-local
+resources:
+  - ../../orbstack-local/jobs
+configMapGenerator:
+  - name: py313-bringup-env
+    behavior: merge
+    envs:
+      - bringup.env
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - target:
+      kind: Job
+      name: db-init
+    patch: |-
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value: {name: local-ca-bundle, configMap: {name: local-ca-bundle}}
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts/-
+        value: {name: local-ca-bundle, mountPath: /etc/local-ca, readOnly: true}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: SSL_CERT_FILE, value: /etc/local-ca/ca-bundle.crt}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: REQUESTS_CA_BUNDLE, value: /etc/local-ca/ca-bundle.crt}

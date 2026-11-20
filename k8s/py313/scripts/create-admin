@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Creates or updates one LMS administrator in the running local stack.
+# The password is typed without echo and travels only through the stdin of `kubectl exec -i`: never argv, environment, a file or a log.
+# A UserProfile row is required: without it the LMS login returns 500.
+# Variables: ADMIN_USER (default py313admin), ADMIN_EMAIL (default <ADMIN_USER>@local-prod.7mud.com). The LMS signs in by e-mail.
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+require_context
+require_owned_namespace
+
+ADMIN_USER=${ADMIN_USER:-py313admin}
+ADMIN_EMAIL=${ADMIN_EMAIL:-$ADMIN_USER@$BASE_DOMAIN}
+[[ $ADMIN_USER =~ ^[A-Za-z0-9_.-]{2,30}$ ]] || die 'ADMIN_USER must be 2-30 characters of A-Z a-z 0-9 _ . -'
+[[ $ADMIN_EMAIL =~ ^[^[:space:]@]+@[^[:space:]@]+$ ]] || die 'ADMIN_EMAIL is not an e-mail address'
+[ -t 0 ] || die 'run this in a terminal: the password is read from the keyboard'
+k rollout status deployment/lms --timeout=30s >/dev/null || die 'deployment/lms is not ready (make k8s-local-up first)'
+
+read -rsp "Password for $ADMIN_USER <$ADMIN_EMAIL>: " password; echo
+read -rsp 'Repeat password: ' again; echo
+[ "$password" = "$again" ] || die 'passwords differ'
+[ "${#password}" -ge 8 ] || die 'password must have at least 8 characters'
+unset again
+
+python_code=$(cat <<'PY'
+import os, sys
+from django.contrib.auth import get_user_model
+from student.models import UserProfile
+password = sys.stdin.read()
+U = get_user_model()
+u, created = U.objects.get_or_create(username=os.environ['ADMIN_USER'], defaults={'email': os.environ['ADMIN_EMAIL']})
+u.email = os.environ['ADMIN_EMAIL']
+u.is_active = u.is_staff = u.is_superuser = True
+u.set_password(password)
+u.save()
+UserProfile.objects.get_or_create(user=u, defaults={'name': u.username})
+print('admin %s: %s <%s>' % ('created' if created else 'updated', u.username, u.email))
+PY
+)
+
+printf '%s' "$password" | k exec -i deploy/lms -- env "ADMIN_USER=$ADMIN_USER" "ADMIN_EMAIL=$ADMIN_EMAIL" \
+  edxapp-entrypoint manage lms shell -c "$python_code" 2>&1 | grep -E '^admin (created|updated):' \
+  || die 'the account was not created: rerun with the output of `scripts/status`'
+unset password
+note "Sign in with the e-mail address $ADMIN_EMAIL"

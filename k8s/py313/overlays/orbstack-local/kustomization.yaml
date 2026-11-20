@@ -1,0 +1,143 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Local OrbStack cluster (context `orbstack`, default StorageClass local-path, no ingress controller: use kubectl port-forward).
+# Needs two Secrets that are created at run time and never committed: edxapp-config and backing-credentials (README).
+namespace: py313-prod-local
+resources:
+  - ../../base
+  - namespace.yaml
+  - studio-media.yaml
+  - backing
+images:
+  # The arm64 image built into the local Docker daemon, which OrbStack's Kubernetes uses directly: never pulled.
+  - name: edxapp
+    newName: edxapp
+    newTag: py313-prodimage-3c3f2f7-local
+replicas:
+  - name: lms
+    count: 1
+  - name: cms
+    count: 1
+  # Minimum that proves queue consumption: the default queue of each system. Everything else is opt-in via ./all-workers.
+  - name: worker-lms-high
+    count: 0
+  - name: worker-lms-grade
+    count: 0
+  - name: worker-lms-progress
+    count: 0
+  - name: worker-lms-high-mem
+    count: 0
+  - name: worker-lms-low
+    count: 0
+  - name: worker-cms-low
+    count: 0
+# Resources below are LOCAL-MEASURED (OrbStack, arm64, one request each of /heartbeat, /login, /signin, one Celery task; docker stats and
+# cgroup memory.peak, 2026-11-18): lms 300 MiB idle / 724 MiB peak (gunicorn worker, startup import and one `manage lms shell`),
+# cms 275 MiB idle / 279 MiB peak, a default-queue worker 285-305 MiB. Limits keep about 2x the peak; they say nothing about production load.
+# lms and cms run two sync gunicorn workers each (README, "Gunicorn workers"): the numbers are re-measured there.
+patches:
+  - target:
+      kind: Deployment
+      name: lms
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: lms
+      spec:
+        template:
+          spec:
+            containers:
+              - name: lms
+                env:
+                  - name: GUNICORN_WORKERS
+                    value: "2"
+                resources:
+                  requests:
+                    cpu: 250m
+                    memory: 768Mi
+                  limits:
+                    cpu: "2"
+                    memory: 2Gi
+  - target:
+      kind: Deployment
+      name: cms
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: cms
+      spec:
+        template:
+          spec:
+            containers:
+              - name: cms
+                env:
+                  - name: GUNICORN_WORKERS
+                    value: "2"
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 512Mi
+                  limits:
+                    cpu: "1"
+                    memory: 1536Mi
+            volumes:
+              - name: media
+                emptyDir: null
+                persistentVolumeClaim:
+                  claimName: studio-media
+  - target:
+      kind: Deployment
+      name: worker-cms-default
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker-cms-default
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: media
+                emptyDir: null
+                persistentVolumeClaim:
+                  claimName: studio-media
+  - target:
+      kind: Deployment
+      name: worker-cms-low
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker-cms-low
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: media
+                emptyDir: null
+                persistentVolumeClaim:
+                  claimName: studio-media
+  # Also the template for a real environment's grace period (open question Q8): 60 s here so that a local teardown is quick.
+  - target:
+      kind: Deployment
+      labelSelector: app.kubernetes.io/component=worker
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: any
+      spec:
+        template:
+          spec:
+            terminationGracePeriodSeconds: 60
+            containers:
+              - name: worker
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 320Mi
+                  limits:
+                    cpu: "1"
+                    memory: 768Mi
