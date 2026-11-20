@@ -132,6 +132,31 @@ hash of every run created before discovery existed. `seed()` writes the **in-net
 address (`<run>-runtime:18000`) as `django_site.domain`, because discovery runs in a
 different container than the LMS; the host loopback port is unusable there.
 
+### Merge order with course-discovery
+
+The discovery half of this contract is split across two repositories, and the two halves are
+only consistent together:
+
+| Change | Lives in |
+| --- | --- |
+| `settings.py313` raises unless `DISCOVERY_LOCAL_RUN=1` | discovery |
+| `core.discovery_environment()` writes `DISCOVERY_LOCAL_RUN=1` | this repository |
+| Lock paths carry `@COMPANIONS_DIR@`; `materialize-lock.py` resolves them | discovery |
+| `discovery.py install()` invokes the materializer and then runs `uv pip sync` | this repository |
+
+Neither side is safe on its own, so the order is a preference rather than a guarantee: merge
+them together, and do not run a bring-up between the two merges.
+
+* This repository alone: `install()` runs `<discovery>/ci/py313/materialize-lock.py`, which the
+  un-merged discovery checkout does not have, so the discovery `install` stage fails on a
+  missing file.
+* Discovery alone: `settings.py313` refuses to import until something exports
+  `DISCOVERY_LOCAL_RUN`, and its lock names `@COMPANIONS_DIR@`, which the un-merged replay
+  passes straight to `pip`. The `check` and `install` stages both fail.
+* Discovery first, then this repository: the same two failures, in the same stages, for the
+  length of the window. The only reason to prefer it is that a discovery change on its own
+  never breaks a non-discovery deployment.
+
 ### Local-only trust shortcuts
 
 Discovery verifies the LMS's HS256 JWTs with the run's startup secret and connects to MySQL as the
