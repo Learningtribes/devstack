@@ -19,6 +19,7 @@ class RestartTests(unittest.TestCase):
         self.events = MagicMock()
         for target, label, kwargs in [
                 ('restart.ownership', 'ownership', {}),
+                ('restart.ensure_runtime_log_dirs', 'ensure_runtime_log_dirs', {}),
                 ('restart.environment', 'environment', {'return_value': {'ENV': '1'}}),
                 ('restart.wait_for_heartbeats', 'wait_for_heartbeats', {'return_value': {'lms': 200, 'cms': 200}}),
                 ('restart.subprocess.run', 'run', {})]:
@@ -29,8 +30,9 @@ class RestartTests(unittest.TestCase):
     def test_restarts_runtime_then_starts_http_and_workers_for_both_systems(self):
         replay_restart.restart(self.config, 5)
         names = [call[0] for call in self.events.mock_calls]
-        self.assertEqual(names[:2], ['ownership', 'run'])
+        self.assertEqual(names[:3], ['ownership', 'run', 'ensure_runtime_log_dirs'])
         self.assertEqual(self.events.run.call_args_list[0].args[0], ['docker', 'restart', self.config['runtime_container']])
+        self.events.ensure_runtime_log_dirs.assert_called_once_with(self.config)
         startup = Path(self.config['export_dir']) / 'devstack' / STARTUP_REL
         started = [(Path(call.args[0][2]).name, call.args[0][3]) for call in self.events.run.call_args_list[1:]]
         self.assertEqual(started, [('start_http.py', 'lms'), ('start_http.py', 'cms'),

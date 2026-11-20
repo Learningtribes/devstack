@@ -14,9 +14,12 @@ tracked tree. Python 3.13 is the only supported runtime.
 ### Development environment (fixed, no arguments)
 
 ```sh
-make py313-dev-up    # run dev313: LMS :18000, Studio :18010, Platform = ../platform
+make py313-dev-up    # run dev313: LMS :18000, Studio :18010, Platform = ../platform (live from the start)
 make lms-shell       # also cms-shell / studio-shell
-make py313-restart   # after changing Platform code
+make py313-restart   # after changing Platform code (also recreates /edx/var/log/{lms,cms})
+make py313-rebuild-assets        # XModule + webpack/Sass (repeatable; then py313-restart)
+make py313-rebuild-translations  # LMS/CMS locale catalogs + static i18n
+make py313-rebuild-all           # assets then translations
 make py313-status
 make py313-destroy   # removes containers, volumes and network; the run directory stays
 ```
@@ -29,17 +32,19 @@ new environment. Consequences: uncommitted edits take
 effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
-Theme: the theme is not packaged with Platform or Devstack any more. Every run bind-mounts the `THEME_REPO` checkout
+`make py313-start` / `make py313-restart` recreate `/edx/var/log/lms` and `/edx/var/log/cms` so FileHandlers
+do not fail after a volume wipe. Theme: the theme is not packaged with Platform or Devstack any more. Every run bind-mounts the `THEME_REPO` checkout
 (e.g. `make py313-up ... THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`, `py313-dev-up` defaults to the sibling
 `src/themes/hawthorn`) read-write at `/workspace/themes/hawthorn`; it replaces the former snapshot in `COMPREHENSIVE_THEME_DIRS`. Its content is not
 verified against `theme_commit` (recorded only; keep the checkout on the theme repo's `py3-master`). The sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
 (`lms/`, `cms/`, `common/` at its root). Sass output goes to the checkout's git-ignored `lms/static/css` and
-`cms/static/css`. After editing theme files, rebuild with `paver update_assets` (compiles themes found in the theme dirs)
-or `bash /startup/build_frontend.sh`, then `make py313-restart` if templates are cached. The mount is fixed when the
+`cms/static/css`. After editing theme or Platform static files, prefer `make py313-rebuild-assets` (or
+`py313-rebuild-translations` / `py313-rebuild-all`), then `make py313-restart` if templates are cached.
+`paver update_assets` and `bash /startup/build_frontend.sh` still work from a shell. The mount is fixed when the
 container is created, so adding or changing `THEME_REPO` needs `make py313-destroy PURGE_DIR=1 && make py313-dev-up`.
 Staging servers use the same Platform-owned scripts with `BRINGUP_THEME_SOURCE` / `BRINGUP_THEME_COMMIT` instead of a mount (Platform `ci/py313/bringup/prepare_theme_inputs.py`).
 Override `RUN_ID`, `LMS_PORT`, `CMS_PORT` or `PLATFORM_REPO` for another environment, and
-`BRINGUP_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` leaves no evidence.
+`BRINGUP_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` and `py313-rebuild-*` leave no evidence.
 
 ### Snapshot-platform run (acceptance)
 

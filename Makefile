@@ -266,6 +266,22 @@ py313-restart: ## Restart LMS and Studio of the development environment so they 
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/restart.py --config "$(BRINGUP_CONFIG)"
 
+py313-rebuild-assets: ## Rebuild XModule + frontend assets in the development environment (no evidence; then py313-restart)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" assets
+
+py313-rebuild-translations: ## Recompile LMS/CMS locale catalogs and static i18n in the development environment
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" translations
+
+py313-rebuild-all: ## Rebuild assets then translations (repeatable; unlike the one-shot assets bring-up phase)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" all
+
+py313-rebuild-npm: ## Ensure node_modules/webpack exist (npm ci when missing after a live Platform remount)
+	$(py313_require_config)
+	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/rebuild.py --config "$(BRINGUP_CONFIG)" npm
+
 py313-stop: ## Stop every container of the environment without deleting data (reverse of py313-start)
 	$(py313_require_config)
 	@$(BRINGUP_PYTHON) $(BRINGUP_REPLAY)/lifecycle.py --config "$(BRINGUP_CONFIG)" stop

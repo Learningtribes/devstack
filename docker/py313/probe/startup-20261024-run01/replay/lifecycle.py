@@ -107,6 +107,16 @@ def hearts(core, config, timeout):
             time.sleep(3)
 
 
+def ensure_runtime_log_dirs(config):
+    """Recreate /edx/var/log/{lms,cms} without depending on the frozen export's core.
+
+    Older exports lack ensure_runtime_log_dirs; start must still work for any run age.
+    """
+    result = docker('exec', config['runtime_container'], 'mkdir', '-p', '/edx/var/log/lms', '/edx/var/log/cms')
+    if result.returncode:
+        raise SystemExit('Failed to create /edx/var/log/{lms,cms}: ' + (result.stderr or result.stdout))
+
+
 def start(core, config, startup, timeout, has_discovery):
     core.ownership(config)
     owned, foreign, absent = classify(core, config, has_discovery)
@@ -117,6 +127,8 @@ def start(core, config, startup, timeout, has_discovery):
         print('started', name)
     for name in absent:
         print('absent (run "run.py create" to recreate):', name)
+    if config['runtime_container'] in owned:
+        ensure_runtime_log_dirs(config)
     # The HTTP/worker processes are docker-exec children, so a stop removed them and they must be
     # dispatched again, with the scripts and environment this run was created with.
     env = core.environment(config)
