@@ -32,8 +32,19 @@ new environment. Consequences: uncommitted edits take
 effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
+
 `make py313-start` / `make py313-restart` recreate `/edx/var/log/lms` and `/edx/var/log/cms` so FileHandlers
-do not fail after a volume wipe. Theme: the theme is not packaged with Platform or Devstack any more. Every run bind-mounts the `THEME_REPO` checkout
+do not fail after a volume wipe.
+
+Static rebuild: `make py313-rebuild-assets` is enough for Sass/JS/XModule on this runtime
+(`DEBUG=False` + `DevelopmentStorage`): Sass lands in the Platform tree (staticfiles finders serve it),
+webpack writes into `STATIC_ROOT`, and XModule copies into `common/static/xmodule`.
+`locale_static.py` (via `py313-rebuild-translations`) is the path that runs `collectstatic`; use that
+after `.po` changes or for collectstatic-only package files, not because Sass/JS needs it.
+`py313-rebuild-npm` only runs `npm ci` when `node_modules/.bin/webpack` is missing — after
+`package-lock.json` changes, remove `node_modules` or run that target explicitly.
+
+Theme: the theme is not packaged with Platform or Devstack any more. Every run bind-mounts the `THEME_REPO` checkout
 (e.g. `make py313-up ... THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`, `py313-dev-up` defaults to the sibling
 `src/themes/hawthorn`) read-write at `/workspace/themes/hawthorn`; it replaces the former snapshot in `COMPREHENSIVE_THEME_DIRS`. Its content is not
 verified against `theme_commit` (recorded only; keep the checkout on the theme repo's `py3-master`). The sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme

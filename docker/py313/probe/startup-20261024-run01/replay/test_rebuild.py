@@ -18,8 +18,8 @@ class RebuildTests(unittest.TestCase):
         self.events = MagicMock()
         for target, label, kwargs in [
                 ('rebuild.ownership', 'ownership', {}),
-                ('rebuild.ensure_runtime_log_dirs', 'ensure_runtime_log_dirs', {}),
                 ('rebuild.ensure_npm', 'ensure_npm', {}),
+                ('rebuild.prune_xmodule_build_dirs', 'prune_xmodule_build_dirs', {}),
                 ('rebuild.run_shell', 'run_shell', {}),
                 ('rebuild.run', 'run', {}),
                 ('rebuild.docker_exec', 'docker_exec', {'side_effect': lambda *a, **k: ['docker', 'exec', *a]}),
@@ -35,22 +35,27 @@ class RebuildTests(unittest.TestCase):
             [call.args for call in self.events.run_shell.call_args_list],
             [(self.config, 'lms', '/startup/locale_static.py'),
              (self.config, 'cms', '/startup/locale_static.py')])
-        self.events.ensure_runtime_log_dirs.assert_called_once_with(self.config)
+        self.events.prune_xmodule_build_dirs.assert_not_called()
 
-    def test_assets_uses_fresh_xmodule_build_root_then_frontend(self):
+    def test_assets_uses_fresh_xmodule_build_root_then_frontend_then_cleans_staging(self):
         replay_rebuild.rebuild(self.config, 'assets')
         self.events.ensure_npm.assert_called_once_with(self.config)
+        self.events.prune_xmodule_build_dirs.assert_called_once_with(self.config)
         self.assertEqual(self.events.run_shell.call_args.args[:3],
                          (self.config, 'lms', '/startup/build_xmodule_assets.py'))
         build_root = self.events.run_shell.call_args.kwargs['extra_env']['BRINGUP_XMODULE_BUILD_ROOT']
         self.assertTrue(build_root.startswith(APP_STATE + '/xmodule-source-build-'))
         self.events.run.assert_called_once()
         self.assertIn('build_frontend.sh', str(self.events.docker_exec.call_args))
+        self.assertEqual(
+            self.events.subprocess_run.call_args.args[0],
+            ['docker', 'exec', self.config['runtime_container'], 'rm', '-rf', build_root])
 
-    def test_npm_only_ensures_node_modules(self):
+    def test_npm_only_ensures_node_modules_and_skips_log_dirs(self):
         replay_rebuild.rebuild(self.config, 'npm')
         self.events.ensure_npm.assert_called_once_with(self.config)
         self.events.run_shell.assert_not_called()
+        self.events.prune_xmodule_build_dirs.assert_not_called()
 
 
 class EnsureNpmTests(unittest.TestCase):

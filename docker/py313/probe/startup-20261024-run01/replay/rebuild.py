@@ -7,14 +7,19 @@ editing Sass, JS, XModule sources or .po files therefore cannot reuse that path.
 Same builders as bring-up (npm ci when needed, build_xmodule_assets.py with a fresh
 BRINGUP_XMODULE_BUILD_ROOT, build_frontend.sh, locale_static.py). Leaves no evidence.
 Afterward: make py313-restart if templates or static are cached in the running servers.
+
+collectstatic: locale_static.py runs it; rebuild-assets does not. On the local runtime
+(DEBUG=False, DevelopmentStorage) that is enough for Sass/JS: build_frontend writes Sass
+into the Platform tree (served by the staticfiles finders) and webpack into STATIC_ROOT,
+and build_xmodule_assets copies into common/static/xmodule. Use rebuild-translations (or
+rebuild-all) when locale catalogs / static i18n / collectstatic-only package files change.
 """
 import argparse
 import datetime
 import subprocess
-import sys
 
-from core import (APP_PYTHON, APP_SOURCE, APP_STATE, docker_exec, ensure_runtime_log_dirs,
-                  environment, load_config, ownership)
+from core import (APP_PYTHON, APP_SOURCE, APP_STATE, docker_exec, environment, load_config,
+                  ownership)
 from replay_after_install import NPM_FETCH_TOLERANCE
 
 WEBPACK = APP_SOURCE + '/node_modules/.bin/webpack'
@@ -36,7 +41,11 @@ def run_shell(config, system, script, *, settings=None, extra_env=None):
 
 
 def ensure_npm(config):
-    """Install node_modules when webpack is missing (common after a live Platform remount)."""
+    """Install node_modules when webpack is missing (common after a live Platform remount).
+
+    Presence of webpack is the only gate: package-lock.json changes do not trigger npm ci.
+    Use action `npm` (or remove node_modules) after lockfile updates.
+    """
     probe = subprocess.run(
         ['docker', 'exec', config['runtime_container'], 'test', '-x', WEBPACK],
         capture_output=True)
@@ -50,6 +59,14 @@ def ensure_npm(config):
     subprocess.run(['docker', 'exec', config['runtime_container'], 'test', '-x', WEBPACK], check=True)
 
 
+def prune_xmodule_build_dirs(config):
+    """Drop leftover exclusive xmodule staging dirs from earlier rebuilds or a crashed run."""
+    subprocess.run(
+        ['docker', 'exec', config['runtime_container'], 'bash', '-c',
+         'rm -rf %s/xmodule-source-build-*' % APP_STATE],
+        check=True)
+
+
 def rebuild_translations(config):
     for system in ('lms', 'cms'):
         print('locale_static', system)
@@ -59,6 +76,7 @@ def rebuild_translations(config):
 
 def rebuild_assets(config):
     ensure_npm(config)
+    prune_xmodule_build_dirs(config)
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M%S')
     build_root = APP_STATE + '/xmodule-source-build-' + stamp
     extra = {'BRINGUP_XMODULE_BUILD_ROOT': build_root}
@@ -66,12 +84,15 @@ def rebuild_assets(config):
     run_shell(config, 'lms', '/startup/build_xmodule_assets.py', extra_env=extra)
     print('frontend assets')
     run(config, docker_exec(config, 'bash', '/startup/build_frontend.sh'))
+    # Generated tree was copied into Platform common/static/xmodule; staging is disposable.
+    subprocess.run(
+        ['docker', 'exec', config['runtime_container'], 'rm', '-rf', build_root],
+        check=True)
     print('PASS assets', config['run_id'])
 
 
 def rebuild(config, action):
     ownership(config)
-    ensure_runtime_log_dirs(config)
     if action == 'npm':
         ensure_npm(config)
         print('PASS npm', config['run_id'])
