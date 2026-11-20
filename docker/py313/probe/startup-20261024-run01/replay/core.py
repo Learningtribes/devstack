@@ -712,7 +712,7 @@ def ensure_discovery_image(config, *, sleep=time.sleep):
             sleep(delay)
     if image is None:
         fail('discovery_image is not present locally: %s\n'
-             '  build it with: make py313-build-discovery DISCOVERY_REPO=%s'
+             '  build it with: make build-discovery DISCOVERY_REPO=%s'
              % (reference, config['discovery_repo']))
     return {'reference': reference, 'image_id': image.get('Id'),
             'platform': image.get('Os', '') + '/' + image.get('Architecture', '')}

@@ -8,10 +8,10 @@ Platform `py3-master` worktree and this Devstack checkout with a clean tracked t
 
 ```sh
 git -C /path/to/platform worktree add --detach /path/to/platform-worktree origin/py3-master
-make py313-up RUN_ID=master313r16 LMS_PORT=18000 CMS_PORT=18010 PLATFORM_REPO=/path/to/platform-worktree
+make up RUN_ID=master313r16 LMS_PORT=18000 CMS_PORT=18010 PLATFORM_REPO=/path/to/platform-worktree
 ```
 
-`py313-up` runs `new_run.py` (run directory under `$BRINGUP_RUNS_ROOT`, default
+`up` runs `new_run.py` (run directory under `$BRINGUP_RUNS_ROOT`, default
 `~/workspace/hawthorn/py313-runs/<RUN_ID>`; private inputs in `private/` mode 700; first free
 `172.30.X.0/24`) and then `bring_up.py`: unit tests, secrets, preflight, export, create, install,
 schema, assets, services, heartbeats, course build and seed, superuser, HTTP smoke. It stops at the
@@ -26,8 +26,8 @@ first failing stage; per-stage logs and durations are in `<run>/stage-logs/`, th
   in the host environment.
 - Run-scoped acceptance identities (staff, learner, ...): `<run>/private/acceptance.json`, mode 600.
 - `make lms-shell BRINGUP_CONFIG=<run>/config.json` (also `cms-shell`, `studio-shell`).
-- `make py313-status BRINGUP_CONFIG=...` shows container states, ports and heartbeats.
-- `make py313-destroy BRINGUP_CONFIG=...` is an explicit operator teardown, separate from the replay
+- `make status BRINGUP_CONFIG=...` shows container states, ports and heartbeats.
+- `make destroy BRINGUP_CONFIG=...` is an explicit operator teardown, separate from the replay
   stages (which never clean up): it removes only the containers, volumes and network named in that
   config that carry its `py313.replay.config` ownership label, and keeps the run directory
   (`PURGE_DIR=1` deletes the run's known outputs, `DRY_RUN=1` only reports).
@@ -100,21 +100,21 @@ so enabling it costs one container and no extra infrastructure. Runs created wit
 `discovery_repo` keep their config hash and are unaffected.
 
 ```sh
-make py313-build-discovery DISCOVERY_REPO=/path/to/discovery
-make py313-dev-up ... DISCOVERY_REPO=/path/to/discovery \
+make build-discovery DISCOVERY_REPO=/path/to/discovery
+make dev-up ... DISCOVERY_REPO=/path/to/discovery \
   DISCOVERY_IMAGE=ltdps/discovery:py313-local DISCOVERY_PORT=18381
 ```
 
-`py313-dev-up` builds a **missing tag** itself, from `DISCOVERY_REPO`, so the explicit
-`py313-build-discovery` above is only needed when it is absent from this checkout, or to rebuild
+`dev-up` builds a **missing tag** itself, from `DISCOVERY_REPO`, so the explicit
+`build-discovery` above is only needed when it is absent from this checkout, or to rebuild
 on purpose. A `DISCOVERY_IMAGE` given as `repo@sha256:<digest>` is never built: it is a published
-reference, pulled by `preflight` like the platform runtime image. `py313-up`, the canonical
+reference, pulled by `preflight` like the platform runtime image. `up`, the canonical
 non-development path, never builds — it fails instead, naming the command to run.
 
-`py313-start` / `py313-stop` / `py313-restart` / `py313-destroy` cover discovery
+`start` / `stop` / `restart` / `destroy` cover discovery
 automatically: `lifecycle.py` enumerates it when the config carries `discovery_repo`. The
-discovery-only commands are `py313-shell-discovery`, `py313-status-discovery` (exits non-zero
-unless the container runs and `/health/` returns 200) and `py313-update-db-discovery`.
+discovery-only commands are `shell-discovery`, `status-discovery` (exits non-zero
+unless the container runs and `/health/` returns 200) and `update-db-discovery`.
 
 ### Two halves of the contract, and neither is optional
 
@@ -149,7 +149,7 @@ other deployment changes behaviour.
 
 ### Why discovery's release script is not in this repository
 
-`py313-build-discovery` builds the image locally from `DISCOVERY_REPO`. Publishing a
+`build-discovery` builds the image locally from `DISCOVERY_REPO`. Publishing a
 *released* digest works the same way as for the platform image, but the script lives in the
 discovery checkout:
 

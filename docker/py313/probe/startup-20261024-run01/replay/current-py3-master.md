@@ -14,14 +14,14 @@ tracked tree. Python 3.13 is the only supported runtime.
 ### Development environment (fixed, no arguments)
 
 ```sh
-make py313-dev-up    # run dev313: LMS :18000, Studio :18010, Platform = ../platform (live from the start)
+make dev-up    # run dev313: LMS :18000, Studio :18010, Platform = ../platform (live from the start)
 make lms-shell       # also cms-shell / studio-shell
-make py313-restart   # after changing Platform code (also recreates /edx/var/log/{lms,cms})
-make py313-rebuild-assets        # XModule + webpack/Sass (repeatable; then py313-restart)
-make py313-rebuild-translations  # LMS/CMS locale catalogs + static i18n
-make py313-rebuild-all           # assets then translations
-make py313-status
-make py313-destroy   # removes containers, volumes and network; the run directory stays
+make restart   # after changing Platform code (also recreates /edx/var/log/{lms,cms})
+make rebuild-assets        # XModule + webpack/Sass (repeatable; then restart)
+make rebuild-translations  # LMS/CMS locale catalogs + static i18n
+make rebuild-all           # assets then translations
+make status
+make destroy   # removes containers, volumes and network; the run directory stays
 ```
 
 The Platform checkout is bind-mounted read-write at `/workspace/platform`, and after the install stage
@@ -29,42 +29,42 @@ The Platform checkout is bind-mounted read-write at `/workspace/platform`, and a
 cwd and the settings all see your working tree, not a copy. Install inputs and the installed entry-point
 metadata still come from the committed export, so changed `setup.py` entry points or dependencies need a
 new environment. Consequences: uncommitted edits take
-effect on `make py313-restart` (the servers run with `--noreload`); the asset build writes ignored files
+effect on `make restart` (the servers run with `--noreload`); the asset build writes ignored files
 (`node_modules`, `common/static/bundles`, `lms/static/css`, ...) into the checkout; ignored leftovers in the
 tree are visible to the runtime (the locale build therefore compiles only git-tracked catalogs).
 
-`make py313-start` / `make py313-restart` recreate `/edx/var/log/lms` and `/edx/var/log/cms` so FileHandlers
+`make start` / `make restart` recreate `/edx/var/log/lms` and `/edx/var/log/cms` so FileHandlers
 do not fail after a volume wipe.
 
-Static rebuild: `make py313-rebuild-assets` is enough for Sass/JS/XModule on this runtime
+Static rebuild: `make rebuild-assets` is enough for Sass/JS/XModule on this runtime
 (`DEBUG=False` + `DevelopmentStorage`): Sass lands in the Platform tree (staticfiles finders serve it),
 webpack writes into `STATIC_ROOT`, and XModule copies into `common/static/xmodule`.
-`locale_static.py` (via `py313-rebuild-translations`) is the path that runs `collectstatic`; use that
+`locale_static.py` (via `rebuild-translations`) is the path that runs `collectstatic`; use that
 after `.po` changes or for collectstatic-only package files, not because Sass/JS needs it.
-`py313-rebuild-npm` only runs `npm ci` when `node_modules/.bin/webpack` is missing — after
+`rebuild-npm` only runs `npm ci` when `node_modules/.bin/webpack` is missing — after
 `package-lock.json` changes, remove `node_modules` or run that target explicitly.
 
 Theme: the theme is not packaged with Platform or Devstack any more. Every run bind-mounts the `THEME_REPO` checkout
-(e.g. `make py313-up ... THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`, `py313-dev-up` defaults to the sibling
+(e.g. `make up ... THEME_REPO=~/workspace/hawthorn/src/themes/hawthorn`, `dev-up` defaults to the sibling
 `src/themes/hawthorn`) read-write at `/workspace/themes/hawthorn`; it replaces the former snapshot in `COMPREHENSIVE_THEME_DIRS`. Its content is not
 verified against `theme_commit` (recorded only; keep the checkout on the theme repo's `py3-master`). The sites keep using the theme name `hawthorn`, so the checkout must be a `hawthorn`-style theme
 (`lms/`, `cms/`, `common/` at its root). Sass output goes to the checkout's git-ignored `lms/static/css` and
-`cms/static/css`. After editing theme or Platform static files, prefer `make py313-rebuild-assets` (or
-`py313-rebuild-translations` / `py313-rebuild-all`), then `make py313-restart` if templates are cached.
+`cms/static/css`. After editing theme or Platform static files, prefer `make rebuild-assets` (or
+`rebuild-translations` / `rebuild-all`), then `make restart` if templates are cached.
 `paver update_assets` and `bash /startup/build_frontend.sh` still work from a shell. The mount is fixed when the
-container is created, so adding or changing `THEME_REPO` needs `make py313-destroy PURGE_DIR=1 && make py313-dev-up`.
+container is created, so adding or changing `THEME_REPO` needs `make destroy PURGE_DIR=1 && make dev-up`.
 Staging servers use the same Platform-owned scripts with `BRINGUP_THEME_SOURCE` / `BRINGUP_THEME_COMMIT` instead of a mount (Platform `ci/py313/bringup/prepare_theme_inputs.py`).
 Override `RUN_ID`, `LMS_PORT`, `CMS_PORT` or `PLATFORM_REPO` for another environment, and
-`BRINGUP_CONFIG=<run>/config.json` to point the targets below at it. `py313-restart` and `py313-rebuild-*` leave no evidence.
+`BRINGUP_CONFIG=<run>/config.json` to point the targets below at it. `restart` and `py313-rebuild-*` leave no evidence.
 
 ### Snapshot-platform run (acceptance)
 
 ```sh
 git -C /path/to/platform worktree add --detach /path/to/platform-worktree origin/py3-master
-make py313-up RUN_ID=master313r16 LMS_PORT=18100 CMS_PORT=18110 PLATFORM_REPO=/path/to/platform-worktree
+make up RUN_ID=master313r16 LMS_PORT=18100 CMS_PORT=18110 PLATFORM_REPO=/path/to/platform-worktree
 ```
 
-`py313-up` runs `new_run.py` (run directory under `$BRINGUP_RUNS_ROOT`, default
+`up` runs `new_run.py` (run directory under `$BRINGUP_RUNS_ROOT`, default
 `~/workspace/hawthorn/py313-runs/<RUN_ID>`; private inputs in `private/` mode 700; first free
 `172.30.X.0/24`) and then `bring_up.py`: unit tests, secrets, preflight, export, create, install,
 schema, assets, services, heartbeats, course build and seed, superuser, HTTP smoke. It stops at the
@@ -78,8 +78,8 @@ first failing stage; per-stage logs and durations are in `<run>/stage-logs/`, th
   `BRINGUP_DEV_SUPERUSER_USERNAME`, `BRINGUP_DEV_SUPERUSER_EMAIL`, `BRINGUP_DEV_SUPERUSER_PASSWORD`
   in the host environment.
 - Run-scoped acceptance identities (staff, learner, ...): `<run>/private/acceptance.json`, mode 600.
-- `make lms-shell` (also `cms-shell`, `studio-shell`) and `make py313-status` target the development environment unless `BRINGUP_CONFIG` names another run; status shows container states, ports and heartbeats.
-- `make py313-destroy` is an explicit operator teardown, separate from the replay
+- `make lms-shell` (also `cms-shell`, `studio-shell`) and `make status` target the development environment unless `BRINGUP_CONFIG` names another run; status shows container states, ports and heartbeats.
+- `make destroy` is an explicit operator teardown, separate from the replay
   stages (which never clean up): it removes only the containers, volumes and network named in that
   config that carry its `py313.replay.config` ownership label, and keeps the run directory
   (`PURGE_DIR=1` deletes the run's known outputs, `DRY_RUN=1` only reports).
@@ -104,7 +104,7 @@ lock. Commit the lock in a follow-up commit and update `images.runtime` in
 `--registry-proxy URL` routes the client-side registry reads through a proxy (polluted DNS), and
 `--build-arg` accepts the Debian/PyPI/Node mirror settings.
 
-The sections below describe the individual stages that `py313-up` runs.
+The sections below describe the individual stages that `up` runs.
 
 Use [the exact configuration contract](README.md) and
 [current-config.example.json](current-config.example.json). Replace all absolute
@@ -143,7 +143,7 @@ uv run --no-project --python 3.13 python -B -m unittest discover -s "$REPLAY" -p
 ```
 
 `new_run.py` creates the config, the mode-700 `private/` directory and the mode-600 JWT key for
-you (`make py313-new-run`). To do it by hand, create a **new** parent directory for the
+you (`make new-run`). To do it by hand, create a **new** parent directory for the
 config/outputs and a new mode-700 private subdirectory, generate a new RSA private key with
 `openssl genrsa -out PATH 2048`, chmod it 600 (`PATH` must equal `jwt_file`). Never print or commit
 secrets. `bring_up.py --config "$CONFIG"` runs everything below plus the post-install stages. Run

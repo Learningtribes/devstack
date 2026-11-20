@@ -107,8 +107,8 @@ then verify the persisted course/assets/learning state with
 `verify_delivery_after_restart.py`.
 
 The whole sequence, plus course authoring, a superuser and an HTTP smoke, is automated by
-`new_run.py` and `bring_up.py` (`make py313-up`), with `status.py` and the operator teardown
-`destroy_run.py` (`make py313-status` / `make py313-destroy`); see the quickstart in
+`new_run.py` and `bring_up.py` (`make up`), with `status.py` and the operator teardown
+`destroy_run.py` (`make status` / `make destroy`); see the quickstart in
 [current-py3-master.md](current-py3-master.md). Teardown is deliberately outside the stages above:
 it removes only resources named in the config that carry its ownership label.
 

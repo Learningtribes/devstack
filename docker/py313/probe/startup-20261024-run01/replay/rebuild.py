@@ -6,7 +6,7 @@ editing Sass, JS, XModule sources or .po files therefore cannot reuse that path.
 
 Same builders as bring-up (npm ci when needed, build_xmodule_assets.py with a fresh
 BRINGUP_XMODULE_BUILD_ROOT, build_frontend.sh, locale_static.py). Leaves no evidence.
-Afterward: make py313-restart if templates or static are cached in the running servers.
+Afterward: make restart if templates or static are cached in the running servers.
 
 collectstatic: locale_static.py runs it; rebuild-assets does not. On the local runtime
 (DEBUG=False, DevelopmentStorage) that is enough for Sass/JS: build_frontend writes Sass

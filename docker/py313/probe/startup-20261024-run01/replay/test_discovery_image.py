@@ -59,7 +59,7 @@ class DiscoveryImageTests(unittest.TestCase):
         with patch('core.subprocess.run', return_value=missing) as run:
             with self.assertRaisesRegex(ValueError, 'not present locally') as error:
                 ensure_discovery_image(self.config, sleep=lambda delay: None)
-        self.assertIn('make py313-build-discovery', str(error.exception))
+        self.assertIn('make build-discovery', str(error.exception))
         self.assertIn(self.config['discovery_repo'], str(error.exception))
         # A tag is not pulled: the registry has nothing to offer for it.
         self.assertEqual([call.args[0][1] for call in run.call_args_list], ['image'])
