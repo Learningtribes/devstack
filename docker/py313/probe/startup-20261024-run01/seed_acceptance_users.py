@@ -2,14 +2,21 @@
 import json
 import os
 from pathlib import Path
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from student.models import UserProfile
 from student.roles import STUDIO_ADMIN_ACCESS_GROUP
+from database_guard import is_replay_database
 credentials = json.loads(Path('/startup/.acceptance-credentials.json').read_text())
 run_id = os.environ['BRINGUP_REPLAY_ID']
 roles = {'staff': False, 'learner': False, 'learner2': False, 'other_org': False}
 studio_login_roles = {'staff', 'other_org'}
+# The credential file only proves these identities belong to this run; it says nothing about
+# which database is about to receive them. Creating staff users in someone else's database is
+# not reversible by rerunning this script, so refuse unless the name is this replay's.
+assert is_replay_database(settings.DATABASES['default']['NAME'], ('py313_',)), \
+    'Refusing to seed acceptance identities into a database outside this replay'
 assert credentials.get('run_id') == run_id, 'Protected acceptance identities belong to another run'
 assert set(credentials) == {'run_id', *roles}, 'Unexpected acceptance identity set'
 for role, should_be_django_staff in roles.items():
