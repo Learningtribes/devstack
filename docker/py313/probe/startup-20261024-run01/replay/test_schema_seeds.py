@@ -46,3 +46,24 @@ class SchemaPhaseSeedTests(unittest.TestCase):
     def test_every_seed_has_its_own_evidence_label(self):
         labels = [label for label, _ in _shell_calls(_schema_body(ast.parse(SCHEMA.read_text())))]
         self.assertEqual(len(labels), len(set(labels)), 'duplicate evidence label: %s' % labels)
+
+
+ACCEPTANCE_SEED = Path(__file__).resolve().parents[1] / 'seed_acceptance_users.py'
+
+
+class AcceptanceSeedGuardTests(unittest.TestCase):
+    """The acceptance seed creates staff users, so it must refuse a database that is not this run.
+
+    Its credential-file assertion proves the identities belong to the run, not that the rows are
+    going somewhere safe. The platform-side seeds already make the `is_replay_database` check;
+    this one lives in the Devstack repository, so nothing in the platform's guard test saw it.
+    """
+
+    def test_the_acceptance_seed_refuses_a_foreign_database(self):
+        tree = ast.parse(ACCEPTANCE_SEED.read_text())
+        guarded = any(
+            isinstance(node, ast.Assert) and any(
+                isinstance(call, ast.Call) and getattr(call.func, 'id', None) == 'is_replay_database'
+                for call in ast.walk(node.test))
+            for node in tree.body)
+        self.assertTrue(guarded, 'seed_acceptance_users.py writes rows with no database guard')

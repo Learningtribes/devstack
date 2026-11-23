@@ -52,7 +52,7 @@ LIVE_THEME_MOUNT = LIVE_THEME_ROOT + '/hawthorn'
 DISCOVERY_DEFAULT_PORT = 18381
 DISCOVERY_CONTAINER_SUFFIX = '-discovery'
 DISCOVERY_VOLUME_SUFFIX = '-discovery-data'
-# Mounted at /workspace so the lock's file:// companion URLs (file:///workspace/ci/py313/companions/...) resolve.
+# Mounted at /workspace so this repository is readable at a stable path inside the container.
 DISCOVERY_MOUNT = '/workspace'
 # Derived layout follows the same v2 path contract as the Platform (no retired root): code is bind-mounted,
 # venv and bring-up state live under one app root that the run's volume owns.
@@ -62,6 +62,10 @@ DISCOVERY_PYTHON = DISCOVERY_VENV + '/bin/python'
 DISCOVERY_SETTINGS = 'course_discovery.settings.py313'
 DISCOVERY_TEST_SETTINGS = 'course_discovery.settings.test'
 DISCOVERY_LOCK = 'requirements/py313/local.txt'
+# The lock carries `@COMPANIONS_DIR@` instead of an absolute path; `materialize-lock.py` resolves it
+# against the mounted repository and writes the installable copy here.
+DISCOVERY_COMPANIONS = 'ci/py313/companions/artifacts'
+DISCOVERY_LOCK_OUTPUT = '/tmp/discovery-lock'
 # Django's test runner refuses to reuse the application database and would create `test_<name>`,
 # which the application user is not granted. Name the granted test database explicitly so a MySQL
 # run never needs global CREATE (mirrors the Platform's BRINGUP_TEST_DATABASE_NAME).
@@ -466,6 +470,11 @@ def discovery_environment(config):
     names = discovery_names(config)
     return {
         'DJANGO_SETTINGS_MODULE': DISCOVERY_SETTINGS,
+        # `settings.py313` enables DEBUG, accepts any Host header and may fall back to a
+        # repository-published JWT secret, so it refuses to import unless this says the run is
+        # local. Written to the container env file rather than passed ad hoc, so every phase
+        # (check, migrate, seed, test, services) gets it from one place.
+        'DISCOVERY_LOCAL_RUN': '1',
         'DB_HOST': config['services']['mysql']['container'],
         'DB_PORT': '3306',
         'DB_NAME': names['database'],
